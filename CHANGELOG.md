@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Added warning for missing civic reg.no in booking form (instead of saying they participant is missing their name)
 
 ## [0.9.17.7]
 ### Added

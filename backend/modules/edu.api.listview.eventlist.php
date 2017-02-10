@@ -62,11 +62,11 @@ if(!function_exists('edu_api_listview_eventlist'))
 
 		if(!empty($request['search']))
 		{
-			$edo = array_filter($edo, function($object) {
+			$edo = array_filter($edo, function($object) use(&$request) {
 				$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
-				$descrMatch = stripos($object->CourseDescription, $_REQUEST['search']) !== FALSE;
-				$shortDescrMatch = stripos($object->CourseDescriptionShort, $_REQUEST['search']) !== FALSE;
-				$nameMatch = stripos($name, $_REQUEST['search']) !== FALSE;
+				$descrMatch = stripos($object->CourseDescription, $request['search']) !== FALSE;
+				$shortDescrMatch = stripos($object->CourseDescriptionShort, $request['search']) !== FALSE;
+				$nameMatch = stripos($name, $request['search']) !== FALSE;
 				/*echo "#namn!#" . $name . " state: ";
 				echo $nameMatch ? "true" : "false" . "#!#<br />";
 				echo "#besk!#" . $object->CourseDescription . " state: ";

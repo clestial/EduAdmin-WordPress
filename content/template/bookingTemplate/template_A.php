@@ -368,6 +368,9 @@ else
 				<div class="edu-modal warning" id="edu-warning-missing-participants">
 					<?php edu_e("One or more participants is missing a name."); ?>
 				</div>
+				<div class="edu-modal warning" id="edu-warning-missing-civicregno">
+					<?php edu_e("One or more participants is missing their civic registration number."); ?>
+				</div>
 			</div>
 		</form>
 	</div>

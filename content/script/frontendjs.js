@@ -317,14 +317,26 @@ var eduBookingView = {
 
 					if(fields[f].value.replace(/ /i, '') == '') {
 						/* Show missing participant-name warning */
-
-						var partWarning = document.getElementById('edu-warning-missing-participants');
-						if(partWarning) {
-							partWarning.style.display = 'block';
-							setTimeout(function() {
-								var partWarning = document.getElementById('edu-warning-missing-participants');
-								partWarning.style.display = '';
-							}, 5000);
+						if(fields[f].name == 'participantFirstName[]') {
+							var partWarning = document.getElementById('edu-warning-missing-participants');
+							if(partWarning) {
+								partWarning.style.display = 'block';
+								setTimeout(function() {
+									var partWarning = document.getElementById('edu-warning-missing-participants');
+									partWarning.style.display = '';
+								}, 5000);
+							}
+						}
+						else if(fields[f].name == 'participantCivReg[]')
+						{
+							var civicWarning = document.getElementById('edu-warning-missing-civicregno');
+							if(civicWarning) {
+								civicWarning.style.display = 'block';
+								setTimeout(function() {
+									var civicWarning = document.getElementById('edu-warning-missing-civicregno');
+									civicWarning.style.display = '';
+								}, 5000);
+							}
 						}
 						return false;
 					}

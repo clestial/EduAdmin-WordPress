@@ -32,8 +32,8 @@
 					<input type="password" name="eduadminpassword" required title="<?php echo esc_attr(edu__("Please enter your password here")); ?>" placeholder="<?php echo esc_attr(edu__("Password")); ?>" />
 				</div>
 			</label>
-			<button class="loginButton" onclick="this.form.eduformloginaction.value = 'login';"><?php edu_e("Log in"); ?></button>
-			<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.value = '-'; this.form.eduformloginaction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
+			<button class="loginButton" onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'login';"><?php edu_e("Log in"); ?></button>
+			<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
 		</form>
 	</div>
 

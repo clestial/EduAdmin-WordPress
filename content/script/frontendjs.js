@@ -356,7 +356,7 @@ var eduBookingView = {
 
 			var date = new Date();
 			var year = RegExp.$1, month = (RegExp.$2 - 1), day = RegExp.$3, unique = RegExp.$4;
-			if(year.length <= 2) {
+			if(year.toString().length <= 2) {
 				year = date.getFullYear().toString().substring(0, 2) + '' + year;
 				while(year > date.getFullYear()) year -= 100;
 			}
@@ -364,10 +364,10 @@ var eduBookingView = {
 			var checkDate = new Date(year, month, day);
 			if(Object.prototype.toString.call(checkDate) !== '[object Date]' || isNaN(checkDate.getTime())) return false;
 
-			if(month.length == 1) {
+			if(month.toString().length == 1) {
 				month = '0' + (month + 1);
 			} else {
-				month = month + 1
+				month = (month + 1);
 			}
 
 			if(day.length == 1) {

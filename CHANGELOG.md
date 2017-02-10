@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.9.17.8]
+### Added
 - Added warning for missing civic reg.no in booking form (instead of saying they participant is missing their name)
+- Bugfix in civregno formatting
 
 ## [0.9.17.7]
 ### Added

@@ -373,17 +373,6 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	?>
 </div>
 <?php
-$originalTitle = get_the_title();
-$newTitle = $name . " | " . $originalTitle;
-?>
-<script type="text/javascript">
-(function() {
-	var title = document.title;
-	title = title.replace('<?php echo $originalTitle; ?>', '<?php echo $newTitle; ?>');
-	document.title = title;
-})();
-</script>
-<?php
 }
 $out = ob_get_clean();
 return $out;

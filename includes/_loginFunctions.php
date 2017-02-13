@@ -23,6 +23,8 @@ function loginContactPerson($loginValue, $password)
 		$filter = new XFiltering();
 		$f = new XFilter('CustomerID', '=', $contact->CustomerID);
 		$filter->AddItem($f);
+		$f = new XFilter('Disabled', '=', false);
+		$filter->AddItem($f);
 		$customers = $eduapi->GetCustomerV2($edutoken, '', $filter->ToString(), true);
 		if(count($customers) == 1)
 		{

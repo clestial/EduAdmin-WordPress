@@ -3,6 +3,15 @@
 ## [Unreleased]
 ### Added
 
+## [0.9.17.9]
+### Added
+- Added `disabled`-filter in customer check (Login), just in case.
+- Adding support set page title on detail pages (old wp, new wp and "All in one SEO")
+- Added option to set which field you want to use as page title
+- Bugfix: Search with category, subject and course level should now be working
+- More validation in login-form
+- Bugfix: Places-left fix when below zero. It showed "Few spots left", instead of "No spots left"
+
 ## [0.9.17.8]
 ### Added
 - Added warning for missing civic reg.no in booking form (instead of saying they participant is missing their name)
@@ -174,7 +183,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.8...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.9...HEAD
+[0.9.17.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.8...v0.9.17.9
 [0.9.17.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.7...v0.9.17.8
 [0.9.17.7]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.6...v0.9.17.7
 [0.9.17.6]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.5...v0.9.17.6

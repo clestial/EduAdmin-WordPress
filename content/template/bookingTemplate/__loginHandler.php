@@ -39,6 +39,8 @@ if(isset($_REQUEST['bookingLoginAction']) && !empty($_REQUEST['bookingLoginActio
 			$filter = new XFiltering();
 			$f = new XFilter('CustomerID', '=', $con->CustomerID);
 			$filter->AddItem($f);
+			$f = new XFilter('Disabled', '=', false);
+			$filter->AddItem($f);
 			$customers = $eduapi->GetCustomer($edutoken, '', $filter->ToString(), true);
 			if(count($customers) == 1)
 			{

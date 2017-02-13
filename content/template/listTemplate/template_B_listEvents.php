@@ -14,6 +14,7 @@ $baseUrl = $surl . '/' . $cat;
 	{
 		$f = new XFilter('CategoryID', '=', $categoryID);
 		$filtering->AddItem($f);
+		$attributes['category'] = $categoryID;
 	}
 
 	if(!empty($filterCourses))
@@ -26,9 +27,10 @@ $baseUrl = $surl . '/' . $cat;
 	{
 		$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
 		$filtering->AddItem($f);
+		$attributes['category'] = $_REQUEST['eduadmin-category'];
 	}
 
-	$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
+	$edo = $eduapi->GetEducationObjectV2($edutoken, '', $filtering->ToString(), false);
 	#if(count($filterCourses) == 0)
 	{
 		#set_transient('eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS);
@@ -90,18 +92,21 @@ if(isset($_REQUEST['eduadmin-subject']) && !empty($_REQUEST['eduadmin-subject'])
 	{
 		$f = new XFilter('LocationID', '=', $_REQUEST['eduadmin-city']);
 		$filtering->AddItem($f);
+		$attributes['city'] = $_REQUEST['eduadmin-city'];
 	}
 
 	if(isset($_REQUEST['eduadmin-category']))
 	{
 		$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
 		$filtering->AddItem($f);
+		$attributes['category'] = $_REQUEST['eduadmin-category'];
 	}
 
 	if(isset($_REQUEST['eduadmin-subject']))
 	{
 		$f = new XFilter('SubjectID', '=', $_REQUEST['eduadmin-subject']);
 		$filtering->AddItem($f);
+		$attributes['subject'] = $_REQUEST['eduadmin-subject'];
 	}
 
 	$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
@@ -172,6 +177,8 @@ if(isset($_REQUEST['eduadmin-subject']) && !empty($_REQUEST['eduadmin-subject'])
 		set_transient('eduadmin-subjects', $subjects, DAY_IN_SECONDS);
 	}
 
+	$attributes['subject'] = $_REQUEST['eduadmin-subject'];
+
 	$ede = array_filter($ede, function($object) {
 		$subjects = get_transient('eduadmin-subjects');
 		foreach($subjects as $subj)
@@ -187,6 +194,7 @@ if(isset($_REQUEST['eduadmin-subject']) && !empty($_REQUEST['eduadmin-subject'])
 
 if(isset($_REQUEST['eduadmin-level']) && !empty($_REQUEST['eduadmin-level']))
 {
+	$attributes['courselevel'] = $_REQUEST['eduadmin-level'];
 	$ede = array_filter($ede, function($object) {
 		$cl = get_transient('eduadmin-courseLevels');
 		foreach($cl as $subj)
@@ -218,7 +226,7 @@ $eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 $eventDates = array();
 foreach($eventDays as $ed)
 {
-	$eventDates[$ed->EventID][] = $ed->StartDate;
+	$eventDates[$ed->EventID][] = $ed;
 }
 
 $ft = new XFiltering();
@@ -297,6 +305,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	data-template="B"
 	data-subject="<?php echo @esc_attr($attributes['subject']); ?>"
 	data-category="<?php echo @esc_attr($attributes['category']); ?>"
+	data-courselevel="<?php echo @esc_attr($attributes['courselevel']); ?>"
 	data-city="<?php echo @esc_attr($attributes['city']); ?>"
 	data-spotsleft="<?php echo @get_option('eduadmin-spotsLeft', 'exactNumbers'); ?>"
 	data-spotsettings="<?php echo @get_option('eduadmin-spotsSettings', "1-5\n5-10\n10+"); ?>"

@@ -158,15 +158,18 @@ function GetLogicalDateGroups($dates, $short = false, $event = null, $showDays =
 
 // Copied from http://codereview.stackexchange.com/a/83095/27610
 function getRangeFromDays($days, $short, $event, $showDays) {
+	if(count($days) == 0) return '';
     sort($days);
     $startDate  = $days[0];
     $finishDate = $days[count($days) - 1];
     // walk through the dates, breaking at gaps
     foreach ($days as $key => $date)
-    if (($key > 0) && (strtotime($date->StartDate)-strtotime($days[$key-1]->StartDate) > 99999)) {
-      $result[] = GetStartEndDisplayDate($startDate, $days[$key-1], $short, $event, $showDays);
-      $startDate = $date;
-    }
+	{
+		if (($key > 0) && (strtotime($date->StartDate)-strtotime($days[$key-1]->StartDate) > 99999)) {
+			$result[] = GetStartEndDisplayDate($startDate, $days[$key-1], $short, $event, $showDays);
+			$startDate = $date;
+		}
+	}
     // force the end
     $result[] = GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
 

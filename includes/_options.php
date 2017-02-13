@@ -8,6 +8,90 @@ add_action('wp_enqueue_scripts', 'eduadmin_frontend_content', PHP_INT_MAX);
 add_action('add_meta_boxes', 'eduadmin_shortcode_metabox');
 add_action('wp_footer', 'eduadmin_printJavascript');
 
+function eduadmin_page_title($title, $sep)
+{
+	global $eduapi;
+	global $edutoken;
+	global $wp;
+
+	if($sep == null || empty($sep))
+	{
+		$sep = "|";
+	}
+
+	if(isset($wp) && isset($wp->query_vars) && isset($wp->query_vars["courseId"]))
+	{
+		$edo = get_transient('eduadmin-listCourses');
+		if(!$edo)
+		{
+			$filtering = new XFiltering();
+			$f = new XFilter('ShowOnWeb','=','true');
+			$filtering->AddItem($f);
+
+			$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
+			set_transient('eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS);
+		}
+
+		foreach($edo as $object)
+		{
+			$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
+			$id = $object->ObjectID;
+			if($id == $wp->query_vars["courseId"])
+			{
+				$selectedCourse = $object;
+				break;
+			}
+		}
+
+		if($selectedCourse != null)
+		{
+			$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
+			$titleField = get_option('eduadmin-pageTitleField', 'PublicName');
+			if(stristr($titleField, "attr_") !== false)
+			{
+				$attrid = substr($titleField, 5);
+				$ft = new XFiltering();
+				$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
+				$ft->AddItem($f);
+				$f = new XFilter('AttributeID', '=', $attrid);
+				$ft->AddItem($f);
+				$objAttr = $eduapi->GetObjectAttribute($edutoken, '', $ft->ToString());
+				if(!empty($objAttr))
+				{
+					$attr = $objAttr[0];
+					switch($attr->AttributeTypeID)
+					{
+						case 5:
+							$value = $attr->AttributeAlternative;
+						/*case 7:
+							$value = $attr->AttributeDate;*/
+						default:
+							$value = $attr->AttributeValue;
+						break;
+					}
+					if(!empty($value))
+					{
+						$title = $value . " " . $sep . " " . $title;
+					}
+				}
+			}
+			else
+			{
+				if(!empty($selectedCourse->{$titleField}))
+				{
+					$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
+				}
+			}
+		}
+	}
+
+	return $title;
+}
+
+add_filter('pre_get_document_title', 'eduadmin_page_title', PHP_INT_MAX, 2);
+add_filter('wp_title', 'eduadmin_page_title', PHP_INT_MAX, 2);
+add_filter('aioseop_title', 'eduadmin_page_title', PHP_INT_MAX, 2);
+
 function eduadmin_settings_init()
 {
 	/* Credential settings */
@@ -24,6 +108,7 @@ function eduadmin_settings_init()
 	register_setting('eduadmin-rewrite', 'eduadmin-thankYouPage');
 	register_setting('eduadmin-rewrite', 'eduadmin-interestObjectPage');
 	register_setting('eduadmin-rewrite', 'eduadmin-interestEventPage');
+
 
 	/* Booking settings */
 	register_setting('eduadmin-booking', 'eduadmin-useLogin');
@@ -55,6 +140,7 @@ function eduadmin_settings_init()
 	register_setting('eduadmin-details', 'eduadmin-showDetailHeaders');
 	register_setting('eduadmin-details', 'eduadmin-detailTemplate');
 	register_setting('eduadmin-details', 'eduadmin-groupEventsByCity');
+	register_setting('eduadmin-details', 'eduadmin-pageTitleField');
 
 	/* List settings */
 	register_setting('eduadmin-list', 'eduadmin-showEventsInList');

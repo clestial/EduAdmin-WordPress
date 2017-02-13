@@ -165,7 +165,7 @@ else
 		foreach($eds as $subject)
 		{
 
-			if($subject->SubjectName == $attributes['subject'])
+			if($subject->SubjectID == $attributes['subject'])
 			{
 				if(!in_array($subject->ObjectID, $filterCourses))
 				{

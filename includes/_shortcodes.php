@@ -527,7 +527,7 @@ function eduadmin_get_detailinfo($attributes)
                  $eventDates = array();
                  foreach($eventDays as $ed)
                  {
-                     $eventDates[$ed->EventID][] = $ed->StartDate;
+                     $eventDates[$ed->EventID][] = $ed;
                  }
 
 				$ft = new XFiltering();

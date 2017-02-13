@@ -21,7 +21,7 @@ if(!function_exists('edu_api_listview_eventlist'))
 		{
 			foreach($subjects as $subject)
 			{
-				if($subject->SubjectName == $request['subject'])
+				if($subject->SubjectID == $request['subject'])
 				{
 					if(!in_array($subject->ObjectID, $filterCourses))
 					{
@@ -53,12 +53,18 @@ if(!function_exists('edu_api_listview_eventlist'))
 			$filtering->AddItem($f);
 		}
 
+		if(isset($request['courselevel']))
+		{
+			$f = new XFilter('EducationLevelID', '=', $request['courselevel']);
+			$filtering->AddItem($f);
+		}
+
 		$fetchMonths = $request['fetchmonths'];
 		if(!is_numeric($fetchMonths)) {
 			$fetchMonths = 6;
 		}
 
-		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
+		$edo = $eduapi->GetEducationObjectV2($edutoken, '', $filtering->ToString(), false);
 
 		if(!empty($request['search']))
 		{
@@ -103,9 +109,9 @@ if(!function_exists('edu_api_listview_eventlist'))
 			$filtering->AddItem($f);
 		}
 
-		if(isset($request['subject-search']))
+		if(isset($request['subject']))
 		{
-			$f = new XFilter('SubjectID', '=', $request['subject-search']);
+			$f = new XFilter('SubjectID', '=', $request['subject']);
 			$filtering->AddItem($f);
 		}
 
@@ -344,7 +350,7 @@ if(!function_exists('edu_api_listview_eventlist_template_A'))
 					"</div>";
 				}
 
-				if($request['showcourseprices']) {
+				if($request['showcourseprices'] && isset($object->Price)) {
 					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), edu_ConvertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo "<span class=\"spotsLeftInfo\">" . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots) . "</span>";
@@ -459,7 +465,7 @@ if(!function_exists('edu_api_listview_eventlist_template_B'))
 					"</div>";
 				}
 
-				if($request['showcourseprices']) {
+				if($request['showcourseprices'] && isset($object->Price)) {
 					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), edu_ConvertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo '<br />' . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots);

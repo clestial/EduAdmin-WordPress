@@ -68,7 +68,7 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 		case "onlyText":
 			if($freeSpots > $alwaysFewSpots) {
 				return edu__('Spots left');
-			} else if ($freeSpots <= $alwaysFewSpots && $freeSpots != 1) {
+			} else if ($freeSpots <= $alwaysFewSpots && $freeSpots != 1 && $freeSpots > 0) {
 				return edu__('Few spots left');
 			} else if ($freeSpots == 1) {
 				return edu__('One spot left');

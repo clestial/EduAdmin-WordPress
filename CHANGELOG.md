@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Added an extra option in customer groups, and a required flag, so you HAVE to choose a group before saving.
 
 ## [0.9.17.11]
 ### Added

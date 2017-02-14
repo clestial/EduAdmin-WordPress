@@ -64,10 +64,11 @@ else
 			}
 
 			?>
-			<select name="eduadmin-customerGroupId">
+			<select required name="eduadmin-customerGroupId" title="<?php echo esc_attr_e("Select customer group", "eduadmin"); ?>">
+			<option value=""><?php _e("Select customer group", "eduadmin"); ?></option>
 			<?php
 			$root = $levelStack['0'];
-			$selectedOption = get_option('eduadmin-customerGroupId', 0);
+			$selectedOption = get_option('eduadmin-customerGroupId', NULL);
 			foreach($root as $g)
 			{
 				edu_writeOptions($g, $levelStack, $depth, $selectedOption);

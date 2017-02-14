@@ -134,6 +134,7 @@ else if($selectedMatch === "no-match-new-overwrite")
 	}
 	else
 	{
+		$ft = new XFiltering();
 		$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 		$ft->AddItem($f);
 		$matchingCustomer = $eduapi->GetCustomerV2($edutoken, '', $ft->ToString(), false);

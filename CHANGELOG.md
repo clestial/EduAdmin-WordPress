@@ -7,6 +7,7 @@
 - Show an error if you are trying to login with an invalid civic reg no
 - Changed serialization of new customers, so it doesn't throw warnings about incomplete classes
 - Fixed SingleParticipant-booking so that there will be less duplicates (It actually checks the logged in user customer and contact person)
+- Fixed MultipleParticipants-booking so that there will be less duplicates
 
 ## [0.9.17.9]
 ### Added

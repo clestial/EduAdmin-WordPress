@@ -8,7 +8,7 @@ add_action('wp_enqueue_scripts', 'eduadmin_frontend_content', PHP_INT_MAX);
 add_action('add_meta_boxes', 'eduadmin_shortcode_metabox');
 add_action('wp_footer', 'eduadmin_printJavascript');
 
-function eduadmin_page_title($title, $sep)
+function eduadmin_page_title($title, $sep = "|")
 {
 	global $eduapi;
 	global $edutoken;

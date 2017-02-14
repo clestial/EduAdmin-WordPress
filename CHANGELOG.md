@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Bugfix: Page title must set separator as default parameter, or else things break
 
 ## [0.9.17.10]
 ### Added

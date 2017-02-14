@@ -157,5 +157,6 @@
 	"Invalid discount code, please check your code and try again.": "Invalid discount code, please check your code and try again.",
 	"Please enter your %s to continue.": "Please enter your %s to continue.",
 	"Not %s? %sLog out%s": "Not %s? %sLog out%s",
-	"Please enter a valid swedish civic registration number.": "Please enter a valid swedish civic registration number."
+	"Please enter a valid swedish civic registration number.": "Please enter a valid swedish civic registration number.",
+	"Choose price": "Choose price"
 }

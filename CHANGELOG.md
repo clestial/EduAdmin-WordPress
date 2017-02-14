@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Why did I change how we check for subjects? We now check against name again
 
 ## [0.9.17.9]
 ### Added

@@ -10,17 +10,23 @@ if(!function_exists('edu_api_loginwidget'))
 
 		$baseUrl = $surl . '/' . $cat;
 		if(isset($_SESSION['eduadmin-loginUser']))
+		{
 			$user = $_SESSION['eduadmin-loginUser'];
+			$c1 = json_encode($user->Customer);
+			$customer = json_decode($c1);
+			$c2 = json_encode($user->Contact);
+			$contact = json_decode($c2);
+		}
 
 		if(isset($_SESSION['eduadmin-loginUser']) &&
 		!empty($_SESSION['eduadmin-loginUser']) &&
-		isset($_SESSION['eduadmin-loginUser']->Contact) &&
-		isset($_SESSION['eduadmin-loginUser']->Contact->CustomerContactID) &&
-		$_SESSION['eduadmin-loginUser']->Contact->CustomerContactID != 0)
+		isset($contact) &&
+		isset($contact->CustomerContactID) &&
+		$contact->CustomerContactID != 0)
 		{
 			return
 			"<div class=\"eduadminLogin\"><a href=\"" . $baseUrl . "/profile/myprofile" . edu_getQueryString("?", array('eid', 'module')) . "\" class=\"eduadminMyProfileLink\">" .
-			$_SESSION['eduadmin-loginUser']->Contact->ContactName .
+			$contact->ContactName .
 			"</a> - <a href=\"" . $baseUrl . "/profile/logout" . edu_getQueryString("?", array('eid', 'module')) . "\" class=\"eduadminLogoutButton\">" .
 			$request['logouttext'] .
 			"</a>" .

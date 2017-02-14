@@ -1,6 +1,16 @@
 <?php
 $customer = new CustomerV2();
-$customer->CustomerName = trim($_POST['contactFirstName'] . " " . $_POST["contactLastName"]);
+$contact = new CustomerContact();
+
+if(isset($_SESSION['eduadmin-loginUser']))
+{
+	$user = $_SESSION['eduadmin-loginUser'];
+	$contact->CustomerContactID = $user->Contact->CustomerContactID;
+	$customer->CustomerID = $user->Customer->CustomerID;
+}
+$first = trim($_POST['contactFirstName']);
+$last = trim($_POST["contactLastName"]);
+$customer->CustomerName = $first . " " . $last;
 $customer->CustomerGroupID = get_option('eduadmin-customerGroupId', NULL);
 if(isset($_POST['contactCivRegNr']))
 	$customer->InvoiceOrgnr = trim($_POST['contactCivRegNr']);
@@ -16,7 +26,7 @@ $customerInvoiceEmailAddress = trim($_POST['invoiceEmail']);
 
 if(!isset($_POST['alsoInvoiceCustomer']))
 {
-	$customer->InvoiceName = trim($_POST['contactFirstName'] . " " . $_POST["contactLastName"]);
+	$customer->InvoiceName = $first . " " . $last;
 	$customer->InvoiceAddress1 = trim($_POST['customerAddress1']);
 	$customer->InvoiceAddress2 = trim($_POST['customerAddress2']);
 	$customer->InvoiceZip = trim($_POST['customerPostalCode']);
@@ -39,20 +49,27 @@ if(!empty($customerInvoiceEmailAddress))
 $selectedMatch = get_option('eduadmin-customerMatching', 'name-zip-match');
 if($selectedMatch === "name-zip-match")
 {
-	if(empty($customer->InvoiceOrgnr))
+	$ft = new XFiltering();
+	if($customer->CustomerID == 0)
 	{
-		$ft = new XFiltering();
-		$f = new XFilter('CustomerName', '=', $customer->CustomerName);
+		if(empty($customer->InvoiceOrgnr))
+		{
+			$f = new XFilter('CustomerName', '=', $customer->CustomerName);
+			$ft->AddItem($f);
+		}
+		else
+		{
+			$f = new XFilter('InvoiceOrgnr', '=', $customer->InvoiceOrgnr);
+			$ft->AddItem($f);
+		}
+		$f = new XFilter('Zip', '=', str_replace(" ", "", $customer->Zip));
 		$ft->AddItem($f);
 	}
 	else
 	{
-		$ft = new XFiltering();
-		$f = new XFilter('InvoiceOrgnr', '=', $customer->InvoiceOrgnr);
+		$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 		$ft->AddItem($f);
 	}
-	$f = new XFilter('Zip', '=', str_replace(" ", "", $customer->Zip));
-	$ft->AddItem($f);
 	$matchingCustomer = $eduapi->GetCustomerV2($edutoken, '', $ft->ToString(), false);
 	if(empty($matchingCustomer))
 	{
@@ -67,20 +84,27 @@ if($selectedMatch === "name-zip-match")
 }
 else if($selectedMatch === "name-zip-match-overwrite")
 {
-	if(empty($customer->InvoiceOrgnr))
+	$ft = new XFiltering();
+	if($customer->CustomerID == 0)
 	{
-		$ft = new XFiltering();
-		$f = new XFilter('CustomerName', '=', $customer->CustomerName);
+		if(empty($customer->InvoiceOrgnr))
+		{
+			$f = new XFilter('CustomerName', '=', $customer->CustomerName);
+			$ft->AddItem($f);
+		}
+		else
+		{
+			$f = new XFilter('InvoiceOrgnr', '=', $customer->InvoiceOrgnr);
+			$ft->AddItem($f);
+		}
+		$f = new XFilter('Zip', '=', str_replace(" ", "", $customer->Zip));
 		$ft->AddItem($f);
 	}
 	else
 	{
-		$ft = new XFiltering();
-		$f = new XFilter('InvoiceOrgnr', '=', $customer->InvoiceOrgnr);
+		$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 		$ft->AddItem($f);
 	}
-	$f = new XFilter('Zip', '=', str_replace(" ", "", $customer->Zip));
-	$ft->AddItem($f);
 	$matchingCustomer = $eduapi->GetCustomerV2($edutoken, '', $ft->ToString(), false);
 	if(empty($matchingCustomer))
 	{
@@ -102,13 +126,18 @@ else if($selectedMatch === "no-match")
 }
 else if($selectedMatch === "no-match-new-overwrite")
 {
-	if(isset($_SESSION['eduadmin-loginUser']))
+	if($contact->CustomerContactID == 0)
 	{
-		$user = $_SESSION['eduadmin-loginUser'];
-		$contact->CustomerContactID = $user->Contact->CustomerContactID;
-		$customer->CustomerID = $user->Customer->CustomerID;
-
-		if($contact->CustomerContactID == 0)
+		$customer->CustomerID = 0;
+		$cres = $eduapi->SetCustomerV2($edutoken, array($customer));
+		$customer->CustomerID = $cres[0];
+	}
+	else
+	{
+		$f = new XFilter('CustomerID', '=', $customer->CustomerID);
+		$ft->AddItem($f);
+		$matchingCustomer = $eduapi->GetCustomerV2($edutoken, '', $ft->ToString(), false);
+		if(empty($matchingCustomer))
 		{
 			$customer->CustomerID = 0;
 			$cres = $eduapi->SetCustomerV2($edutoken, array($customer));
@@ -116,34 +145,11 @@ else if($selectedMatch === "no-match-new-overwrite")
 		}
 		else
 		{
-			if(empty($customer->InvoiceOrgnr))
-			{
-				$ft = new XFiltering();
-				$f = new XFilter('CustomerName', '=', $customer->CustomerName);
-				$ft->AddItem($f);
-			}
-			else
-			{
-				$ft = new XFiltering();
-				$f = new XFilter('InvoiceOrgnr', '=', $customer->InvoiceOrgnr);
-				$ft->AddItem($f);
-			}
-			$f = new XFilter('Zip', '=', str_replace(" ", "", $customer->Zip));
-			$ft->AddItem($f);
-			$matchingCustomer = $eduapi->GetCustomerV2($edutoken, '', $ft->ToString(), false);
-			if(empty($matchingCustomer))
-			{
-				$customer->CustomerID = 0;
-				$cres = $eduapi->SetCustomerV2($edutoken, array($customer));
-				$customer->CustomerID = $cres[0];
-			}
-			else
-			{
-				$customer->CustomerID = $matchingCustomer[0]->CustomerID;
-				$eduapi->SetCustomerV2($edutoken, array($customer));
-			}
+			$customer->CustomerID = $matchingCustomer[0]->CustomerID;
+			$eduapi->SetCustomerV2($edutoken, array($customer));
 		}
 	}
+
 }
 
 if($customer->CustomerID == 0)
@@ -196,8 +202,6 @@ else
 	$res = $eduapi->SetCustomerAttribute($edutoken, $cmpArr);
 }
 
-
-$contact = new CustomerContact();
 $contact->CustomerID = $customer->CustomerID;
 
 if(!empty($_POST['contactFirstName']))
@@ -225,7 +229,9 @@ if(!empty($_POST['contactFirstName']))
 		$f = new XFilter('ContactName', '=', trim(str_replace(';', ' ', $contact->ContactName)));
 		$ft->AddItem($f);
 
-		$f = new XFilter('Email', '=', $contact->Email);
+		$selectedLoginField = get_option('eduadmin-loginField', 'Email');
+
+		$f = new XFilter($selectedLoginField, '=', $contact->{$selectedLoginField});
 		$ft->AddItem($f);
 	}
 	else

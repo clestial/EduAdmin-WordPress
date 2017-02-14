@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Added
 - Why did I change how we check for subjects? We now check against name again
+- Bugfix: Page title should not contain object multiple times
+- Show an error if you are trying to login with an invalid civic reg no
+- Changed serialization of new customers, so it doesn't throw warnings about incomplete classes
+- Fixed SingleParticipant-booking so that there will be less duplicates (It actually checks the logged in user customer and contact person)
 
 ## [0.9.17.9]
 ### Added

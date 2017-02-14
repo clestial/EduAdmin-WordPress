@@ -45,7 +45,6 @@ function eduadmin_page_title($title, $sep)
 
 		if($selectedCourse != null)
 		{
-			$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
 			$titleField = get_option('eduadmin-pageTitleField', 'PublicName');
 			if(stristr($titleField, "attr_") !== false)
 			{
@@ -69,17 +68,29 @@ function eduadmin_page_title($title, $sep)
 							$value = $attr->AttributeValue;
 						break;
 					}
-					if(!empty($value))
+					if(!empty($value) && stristr($title, $value) === FALSE)
 					{
 						$title = $value . " " . $sep . " " . $title;
 					}
+					else
+					{
+						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
+					}
+				}
+				else
+				{
+					$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
 				}
 			}
 			else
 			{
-				if(!empty($selectedCourse->{$titleField}))
+				if(!empty($selectedCourse->{$titleField}) && stristr($title, $selectedCourse->{$titleField}) === FALSE)
 				{
 					$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
+				}
+				else
+				{
+					$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
 				}
 			}
 		}

@@ -300,7 +300,7 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 				echo "<h4>" . edu__("Sub events") . "</h4>\n";
 				foreach($subEvents as $subEvent)
 				{
-					if(count($sePrice[$subEvent->OccasionID]) > 0) {
+					if(isset($sePrice[$subEvent->OccasionID]) && count($sePrice[$subEvent->OccasionID]) > 0) {
 						$s = current($sePrice[$subEvent->OccasionID])->Price;
 					} else {
 						$s = 0;

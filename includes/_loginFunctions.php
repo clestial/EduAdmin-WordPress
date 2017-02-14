@@ -30,8 +30,10 @@ function loginContactPerson($loginValue, $password)
 		{
 			$customer = $customers[0];
 			$user = new stdClass;
-			$user->Contact = $contact;
-			$user->Customer = $customer;
+			$c1 = json_encode($contact);
+			$user->Contact = json_decode($c1);
+			$c2 = json_encode($customer);
+			$user->Customer = json_decode($c2);
 			$_SESSION['eduadmin-loginUser'] = $user;
 			return $_SESSION['eduadmin-loginUser'];
 		}

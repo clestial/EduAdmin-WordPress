@@ -46,8 +46,10 @@ if(isset($_REQUEST['bookingLoginAction']) && !empty($_REQUEST['bookingLoginActio
 			{
 				$customer = $customers[0];
 				$user = new stdClass;
-				$user->Contact = $con;
-				$user->Customer = $customer;
+				$c1 = json_encode($con);
+				$user->Contact = json_decode($c1);
+				$c2 = json_encode($customer);
+				$user->Customer = json_decode($c2);
 				$_SESSION['eduadmin-loginUser'] = $user;
 			}
 			else
@@ -74,8 +76,10 @@ if(isset($_REQUEST['bookingLoginAction']) && !empty($_REQUEST['bookingLoginActio
 
 			$user = new stdClass;
 			$user->NewCustomer = true;
-			$user->Contact = $contact;
-			$user->Customer = $customer;
+			$c1 = json_encode($contact);
+			$user->Contact = json_decode($c1);
+			$c2 = json_encode($customer);
+			$user->Customer = json_decode($c2);
 			$_SESSION['eduadmin-loginUser'] = $user;
 		}
 	}

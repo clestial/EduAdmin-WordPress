@@ -29,7 +29,14 @@
 			<input type="password" name="eduadminpassword" required title="<?php echo esc_attr(edu__("Please enter your password here")); ?>" placeholder="<?php echo esc_attr(edu__("Password")); ?>" />
 		</div>
 	</label>
-	<button class="loginButton" onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'login';"><?php edu_e("Log in"); ?></button>
+	<?php
+	$click = "";
+	if ($selectedLoginField == "CivicRegistrationNumber" && get_option('eduadmin-validateCivicRegNo', false) === "true")
+	{
+		$click = "if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__("Please enter a valid swedish civic registration number.") . "');  return false; }";
+	}
+	?>
+	<button class="loginButton" onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'login';<?php echo $click; ?>"><?php edu_e("Log in"); ?></button>
 	<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
 </div>
 	<?php if(isset($_SESSION['eduadminLoginError'])) { ?>

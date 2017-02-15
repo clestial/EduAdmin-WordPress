@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.9.17.12]
+### Added
 - Added an extra option in customer groups, and a required flag, so you HAVE to choose a group before saving.
+- Added invoice reference field to single person booking
 
 ## [0.9.17.11]
 ### Added
@@ -197,7 +201,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.11...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.12...HEAD
+[0.9.17.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.11...v0.9.17.12
 [0.9.17.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.10...v0.9.17.11
 [0.9.17.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.9...v0.9.17.10
 [0.9.17.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.8...v0.9.17.9

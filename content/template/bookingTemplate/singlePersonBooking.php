@@ -107,6 +107,14 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		</div>
 	</label>
 	<label>
+		<div class="inputLabel">
+			<?php edu_e("Invoice reference"); ?>
+		</div>
+		<div class="inputHolder">
+			<input type="text" name="invoiceReference" placeholder="<?php edu_e("Invoice reference"); ?>" value="<?php echo @esc_attr($customer->CustomerReference); ?>" />
+		</div>
+	</label>
+	<label>
 		<div class="inputHolder alsoInvoiceCustomer">
 			<input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true" onchange="eduBookingView.UpdateInvoiceCustomer();" />
 			<label class="inline-checkbox" for="alsoInvoiceCustomer"></label>

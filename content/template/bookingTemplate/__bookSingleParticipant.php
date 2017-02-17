@@ -21,6 +21,7 @@ $customer->City = trim($_POST['customerPostalCity']);
 $customer->Phone = trim($_POST['contactPhone']);
 $customer->Mobile = trim($_POST['contactMobile']);
 $customer->Email = trim($_POST['contactEmail']);
+$customer->CustomerReference = trim($_POST['invoiceReference']);
 
 $customerInvoiceEmailAddress = trim($_POST['invoiceEmail']);
 

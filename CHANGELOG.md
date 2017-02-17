@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Bugfix: Added code to save invoice reference on single participant bookings
 
 ## [0.9.17.12]
 ### Added

@@ -40,7 +40,7 @@
 			}
 			?>
 			<button class="loginButton" onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'login';<?php echo $click; ?>"><?php edu_e("Log in"); ?></button>
-			<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
+			<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
 		</form>
 	</div>
 

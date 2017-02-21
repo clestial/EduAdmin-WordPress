@@ -355,19 +355,19 @@ var eduBookingView = {
 			if(!civReg.match(/^(\d{2,4})-?(\d{2})-?(\d{2})-?(\d{4})$/i)) return false;
 
 			var date = new Date();
-			var year = RegExp.$1, month = (RegExp.$2 - 1), day = RegExp.$3, unique = RegExp.$4;
+			var year = RegExp.$1, month = RegExp.$2, day = RegExp.$3, unique = RegExp.$4;
 			if(year.toString().length <= 2) {
 				year = date.getFullYear().toString().substring(0, 2) + '' + year;
 				while(year > date.getFullYear()) year -= 100;
 			}
 
-			var checkDate = new Date(year, month, day);
+			var checkDate = new Date(year, month - 1, day);
 			if(Object.prototype.toString.call(checkDate) !== '[object Date]' || isNaN(checkDate.getTime())) return false;
 
 			if(month.toString().length == 1) {
-				month = '0' + (month + 1);
+				console.log('Adding zero to month');
+				month = '0' + month;
 			} else {
-				month = (month + 1);
 			}
 
 			if(day.toString().length == 1) {

@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Rudimentary support to block people from booking with certain price names (Only when it's selectable)
+- Bugfix: Javascript, dates, string. Woe is me.
 
 ## [0.9.17.14]
 ### Added

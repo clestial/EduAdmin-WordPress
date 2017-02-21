@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.9.17.15]
+### Added
 - Rudimentary support to block people from booking with certain price names (Only when it's selectable)
 - Bugfix: Javascript, dates, string. Woe is me.
 
@@ -212,8 +215,9 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.14...HEAD
-[0.9.17.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.13...v0.9.17.14
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.15...HEAD
+[0.9.17.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.14...v0.9.17.15
+[0.9.17.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.13...v0.9.17.14
 [0.9.17.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.12...v0.9.17.13
 [0.9.17.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.11...v0.9.17.12
 [0.9.17.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.10...v0.9.17.11

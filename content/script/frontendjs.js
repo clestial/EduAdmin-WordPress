@@ -370,7 +370,7 @@ var eduBookingView = {
 				month = (month + 1);
 			}
 
-			if(day.length == 1) {
+			if(day.toString().length == 1) {
 				day = '0' + day;
 			}
 

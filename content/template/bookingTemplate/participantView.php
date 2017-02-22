@@ -108,7 +108,7 @@
 									data-pricelnkid="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>"
 									data-maxparticipants="<?php echo @esc_attr($price->MaxPriceNameParticipantNr); ?>"
 									data-currentparticipants="<?php echo @esc_attr($price->ParticipantNr); ?>"
-									<?php if($price->MaxPriceNameParticipantNr >= 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
+									<?php if($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
 									disabled
 									<?php } ?>
 									value="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>">
@@ -229,7 +229,7 @@
 									data-pricelnkid="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>"
 									data-maxparticipants="<?php echo @esc_attr($price->MaxPriceNameParticipantNr); ?>"
 									data-currentparticipants="<?php echo @esc_attr($price->ParticipantNr); ?>"
-									<?php if($price->MaxPriceNameParticipantNr >= 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
+									<?php if($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
 									disabled
 									<?php } ?>
 									value="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>">

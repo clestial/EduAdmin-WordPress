@@ -178,7 +178,6 @@ var eduBookingView = {
 			}
 
 			priceObject.innerHTML = numberWithSeparator(newPrice, ' ') + ' ' + currency + ' ' + vatText;
-			//priceObject.textContent = numberWithSeparator(newPrice, ' ') + ' ' + currency + ' ' + vatText;
 		}
 
 	},

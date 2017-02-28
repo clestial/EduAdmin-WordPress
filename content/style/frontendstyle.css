@@ -496,6 +496,11 @@
 	vertical-align: top;
 }
 
+.eduadmin .edu-event-participantList {
+	width: 100%;
+	margin: 0;
+}
+
 /* Mobil-css för när vi ska fixa till så att den är responsiv */
 @media (max-width: 690px)
 {

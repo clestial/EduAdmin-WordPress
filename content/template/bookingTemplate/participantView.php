@@ -99,7 +99,7 @@
 							<?php edu_e("Price name"); ?>
 						</div>
 						<div class="inputHolder">
-							<select name="contactPriceName" class="edudropdown participantPriceName" required onchange="eduBookingView.UpdatePrice();">
+							<select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required onchange="eduBookingView.UpdatePrice();">
 								<option value=""><?php edu_e("Choose price"); ?></option>
 								<?php foreach($prices as $price) { ?>
 								<option
@@ -220,7 +220,7 @@
 							<?php edu_e("Price name"); ?>
 						</div>
 						<div class="inputHolder">
-							<select name="participantPriceName[]" required class="edudropdown participantPriceName" onchange="eduBookingView.UpdatePrice();">
+							<select name="participantPriceName[]" required class="edudropdown participantPriceName edu-pricename" onchange="eduBookingView.UpdatePrice();">
 								<option value=""><?php edu_e("Choose price"); ?></option>
 								<?php foreach($prices as $price) { ?>
 								<option

@@ -16,13 +16,35 @@ include_once("login_tab_header.php");
 	$filtering = new XFiltering();
 	$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 	$filtering->AddItem($f);
-	$f = new XFilter('Cancelled', '=', false);
+	$f = new XFilter('ParticipantNr', '>', 0);
 	$filtering->AddItem($f);
 
 	$sorting = new XSorting();
 	$s = new XSort('Created', 'DESC');
 	$sorting->AddItem($s);
 	$bookings = $eduapi->GetEventBooking($edutoken, $sorting->ToString(), $filtering->ToString());
+
+	$eclIds = array();
+	foreach($bookings as $book)
+	{
+		$eclIds[] = $book->EventCustomerLnkID;
+	}
+
+	$filtering = new XFiltering();
+	$f = new XFilter('EventCustomerLnkID', 'IN', join(',', $eclIds));
+	$filtering->AddItem($f);
+
+	$f = new XFilter('Canceled', '=', 'false');
+	$filtering->AddItem($f);
+
+	$participants = $eduapi->GetEventParticipantV2($edutoken, $sorting->ToString(), $filtering->ToString());
+
+	$partPerEvent = array();
+	foreach($participants as $p)
+	{
+		$partPerEvent[$p->EventCustomerLnkID][] = $p;
+	}
+
 	$currency = get_option('eduadmin-currency', 'SEK');
 	?>
 	<table class="myReservationsTable">
@@ -40,6 +62,14 @@ include_once("login_tab_header.php");
 		<?php
 		} else {
 			foreach($bookings as $book) {
+				if(array_key_exists($book->EventCustomerLnkID, $partPerEvent))
+				{
+					$book->Participants = $partPerEvent[$book->EventCustomerLnkID];
+				}
+				else
+				{
+					$book->Participants = array();
+				}
 		?>
 		<tr>
 			<td><?php echo getDisplayDate($book->Created, true); ?></td>
@@ -48,6 +78,34 @@ include_once("login_tab_header.php");
 			<td align="right"><?php echo $book->ParticipantNr; ?></td>
 			<td align="right"><?php echo convertToMoney($book->TotalPrice, $currency); ?></td>
 		</tr>
+		<?php
+		if(count($book->Participants) > 0) {
+		?>
+		<tr class="edu-participants-row">
+			<td colspan="5">
+				<table class="edu-event-participantList">
+					<tr>
+						<th align="left"><?php edu_e("Participant name"); ?></th>
+						<th align="center"><?php edu_e("Arrived"); ?></th>
+						<th align="right"><?php edu_e("Grade"); ?></th>
+					</tr>
+					<?php
+					foreach($book->Participants as $participant)
+					{
+						?>
+					<tr>
+						<td align="left"><?php echo $participant->PersonName; ?></td>
+						<td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
+						<td align="right"><?php echo (!empty($participant->GradeName) ? $participant->GradeName : '<i>' . edu__('Not graded') . '</i>'); ?></td>
+					</tr>
+						<?php
+					}
+					echo "<pre>" . print_r($book->Participants, true) . "</pre>";
+					?>
+				</table>
+			</td>
+		</tr>
+		<?php } ?>
 		<?php }
 		} ?>
 	</table>

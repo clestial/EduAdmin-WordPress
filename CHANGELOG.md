@@ -3,6 +3,11 @@
 ## [Unreleased]
 ### Added
 
+## [0.9.18]
+### Added
+- Switched version-numbering to `semver` to make it easier to use with composer
+- Added participant-list under "My bookings" as requested by issue #62
+
 ## [0.9.17.16]
 ### Added
 - Bugfix: Pricenames with zero max participants should be selectable
@@ -219,7 +224,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.16...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...HEAD
+[0.9.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.16...v0.9.18
 [0.9.17.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.15...v0.9.17.16
 [0.9.17.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.14...v0.9.17.15
 [0.9.17.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.13...v0.9.17.14

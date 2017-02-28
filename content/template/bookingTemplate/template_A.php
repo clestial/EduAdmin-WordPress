@@ -302,7 +302,7 @@ else
 				<?php
 					edu_e("Price name");
 				?>
-				<select id="edu-pricename" name="edu-pricename" required class="edudropdown" onchange="eduBookingView.UpdatePrice();">
+				<select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename" onchange="eduBookingView.UpdatePrice();">
 				<option value=""><?php edu_e("Choose price"); ?></option>
 					<?php foreach($prices as $price): ?>
 						<option

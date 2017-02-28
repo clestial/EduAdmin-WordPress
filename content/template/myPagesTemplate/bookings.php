@@ -100,7 +100,7 @@ include_once("login_tab_header.php");
 					</tr>
 						<?php
 					}
-					echo "<pre>" . print_r($book->Participants, true) . "</pre>";
+					#echo "<pre>" . print_r($book->Participants, true) . "</pre>";
 					?>
 				</table>
 			</td>

@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Added classes to participant-lists, so that the headers can "set" the style easier than using strange CSS-selectors
 
 ## [0.9.18]
 ### Added

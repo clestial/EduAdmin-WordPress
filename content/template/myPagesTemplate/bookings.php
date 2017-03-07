@@ -85,9 +85,9 @@ include_once("login_tab_header.php");
 			<td colspan="5">
 				<table class="edu-event-participantList">
 					<tr>
-						<th align="left"><?php edu_e("Participant name"); ?></th>
-						<th align="center"><?php edu_e("Arrived"); ?></th>
-						<th align="right"><?php edu_e("Grade"); ?></th>
+						<th align="left" class="edu-participantList-name"><?php edu_e("Participant name"); ?></th>
+						<th align="center" class="edu-participantList-arrived"><?php edu_e("Arrived"); ?></th>
+						<th align="right" class="edu-participantList-grade"><?php edu_e("Grade"); ?></th>
 					</tr>
 					<?php
 					foreach($book->Participants as $participant)

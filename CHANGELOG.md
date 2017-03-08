@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Added classes to participant-lists, so that the headers can "set" the style easier than using strange CSS-selectors
+- Bugfix: Places left didn't account for max spots.
 
 ## [0.9.18]
 ### Added

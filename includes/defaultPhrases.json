@@ -158,5 +158,8 @@
 	"Please enter your %s to continue.": "Please enter your %s to continue.",
 	"Not %s? %sLog out%s": "Not %s? %sLog out%s",
 	"Please enter a valid swedish civic registration number.": "Please enter a valid swedish civic registration number.",
-	"Choose price": "Choose price"
+	"Choose price": "Choose price",
+	"%1$d days between %2$s": "%1$d days between %2$s",
+	"Schedule": "Schedule",
+	"Show schedule": "Show schedule"
 }

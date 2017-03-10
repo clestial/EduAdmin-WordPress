@@ -305,7 +305,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 		?>
 			<div class="eventItem">
 				<div class="eventDate<?php echo $groupByCityClass; ?>">
-					<?php echo isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID], true, $ev, true) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd, true); ?>
+					<?php echo isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd); ?>
 					<?php echo (!isset($eventDates[$ev->EventID]) ? ", " . date("H:i", strtotime($ev->PeriodStart)) .' - ' . date("H:i", strtotime($ev->PeriodEnd)) : ""); ?>
 				</div>
 				<?php if(!$groupByCity) { ?>

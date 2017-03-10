@@ -5,39 +5,37 @@ $surl = get_home_url();
 $cat = get_option('eduadmin-rewriteBaseUrl');
 $baseUrl = $surl . '/' . $cat;
 
+$filtering = new XFiltering();
+$f = new XFilter('ShowOnWeb','=','true');
+$filtering->AddItem($f);
+
+if($categoryID > 0)
 {
-	$filtering = new XFiltering();
-	$f = new XFilter('ShowOnWeb','=','true');
+	$f = new XFilter('CategoryID', '=', $categoryID);
 	$filtering->AddItem($f);
-
-	if($categoryID > 0)
-	{
-		$f = new XFilter('CategoryID', '=', $categoryID);
-		$filtering->AddItem($f);
-		$attributes['category'] = $categoryID;
-	}
-
-	if(!empty($filterCourses))
-	{
-		$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
-		$filtering->AddItem($f);
-	}
-
-	if(isset($_REQUEST['eduadmin-city']))
-	{
-		$f = new XFilter('LocationID', '=', $_REQUEST['eduadmin-city']);
-		$filtering->AddItem($f);
-	}
-
-	if(isset($_REQUEST['eduadmin-category']))
-	{
-		$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
-		$filtering->AddItem($f);
-		$attributes['category'] = $_REQUEST['eduadmin-category'];
-	}
-
-	$edo = $eduapi->GetEducationObjectV2($edutoken, '', $filtering->ToString(), false);
+	$attributes['category'] = $categoryID;
 }
+
+if(!empty($filterCourses))
+{
+	$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
+	$filtering->AddItem($f);
+}
+
+if(isset($_REQUEST['eduadmin-city']))
+{
+	$f = new XFilter('LocationID', '=', $_REQUEST['eduadmin-city']);
+	$filtering->AddItem($f);
+}
+
+if(isset($_REQUEST['eduadmin-category']))
+{
+	$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
+	$filtering->AddItem($f);
+	$attributes['category'] = $_REQUEST['eduadmin-category'];
+}
+
+$edo = $eduapi->GetEducationObjectV2($edutoken, '', $filtering->ToString(), false);
 
 if(isset($_REQUEST['searchCourses']) && !empty($_REQUEST['searchCourses']))
 {
@@ -77,91 +75,89 @@ if(isset($_REQUEST['eduadmin-subject']) && !empty($_REQUEST['eduadmin-subject'])
 	});
 }
 
+$filtering = new XFiltering();
+$f = new XFilter('ShowOnWeb','=','true');
+$filtering->AddItem($f);
+
+if($categoryID > 0)
 {
-	$filtering = new XFiltering();
-	$f = new XFilter('ShowOnWeb','=','true');
+	$f = new XFilter('CategoryID', '=', $categoryID);
+	$filtering->AddItem($f);
+}
+
+$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
+if(!is_numeric($fetchMonths)) {
+	$fetchMonths = 6;
+}
+
+$f = new XFilter('PeriodStart','<=', date("Y-m-d 23:59:59", strtotime("now +" . $fetchMonths . " months")));
+$filtering->AddItem($f);
+$f = new XFilter('PeriodEnd', '>=', date("Y-m-d 00:00:00", strtotime("now +1 day")));
+$filtering->AddItem($f);
+
+$f = new XFilter('StatusID','=','1');
+$filtering->AddItem($f);
+
+$f = new XFilter('LastApplicationDate','>=',date("Y-m-d 00:00:00"));
+$filtering->AddItem($f);
+
+if(!empty($filterCourses))
+{
+	$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
+	$filtering->AddItem($f);
+}
+
+if(isset($_REQUEST['eduadmin-city']))
+{
+	$f = new XFilter('LocationID', '=', $_REQUEST['eduadmin-city']);
+	$filtering->AddItem($f);
+	$attributes['city'] = $_REQUEST['eduadmin-city'];
+}
+
+if(isset($_REQUEST['eduadmin-subject']))
+{
+	$f = new XFilter('SubjectID', '=', $_REQUEST['eduadmin-subject']);
+	$filtering->AddItem($f);
+}
+
+if(isset($_REQUEST['eduadmin-category']))
+{
+	$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
 	$filtering->AddItem($f);
 
-	if($categoryID > 0)
+	$attributes['category'] = $_REQUEST['eduadmin-category'];
+}
+
+$f = new XFilter('CustomerID','=','0');
+$filtering->AddItem($f);
+
+$f = new XFilter('ParentEventID', '=', '0');
+$filtering->AddItem($f);
+
+$sorting = new XSorting();
+
+if($customOrderBy != null)
+{
+	$orderby = explode(' ', $customOrderBy);
+	$sortorder = explode(' ', $customOrderByOrder);
+	foreach($orderby as $od => $v)
 	{
-		$f = new XFilter('CategoryID', '=', $categoryID);
-		$filtering->AddItem($f);
-	}
+		if(isset($sortorder[$od]))
+			$or = $sortorder[$od];
+		else
+			$or = "ASC";
 
-	$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
-	if(!is_numeric($fetchMonths)) {
-		$fetchMonths = 6;
-	}
-
-	$f = new XFilter('PeriodStart','<=', date("Y-m-d 23:59:59", strtotime("now +" . $fetchMonths . " months")));
-	$filtering->AddItem($f);
-	$f = new XFilter('PeriodEnd', '>=', date("Y-m-d 00:00:00", strtotime("now +1 day")));
-	$filtering->AddItem($f);
-
-	$f = new XFilter('StatusID','=','1');
-	$filtering->AddItem($f);
-
-	$f = new XFilter('LastApplicationDate','>',date("Y-m-d 00:00:00"));
-	$filtering->AddItem($f);
-
-	if(!empty($filterCourses))
-	{
-		$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
-		$filtering->AddItem($f);
-	}
-
-	if(isset($_REQUEST['eduadmin-city']))
-	{
-		$f = new XFilter('LocationID', '=', $_REQUEST['eduadmin-city']);
-		$filtering->AddItem($f);
-		$attributes['city'] = $_REQUEST['eduadmin-city'];
-	}
-
-	if(isset($_REQUEST['eduadmin-subject']))
-	{
-		$f = new XFilter('SubjectID', '=', $_REQUEST['eduadmin-subject']);
-		$filtering->AddItem($f);
-	}
-
-	if(isset($_REQUEST['eduadmin-category']))
-	{
-		$f = new XFilter('CategoryID', '=', $_REQUEST['eduadmin-category']);
-		$filtering->AddItem($f);
-
-		$attributes['category'] = $_REQUEST['eduadmin-category'];
-	}
-
-	$f = new XFilter('CustomerID','=','0');
-	$filtering->AddItem($f);
-
-	$f = new XFilter('ParentEventID', '=', '0');
-	$filtering->AddItem($f);
-
-	$sorting = new XSorting();
-
-	if($customOrderBy != null)
-	{
-		$orderby = explode(' ', $customOrderBy);
-		$sortorder = explode(' ', $customOrderByOrder);
-		foreach($orderby as $od => $v)
-		{
-			if(isset($sortorder[$od]))
-				$or = $sortorder[$od];
-			else
-				$or = "ASC";
-
-			$s = new XSort($v, $or);
-			$sorting->AddItem($s);
-		}
-	}
-	else
-	{
-		$s = new XSort('PeriodStart', 'ASC');
+		$s = new XSort($v, $or);
 		$sorting->AddItem($s);
 	}
-
-	$ede = $eduapi->GetEvent($edutoken, $sorting->ToString(), $filtering->ToString());
 }
+else
+{
+	$s = new XSort('PeriodStart', 'ASC');
+	$sorting->AddItem($s);
+}
+
+$ede = $eduapi->GetEvent($edutoken, $sorting->ToString(), $filtering->ToString());
 
 if(isset($_REQUEST['eduadmin-subject']) && !empty($_REQUEST['eduadmin-subject']))
 {

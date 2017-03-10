@@ -336,9 +336,12 @@ if(!empty($edo))
 
 		foreach($pricenames as $pr)
 		{
-			if($object->ObjectID == $pr->ObjectID)
+			if(isset($object->ObjectID) && isset($pr->ObjectID))
 			{
-				$prices[$pr->Price] = $pr;
+				if($object->ObjectID == $pr->ObjectID)
+				{
+					$prices[$pr->Price] = $pr;
+				}
 			}
 		}
 

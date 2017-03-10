@@ -119,8 +119,6 @@ else
 					$customerInvoiceEmail = $info->Value;
 				}
 			}
-
-			#echo "<pre>" . print_r($extraInfo, true) . "</pre>";
 		}
 	}
 

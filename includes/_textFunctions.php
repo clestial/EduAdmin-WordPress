@@ -152,8 +152,14 @@ function GetDisplayDate($inDate, $short = true)
 
 function GetLogicalDateGroups($dates, $short = false, $event = null, $showDays = false)
 {
+	if(count($dates) > 3)
+	{
+		$short = true;
+		$showDays = true;
+	}
+
 	$nDates = getRangeFromDays($dates, $short, $event, $showDays);
-	return join(" ", $nDates);
+	return join("<span class=\"edu-dateSeparator\"></span>", $nDates);
 }
 
 // Copied from http://codereview.stackexchange.com/a/83095/27610
@@ -172,6 +178,21 @@ function getRangeFromDays($days, $short, $event, $showDays) {
 	}
     // force the end
     $result[] = GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
+
+	if(count($result) > 3)
+	{
+		$nRes = array();
+		$ret =
+"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
+"</span><div class=\"edu-DayPopup\">
+<b>" . edu__("Schedule") . "</b><br />
+" . join("<br />\n", $result) . "
+<br />
+<a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . edu__("Close") . "</a>
+</div>";
+		$nRes[] = $ret;
+		return $nRes;
+	}
 
   return $result;
 }
@@ -220,7 +241,10 @@ function GetStartEndDisplayDate($startDate, $endDate, $short = false, $event, $s
 		{
 			if($startMonth === $endMonth)
 			{
-				if($showDays)
+				if($showDays &&
+					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
+					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
+				)
 				{
 					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
 				}
@@ -240,7 +264,10 @@ function GetStartEndDisplayDate($startDate, $endDate, $short = false, $event, $s
 			}
 			else
 			{
-				if($showDays)
+				if($showDays &&
+					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
+					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
+				)
 				{
 					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
 				}

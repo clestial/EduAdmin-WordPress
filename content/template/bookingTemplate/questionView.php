@@ -8,7 +8,7 @@
 
 			$qCategories = array();
 			$qSortIndex = array();
-			/*print_r($questions);*/
+
 			foreach($questions as $q => $row)
 			{
 

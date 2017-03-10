@@ -3,6 +3,12 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.0]
+### Added
+- New date-handling, if there are more than 3 date groups, we show a popup instead
+- Bugfix: Added CustomerID-filter to more lists (it flashed some events that were customer related)
+- Bugfix: Removed debug info from "Spots left"-text
+
 ## [0.9.19]
 ### Added
 - Added classes to participant-lists, so that the headers can "set" the style easier than using strange CSS-selectors
@@ -229,7 +235,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.19...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...v0.10.0
 [0.9.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...v0.9.19
 [0.9.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.16...v0.9.18
 [0.9.17.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.15...v0.9.17.16

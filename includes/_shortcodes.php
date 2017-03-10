@@ -450,6 +450,8 @@ function eduadmin_get_detailinfo($attributes)
 				$ft->AddItem($f);
 				$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d 00:00:00"));
 				$ft->AddItem($f);
+				$f = new XFilter('CustomerID','=','0');
+				$ft->AddItem($f);
 
 				if(!empty($attributes['courseeventlistfiltercity']))
 				{
@@ -619,8 +621,8 @@ function eduadmin_get_detailinfo($attributes)
 					$retStr .= '<div data-groupid="eduev' . ($groupByCity ? "-" . $ev->City : "") . '" class="eventItem' . ($i % 2 == 0 ? " evenRow" : " oddRow") . ($showMore > 0 && $i >= $showMore ? " showMoreHidden" : "") . '">';
 					$retStr .= '
 					<div class="eventDate' . $groupByCityClass . '">
-						' . (isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd, true)) . ',
-						' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) . '
+						' . (isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd)) . '
+						' . (!isset($eventDates[$ev->EventID]) ? ', ' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) : '') . '
 					</div>
 					'. (!$groupByCity ?
 					'<div class="eventCity">

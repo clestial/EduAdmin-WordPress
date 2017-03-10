@@ -28,7 +28,6 @@ if(isset($customer->CustomerID) && isset($contact->CustomerContactID))
 	$f->AddItem($ft);
 
 	$objectCards = $eduapi->GetLimitedDiscountObjectStatus($edutoken, '' ,$f->ToString());
-	#echo "<pre>" . print_r($objectCards, true) . "</pre>";
 	$cCardIds = array();
 	foreach($objectCards as $oCard)
 	{
@@ -50,8 +49,6 @@ if(isset($customer->CustomerID) && isset($contact->CustomerContactID))
 		}
 		return $valid;
 	});
-
-	#echo "<pre>" . print_r($cCards, true) . "</pre>";
 ?>
 <div class="discountCardView">
 

@@ -67,7 +67,7 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 			return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 		case "onlyText":
 			if($freeSpots > ($maxSpots - $alwaysFewSpots)) {
-				return edu__('Spots left') . ($maxSpots - $alwaysFewSpots);
+				return edu__('Spots left');
 			} else if ($freeSpots <= ($maxSpots - $alwaysFewSpots) && $freeSpots != 1 && $freeSpots > 0) {
 				return edu__('Few spots left');
 			} else if ($freeSpots == 1) {
@@ -105,8 +105,14 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 	}
 }
 
-function edu_GetLogicalDateGroups($dates, $short = true, $event = null, $showDays = false)
+function edu_GetLogicalDateGroups($dates, $short = false, $event = null, $showDays = false)
 {
+	if(count($dates) > 3)
+	{
+		$short = true;
+		$showDays = true;
+	}
+
 	$nDates = getRangeFromDays($dates, $short, $event, $showDays);
 	return join($showDays ? "\n" : ", ", $nDates);
 }
@@ -126,6 +132,21 @@ if(!function_exists('getRangeFromDays'))
 		}
 		// force the end
 		$result[] = edu_GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
+
+		if(count($result) > 3)
+		{
+			$nRes = array();
+			$ret =
+"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), edu_GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
+"</span><div class=\"edu-DayPopup\">
+<b>" . edu__("Schedule") . "</b><br />
+" . join("<br />\n", $result) . "
+<br />
+<a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . edu__("Close") . "</a>
+</div>";
+			$nRes[] = $ret;
+			return $nRes;
+		}
 
 	return $result;
 	}
@@ -207,7 +228,10 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 		{
 			if($startMonth === $endMonth)
 			{
-				if($showDays)
+				if($showDays &&
+					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
+					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
+				)
 				{
 					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
 				}
@@ -227,7 +251,10 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 			}
 			else
 			{
-				if($showDays)
+				if($showDays &&
+					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
+					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
+				)
 				{
 					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
 				}

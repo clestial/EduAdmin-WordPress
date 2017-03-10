@@ -28,7 +28,6 @@ function edu_LoadPhrases()
 	}
 
 	$nPhrases = array();
-	//print_r($phrases);
 	foreach($phrases as $p => $ph)
 	{
 
@@ -40,8 +39,6 @@ function edu_LoadPhrases()
 		}
 		$nPhrases[$p]["NewPhrase"] = __($p, "eduadmin");
 	}
-
-	//print_r($nPhrases);
 
 	$_SESSION['eduadmin-phrases'] = $nPhrases;
 

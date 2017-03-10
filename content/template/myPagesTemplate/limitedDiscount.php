@@ -21,7 +21,6 @@ include_once("login_tab_header.php");
 	$f->AddItem($ft);
 	$cards = $eduapi->GetLimitedDiscount($edutoken, '', $f->ToString());
 	$currency = get_option('eduadmin-currency', 'SEK');
-	#echo "<pre>" . print_r($cards, true) . "</pre>";
 	?>
 	<table class="myReservationsTable">
 		<tr>

@@ -402,6 +402,30 @@ var eduBookingView = {
 	}
 };
 
+function edu_openDatePopup(obj) {
+	jQuery('.edu-DayPopup.cloned').remove();
+
+	var pos = jQuery(obj.parentElement).offset();
+	var width = jQuery(obj).outerWidth();
+
+	var pop = jQuery(obj.nextSibling).clone().appendTo('body');
+	pop.addClass('cloned');
+	pop.css({
+		display: 'block',
+		opacity: 1,
+		top: (pos.top) + 'px',
+		left: (pos.left + width) + 10 + 'px'
+	});
+}
+
+function edu_closeDatePopup(e, obj) {
+	var pop = jQuery(obj.parentElement);
+	pop.remove();
+
+	e.cancelBubble = true;
+	e.preventDefault();
+}
+
 var eduDetailView = {
 	ShowAllEvents: function(filter, me) {
 		me.parentNode.parentNode.removeChild(me.parentNode);

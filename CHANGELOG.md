@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Admin notices instead of just blurting the error text into the page.
 
 ## [0.10.0]
 ### Added

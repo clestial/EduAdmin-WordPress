@@ -90,7 +90,7 @@ $apiKey = get_option('eduadmin-api-key');
 
 if(!$apiKey || empty($apiKey))
 {
-	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+	add_action('admin_notices', 'edu_SetupWarning');
 }
 else
 {
@@ -98,7 +98,7 @@ else
 	$key = DecryptApiKey($apiKey);
 	if(!$key)
 	{
-		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+		add_action('admin_notices', 'edu_SetupWarning');
 		return;
 	}
 	$edutoken = get_transient('eduadmin-token');

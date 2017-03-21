@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.10.1]
+### Added
 - Admin notices instead of just blurting the error text into the page.
+- Pulled #64 and #63 from @ekandreas to fix composer compatibility and proper way to set access levels in menues.
 
 ## [0.10.0]
 ### Added
@@ -236,7 +240,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.1...HEAD
+[0.10.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.1...v0.10.1
 [0.10.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...v0.10.0
 [0.9.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...v0.9.19
 [0.9.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.17.16...v0.9.18

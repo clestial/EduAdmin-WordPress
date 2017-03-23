@@ -101,6 +101,14 @@ else
 			</label>
 			<br />
 			<?php
+			$blockEditIfLoggedIn = get_option('eduadmin-blockEditIfLoggedIn', true);
+			?>
+			<label>
+				<input type="checkbox" name="eduadmin-blockEditIfLoggedIn"<?php echo ($blockEditIfLoggedIn ? " checked=\"checked\"" : ""); ?> value="true" />
+				<?php _e("Block ability to edit login information if logged in", "eduadmin"); ?>
+			</label>
+			<br />
+			<?php
 			$allowDiscountCode = get_option('eduadmin-allowDiscountCode', false);
 			?>
 			<label>

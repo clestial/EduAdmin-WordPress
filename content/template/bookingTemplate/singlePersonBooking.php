@@ -1,3 +1,7 @@
+<?php
+$blockEditIfLoggedIn = get_option('eduadmin-blockEditIfLoggedIn', true);
+$__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
+?>
 <div class="contactView">
 	<h2><?php edu_e("Contact information"); ?></h2>
 	<label>
@@ -5,8 +9,8 @@
 			<?php edu_e("Contact name"); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="text" style="width: 48%; display: inline;" required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactFirstName" name="contactFirstName" placeholder="<?php edu_e("Contact first name"); ?>" value="<?php echo @esc_attr(explode(' ', $contact->ContactName)[0]); ?>" />
-			<input type="text" style="width: 48%; display: inline;" required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" name="contactLastName" placeholder="<?php edu_e("Contact surname"); ?>" value="<?php echo @esc_attr(str_replace(explode(' ', $contact->ContactName)[0], '', $contact->ContactName)); ?>" />
+			<input type="text" style="width: 48%; display: inline;"<?php echo ($__block ? " readonly" : ""); ?> required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactFirstName" name="contactFirstName" placeholder="<?php edu_e("Contact first name"); ?>" value="<?php echo @esc_attr(explode(' ', $contact->ContactName)[0]); ?>" />
+			<input type="text" style="width: 48%; display: inline;"<?php echo ($__block ? " readonly" : ""); ?> required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" name="contactLastName" placeholder="<?php edu_e("Contact surname"); ?>" value="<?php echo @esc_attr(str_replace(explode(' ', $contact->ContactName)[0], '', $contact->ContactName)); ?>" />
 		</div>
 	</label>
 	<label>
@@ -14,7 +18,7 @@
 			<?php edu_e("E-mail address"); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="email" id="edu-contactEmail" required name="contactEmail" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e("E-mail address"); ?>" value="<?php echo @esc_attr($contact->Email); ?>" />
+			<input type="email" id="edu-contactEmail" required name="contactEmail"<?php echo ($__block ? " readonly" : ""); ?> onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e("E-mail address"); ?>" value="<?php echo @esc_attr($contact->Email); ?>" />
 		</div>
 	</label>
 	<label>

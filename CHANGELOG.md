@@ -1,6 +1,6 @@
 # Change log
 
-## [Unreleased]
+## [0.10.3]
 ### Added
 - Adding span around time in eventlist, so it can be hidden with css `.eduadmin .eventTime` and `.edu-DayPopup .eventTime`
 
@@ -245,7 +245,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.2...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.3...HEAD
+[0.10.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.2...v0.10.3
 [0.10.2]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.18...v0.10.0

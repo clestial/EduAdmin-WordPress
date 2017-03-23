@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPr
  * Plugin URI:	http://www.eduadmin.se
  * Description:	EduAdmin plugin to allow visitors to book courses at your website
  * Tags:	booking, participants, courses, events, eduadmin, lega online
- * Version:	0.10.2
+ * Version:	0.10.3
  * Requires at least: 3.0
  * Tested up to: 4.7.3
  * Author:	Chris Gårdenberg, MultiNet Interactive AB

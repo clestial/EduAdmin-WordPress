@@ -266,8 +266,8 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	?>
 		<div class="eventItem">
 			<div class="eventDate<?php echo $groupByCityClass; ?>">
-				<?php echo GetStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd, true); ?>,
-				<?php echo date("H:i", strtotime($ev->PeriodStart)); ?> - <?php echo date("H:i", strtotime($ev->PeriodEnd)); ?>
+				<?php echo GetStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd, true); ?>
+				<span class="eventTime">, <?php echo date("H:i", strtotime($ev->PeriodStart)); ?> - <?php echo date("H:i", strtotime($ev->PeriodEnd)); ?></span>
 			</div>
 			<?php if(!$groupByCity) { ?>
 			<div class="eventCity">

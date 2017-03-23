@@ -1,5 +1,9 @@
 # Change log
 
+## [Unreleased]
+### Added
+- Adding span around time in eventlist, so it can be hidden with css `.eduadmin .eventTime` and `.edu-DayPopup .eventTime`
+
 ## [0.10.2]
 ### Added
 - Added option to block editing user fields of they are logged in

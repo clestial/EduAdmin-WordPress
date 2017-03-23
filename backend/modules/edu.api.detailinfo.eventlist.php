@@ -230,7 +230,7 @@ if(!function_exists('edu_api_eventlist'))
 				$retStr .= '
 				<div class="eventDate' . $groupByCityClass . '">
 					' . (isset($eventDates[$ev->EventID]) ? edu_GetLogicalDateGroups($eventDates[$ev->EventID]) : edu_GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd)) . '
-					' . (!isset($eventDates[$ev->EventID]) ? ', ' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) : '') . '
+					' . (!isset($eventDates[$ev->EventID]) ? '<span class="eventTime">, ' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) . '</span>' : '') . '
 				</div>
 				'. (!$groupByCity ?
 				'<div class="eventCity">

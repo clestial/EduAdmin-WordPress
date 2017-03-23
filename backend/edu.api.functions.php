@@ -233,7 +233,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
 				)
 				{
-					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
+					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate)) . '</span>';
 				}
 				$str .= ' - ';
 				if($showDays)
@@ -246,7 +246,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
 				if($showDays)
 				{
-					$str .= ' ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate));
+					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
 			}
 			else
@@ -256,7 +256,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
 				)
 				{
-					$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
+					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate)) . '</span>';
 				}
 				$str .= ' ';
 				$str .= $months[date('n', strtotime($startDate->StartDate))];
@@ -271,7 +271,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
 				if($showDays)
 				{
-					$str .= ' ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate));
+					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
 			}
 		}
@@ -291,7 +291,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ($nowYear != $endYear ? ' ' . $endYear : '');
 				if($showDays)
 				{
-					$str .= ' ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate));
+					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
 		}
 	}
@@ -302,7 +302,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 		$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
 		if($showDays)
 		{
-			$str .= ' ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate));
+			$str .= '<span class="eventTime"> ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate)) . '</span>';
 		}
 	}
 

@@ -622,7 +622,7 @@ function eduadmin_get_detailinfo($attributes)
 					$retStr .= '
 					<div class="eventDate' . $groupByCityClass . '">
 						' . (isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd)) . '
-						' . (!isset($eventDates[$ev->EventID]) ? ', ' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) : '') . '
+						' . (!isset($eventDates[$ev->EventID]) ? '<span class="eventTime">, ' . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) . '</span>' : '') . '
 					</div>
 					'. (!$groupByCity ?
 					'<div class="eventCity">

@@ -1,5 +1,9 @@
 # Change log
 
+## [Unreleased]
+### Updated
+- Added lots of `shield.io`-badges
+
 ## [0.10.3]
 ### Added
 - Adding span around time in eventlist, so it can be hidden with css `.eduadmin .eventTime` and `.edu-DayPopup .eventTime`

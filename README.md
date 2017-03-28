@@ -1,21 +1,21 @@
 # EduAdmin - WordPress-plugin
 
-_Information in English will follow_
+| Repository | Latest version | Downloads |
+| ---------- | --------------: | ---------: |
+| GitHub     | [![Latest release](https://img.shields.io/github/release/multinetinteractive/eduadmin-wordpress.svg)]() | [![Github Downloads](https://img.shields.io/github/downloads/multinetinteractive/eduadmin-wordpress/total.svg?style=flat-square)]() |
+| Packagist.org | [![Latest release](https://img.shields.io/packagist/v/multinetinteractive/eduadmin-wordpress.svg)]() | [![Downloads](https://img.shields.io/packagist/dt/multinetinteractive/eduadmin-wordpress.svg)]() |
 
-EduAdmin är Sveriges mest använda kursadministrationssystem för öppna och företagsanpassade kurser. Över 10 års programutveckling ligger bakom succén som årligen hanterar hundratusentals deltagarbokningar, på ett effektivt sätt.
+Stats
 
-Du får äntligen full kontroll över hanteringen av dina kurser och utbildningar. Med en fantastisk överblick blir alla kurser, tider, lokaler och utbildningsmaterial äntligen administrerade på ett och samma ställe.
+[![Open issues](https://img.shields.io/github/issues/multinetinteractive/eduadmin-wordpress.svg)]()
+[![Closed issues](https://img.shields.io/github/issues-closed/multinetinteractive/eduadmin-wordpress.svg)]()
+[![Contributors](https://img.shields.io/github/contributors/multinetinteractive/eduadmin-wordpress.svg)]()
+[![Forks](https://img.shields.io/github/forks/multinetinteractive/eduadmin-wordpress.svg)]()
 
-Om du vill vara igång snabbt, få uppdateringar löpande, alltid komma åt tjänsten, slippa installationer och dyra säkerhetslösningar så är EduAdmin det rätta för er!
 
----
 
-EduAdmin is one of Swedens most used course administration system for open and customized courses. Over 10 years of development is behind the success that handles hundreds of thousands participant registrations yearly, in an effective way.
+Pull Requests
 
-You finally gain full control over the management of your courses and educations. With a fantastic overview, all courses, times, venues and educational material is finally managed in one and the same system.
 
-If you want to get started quick, get updates, always be able to access the service, without the need for installations or expensive security solutions, EduAdmin is the solution for you!
-
----
-
-For installation and where to get the plugin, please check our [Wiki](https://github.com/MultinetInteractive/EduAdmin-WordPress/wiki)
+[![Open pull requests](https://img.shields.io/github/issues-pr/multinetinteractive/eduadmin-wordpress.svg)]()
+[![Closed pull requests](https://img.shields.io/github/issues-pr-closed/multinetinteractive/eduadmin-wordpress.svg)]()

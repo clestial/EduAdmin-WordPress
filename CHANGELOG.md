@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Updated
 - Added lots of `shield.io`-badges
+- Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
 
 ## [0.10.3]
 ### Added

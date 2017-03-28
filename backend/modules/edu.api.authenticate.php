@@ -5,6 +5,10 @@ $eduapi = new EduAdminClient();
 
 if(isset($_REQUEST['authenticate']) && isset($_REQUEST['key']))
 {
+	if(empty($_REQUEST['key']))
+	{
+		return;
+	}
 	$info = edu_DecryptApiKey($_REQUEST['key']);
 
 	if(!isset($_SESSION['edu-usertoken']))

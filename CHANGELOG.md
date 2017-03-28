@@ -4,7 +4,8 @@
 ### Updated
 - Added lots of `shield.io`-badges
 - Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
-- Addind Travis-CI to begin experimenting with tests
+- Adding Travis-CI to begin experimenting with tests
+- Adding check to `edu.api.authenticate.php` so we don't get warnings in travis
 
 ## [0.10.3]
 ### Added

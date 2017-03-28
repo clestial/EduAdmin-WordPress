@@ -43,7 +43,7 @@ function edu_register_session() {
 	        session_start();
     }
 }
-add_action('init', 'edu_register_session');
+add_action('wp_loaded', 'edu_register_session');
 
 function eduadmin_get_plugin_version() {
     $cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');

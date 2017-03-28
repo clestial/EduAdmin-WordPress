@@ -8,7 +8,7 @@
 
 Build status
 
-[![Build status](https://img.shields.io/travis/MultiNetInteractive/EduAdmin-WordPress.svg)](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
+[![Build Status](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress.svg?branch=master)](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
 
 Stats
 

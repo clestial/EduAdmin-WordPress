@@ -6,6 +6,7 @@
 - Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
 - Adding Travis-CI to begin experimenting with tests
 - Adding check to `edu.api.authenticate.php` so we don't get warnings in travis
+- Adding phpunit-tests to travis
 
 ## [0.10.3]
 ### Added

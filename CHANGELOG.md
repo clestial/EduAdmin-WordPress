@@ -4,6 +4,7 @@
 ### Updated
 - Added lots of `shield.io`-badges
 - Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
+- Addind Travis-CI to begin experimenting with tests
 
 ## [0.10.3]
 ### Added

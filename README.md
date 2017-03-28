@@ -5,6 +5,11 @@
 | GitHub     | [![Latest release](https://img.shields.io/github/release/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) | [![Github Downloads](https://img.shields.io/github/downloads/multinetinteractive/eduadmin-wordpress/total.svg?style=flat-square)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) |
 | Packagist.org | [![Latest release](https://img.shields.io/packagist/v/multinetinteractive/eduadmin-wordpress.svg)](https://packagist.org/packages/multinetinteractive/eduadmin-wordpress) | [![Downloads](https://img.shields.io/packagist/dt/multinetinteractive/eduadmin-wordpress.svg)](https://packagist.org/packages/multinetinteractive/eduadmin-wordpress) |
 
+
+Build status
+
+[![Build status](https://img.shields.io/travis/MultiNetInteractive/EduAdmin-WordPress.svg)](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
+
 Stats
 
 [![Open issues](https://img.shields.io/github/issues/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/issues)

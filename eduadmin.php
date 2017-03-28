@@ -37,8 +37,11 @@ defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPr
 
 include_once("includes/loApiClient.php");
 function edu_register_session() {
-    if(!session_id())
-	    session_start();
+    if(session_status() != PHP_SESSION_ACTIVE)
+    {
+        if(!session_id())
+	        session_start();
+    }
 }
 add_action('init', 'edu_register_session');
 

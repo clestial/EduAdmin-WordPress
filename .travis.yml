@@ -23,5 +23,4 @@ before_script:
   - bash wp-tests/bin/install-wp-tests.sh test root '' localhost $WP_VERSION
 
 script:
-  - cd wp-tests/spec && bundle exec rspec test.rb
-  - phpunit
+  - cd wp-tests/spec && bundle exec rspec test.rb && cd .. && cd .. && phpunit

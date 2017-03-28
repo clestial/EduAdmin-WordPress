@@ -7,6 +7,7 @@
 - Adding Travis-CI to begin experimenting with tests
 - Adding check to `edu.api.authenticate.php` so we don't get warnings in travis
 - Adding phpunit-tests to travis
+- Added fix to session_start
 
 ## [0.10.3]
 ### Added

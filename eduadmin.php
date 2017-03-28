@@ -36,8 +36,11 @@ defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPr
  */
 
 include_once("includes/loApiClient.php");
-if(!session_id())
-	session_start();
+function edu_register_session() {
+    if(!session_id())
+	    session_start();
+}
+add_action('init', 'edu_register_session');
 
 function eduadmin_get_plugin_version() {
     $cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');

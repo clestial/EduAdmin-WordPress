@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Slack notifications on build-completion.
 
 ## [0.10.4]
 ### Added

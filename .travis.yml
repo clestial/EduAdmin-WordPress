@@ -2,8 +2,6 @@ sudo: false
 language: php
 
 notifications:
-  on_success: never
-  on_failure: change
   slack: $slackNotification
 
 

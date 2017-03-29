@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Added better version-check (support-wise)
 
 ## [0.10.4]
 ### Added

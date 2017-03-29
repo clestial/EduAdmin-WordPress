@@ -5,7 +5,7 @@ if(!function_exists('edu_isOfficialPlugin'))
 	{
 		if(isset($_REQUEST['checkOfficialPlugin']))
 		{
-			echo "<script>(function() { alert(new Date() + \"\\nI'm official!\"); })();</script>";
+			echo "<script>(function() { alert(new Date() + \"\\nI'm official!\\nVersion: " . eduadmin_get_plugin_version() . "\"); })();</script>";
 		}
 	}
 }

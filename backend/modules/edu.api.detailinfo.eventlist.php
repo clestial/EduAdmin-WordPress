@@ -43,7 +43,7 @@ if(!function_exists('edu_api_eventlist'))
 		$ft = new XFiltering();
 		$f = new XFilter('PeriodStart', '<=', date("Y-m-d 00:00:00", strtotime('now +' . $fetchMonths . ' months')));
 		$ft->AddItem($f);
-		$f = new XFilter('PeriodEnd', '>=', date("Y-m-d 00:00:00", strtotime('now +1 day')));
+		$f = new XFilter('PeriodEnd', '>=', date("Y-m-d H:i:s", strtotime('now')));
 		$ft->AddItem($f);
 		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$ft->AddItem($f);
@@ -51,7 +51,7 @@ if(!function_exists('edu_api_eventlist'))
 		$ft->AddItem($f);
 		$f = new XFilter('ObjectID', '=', $objectId);
 		$ft->AddItem($f);
-		$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d 00:00:00"));
+		$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 		$ft->AddItem($f);
 
 		$f = new XFilter('CustomerID','=','0');

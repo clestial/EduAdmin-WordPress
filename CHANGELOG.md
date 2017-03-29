@@ -1,13 +1,18 @@
-# Change log
+# Changelog
 
 ## [Unreleased]
-### Updated
+### Added
+
+## [0.10.4]
+### Added
 - Added lots of `shield.io`-badges
 - Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
 - Adding Travis-CI to begin experimenting with tests
 - Adding check to `edu.api.authenticate.php` so we don't get warnings in travis
 - Adding phpunit-tests to travis
 - Added fix to session_start
+- Redoing date limits for shown events. (Soon I'll have to make a setting for this)
+- Updated readme.txt
 
 ## [0.10.3]
 ### Added
@@ -254,7 +259,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.3...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.4...HEAD
+[0.10.4]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.3...v0.10.4
 [0.10.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.2...v0.10.3
 [0.10.2]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.0...v0.10.1

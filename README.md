@@ -1,5 +1,7 @@
 # EduAdmin - WordPress-plugin
 
+Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
+
 | Repository | Latest version | Downloads |
 | ---------- | --------------: | ---------: |
 | GitHub     | [![Latest release](https://img.shields.io/github/release/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) | [![Github Downloads](https://img.shields.io/github/downloads/multinetinteractive/eduadmin-wordpress/total.svg?style=flat-square)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) |

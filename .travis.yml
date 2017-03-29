@@ -2,8 +2,10 @@ sudo: false
 language: php
 
 notifications:
-  slack: $slackNotification
-
+  slack:
+    secure: "k9zKW4cE6OTbKq2a17ZtTT4bz//sdGaTtAQVmnYSvmtMyEsTU3Xa1P2e4Z6/49JR4aX+WAxB1Vi3YpHyGuU4ktW2QWmqbm9+I3OSfa2dD93V+tlUxLyY6CaGDKaEF6Qr1pTxESEp/wki33aMsKemzfOo08khRvLIZZR0c96eIncJQzJpWbB+pNrzLfgiBPkfjKch+L9cBFy9Dr7OclJzxl7oFKtLZUNESuVl4J+KZkqtLtdM89QTy3B6woHn9vOS66y4y40wmxAIMfG2tBkPAQ6F/0oWM31W39BIvecsCpIHwMDIuYpjEg/NRccjaMZgm3a7GF2vc34Bllk5mPAyyxdg3gxW3xJZmg/PpnfOaBDQCgwaNMxX9kKchu/oDZIVgJ4O3qcC4G92XUHasDE2YDOCaKMdEVtIMwvxCyc90Evc7btKgB6Daof3TCILSK1l8JNdH9e7UMLTOyvhheiti6n7jtaqyRMwtf5nvATHKozKJz97aXYzPwcjH4tOV1E2RPMCh3rXPTWcToo7GSHAqXiZgTZEFFCpWkwAEfKMs7eG8eUaBMyXk8OFVsgwg0aRGAyjKhevgfuvKqwMvhR6R/T0AuqqexdDHT4qtjSduqyAM5SHrSHzj1N16WSX0lRQrlILWqnQpsc+1R48kTPZSdG3yIf0FA0dCDnMabmC08Y="
+    on_success: always
+    on_failure: always
 
 php:
   - 5.6

@@ -4,8 +4,8 @@ language: php
 notifications:
   on_success: never
   on_failure: change
-  slack:
-    secure: "Rg27wp9yhQc+HPm5p8zyeiLP7mT85pdK9WYRJvOy6nYyLvQTR2aUfidCwNdK8k/ibhqwJMancBZNXF7LH+raEtjofNDg8P5RIVpX29bsDN+84HOkfwhc/cK8OOjfb21Ob/wnkOeSuTjKuJM/RXsPHBMfQai7HXaskzpLPKdCyioSz5ezllgz93vHC2eui1aFyMXiZWtbBrPf3MESC+bpagaSD5rjfOuA0q6agOTGpb+dJ6jmqpOSDLzQcGrRY8DtkIgF0sz2olRM/QZVLKvgK4//ushWCME+Bari2IjiaBlC2i3Rb+uaS2u6aHKcd4lNbH5eCRe6A0GVNkwNaicRukiyjmJFPUMxJmz3BMVVA8CMHPjDTQFFDc2FIWu1qkXS/M9F45NUy6Ry7i12U7ereOBFgGpTHCupA2DpFNgzv2kZNoFPpI0o8BRClPUi0U8C8va/yu33VJaxIy2yEntljdqiMzDTD4/bnHC2FoT4TK8ITFhmiWwIjGWTaRL+dmYcIJWdbhHDOYChRPOkS2Wur+r75lFcE5ZDBDlBhqxmf8Rj39Heea56W8mNLaU5jQ3dMDr9cHMO6/enDw6dZU23JIjYtKzO63rSnblPLMtF/Xg9SkXDVK/IYzOp1r9DgKbD/xx9mzEM6JWAlsYgBZbjZ0v08unBd+IRer7XA7v+Z1M="
+  slack: slackNotification
+
 
 php:
   - 5.6

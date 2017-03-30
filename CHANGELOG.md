@@ -2,7 +2,11 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.10.5]
+### Added
 - Added better version-check (support-wise)
+- Bugfix: civic validation (Do not validate the invisible template)
 
 ## [0.10.4]
 ### Added
@@ -260,7 +264,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.4...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.5...HEAD
+[0.10.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.4...v0.10.5
 [0.10.4]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.3...v0.10.4
 [0.10.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.2...v0.10.3
 [0.10.2]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.1...v0.10.2

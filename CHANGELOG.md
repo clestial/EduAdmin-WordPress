@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.6]
+### Added
+- Fixes mobile-layout on detail-page (Template-B)
+
 ## [0.10.5]
 ### Added
 - Added better version-check (support-wise)
@@ -264,7 +268,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.5...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.6...HEAD
+[0.10.6]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.5...v0.10.6
 [0.10.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.4...v0.10.5
 [0.10.4]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.3...v0.10.4
 [0.10.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.2...v0.10.3

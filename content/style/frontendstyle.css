@@ -526,11 +526,16 @@
 }
 
 /* Mobil-css för när vi ska fixa till så att den är responsiv */
-@media (max-width: 690px)
+@media (max-width: 800px)
 {
 	.eduadmin .objectItem .objectBook
 	{
 		display: none;
+	}
+
+	.eduadmin .textblock.leftBlock, .eduadmin .textblock.rightBlock {
+		display: block;
+		width: 100%;
 	}
 
 	.eduadmin .objectBlock

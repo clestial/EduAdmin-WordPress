@@ -23,12 +23,12 @@ if(!function_exists('edu_api_listview_courselist'))
 
 		$f = new XFilter('PeriodStart','<=', date("Y-m-d 23:59:59", strtotime("now +" . $fetchMonths . " months")));
 		$filtering->AddItem($f);
-		$f = new XFilter('PeriodEnd', '>=', date("Y-m-d 00:00:00", strtotime("now +1 day")));
+		$f = new XFilter('PeriodEnd', '>=', date("Y-m-d", strtotime("now")));
 		$filtering->AddItem($f);
 		$f = new XFilter('StatusID','=','1');
 		$filtering->AddItem($f);
 
-		$f = new XFilter('LastApplicationDate','>=',date("Y-m-d 00:00:00"));
+		$f = new XFilter('LastApplicationDate','>=',date("Y-m-d H:i:s"));
 		$filtering->AddItem($f);
 
 		if(!empty($objectIds))

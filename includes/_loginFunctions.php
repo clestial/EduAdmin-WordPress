@@ -2,8 +2,8 @@
 
 function loginContactPerson($loginValue, $password)
 {
-	global $eduapi;
-	global $edutoken;
+	$eduapi = EDU()->api;
+	$edutoken = EDU()->get_token();
 
 	$loginField = get_option('eduadmin-loginField', 'Email');
 
@@ -50,8 +50,8 @@ function loginContactPerson($loginValue, $password)
 }
 
 function sendForgottenPassword($loginValue) {
-	global $eduapi;
-	global $edutoken;
+	$eduapi = EDU()->api;
+	$edutoken = EDU()->get_token();
 	$ccId = 0;
 
 	$loginField = get_option('eduadmin-loginField', 'Email');
@@ -90,36 +90,18 @@ $apiKey = get_option('eduadmin-api-key');
 
 if(!$apiKey || empty($apiKey))
 {
-	add_action('admin_notices', 'edu_SetupWarning');
+	add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 }
 else
 {
-	$eduapi = new EduAdminClient();
 	$key = DecryptApiKey($apiKey);
 	if(!$key)
 	{
-		add_action('admin_notices', 'edu_SetupWarning');
+		add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 		return;
 	}
-	$edutoken = get_transient('eduadmin-token');
-	if(!$edutoken)
-	{
-		$edutoken = $eduapi->GetAuthToken($key->UserId, $key->Hash);
-		set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
-	}
-	else
-	{
-		if(get_transient('eduadmin-validatedToken_' . $edutoken) === false)
-		{
-			$valid = $eduapi->ValidateAuthToken($edutoken);
-			if(!$valid)
-			{
-				$edutoken = $eduapi->GetAuthToken($key->UserId, $key->Hash);
-				set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
-			}
-			set_transient('eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS);
-		}
-	}
+
+	$edutoken = EDU()->get_token();
 
 	/* BACKEND FUNCTIONS FOR FORMS */
 	if(isset($_POST['eduformloginaction']))

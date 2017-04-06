@@ -326,7 +326,7 @@ function eduadmin_get_detailinfo($attributes)
 				}
 
 			 	$ft = new XFiltering();
-				$f = new XFilter('PeriodStart', '<=', date("Y-m-d 00:00:00", strtotime('now +' . $fetchMonths . ' months')));
+				$f = new XFilter('PeriodStart', '<=', date("Y-m-d 23:59:59", strtotime('now +' . $fetchMonths . ' months')));
 				$ft->AddItem($f);
 				$f = new XFilter('PeriodEnd', '>=', date("Y-m-d H:i:s", strtotime('now')));
 				$ft->AddItem($f);
@@ -444,7 +444,7 @@ function eduadmin_get_detailinfo($attributes)
 				}
 
 			 	$ft = new XFiltering();
-				$f = new XFilter('PeriodStart', '<=', date("Y-m-d 00:00:00", strtotime('now +'. $fetchMonths . ' months')));
+				$f = new XFilter('PeriodStart', '<=', date("Y-m-d 23:59:59", strtotime('now +'. $fetchMonths . ' months')));
 				$ft->AddItem($f);
 				$f = new XFilter('PeriodEnd', '>=', date("Y-m-d H:i:s", strtotime('now')));
 				$ft->AddItem($f);

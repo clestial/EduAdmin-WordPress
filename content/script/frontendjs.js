@@ -123,7 +123,7 @@ var eduBookingView = {
 		if(priceDdl !== null) {
 			var selected = priceDdl.selectedOptions[0];
 			var ppp = 0.0;
-			if(selected !== null) {
+			if(selected !== null && undefined !== selected.attributes["data-price"]) {
 				ppp = parseFloat(selected.attributes["data-price"].value);
 			}
 			if(discountPerParticipant !== undefined && discountPerParticipant > 0) {

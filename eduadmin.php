@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPr
  * Plugin URI:	http://www.eduadmin.se
  * Description:	EduAdmin plugin to allow visitors to book courses at your website
  * Tags:	booking, participants, courses, events, eduadmin, lega online
- * Version:	0.10.7
+ * Version:	0.10.8
  * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
  * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
  * Requires at least: 3.0
@@ -35,86 +35,202 @@ defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPr
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-include_once("includes/loApiClient.php");
-function edu_register_session() {
-    $sess_Status = session_status();
-    if($sess_Status != PHP_SESSION_DISABLED && $sess_Status != PHP_SESSION_ACTIVE)
+if(!class_exists('EduAdmin')) :
+
+final class EduAdmin {
+	protected static $_instance = null;
+
+	/**
+	 * @var EDU_IntegrationLoader
+	 */
+	public $integrations = null;
+
+    /**
+     * @var EduAdminClient
+     */
+    public $api = null;
+    private $token = null;
+
+	public static function instance() {
+		if( is_null ( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	public function __construct() {
+		$this->includes();
+		$this->init_hooks();
+
+		do_action('eduadmin_loaded');
+	}
+
+    public function get_token() {
+        $apiKey = get_option('eduadmin-api-key');
+        if(!$apiKey || empty($apiKey))
+        {
+            add_action('admin_notices', array($this, 'SetupWarning'));
+            return;
+        }
+        else
+        {
+            $key = DecryptApiKey($apiKey);
+            if(!$key)
+            {
+                add_action('admin_notices', array($this, 'SetupWarning'));
+                return;
+            }
+
+            $edutoken = get_transient('eduadmin-token');
+            if(!$edutoken)
+            {
+                $edutoken = $this->api->GetAuthToken($key->UserId, $key->Hash);
+                set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
+            }
+            else
+            {
+                if(get_transient('eduadmin-validatedToken_' . $edutoken) === false)
+                {
+                    $valid = $this->api->ValidateAuthToken($edutoken);
+                    if(!$valid)
+                    {
+                        $edutoken = $this->api->GetAuthToken($key->UserId, $key->Hash);
+                        set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
+                    }
+                    set_transient('eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS);
+                }
+            }
+            $this->token = $edutoken;
+            return $this->token;
+        }
+    }
+
+	private function includes() {
+        include_once("includes/_apiFunctions.php");
+        include_once("includes/plugin/edu-integration.php"); // Integration interface
+        include_once("includes/plugin/edu-integrationloader.php");
+        include_once("includes/loApiClient.php");
+
+        $this->api = new EduAdminClient();
+        global $eduapi;
+        global $edutoken;
+        $eduapi = $this->api;
+        $edutoken = $this->get_token();
+        include_once("includes/_options.php");
+        include_once("includes/_rewrites.php");
+        include_once("includes/_shortcodes.php");
+
+        include_once("includes/_translationFunctions.php");
+        include_once("includes/_questionFunctions.php");
+        include_once("includes/_attributeFunctions.php");
+        include_once("includes/_textFunctions.php");
+        include_once("includes/_loginFunctions.php");
+
+        if(file_exists(dirname(__FILE__) . "/.official.plugin.php"))
+        {
+            include_once(".official.plugin.php");
+        }
+	}
+
+	private function init_hooks() {
+        register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
+		add_action('wp_loaded', array($this, 'register_session'));
+        add_action('after_switch_theme', array($this, 'new_theme'));
+        add_action('init', array($this, 'init'));
+        add_action('init', array($this, 'load_language'));
+        add_action('eduadmin_call_home', array($this, 'call_home'));
+        add_action('wp_footer', 'edu_getTimers');
+
+        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+	}
+
+    public function init() {
+        $this->integrations = new EDU_IntegrationLoader();
+    }
+
+	public function register_session() {
+		$sess_Status = session_status();
+		if($sess_Status != PHP_SESSION_DISABLED && $sess_Status != PHP_SESSION_ACTIVE)
+		{
+			if(!session_id())
+				session_start();
+		}
+	}
+
+    public static function SetupWarning()
     {
-        if(!session_id())
-	        session_start();
+        ?>
+        <div class="notice notice-warning is-dismissable">
+            <p>Please complete the configuration: <a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a></p>
+        </div>
+        <?php
+    }
+
+    public function get_plugin_version() {
+        $cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');
+        if($cachedVersion !== FALSE)
+            return $cachedVersion;
+
+        if(!function_exists('get_plugin_data'))
+            require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+        $version = get_plugin_data(__FILE__)['Version'];
+        wp_cache_set('eduadmin-version', $version, 'eduadmin', 3600);
+        return $version;
+    }
+
+    public function call_home()
+    {
+        global $wp_version;
+        $usageData = array(
+            'siteUrl' => get_site_url(),
+            'siteName' => get_option('blogname'),
+            'wpVersion' => $wp_version,
+            'token' => get_option('eduadmin-api-key'),
+            'officialVersion' => file_exists(dirname(__FILE__) . "/.official.plugin.php"),
+            'pluginVersion' => $this->get_plugin_version()
+        );
+
+        $callHomeUrl = 'http://ws10.multinet.se/edu-plugin/wp_phone_home.php';
+        wp_remote_post($callHomeUrl, array('body' => $usageData));
+    }
+
+    public function load_language()
+    {
+        $domain = 'eduadmin';
+        $locale = apply_filters('plugin_locale', get_locale(), $domain);
+        load_textdomain($domain, WP_LANG_DIR.'/eduadmin/'.$domain.'-'.$locale.'.mo');
+        load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
+
+        if(!wp_next_scheduled( 'eduadmin_call_home' )) {
+            wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
+        }
+    }
+
+    public function new_theme()
+    {
+        update_option('eduadmin-options_have_changed', true);
+    }
+
+    public function deactivate() {
+        eduadmin_deactivate_rewrite();
+        wp_clear_scheduled_hook( 'eduadmin_call_home' );
     }
 }
-add_action('wp_loaded', 'edu_register_session');
 
-function eduadmin_get_plugin_version() {
-    $cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');
-    if($cachedVersion !== FALSE)
-        return $cachedVersion;
-
-	if(!function_exists('get_plugin_data'))
-		require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-
-	$version = get_plugin_data(__FILE__)['Version'];
-    wp_cache_set('eduadmin-version', $version, 'eduadmin', 3600);
-    return $version;
+function EDU() {
+	return EduAdmin::instance();
 }
 
-include_once("includes/_options.php");
-include_once("includes/functions.php");
-include_once("includes/_rewrites.php");
-include_once("includes/_shortcodes.php");
-
-date_default_timezone_set(wp_get_timezone_string());
-@ini_set('date.timezone', wp_get_timezone_string());
-$_SESSION['__defaultTimeZone'] = wp_get_timezone_string();
-
-if(file_exists(dirname(__FILE__) . "/.official.plugin.php"))
+$GLOBALS['eduadmin'] = EDU();
+if(function_exists('wp_get_timezone_string'))
 {
-	include_once(".official.plugin.php");
+    date_default_timezone_set(wp_get_timezone_string());
+    @ini_set('date.timezone', wp_get_timezone_string());
+    $_SESSION['__defaultTimeZone'] = wp_get_timezone_string();
 }
 
-function edu_load_language()
-{
-	$domain = 'eduadmin';
-	$locale = apply_filters('plugin_locale', get_locale(), $domain);
-	load_textdomain($domain, WP_LANG_DIR.'/eduadmin/'.$domain.'-'.$locale.'.mo');
-	load_plugin_textdomain($domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
-
-    if(!wp_next_scheduled( 'eduadmin_call_home' )) {
-        wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
-    }
-}
-
-function edu_new_theme()
-{
-	update_option('eduadmin-options_have_changed', true);
-}
-
-function edu_call_home()
-{
-    global $wp_version;
-    $usageData = array(
-        'siteUrl' => get_site_url(),
-        'siteName' => get_option('blogname'),
-        'wpVersion' => $wp_version,
-        'token' => get_option('eduadmin-api-key'),
-        'officialVersion' => file_exists(dirname(__FILE__) . "/.official.plugin.php"),
-        'pluginVersion' => eduadmin_get_plugin_version()
-    );
-
-    $callHomeUrl = 'http://ws10.multinet.se/edu-plugin/wp_phone_home.php';
-    wp_remote_post($callHomeUrl, array('body' => $usageData));
-}
-
-add_action('eduadmin_call_home', 'edu_call_home');
-
-add_action('init', 'edu_load_language');
-add_action('after_switch_theme', 'edu_new_theme');
-
-register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
-register_deactivation_hook(__FILE__, 'eduadmin_deactivate');
-
-function eduadmin_deactivate() {
-    eduadmin_deactivate_rewrite();
-    wp_clear_scheduled_hook( 'eduadmin_call_home' );
-}
+/*add_action('wp_footer', function() {
+    echo "<pre>" . print_r(EDU(), true) . "</pre>";
+});*/
+endif;

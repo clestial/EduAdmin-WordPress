@@ -5,7 +5,7 @@ if(!function_exists('edu_isOfficialPlugin'))
 	{
 		if(isset($_REQUEST['checkOfficialPlugin']))
 		{
-			echo "<script>(function() { alert(new Date() + \"\\nI'm official!\\nVersion: " . eduadmin_get_plugin_version() . "\"); })();</script>";
+			echo "<script>(function() { alert(new Date() + \"\\nI'm official!\\nVersion: " . EDU()->get_plugin_version() . "\"); })();</script>";
 		}
 	}
 }
@@ -15,7 +15,7 @@ if(!function_exists('edu_check_for_updates'))
 	function edu_check_for_updates()
 	{
 		require_once("includes/auto_update.php");
-		$current_version = eduadmin_get_plugin_version();
+		$current_version = EDU()->get_plugin_version();
 		$slug = "eduadmin/eduadmin.php";
 		new wp_auto_update($current_version, $slug);
 	}

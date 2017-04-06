@@ -47,7 +47,7 @@ else
 	}
 
 	$ft = new XFiltering();
-	$f = new XFilter('PeriodStart', '<=', date("Y-m-d 00:00:00", strtotime('now +' . $fetchMonths . ' months')));
+	$f = new XFilter('PeriodStart', '<=', date("Y-m-d 23:59:59", strtotime('now +' . $fetchMonths . ' months')));
 	$ft->AddItem($f);
 	$f = new XFilter('PeriodEnd', '>=', date("Y-m-d H:i:s", strtotime('now')));
 	$ft->AddItem($f);
@@ -193,7 +193,9 @@ else
 		$ft = new XFiltering();
 		$f = new XFilter('PublicPriceName', '=', 'true');
 		$ft->AddItem($f);
-		$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
+		$f = new XFilter('ObjectID', 'IN', $selectedCourse->ObjectID);
+		$ft->AddItem($f);
+		$f = new XFilter('OccationID', 'IN', join(',', $occIds));
 		$ft->AddItem($f);
 
 		$st = new XSorting();
@@ -247,9 +249,9 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	<?php
 	foreach($events as $ev)
 	{
+
 		if($groupByCity && $lastCity != $ev->City)
 		{
-			$i = 0;
 			echo '<div class="eventSeparator">';
 			echo $ev->City;
 
@@ -266,8 +268,8 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	?>
 		<div class="eventItem">
 			<div class="eventDate<?php echo $groupByCityClass; ?>">
-				<?php echo GetStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd, true); ?>
-				<span class="eventTime">, <?php echo date("H:i", strtotime($ev->PeriodStart)); ?> - <?php echo date("H:i", strtotime($ev->PeriodEnd)); ?></span>
+			<?php echo isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd); ?>
+			<?php echo (!isset($eventDates[$ev->EventID]) ? "<span class=\"eventTime\">, " . date("H:i", strtotime($ev->PeriodStart)) .' - ' . date("H:i", strtotime($ev->PeriodEnd)) . "</span>" : ""); ?>
 			</div>
 			<?php if(!$groupByCity) { ?>
 			<div class="eventCity">
@@ -307,7 +309,6 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 		</div>
 	<?php
 		$lastCity = $ev->City;
-		$i++;
 	}
 
 	if(empty($events))

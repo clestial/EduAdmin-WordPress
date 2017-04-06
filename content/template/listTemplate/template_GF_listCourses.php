@@ -179,7 +179,7 @@ if($customOrderBy != null)
 }
 else
 {
-	$s = new XSort('PeriodStart', 'ASC');
+	$s = new XSort('PeriodStart', 'DESC');
 	$sorting->AddItem($s);
 }
 

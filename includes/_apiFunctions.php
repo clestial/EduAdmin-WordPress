@@ -28,4 +28,3 @@ function edu_getTimers() {
 		echo "<!-- /EduAdmin Booking - Timers -->\n";
 	}
 }
-add_action('wp_footer', 'edu_getTimers');

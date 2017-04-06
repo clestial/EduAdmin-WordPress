@@ -3,6 +3,12 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.8]
+### Added
+- Trying to build everything as classes instead, just like WooCommerce
+- Bugfix: While fetching prices, we should use the same date span as everything else.
+- Started coding support for plugins (THIS IS NOT WORKING YET)
+
 ## [0.10.7]
 ### Added
 - Default translation is now in Swedish.

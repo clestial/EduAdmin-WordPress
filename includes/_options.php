@@ -176,6 +176,8 @@ function eduadmin_settings_init()
 	register_setting('eduadmin-list', 'eduadmin-showCourseTimes');
 	register_setting('eduadmin-list', 'eduadmin-showEventVenueName');
 
+	/* Plugin settings */
+	register_setting('eduadmin-plugins', 'eduadmin-plugin-settings');
 
 	/* Global settings */
 	register_setting('eduadmin-rewrite', 'eduadmin-spotsLeft');
@@ -232,7 +234,13 @@ function eduadmin_backend_menu()
 	add_submenu_page('eduadmin-settings', __('EduAdmin - Booking view', 'eduadmin'), __('Booking settings', 'eduadmin'), $level, 'eduadmin-settings-booking', 'eduadmin_settings_booking');
 	add_submenu_page('eduadmin-settings', __('EduAdmin - Translation', 'eduadmin'), __('Translation', 'eduadmin'), $level, 'eduadmin-settings-text', 'eduadmin_settings_text');
 	add_submenu_page('eduadmin-settings', __('EduAdmin - Style', 'eduadmin'), __('Style settings', 'eduadmin'), $level, 'eduadmin-settings-style', 'eduadmin_settings_style');
+	add_submenu_page('eduadmin-settings', __('EduAdmin - Plugins', 'eduadmin'), __('Plugins', 'eduadmin'), $level, 'eduadmin-settings-plugins', 'eduadmin_settings_plugins');
 	add_submenu_page('eduadmin-settings', __('EduAdmin - Api Authentication', 'eduadmin'), __('Api Authentication', 'eduadmin'), $level, 'eduadmin-settings-api', 'eduadmin_settings_page');
+}
+
+function eduadmin_settings_plugins()
+{
+	include_once("pluginSettings.php");
 }
 
 function eduadmin_settings_page()

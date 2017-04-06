@@ -1,11 +1,11 @@
 <?php
-global $eduapi;
-global $edutoken;
+$eduapi = EDU()->api;
+$edutoken = EDU()->get_token();
 $apiKey = get_option('eduadmin-api-key');
 
 if(!$apiKey || empty($apiKey))
 {
-	add_action('admin_notices', 'edu_SetupWarning');
+	add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 	return;
 }
 else

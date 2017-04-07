@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Added
+- Bugfix: Sessions are now set before the class is loaded
+- Changed how we handle redirects (Login/Logout)
 
 ## [0.10.8]
 ### Added

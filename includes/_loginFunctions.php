@@ -83,65 +83,72 @@ function logoutUser()
 	unset($_SESSION['eduadmin-loginUser']);
 	unset($_SESSION['needsLogin']);
 	unset($_SESSION['checkEmail']);
-	die("<script>location.href = '" . $baseUrl . edu_getQueryString() . "';</script>");
+	wp_redirect($baseUrl . edu_getQueryString());
 }
 
-$apiKey = get_option('eduadmin-api-key');
+add_action(
+'wp_loaded',
+function() {
 
-if(!$apiKey || empty($apiKey))
-{
-	add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
-}
-else
-{
-	$key = DecryptApiKey($apiKey);
-	if(!$key)
+	$apiKey = get_option('eduadmin-api-key');
+
+	if(!$apiKey || empty($apiKey))
 	{
 		add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
-		return;
 	}
-
-	$edutoken = EDU()->get_token();
-
-	/* BACKEND FUNCTIONS FOR FORMS */
-	if(isset($_POST['eduformloginaction']))
+	else
 	{
-		$act = $_POST['eduformloginaction'];
-		if(isset($_POST['eduadminloginEmail']))
+		$key = DecryptApiKey($apiKey);
+		if(!$key)
 		{
-			switch($act)
-			{
-				case "login":
-					$loginContact = loginContactPerson($_POST['eduadminloginEmail'], $_POST['eduadminpassword']);
-					if($loginContact)
-					{
-						$surl = get_home_url();
-						$cat = get_option('eduadmin-rewriteBaseUrl');
+			add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
+			return;
+		}
 
-						$baseUrl = $surl . '/' . $cat;
-						if(isset($_REQUEST['eduReturnUrl']) && !empty($_REQUEST['eduReturnUrl']))
+		$edutoken = EDU()->get_token();
+
+		$surl = get_home_url();
+		$cat = get_option('eduadmin-rewriteBaseUrl');
+		$baseUrl = $surl . '/' . $cat;
+
+		if($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/")
+		{
+			logoutUser();
+		}
+
+		/* BACKEND FUNCTIONS FOR FORMS */
+		if(isset($_POST['eduformloginaction']))
+		{
+			$act = $_POST['eduformloginaction'];
+			if(isset($_POST['eduadminloginEmail']))
+			{
+				switch($act)
+				{
+					case "login":
+						$loginContact = loginContactPerson($_POST['eduadminloginEmail'], $_POST['eduadminpassword']);
+						if($loginContact)
 						{
-							echo("<script>location.href = '" . $_REQUEST['eduReturnUrl'] . "';</script>");
+							if(isset($_REQUEST['eduReturnUrl']) && !empty($_REQUEST['eduReturnUrl'])) {
+								wp_redirect($_REQUEST['eduReturnUrl']);
+							} else {
+								wp_redirect($baseUrl. "/profile/myprofile/" . edu_getQueryString());
+							}
 						}
 						else
 						{
-							echo("<script>location.href = '" . $baseUrl. "/profile/myprofile/" . edu_getQueryString() . "';</script>");
+							$_SESSION['eduadminLoginError'] = edu__("Wrong username or password.");
 						}
-					}
-					else
-					{
-						$_SESSION['eduadminLoginError'] = edu__("Wrong username or password.");
-					}
-					break;
-				case "forgot":
-					$success = sendForgottenPassword($_POST['eduadminloginEmail']);
-					$_SESSION['eduadmin-forgotPassSent'] = $success;
-					break;
+						break;
+					case "forgot":
+						$success = sendForgottenPassword($_POST['eduadminloginEmail']);
+						$_SESSION['eduadmin-forgotPassSent'] = $success;
+						break;
+				}
+			}
+			else
+			{
+				$_SESSION['eduadminLoginError'] = edu__("You have to provide your login credentials.");
 			}
 		}
-		else
-		{
-			$_SESSION['eduadminLoginError'] = edu__("You have to provide your login credentials.");
-		}
 	}
-}
+});

@@ -26,20 +26,12 @@ if(isset($_SESSION['eduadmin-loginUser']) && isset($_SESSION['eduadmin-loginUser
 	{
 		include_once("changePassword.php");
 	}
-	else if(isset($q['edu-logout']))
-	{
-		logoutUser();
-	}
 }
 else
 {
 	if(isset($q['edu-login']))
 	{
 		include_once("loginPage.php");
-	}
-	else if(isset($q['edu-logout']))
-	{
-		logoutUser();
 	}
 	else
 	{

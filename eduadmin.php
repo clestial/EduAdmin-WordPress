@@ -1,6 +1,17 @@
 <?php
 defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
+function edu_register_session() {
+		$sess_Status = session_status();
+		//if($sess_Status != PHP_SESSION_DISABLED)
+		{
+			if(!session_id())
+				session_start();
+		}
+	}
+
+edu_register_session();
+
 /*
  * Plugin Name:	EduAdmin Booking
  * Plugin URI:	http://www.eduadmin.se
@@ -134,7 +145,7 @@ final class EduAdmin {
 
 	private function init_hooks() {
         register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
-		add_action('wp_loaded', array($this, 'register_session'));
+
         add_action('after_switch_theme', array($this, 'new_theme'));
         add_action('init', array($this, 'init'));
         add_action('init', array($this, 'load_language'));
@@ -147,15 +158,6 @@ final class EduAdmin {
     public function init() {
         $this->integrations = new EDU_IntegrationLoader();
     }
-
-	public function register_session() {
-		$sess_Status = session_status();
-		if($sess_Status != PHP_SESSION_DISABLED && $sess_Status != PHP_SESSION_ACTIVE)
-		{
-			if(!session_id())
-				session_start();
-		}
-	}
 
     public static function SetupWarning()
     {
@@ -233,4 +235,7 @@ if(function_exists('wp_get_timezone_string'))
 /*add_action('wp_footer', function() {
     echo "<pre>" . print_r(EDU(), true) . "</pre>";
 });*/
+
+
+
 endif;

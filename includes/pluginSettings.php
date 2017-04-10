@@ -1,7 +1,10 @@
+<?php
+
+?>
 <div class="eduadmin wrap">
 	<h2><?php echo sprintf(__("EduAdmin settings - %s", "eduadmin"), __("Plugins", "eduadmin")); ?></h2>
 
-	<form method="post" action="options.php">
+	<form method="post">
 		<?php settings_fields('eduadmin-plugin-settings'); ?>
 		<?php do_settings_sections('eduadmin-plugin-settings'); ?>
 		<div class="block">
@@ -11,7 +14,9 @@
 		$integrations = EDU()->integrations->integrations;
 		foreach($integrations as $integration)
 		{
-			echo esc_html($integration->displayName) . "<br />\n";
+			echo "<h3>" . esc_html($integration->displayName) . "</h3>\n";
+			echo $integration->get_settings();
+			echo "<hr />\n";
 		}
 		?>
 		</div>

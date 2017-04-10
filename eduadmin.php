@@ -163,7 +163,7 @@ final class EduAdmin {
     {
         ?>
         <div class="notice notice-warning is-dismissable">
-            <p>Please complete the configuration: <a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a></p>
+            <p><?php echo sprintf(__('Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s'),'<a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">', '</a>'); ?></p>
         </div>
         <?php
     }
@@ -232,10 +232,22 @@ if(function_exists('wp_get_timezone_string'))
     $_SESSION['__defaultTimeZone'] = wp_get_timezone_string();
 }
 
-/*add_action('wp_footer', function() {
-    echo "<pre>" . print_r(EDU(), true) . "</pre>";
-});*/
-
-
-
+/* Handle plugin-settings */
+add_action(
+	'wp_loaded',
+	function() {
+	if(isset($_POST['option_page']) && 'eduadmin-plugin-settings' === $_POST['option_page']) {
+		$integrations = EDU()->integrations->integrations;
+		foreach($integrations as $integration) {
+			do_action('eduadmin-plugin-save_' . $integration->id);
+		}
+		add_action('admin_notices', function() {
+            ?>
+            <div class="notice notice-success is-dismissible">
+                <p><?php _e('Plugin settings saved', 'eduadmin'); ?></p>
+            </div>
+            <?php
+        });
+	}
+});
 endif;

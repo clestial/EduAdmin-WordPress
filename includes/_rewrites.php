@@ -10,8 +10,7 @@ function eduadmin_deactivate_rewrite() {
 	flush_rewrite_rules();
 }
 
-function eduadmin_rewrite_init()
-{
+function eduadmin_rewrite_init() {
 	add_rewrite_tag('%courseSlug%', '([^&]+)');
 	add_rewrite_tag('%courseId%', '([^&]+)');
 	add_rewrite_tag('%edu-login%', '([^&]+)');
@@ -32,8 +31,7 @@ function eduadmin_rewrite_init()
 
 	$courseFolder = get_option('eduadmin-rewriteBaseUrl');
 	$courseFolder = trim($courseFolder);
-	if ($courseFolder != false && !empty($courseFolder))
-	{
+	if ($courseFolder != false && !empty($courseFolder)) {
 		//if($loginView != false)
 		{
 			add_rewrite_rule($courseFolder . '/profile/login/?', 'index.php?page_id=' . $loginView . '&edu-login=1', 'top');
@@ -45,32 +43,26 @@ function eduadmin_rewrite_init()
 			add_rewrite_rule($courseFolder . '/profile/logout/?', 'index.php?page_id=' . $loginView . '&edu-logout=1', 'top');
 		}
 
-		if ($bookingView != false)
-		{
-			if ($eventInterestPage != false)
-			{
+		if ($bookingView != false) {
+			if ($eventInterestPage != false) {
 				add_rewrite_rule($courseFolder . '/(.*?)__(.*)/book/interest/?', 'index.php?page_id=' . $eventInterestPage . '&courseSlug=$matches[1]&courseId=$matches[2]', 'top');
 			}
 			add_rewrite_rule($courseFolder . '/(.*?)__(.*)/book/?', 'index.php?page_id=' . $bookingView . '&courseSlug=$matches[1]&courseId=$matches[2]', 'top');
 		}
 
-		if ($detailsView != false)
-		{
-			if ($objectInterestPage)
-			{
+		if ($detailsView != false) {
+			if ($objectInterestPage) {
 				add_rewrite_rule($courseFolder . '/(.*?)__(.*)/interest/?', 'index.php?page_id=' . $objectInterestPage . '&courseSlug=$matches[1]&courseId=$matches[2]', 'top');
 			}
 			add_rewrite_rule($courseFolder . '/(.*?)__(.*)/?', 'index.php?page_id=' . $detailsView . '&courseSlug=$matches[1]&courseId=$matches[2]', 'top');
 		}
 
-		if ($listView != false)
-		{
+		if ($listView != false) {
 			add_rewrite_rule($courseFolder . '/?$', 'index.php?page_id=' . $listView, 'top');
 		}
 	}
 
-	if (get_option('eduadmin-options_have_changed', 'false') == true)
-	{
+	if (get_option('eduadmin-options_have_changed', 'false') == true) {
 		flush_rewrite_rules();
  		update_option('eduadmin-options_have_changed', false);
 	}

@@ -5,20 +5,16 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey))
-{
+if (!$apiKey || empty($apiKey)) {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-}
-else
-{
+} else {
 	$allowLocationSearch = get_option('eduadmin-allowLocationSearch', true);
 	$allowSubjectSearch = get_option('eduadmin-allowSubjectSearch', false);
 	$allowCategorySearch = get_option('eduadmin-allowCategorySearch', false);
 	$allowLevelSearch = get_option('eduadmin-allowLevelSearch', false);
 
 	$subjects = get_transient('eduadmin-subjects');
-	if (!$subjects)
-	{
+	if (!$subjects) {
 		$sorting = new XSorting();
 		$s = new XSort('SubjectName', 'ASC');
 		$sorting->AddItem($s);
@@ -27,17 +23,14 @@ else
 	}
 
 	$distinctSubjects = array();
-	foreach ($subjects as $subj)
-	{
-		if (!key_exists($subj->SubjectID, $distinctSubjects))
-		{
+	foreach ($subjects as $subj) {
+		if (!key_exists($subj->SubjectID, $distinctSubjects)) {
 			$distinctSubjects[$subj->SubjectID] = $subj->SubjectName;
 		}
 	}
 
 	$addresses = get_transient('eduadmin-locations');
-	if (!$addresses)
-	{
+	if (!$addresses) {
 		$ft = new XFiltering();
 		$f = new XFilter('PublicLocation', '=', 'true');
 		$ft->AddItem($f);
@@ -48,8 +41,7 @@ else
 	$showEvents = get_option('eduadmin-showEventsInList', FALSE);
 
 	$categories = get_transient('eduadmin-categories');
-	if (!$categories)
-	{
+	if (!$categories) {
 		$ft = new XFiltering();
 		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$ft->AddItem($f);
@@ -58,15 +50,13 @@ else
 	}
 
 	$levels = get_transient('eduadmin-levels');
-	if (!$levels)
-	{
+	if (!$levels) {
 		$levels = $eduapi->GetEducationLevel($edutoken, '', '');
 		set_transient('eduadmin-levels', $levels, DAY_IN_SECONDS);
 	}
 
 	$courseLevels = get_transient('eduadmin-courseLevels');
-	if (!$courseLevels)
-	{
+	if (!$courseLevels) {
 		$courseLevels = $eduapi->GetEducationLevelObject($edutoken, '', '');
 		set_transient('eduadmin-courseLevels', $courseLevels, DAY_IN_SECONDS);
 	}
@@ -80,14 +70,10 @@ else
 
 	$filterCourses = array();
 
-	if (!empty($attributes['subject']))
-	{
-		foreach ($eds as $subject)
-		{
-			if ($subject->SubjectName == $attributes['subject'])
-			{
-				if (!in_array($subject->ObjectID, $filterCourses))
-				{
+	if (!empty($attributes['subject'])) {
+		foreach ($eds as $subject) {
+			if ($subject->SubjectName == $attributes['subject']) {
+				if (!in_array($subject->ObjectID, $filterCourses)) {
 					$filterCourses[] = $subject->ObjectID;
 				}
 			}
@@ -95,8 +81,7 @@ else
 	}
 
 	$categoryID = null;
-	if (!empty($attributes['category']))
-	{
+	if (!empty($attributes['category'])) {
 		$categoryID = $attributes['category'];
 	}
 
@@ -104,29 +89,23 @@ else
 
 	$customOrderBy = null;
 	$customOrderByOrder = null;
-	if (!empty($attributes['orderby']))
-	{
+	if (!empty($attributes['orderby'])) {
 		$customOrderBy = $attributes['orderby'];
 	}
 
-	if (!empty($attributes['order']))
-	{
+	if (!empty($attributes['order'])) {
 		$customOrderByOrder = $attributes['order'];
 	}
 
 	$customMode = null;
-	if (!empty($attributes['mode']))
-	{
+	if (!empty($attributes['mode'])) {
 		$customMode = $attributes['mode'];
 	}
 
-	if ($showEvents || $customMode == 'event')
-	{
+	if ($showEvents || $customMode == 'event') {
 		$str = include("template_GF_listEvents.php");
 		echo $str;
-	}
-	else if (!$showEvents || $customMode == 'course')
-	{
+	} else if (!$showEvents || $customMode == 'course') {
 		$str = include("template_GF_listCourses.php");
 		echo $str;
 	}

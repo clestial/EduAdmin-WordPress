@@ -5,20 +5,15 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey))
-{
+if (!$apiKey || empty($apiKey)) {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-}
-else
-{
-	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'eventInquiry')
-	{
+} else {
+	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'eventInquiry') {
 		include_once("sendEventInquiry.php");
 	}
 
 	$edo = get_transient('eduadmin-listCourses');
-	if (!$edo)
-	{
+	if (!$edo) {
 		$filtering = new XFiltering();
 		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
@@ -29,18 +24,15 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach ($edo as $object)
-	{
+	foreach ($edo as $object) {
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
-		{
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"]) {
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if (!$selectedCourse)
-	{
+	if (!$selectedCourse) {
 		?>
 		<script>history.go(-1);</script>
 		<?php
@@ -48,8 +40,7 @@ else
 	}
 
 	$ft = new XFiltering();
-	if (isset($_REQUEST['eid']))
-	{
+	if (isset($_REQUEST['eid'])) {
 		$eventid = $_REQUEST['eid'];
 		$f = new XFilter('EventID', '=', $eventid);
 		$ft->AddItem($f);
@@ -73,8 +64,7 @@ else
 		$ft->ToString()
 	);
 
-	if (count($events) == 0)
-	{
+	if (count($events) == 0) {
 		?>
 		<script>history.go(-1);</script>
 		<?php
@@ -94,8 +84,7 @@ else
 	echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate($event->PeriodStart, $event->PeriodEnd) . ", ";
 				echo date("H:i", strtotime($event->PeriodStart)); ?> - <?php echo date("H:i", strtotime($event->PeriodEnd));
 				$addresses = get_transient('eduadmin-location-' . $event->LocationAddressID);
-				if (!$addresses)
-				{
+				if (!$addresses) {
 					$ft = new XFiltering();
 					$f = new XFilter('LocationAddressID', '=', $event->LocationAddressID);
 					$ft->AddItem($f);
@@ -103,10 +92,8 @@ else
 					set_transient('eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS);
 				}
 
-				foreach ($addresses as $address)
-				{
-					if ($address->LocationAddressID === $event->LocationAddressID)
-					{
+				foreach ($addresses as $address) {
+					if ($address->LocationAddressID === $event->LocationAddressID) {
 						echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
 						break;
 					}

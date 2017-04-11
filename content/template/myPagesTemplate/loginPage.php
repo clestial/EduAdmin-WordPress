@@ -7,8 +7,7 @@
 			<?php
 			$selectedLoginField = get_option('eduadmin-loginField', 'Email');
 			$loginLabel = edu__("E-mail address");
-			switch ($selectedLoginField)
-			{
+			switch ($selectedLoginField) {
 				case "Email":
 					$loginLabel = edu__("E-mail address");
 					break;
@@ -34,8 +33,7 @@
 			</label>
 			<?php
 			$click = "";
-			if ($selectedLoginField == "CivicRegistrationNumber" && get_option('eduadmin-validateCivicRegNo', false) === "true")
-			{
+			if ($selectedLoginField == "CivicRegistrationNumber" && get_option('eduadmin-validateCivicRegNo', false) === "true") {
 				$click = "if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__("Please enter a valid swedish civic registration number.") . "');  return false; }";
 			}
 			?>

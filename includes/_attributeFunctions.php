@@ -1,8 +1,6 @@
 <?php
-function renderAttribute($attribute, $multiple = false, $suffix = "", $data = null)
-{
-	switch ($attribute->AttributeTypeID)
-	{
+function renderAttribute($attribute, $multiple = false, $suffix = "", $data = null) {
+	switch ($attribute->AttributeTypeID) {
 		case 1: // Checkbox
 			renderCheckField($attribute, $multiple, $suffix, $data);
 			break;
@@ -38,8 +36,7 @@ function renderAttribute($attribute, $multiple = false, $suffix = "", $data = nu
 	}
 }
 
-function renderCheckField($attribute, $multiple, $suffix, $data)
-{
+function renderCheckField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
@@ -47,8 +44,7 @@ function renderCheckField($attribute, $multiple, $suffix, $data)
 	echo "</div></label>";
 }
 
-function renderTextField($attribute, $multiple, $suffix, $data)
-{
+function renderTextField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
@@ -56,8 +52,7 @@ function renderTextField($attribute, $multiple, $suffix, $data)
 	echo "</div></label>";
 }
 
-function renderNumberField($attribute, $multiple, $suffix, $data)
-{
+function renderNumberField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
@@ -65,8 +60,7 @@ function renderNumberField($attribute, $multiple, $suffix, $data)
 	echo "</div></label>";
 }
 
-function renderDateField($attribute, $multiple, $suffix, $data)
-{
+function renderDateField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
@@ -74,8 +68,7 @@ function renderDateField($attribute, $multiple, $suffix, $data)
 	echo "</div></label>";
 }
 
-function renderTextAreaField($attribute, $multiple, $suffix, $data)
-{
+function renderTextAreaField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
@@ -83,34 +76,29 @@ function renderTextAreaField($attribute, $multiple, $suffix, $data)
 	echo "</div></label>";
 }
 
-function renderSelectField($attribute, $multiple, $suffix, $data)
-{
+function renderSelectField($attribute, $multiple, $suffix, $data) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
 	echo "<select name=\"edu-attr_" . $attribute->AttributeID . ($suffix != "" ? "-" . $suffix : "") . ($multiple ? "[]" : "") . "\">\n";
-	foreach ($attribute->AttributeAlternative as $val)
-	{
+	foreach ($attribute->AttributeAlternative as $val) {
 		echo "\t<option" . ($data != null && $data == $val->AttributeAlternativeID ? " selected=\"selected\"" : "") . " value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</option>\n";
 	}
 	echo "</select>";
 	echo "</div></label>";
 }
 
-function renderCheckboxListField($attribute, $multiple, $suffix, $data)
-{
+function renderCheckboxListField($attribute, $multiple, $suffix, $data) {
 	echo "<div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
-	foreach ($attribute->AttributeAlternative as $val)
-	{
+	foreach ($attribute->AttributeAlternative as $val) {
 		echo "\t<label><input" . ($data != null && $data == $val->AttributeAlternativeID ? " checked=\"checked\"" : "") . " type=\"checkbox\" name=\"edu-attr_" . $attribute->AttributeID . ($suffix != "" ? "-" . $suffix : "") . ($multiple ? "[]" : "") . "\" value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</label>\n";
 	}
 	echo "</div>";
 }
 
-function renderDebugAttributeInfo($attribute)
-{
+function renderDebugAttributeInfo($attribute) {
 	echo "<label><div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";

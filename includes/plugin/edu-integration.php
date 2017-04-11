@@ -50,8 +50,7 @@ abstract class EDU_Integration {
 		?>
 		<table class="form-table">
 		<?php
-		foreach ($fields as $key => $field)
-		{
+		foreach ($fields as $key => $field) {
 			echo $this->renderField($key, $field);
 		}
 		?>
@@ -86,11 +85,11 @@ abstract class EDU_Integration {
 		$post_data = $this->get_post_data();
 		$fields = $this->get_form_fields();
 
-		foreach ($fields as $key => $field)
-		{
+		foreach ($fields as $key => $field) {
 			try {
 				$this->settings[$key] = $this->get_field_value($key, $post_data);
-			} catch (Exception $e) {
+			}
+			catch (Exception $e) {
 
 			}
 		}
@@ -114,8 +113,7 @@ abstract class EDU_Integration {
 		return $this->settings[$key];
 	}
 
-	private function set_defaults($field)
-	{
+	private function set_defaults($field) {
 		$defaults = array(
 			'title'					=> '',
 			'disabled'				=> false,
@@ -131,8 +129,7 @@ abstract class EDU_Integration {
 		return $field;
 	}
 
-	private function renderField($key, $field)
-	{
+	private function renderField($key, $field) {
 		ob_start();
 ?>
 <tr valign="top">
@@ -140,8 +137,7 @@ abstract class EDU_Integration {
 <td>
 <fieldset>
 <?php
-switch ($field['type'])
-{
+switch ($field['type']) {
 	case 'checkbox':
 		echo $this->renderCheckBox($key, $field);
 		break;

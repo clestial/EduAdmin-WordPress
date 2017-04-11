@@ -1,7 +1,6 @@
 <?php
 
-function loginContactPerson($loginValue, $password)
-{
+function loginContactPerson($loginValue, $password) {
 	$eduapi = EDU()->api;
 	$edutoken = EDU()->get_token();
 
@@ -17,8 +16,7 @@ function loginContactPerson($loginValue, $password)
 	$f = new XFilter('Disabled', '=', false);
 	$filter->AddItem($f);
 	$cc = $eduapi->GetCustomerContact($edutoken, '', $filter->ToString(), true);
-	if (count($cc) == 1)
-	{
+	if (count($cc) == 1) {
 		$contact = $cc[0];
 		$filter = new XFiltering();
 		$f = new XFilter('CustomerID', '=', $contact->CustomerID);
@@ -26,8 +24,7 @@ function loginContactPerson($loginValue, $password)
 		$f = new XFilter('Disabled', '=', false);
 		$filter->AddItem($f);
 		$customers = $eduapi->GetCustomerV2($edutoken, '', $filter->ToString(), true);
-		if (count($customers) == 1)
-		{
+		if (count($customers) == 1) {
 			$customer = $customers[0];
 			$user = new stdClass;
 			$c1 = json_encode($contact);
@@ -36,15 +33,11 @@ function loginContactPerson($loginValue, $password)
 			$user->Customer = json_decode($c2);
 			$_SESSION['eduadmin-loginUser'] = $user;
 			return $_SESSION['eduadmin-loginUser'];
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 
-	}
-	else
-	{
+	} else {
 		return null;
 	}
 }
@@ -62,8 +55,9 @@ function sendForgottenPassword($loginValue) {
 	$f = new XFilter('CanLogin', '=', true);
 	$filter->AddItem($f);
 	$cc = $eduapi->GetCustomerContact($edutoken, '', $filter->ToString(), false);
-	if (count($cc) == 1)
-		$ccId = current($cc)->CustomerContactID;
+	if (count($cc) == 1) {
+			$ccId = current($cc)->CustomerContactID;
+	}
 
 	if ($ccId > 0 && !empty(current($cc)->Email)) {
 		$sent = $eduapi->SendCustomerContactPassword($edutoken, $ccId, get_bloginfo('name'));
@@ -73,8 +67,7 @@ function sendForgottenPassword($loginValue) {
 	return false;
 }
 
-function logoutUser()
-{
+function logoutUser() {
 	$surl = get_home_url();
 	$cat = get_option('eduadmin-rewriteBaseUrl');
 
@@ -93,15 +86,11 @@ function() {
 
 	$apiKey = get_option('eduadmin-api-key');
 
-	if (!$apiKey || empty($apiKey))
-	{
+	if (!$apiKey || empty($apiKey)) {
 		add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
-	}
-	else
-	{
+	} else {
 		$key = DecryptApiKey($apiKey);
-		if (!$key)
-		{
+		if (!$key) {
 			add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 			return;
 		}
@@ -112,32 +101,25 @@ function() {
 		$cat = get_option('eduadmin-rewriteBaseUrl');
 		$baseUrl = $surl . '/' . $cat;
 
-		if ($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/")
-		{
+		if ($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/") {
 			logoutUser();
 		}
 
 		/* BACKEND FUNCTIONS FOR FORMS */
-		if (isset($_POST['eduformloginaction']))
-		{
+		if (isset($_POST['eduformloginaction'])) {
 			$act = $_POST['eduformloginaction'];
-			if (isset($_POST['eduadminloginEmail']))
-			{
-				switch ($act)
-				{
+			if (isset($_POST['eduadminloginEmail'])) {
+				switch ($act) {
 					case "login":
 						$loginContact = loginContactPerson($_POST['eduadminloginEmail'], $_POST['eduadminpassword']);
-						if ($loginContact)
-						{
+						if ($loginContact) {
 							if (isset($_REQUEST['eduReturnUrl']) && !empty($_REQUEST['eduReturnUrl'])) {
 								wp_redirect($_REQUEST['eduReturnUrl']);
 							} else {
 								wp_redirect($baseUrl . "/profile/myprofile/" . edu_getQueryString());
 							}
 							exit();
-						}
-						else
-						{
+						} else {
 							$_SESSION['eduadminLoginError'] = edu__("Wrong username or password.");
 						}
 						break;
@@ -146,9 +128,7 @@ function() {
 						$_SESSION['eduadmin-forgotPassSent'] = $success;
 						break;
 				}
-			}
-			else
-			{
+			} else {
 				$_SESSION['eduadminLoginError'] = edu__("You have to provide your login credentials.");
 			}
 		}

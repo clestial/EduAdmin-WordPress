@@ -1,21 +1,20 @@
 <?php
 defined('ABSPATH') or die('This plugin must be run within the scope of WordPress.');
 if (!function_exists('normalize_empty_atts')) {
-    function normalize_empty_atts($atts) {
-    	if (empty($atts))
+	function normalize_empty_atts($atts) {
+		if (empty($atts))
 			return $atts;
-        foreach ($atts as $attribute => $value) {
-            if (is_int($attribute)) {
-                $atts[strtolower($value)] = true;
-                unset($atts[$attribute]);
-            }
-        }
-        return $atts;
-    }
+		foreach ($atts as $attribute => $value) {
+			if (is_int($attribute)) {
+				$atts[strtolower($value)] = true;
+				unset($atts[$attribute]);
+			}
+		}
+		return $atts;
+	}
 }
 
-function eduadmin_get_list_view($attributes)
-{
+function eduadmin_get_list_view($attributes) {
 	$selectedTemplate = get_option('eduadmin-listTemplate', 'template_A');
 	$attributes = shortcode_atts(
 		array(
@@ -37,8 +36,7 @@ function eduadmin_get_list_view($attributes)
 	return $str;
 }
 
-function eduadmin_get_object_interest($attributes)
-{
+function eduadmin_get_object_interest($attributes) {
 	$attributes = shortcode_atts(
 		array(),
 		normalize_empty_atts($attributes),
@@ -48,8 +46,7 @@ function eduadmin_get_object_interest($attributes)
 	return $str;
 }
 
-function eduadmin_get_event_interest($attributes)
-{
+function eduadmin_get_event_interest($attributes) {
 	$attributes = shortcode_atts(
 		array(),
 		normalize_empty_atts($attributes),
@@ -59,8 +56,7 @@ function eduadmin_get_event_interest($attributes)
 	return $str;
 }
 
-function eduadmin_get_detail_view($attributes)
-{
+function eduadmin_get_detail_view($attributes) {
 	$selectedTemplate = get_option('eduadmin-detailTemplate', 'template_A');
 	$attributes = shortcode_atts(
 		array(
@@ -74,8 +70,7 @@ function eduadmin_get_detail_view($attributes)
 	unset($_SESSION['checkEmail']);
 	unset($_SESSION['needsLogin']);
 	unset($_SESSION['eduadmin-loginUser']->NewCustomer);
-	if (!isset($attributes['customtemplate']) || $attributes['customtemplate'] != 1)
-	{
+	if (!isset($attributes['customtemplate']) || $attributes['customtemplate'] != 1) {
 		$str = include_once(plugin_dir_path(__DIR__) . "content/template/detailTemplate/" . $attributes['template'] . ".php");
 		return $str;
 	}
@@ -84,8 +79,7 @@ function eduadmin_get_detail_view($attributes)
 function edu_no_index() {
 	global $wp_query;
 	$detailpage = get_option('eduadmin-detailViewPage');
-	if (isset($wp_query->queried_object))
-	{
+	if (isset($wp_query->queried_object)) {
 		if ($detailpage !== FALSE && $detailpage == $wp_query->queried_object->ID && !isset($wp_query->query['courseId'])) {
 			echo '<meta name="robots" content="noindex" />';
 		}
@@ -94,8 +88,7 @@ function edu_no_index() {
 
 add_action('wp_head', 'edu_no_index');
 
-function eduadmin_get_booking_view($attributes)
-{
+function eduadmin_get_booking_view($attributes) {
 	if (!defined('DONOTCACHEPAGE')) {
 		define('DONOTCACHEPAGE', true);
 	}
@@ -108,20 +101,16 @@ function eduadmin_get_booking_view($attributes)
 		normalize_empty_atts($attributes),
 		'eduadmin-bookingview'
 	);
-	if (get_option('eduadmin-useLogin', false) == false || (isset($_SESSION['eduadmin-loginUser']) && ((isset($_SESSION['eduadmin-loginUser']->Contact->CustomerContactID) && $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID != 0) || isset($_SESSION['eduadmin-loginUser']->NewCustomer))))
-	{
+	if (get_option('eduadmin-useLogin', false) == false || (isset($_SESSION['eduadmin-loginUser']) && ((isset($_SESSION['eduadmin-loginUser']->Contact->CustomerContactID) && $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID != 0) || isset($_SESSION['eduadmin-loginUser']->NewCustomer)))) {
 		$str = include_once(plugin_dir_path(__DIR__) . "content/template/bookingTemplate/" . $attributes['template'] . ".php");
-	}
-	else
-	{
+	} else {
 		$str = include_once(plugin_dir_path(__DIR__) . "content/template/bookingTemplate/loginView.php");
 	}
 
 	return $str;
 }
 
-function eduadmin_get_detailinfo($attributes)
-{
+function eduadmin_get_detailinfo($attributes) {
 	global $wp_query;
 	global $eduapi;
 	global $edutoken;
@@ -163,28 +152,21 @@ function eduadmin_get_detailinfo($attributes)
 
 	$courseId = 0;
 
-	if (empty($attributes['courseid']) || $attributes['courseid'] <= 0)
-	{
-		if (isset($wp_query->query_vars["courseId"]))
-		{
+	if (empty($attributes['courseid']) || $attributes['courseid'] <= 0) {
+		if (isset($wp_query->query_vars["courseId"])) {
 			$courseId = $wp_query->query_vars["courseId"];
+		} else {
+					return 'Missing courseId in attributes';
 		}
-		else
-			return 'Missing courseId in attributes';
-	}
-	else
-	{
+	} else {
 		$courseId = $attributes['courseid'];
 	}
 
 	$apiKey = get_option('eduadmin-api-key');
 
-	if (!$apiKey || empty($apiKey))
-	{
+	if (!$apiKey || empty($apiKey)) {
 		return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-	}
-	else
-	{
+	} else {
 		$filtering = new XFiltering();
 		$f = new XFilter('ObjectID', '=', $courseId);
 		$filtering->AddItem($f);
@@ -193,84 +175,64 @@ function eduadmin_get_detailinfo($attributes)
 		$filtering->AddItem($f);
 
 		$edo = get_transient('eduadmin-object_' . $courseId);
-		if (!$edo)
-		{
+		if (!$edo) {
 			$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
 			set_transient('eduadmin-object_' . $courseId, $edo, 10);
 		}
 
 		$selectedCourse = false;
 		$name = "";
-		foreach ($edo as $object)
-		{
+		foreach ($edo as $object) {
 			$id = $object->ObjectID;
-			if ($id == $courseId)
-			{
+			if ($id == $courseId) {
 				$selectedCourse = $object;
 				break;
 			}
 		}
 
-		if (!$selectedCourse)
-		{
+		if (!$selectedCourse) {
 			return 'Course with ID ' . $courseId . ' could not be found.';
-		}
-		else
-		{
-			 if (isset($attributes['coursename']))
-			 {
+		} else {
+			 if (isset($attributes['coursename'])) {
 			 	$retStr .= $selectedCourse->ObjectName;
 			 }
-			 if (isset($attributes['coursepublicname']))
-			 {
+			 if (isset($attributes['coursepublicname'])) {
 			 	$retStr .= $selectedCourse->PublicName;
 			 }
-			 if (isset($attributes['courseimage']))
-			 {
+			 if (isset($attributes['courseimage'])) {
 			 	$retStr .= $selectedCourse->ImageUrl;
 			 }
-			 if (isset($attributes['coursedays']))
-			 {
+			 if (isset($attributes['coursedays'])) {
 			 	$retStr .= $selectedCourse->Days;
 			 }
-			 if (isset($attributes['coursestarttime']))
-			 {
+			 if (isset($attributes['coursestarttime'])) {
 			 	$retStr .= $selectedCourse->StartTime;
 			 }
-			 if (isset($attributes['courseendtime']))
-			 {
+			 if (isset($attributes['courseendtime'])) {
 			 	$retStr .= $selectedCourse->EndTime;
 			 }
-			 if (isset($attributes['coursedescriptionshort']))
-			 {
+			 if (isset($attributes['coursedescriptionshort'])) {
 			 	$retStr .= $selectedCourse->CourseDescriptionShort;
 			 }
-			 if (isset($attributes['coursedescription']))
-			 {
+			 if (isset($attributes['coursedescription'])) {
 			 	$retStr .= $selectedCourse->CourseDescription;
 			 }
-			 if (isset($attributes['coursegoal']))
-			 {
+			 if (isset($attributes['coursegoal'])) {
 			 	$retStr .= $selectedCourse->CourseGoal;
 			 }
-			 if (isset($attributes['coursetarget']))
-			 {
+			 if (isset($attributes['coursetarget'])) {
 			 	$retStr .= $selectedCourse->TargetGroup;
 			 }
-			 if (isset($attributes['courseprerequisites']))
-			 {
+			 if (isset($attributes['courseprerequisites'])) {
 			 	$retStr .= $selectedCourse->Prerequisites;
 			 }
-			 if (isset($attributes['courseafter']))
-			 {
+			 if (isset($attributes['courseafter'])) {
 			 	$retStr .= $selectedCourse->CourseAfter;
 			 }
-			 if (isset($attributes['coursequote']))
-			 {
+			 if (isset($attributes['coursequote'])) {
 			 	$retStr .= $selectedCourse->Quote;
 			 }
-			 if (isset($attributes['coursesubject']))
-			 {
+			 if (isset($attributes['coursesubject'])) {
 
 			 	$ft = new XFiltering();
 				$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
@@ -278,21 +240,18 @@ function eduadmin_get_detailinfo($attributes)
 			 	$courseSubject = $eduapi->GetEducationSubject($edutoken, '', $ft->ToString());
 				$retStr .= print_r($courseSubject, true);
 			 }
-			 if (isset($attributes['courselevel']))
-			 {
+			 if (isset($attributes['courselevel'])) {
 
 				$ft = new XFiltering();
 				$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
 				$ft->AddItem($f);
 				$courseLevel = $eduapi->GetEducationLevelObject($edutoken, '', $ft->ToString());
 
-				if (!empty($courseLevel))
-				{
+				if (!empty($courseLevel)) {
 			 		$retStr .= $courseLevel[0]->Name;
 				}
 			 }
-			 if (isset($attributes['courseattributeid']))
-			 {
+			 if (isset($attributes['courseattributeid'])) {
 			 	$attrid = $attributes['courseattributeid'];
 				$ft = new XFiltering();
 				$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
@@ -300,11 +259,9 @@ function eduadmin_get_detailinfo($attributes)
 				$f = new XFilter('AttributeID', '=', $attrid);
 				$ft->AddItem($f);
 				$objAttr = $eduapi->GetObjectAttribute($edutoken, '', $ft->ToString());
-				if (!empty($objAttr))
-				{
+				if (!empty($objAttr)) {
 					$attr = $objAttr[0];
-					switch ($attr->AttributeTypeID)
-					{
+					switch ($attr->AttributeTypeID) {
 						case 5:
 							$value = $attr->AttributeAlternative;
 						break;
@@ -316,8 +273,7 @@ function eduadmin_get_detailinfo($attributes)
 				}
 			 }
 
-			 if (isset($attributes['courseprice']))
-			 {
+			 if (isset($attributes['courseprice'])) {
 
 				$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
 				if (!is_numeric($fetchMonths)) {
@@ -338,8 +294,7 @@ function eduadmin_get_detailinfo($attributes)
 				$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 				$ft->AddItem($f);
 
-				if (!empty($attributes['courseeventlistfiltercity']))
-				{
+				if (!empty($attributes['courseeventlistfiltercity'])) {
 					$f = new XFilter('City', '=', $attributes['courseeventlistfiltercity']);
 					$ft->AddItem($f);
 				}
@@ -347,8 +302,7 @@ function eduadmin_get_detailinfo($attributes)
 				$st = new XSorting();
 				$groupByCity = get_option('eduadmin-groupEventsByCity', FALSE);
 				$groupByCityClass = "";
-				if ($groupByCity)
-				{
+				if ($groupByCity) {
 					$s = new XSort('City', 'ASC');
 					$st->AddItem($s);
 					$groupByCityClass = " noCity";
@@ -366,8 +320,7 @@ function eduadmin_get_detailinfo($attributes)
 
 				$occIds[] = -1;
 
-				foreach ($events as $e)
-				{
+				foreach ($events as $e) {
 					$occIds[] = $e->OccationID;
 				}
 
@@ -387,8 +340,7 @@ function eduadmin_get_detailinfo($attributes)
 
 				$prices = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 				$uniquePrices = Array();
-				foreach ($prices as $price)
-				{
+				foreach ($prices as $price) {
 					$uniquePrices[$price->Description] = $price;
 				}
 
@@ -396,15 +348,13 @@ function eduadmin_get_detailinfo($attributes)
 				if (count($uniquePrices) == 1) {
 					$retStr .= convertToMoney(current($uniquePrices)->Price, $currency) . " " . edu__($incVat ? "inc vat" : "ex vat") . "\n";
 				} else {
-					foreach ($uniquePrices as $price)
-					{
+					foreach ($uniquePrices as $price) {
 				 		$retStr .= sprintf('%1$s: %2$s', $price->Description, convertToMoney($price->Price, $currency)) . " " . edu__($incVat ? "inc vat" : "ex vat") . "<br />\n";
 					}
 				}
 			 }
 
-			 if (isset($attributes['pagetitlejs']))
-			 {
+			 if (isset($attributes['pagetitlejs'])) {
 				$originalTitle = get_the_title();
 				$newTitle = $selectedCourse->PublicName;
 				$retStr .= "
@@ -417,8 +367,7 @@ function eduadmin_get_detailinfo($attributes)
 				</script>";
 			 }
 
-			 if (isset($attributes['bookurl']))
-			 {
+			 if (isset($attributes['bookurl'])) {
 			 	$surl = get_home_url();
 				$cat = get_option('eduadmin-rewriteBaseUrl');
 				$baseUrl = $surl . '/' . $cat;
@@ -426,8 +375,7 @@ function eduadmin_get_detailinfo($attributes)
 				$retStr .= $baseUrl . '/' . makeSlugs($name) . '__' . $selectedCourse->ObjectID . '/book/' . edu_getQueryString();
 			 }
 
-			 if (isset($attributes['courseinquiryurl']))
-			 {
+			 if (isset($attributes['courseinquiryurl'])) {
 			 	$surl = get_home_url();
 				$cat = get_option('eduadmin-rewriteBaseUrl');
 				$baseUrl = $surl . '/' . $cat;
@@ -435,8 +383,7 @@ function eduadmin_get_detailinfo($attributes)
 				$retStr .= $baseUrl . '/' . makeSlugs($name) . '__' . $selectedCourse->ObjectID . '/interest/' . edu_getQueryString();
 			 }
 
-			 if (isset($attributes['courseeventlist']))
-			 {
+			 if (isset($attributes['courseeventlist'])) {
 				$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
 				if (!is_numeric($fetchMonths)) {
 					$fetchMonths = 6;
@@ -458,8 +405,7 @@ function eduadmin_get_detailinfo($attributes)
 				$f = new XFilter('CustomerID', '=', '0');
 				$ft->AddItem($f);
 
-				if (!empty($attributes['courseeventlistfiltercity']))
-				{
+				if (!empty($attributes['courseeventlistfiltercity'])) {
 					$f = new XFilter('City', '=', $attributes['courseeventlistfiltercity']);
 					$ft->AddItem($f);
 				}
@@ -467,8 +413,7 @@ function eduadmin_get_detailinfo($attributes)
 				$st = new XSorting();
 				$groupByCity = get_option('eduadmin-groupEventsByCity', FALSE);
 				$groupByCityClass = "";
-				if ($groupByCity)
-				{
+				if ($groupByCity) {
 					$s = new XSort('City', 'ASC');
 					$st->AddItem($s);
 					$groupByCityClass = " noCity";
@@ -476,33 +421,28 @@ function eduadmin_get_detailinfo($attributes)
 
 				$customOrderBy = null;
 				$customOrderByOrder = null;
-				if (!empty($attributes['orderby']))
-				{
+				if (!empty($attributes['orderby'])) {
 					$customOrderBy = $attributes['orderby'];
 				}
 
-				if (!empty($attributes['order']))
-				{
+				if (!empty($attributes['order'])) {
 					$customOrderByOrder = $attributes['order'];
 				}
 
-				if ($customOrderBy != null)
-				{
+				if ($customOrderBy != null) {
 					$orderby = explode(' ', $customOrderBy);
 					$sortorder = explode(' ', $customOrderByOrder);
-					foreach ($orderby as $od => $v)
-					{
-						if (isset($sortorder[$od]))
-							$or = $sortorder[$od];
-						else
-							$or = "ASC";
+					foreach ($orderby as $od => $v) {
+						if (isset($sortorder[$od])) {
+													$or = $sortorder[$od];
+						} else {
+													$or = "ASC";
+						}
 
 						$s = new XSort($v, $or);
 						$st->AddItem($s);
 					}
-				}
-				else
-				{
+				} else {
 					$s = new XSort('PeriodStart', 'ASC');
 					$st->AddItem($s);
 				}
@@ -516,26 +456,25 @@ function eduadmin_get_detailinfo($attributes)
 				$occIds = array();
 				$occIds[] = -1;
 
-                $eventIds = array();
-                $eventIds[] = -1;
+				$eventIds = array();
+				$eventIds[] = -1;
 
-				foreach ($events as $e)
-				{
+				foreach ($events as $e) {
 					$occIds[] = $e->OccationID;
-                    $eventIds[] = $e->EventID;
+					$eventIds[] = $e->EventID;
 				}
 
-                 $ft = new XFiltering();
-                 $f = new XFilter('EventID', 'IN', join(",", $eventIds));
-                 $ft->AddItem($f);
+				 $ft = new XFiltering();
+				 $f = new XFilter('EventID', 'IN', join(",", $eventIds));
+				 $ft->AddItem($f);
 
-                 $eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
+				 $eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
-                 $eventDates = array();
-                 foreach ($eventDays as $ed)
-                 {
-                     $eventDates[$ed->EventID][] = $ed;
-                 }
+				 $eventDates = array();
+				 foreach ($eventDays as $ed)
+				 {
+					 $eventDates[$ed->EventID][] = $ed;
+				 }
 
 				$ft = new XFiltering();
 				$f = new XFilter('PublicPriceName', '=', 'true');
@@ -550,14 +489,11 @@ function eduadmin_get_detailinfo($attributes)
 				$pricenames = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 				set_transient('eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS);
 
-				if (!empty($pricenames))
-				{
+				if (!empty($pricenames)) {
 					$events = array_filter($events, function($object) {
 						$pn = get_transient('eduadmin-publicpricenames');
-						foreach ($pn as $subj)
-						{
-							if ($object->OccationID == $subj->OccationID)
-							{
+						foreach ($pn as $subj) {
+							if ($object->OccationID == $subj->OccationID) {
 								return true;
 							}
 						}
@@ -593,31 +529,25 @@ function eduadmin_get_detailinfo($attributes)
 				$i = 0;
 				$hasHiddenDates = false;
 
-				foreach ($events as $ev)
-				{
+				foreach ($events as $ev) {
 					$spotsLeft = ($ev->MaxParticipantNr - $ev->TotalParticipantNr);
 
-					if (isset($_REQUEST['eid']))
-					{
-						if ($ev->EventID != $_REQUEST['eid'])
-						{
+					if (isset($_REQUEST['eid'])) {
+						if ($ev->EventID != $_REQUEST['eid']) {
 							continue;
 						}
 					}
 
-					if ($groupByCity && $lastCity != $ev->City)
-					{
+					if ($groupByCity && $lastCity != $ev->City) {
 						$i = 0;
-						if ($hasHiddenDates)
-						{
+						if ($hasHiddenDates) {
 							$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . edu__("Show all events") . "</a></div>";
 						}
 						$hasHiddenDates = false;
 						$retStr .= '<div class="eventSeparator">' . $ev->City . '</div>';
 					}
 
-					if ($showMore > 0 && $i >= $showMore)
-					{
+					if ($showMore > 0 && $i >= $showMore) {
 						$hasHiddenDates = true;
 					}
 
@@ -651,12 +581,10 @@ function eduadmin_get_detailinfo($attributes)
 					$lastCity = $ev->City;
 					$i++;
 				}
-				if (empty($events))
-				{
+				if (empty($events)) {
 					$retStr .= '<div class="noDatesAvailable"><i>' . edu__("No available dates for the selected course") . '</i></div>';
 				}
-				if ($hasHiddenDates)
-				{
+				if ($hasHiddenDates) {
 					$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ($groupByCity ? "-" . $ev->City : "") . "', this);\">" . edu__("Show all events") . "</a></div>";
 				}
 				$retStr .= '</div></div>';
@@ -666,8 +594,7 @@ function eduadmin_get_detailinfo($attributes)
 	return $retStr;
 }
 
-function eduadmin_get_login_widget($attributes)
-{
+function eduadmin_get_login_widget($attributes) {
 	$attributes = shortcode_atts(
 		array(
 			'logintext' => 	edu__("Log in"),
@@ -682,8 +609,9 @@ function eduadmin_get_login_widget($attributes)
 	$cat = get_option('eduadmin-rewriteBaseUrl');
 
 	$baseUrl = $surl . '/' . $cat;
-	if (isset($_SESSION['eduadmin-loginUser']))
-		$user = $_SESSION['eduadmin-loginUser'];
+	if (isset($_SESSION['eduadmin-loginUser'])) {
+			$user = $_SESSION['eduadmin-loginUser'];
+	}
 
 	return
 	"<div class=\"eduadminLogin\" data-eduwidget=\"loginwidget\"
@@ -693,8 +621,7 @@ function eduadmin_get_login_widget($attributes)
 	"</div>";
 }
 
-function eduadmin_get_login_view($attributes)
-{
+function eduadmin_get_login_view($attributes) {
 	if (!defined('DONOTCACHEPAGE')) {
 		define('DONOTCACHEPAGE', true);
 	}

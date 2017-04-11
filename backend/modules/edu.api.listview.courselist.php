@@ -1,9 +1,7 @@
 <?php
 date_default_timezone_set('UTC');
-if (!function_exists('edu_api_listview_courselist'))
-{
-	function edu_api_listview_courselist($request)
-	{
+if (!function_exists('edu_api_listview_courselist')) {
+	function edu_api_listview_courselist($request) {
 		header("Content-type: application/json; charset=UTF-8");
 		global $eduapi;
 
@@ -31,8 +29,7 @@ if (!function_exists('edu_api_listview_courselist'))
 		$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 		$filtering->AddItem($f);
 
-		if (!empty($objectIds))
-		{
+		if (!empty($objectIds)) {
 			$f = new XFilter('ObjectID', 'IN', join(',', $objectIds));
 			$filtering->AddItem($f);
 		}
@@ -49,8 +46,7 @@ if (!function_exists('edu_api_listview_courselist'))
 		$occIds = array();
 		$evIds = array();
 
-		foreach ($ede as $e)
-		{
+		foreach ($ede as $e) {
 			$occIds[] = $e->OccationID;
 			$evIds[] = $e->EventID;
 		}
@@ -62,8 +58,7 @@ if (!function_exists('edu_api_listview_courselist'))
 		$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 		$eventDates = array();
-		foreach ($eventDays as $ed)
-		{
+		foreach ($eventDays as $ed) {
 			$eventDates[$ed->EventID][] = $ed;
 		}
 
@@ -74,14 +69,11 @@ if (!function_exists('edu_api_listview_courselist'))
 		$ft->AddItem($f);
 		$pricenames = $eduapi->GetPriceName($edutoken, '', $ft->ToString());
 
-		if (!empty($pricenames))
-		{
+		if (!empty($pricenames)) {
 			$ede = array_filter($ede, function($object) use (&$pricenames) {
 				$pn = $pricenames;
-				foreach ($pn as $subj)
-				{
-					if ($object->OccationID == $subj->OccationID)
-					{
+				foreach ($pn as $subj) {
+					if ($object->OccationID == $subj->OccationID) {
 						return true;
 					}
 				}
@@ -90,10 +82,8 @@ if (!function_exists('edu_api_listview_courselist'))
 		}
 
 		$returnValue = array();
-		foreach ($ede as $event)
-		{
-			if (!isset($returnValue[$event->ObjectID]))
-			{
+		foreach ($ede as $event) {
+			if (!isset($returnValue[$event->ObjectID])) {
 				$returnValue[$event->ObjectID] = sprintf(edu__('Next event %1$s'), date("Y-m-d", strtotime($event->PeriodStart))) . " " . $event->City;
 			}
 		}
@@ -102,7 +92,6 @@ if (!function_exists('edu_api_listview_courselist'))
 	}
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_courselist")
-{
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_courselist") {
 	echo edu_api_listview_courselist($_REQUEST);
 }

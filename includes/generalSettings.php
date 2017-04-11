@@ -1,6 +1,5 @@
 <?php
-if (isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
-{
+if (isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients") {
 	global $wpdb;
 
 	$prefix = esc_sql('eduadmin-');
@@ -63,10 +62,8 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 <?php
 	$pages = get_pages();
 	$eduPages = array();
-	foreach ($pages as $p)
-	{
-		if (strstr($p->post_content, '[eduadmin'))
-		{
+	foreach ($pages as $p) {
+		if (strstr($p->post_content, '[eduadmin')) {
 			$eduPages[] = $p;
 		}
 	}
@@ -79,11 +76,9 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $listPage = get_option('eduadmin-listViewPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-listview'))
-	{
+	if (stristr($p->post_content, '[eduadmin-listview')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($listPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
@@ -105,11 +100,9 @@ foreach ($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $detailPage = get_option('eduadmin-detailViewPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-detailview'))
-	{
+	if (stristr($p->post_content, '[eduadmin-detailview')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($detailPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
@@ -131,11 +124,9 @@ foreach ($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $bookingPage = get_option('eduadmin-bookingViewPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-bookingview'))
-	{
+	if (stristr($p->post_content, '[eduadmin-bookingview')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($bookingPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
@@ -157,8 +148,7 @@ foreach ($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $thankPage = get_option('eduadmin-thankYouPage');
-foreach ($pages as $p)
-{
+foreach ($pages as $p) {
 	echo "\t\t\t\t\t\t\t<option" . ($thankPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
 		htmlentities($p->post_title . " (ID: " . $p->ID . ")") .
 	"</option>\n";
@@ -175,11 +165,9 @@ foreach ($pages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $loginPage = get_option('eduadmin-loginViewPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-loginview'))
-	{
+	if (stristr($p->post_content, '[eduadmin-loginview')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($loginPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
@@ -201,11 +189,9 @@ foreach ($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $objectInterestPage = get_option('eduadmin-interestObjectPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-objectinterest'))
-	{
+	if (stristr($p->post_content, '[eduadmin-objectinterest')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($objectInterestPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
@@ -227,11 +213,9 @@ foreach ($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $eventInterestPage = get_option('eduadmin-interestEventPage');
-foreach ($eduPages as $p)
-{
+foreach ($eduPages as $p) {
 	$suggested = false;
-	if (stristr($p->post_content, '[eduadmin-eventinterest'))
-	{
+	if (stristr($p->post_content, '[eduadmin-eventinterest')) {
 		$suggested = true;
 	}
 	echo "\t\t\t\t\t\t\t<option" . ($eventInterestPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .

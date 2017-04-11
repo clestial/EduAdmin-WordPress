@@ -1,10 +1,8 @@
 <?php
 date_default_timezone_set('UTC');
 
-if (!function_exists('edu_api_eventlist'))
-{
-	function edu_api_eventlist($request)
-	{
+if (!function_exists('edu_api_eventlist')) {
+	function edu_api_eventlist($request) {
 		header("Content-type: text/html; charset=UTF-8");
 		$retStr = '';
 		global $eduapi;
@@ -24,12 +22,10 @@ if (!function_exists('edu_api_eventlist'))
 		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
 		$selectedCourse = false;
 		$name = "";
-		foreach ($edo as $object)
-		{
+		foreach ($edo as $object) {
 			$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 			$id = $object->ObjectID;
-			if ($id == $objectId)
-			{
+			if ($id == $objectId) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -60,8 +56,7 @@ if (!function_exists('edu_api_eventlist'))
 		$f = new XFilter('ParentEventID', '=', '0');
 		$ft->AddItem($f);
 
-		if (!empty($request['city']))
-		{
+		if (!empty($request['city'])) {
 			$f = new XFilter('City', '=', $request['city']);
 			$ft->AddItem($f);
 		}
@@ -69,8 +64,7 @@ if (!function_exists('edu_api_eventlist'))
 		$st = new XSorting();
 		$groupByCity = $request['groupbycity'];
 		$groupByCityClass = "";
-		if ($groupByCity)
-		{
+		if ($groupByCity) {
 			$s = new XSort('City', 'ASC');
 			$st->AddItem($s);
 			$groupByCityClass = " noCity";
@@ -78,33 +72,28 @@ if (!function_exists('edu_api_eventlist'))
 
 		$customOrderBy = null;
 		$customOrderByOrder = null;
-		if (!empty($request['orderby']))
-		{
+		if (!empty($request['orderby'])) {
 			$customOrderBy = $request['orderby'];
 		}
 
-		if (!empty($request['order']))
-		{
+		if (!empty($request['order'])) {
 			$customOrderByOrder = $request['order'];
 		}
 
-		if ($customOrderBy != null)
-		{
+		if ($customOrderBy != null) {
 			$orderby = explode(' ', $customOrderBy);
 			$sortorder = explode(' ', $customOrderByOrder);
-			foreach ($orderby as $od => $v)
-			{
-				if (isset($sortorder[$od]))
-					$or = $sortorder[$od];
-				else
-					$or = "ASC";
+			foreach ($orderby as $od => $v) {
+				if (isset($sortorder[$od])) {
+									$or = $sortorder[$od];
+				} else {
+									$or = "ASC";
+				}
 
 				$s = new XSort($v, $or);
 				$st->AddItem($s);
 			}
-		}
-		else
-		{
+		} else {
 			$s = new XSort('PeriodStart', 'ASC');
 			$st->AddItem($s);
 		}
@@ -121,8 +110,7 @@ if (!function_exists('edu_api_eventlist'))
 		$eventIds = array();
 		$eventIds[] = -1;
 
-		foreach ($events as $e)
-		{
+		foreach ($events as $e) {
 			$occIds[] = $e->OccationID;
 			$eventIds[] = $e->EventID;
 		}
@@ -134,8 +122,7 @@ if (!function_exists('edu_api_eventlist'))
 		$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 		$eventDates = array();
-		foreach ($eventDays as $ed)
-		{
+		foreach ($eventDays as $ed) {
 			$eventDates[$ed->EventID][] = $ed;
 		}
 
@@ -151,14 +138,11 @@ if (!function_exists('edu_api_eventlist'))
 
 		$pricenames = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 
-		if (!empty($pricenames))
-		{
+		if (!empty($pricenames)) {
 			$events = array_filter($events, function($object) use (&$pricenames) {
 				$pn = $pricenames;
-				foreach ($pn as $subj)
-				{
-					if ($object->OccationID == $subj->OccationID)
-					{
+				foreach ($pn as $subj) {
+					if ($object->OccationID == $subj->OccationID) {
 						return true;
 					}
 				}
@@ -182,33 +166,26 @@ if (!function_exists('edu_api_eventlist'))
 		$retStr .= '<div class="eduadmin"><div class="event-table eventDays">';
 		$i = 0;
 		$hasHiddenDates = false;
-		if (!empty($pricenames))
-		{
-			foreach ($events as $ev)
-			{
+		if (!empty($pricenames)) {
+			foreach ($events as $ev) {
 				$spotsLeft = ($ev->MaxParticipantNr - $ev->TotalParticipantNr);
 
-				if (isset($request['eid']))
-				{
-					if ($ev->EventID != $request['eid'])
-					{
+				if (isset($request['eid'])) {
+					if ($ev->EventID != $request['eid']) {
 						continue;
 					}
 				}
 
-				if ($groupByCity && $lastCity != $ev->City)
-				{
+				if ($groupByCity && $lastCity != $ev->City) {
 					$i = 0;
-					if ($hasHiddenDates)
-					{
+					if ($hasHiddenDates) {
 						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . edu__("Show all events") . "</a></div>";
 					}
 					$hasHiddenDates = false;
 					$retStr .= '<div class="eventSeparator">' . $ev->City . '</div>';
 				}
 
-				if ($showMore > 0 && $i >= $showMore)
-				{
+				if ($showMore > 0 && $i >= $showMore) {
 					$hasHiddenDates = true;
 				}
 
@@ -261,12 +238,10 @@ if (!function_exists('edu_api_eventlist'))
 				$i++;
 			}
 		}
-		if (empty($pricenames) || empty($events))
-		{
+		if (empty($pricenames) || empty($events)) {
 			$retStr .= '<div class="noDatesAvailable"><i>' . edu__("No available dates for the selected course") . '</i></div>';
 		}
-		if ($hasHiddenDates)
-		{
+		if ($hasHiddenDates) {
 			$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ($groupByCity ? "-" . $ev->City : "") . "', this);\">" . edu__("Show all events") . "</a></div>";
 		}
 		$retStr .= '</div></div>';
@@ -275,7 +250,6 @@ if (!function_exists('edu_api_eventlist'))
 	}
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == "detailinfo_eventlist")
-{
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == "detailinfo_eventlist") {
 	echo edu_api_eventlist($_REQUEST);
 }

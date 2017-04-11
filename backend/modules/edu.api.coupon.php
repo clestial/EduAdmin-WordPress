@@ -1,8 +1,7 @@
 <?php
 date_default_timezone_set('UTC');
 
-if (!function_exists('edu_api_check_coupon_code'))
-{
+if (!function_exists('edu_api_check_coupon_code')) {
 	function edu_api_check_coupon_code($request) {
 		header("Content-type: application/json; charset=UTF-8");
 		global $eduapi;
@@ -19,7 +18,6 @@ if (!function_exists('edu_api_check_coupon_code'))
 	}
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == "check_coupon_code")
-{
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == "check_coupon_code") {
 	echo edu_api_check_coupon_code($_REQUEST);
 }

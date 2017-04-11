@@ -3,13 +3,10 @@ $eduapi = EDU()->api;
 $edutoken = EDU()->get_token();
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey))
-{
+if (!$apiKey || empty($apiKey)) {
 	add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 	return;
-}
-else
-{
+} else {
 ?>
 <div class="eduadmin wrap">
 	<h2><?php echo sprintf(__("EduAdmin settings - %s", "eduadmin"), __("List settings", "eduadmin")); ?></h2>

@@ -186,8 +186,7 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 
 	$db = array();
 
-	if (isset($contact) && isset($contact->CustomerContactID))
-	{
+	if (isset($contact) && isset($contact->CustomerContactID)) {
 		if ($contact->CustomerContactID != 0) {
 			$fo = new XFiltering();
 			$f = new XFilter('CustomerContactID', '=', $contact->CustomerContactID);
@@ -196,11 +195,9 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		}
 	}
 
-	foreach ($contactAttributes as $attr)
-	{
+	foreach ($contactAttributes as $attr) {
 		$data = null;
-		foreach ($db as $d)
-		{
+		foreach ($db as $d) {
 			if ($d->AttributeID == $attr->AttributeID) {
 				switch ($d->AttributeTypeID) {
 					case 1:
@@ -231,8 +228,7 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 	$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 	$db = array();
-	if (isset($customer) && isset($customer->CustomerID))
-	{
+	if (isset($customer) && isset($customer->CustomerID)) {
 		if ($customer->CustomerID != 0) {
 			$fo = new XFiltering();
 			$f = new XFilter('CustomerID', '=', $customer->CustomerID);
@@ -241,11 +237,9 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		}
 	}
 
-	foreach ($contactAttributes as $attr)
-	{
+	foreach ($contactAttributes as $attr) {
 		$data = null;
-		foreach ($db as $d)
-		{
+		foreach ($db as $d) {
 			if ($d->AttributeID == $attr->AttributeID) {
 				switch ($d->AttributeTypeID) {
 					case 1:
@@ -283,11 +277,9 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		$db = $eduapi->GetPersonAttribute($edutoken, '', $fo->ToString());
 	}*/
 
-	foreach ($contactAttributes as $attr)
-	{
+	foreach ($contactAttributes as $attr) {
 		$data = null;
-		foreach ($db as $d)
-		{
+		foreach ($db as $d) {
 			if ($d->AttributeID == $attr->AttributeID) {
 				switch ($d->AttributeTypeID) {
 					case 1:
@@ -310,8 +302,7 @@ if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		<?php
 			if (count($subEvents) > 0) {
 				echo "<h4>" . edu__("Sub events") . "</h4>\n";
-				foreach ($subEvents as $subEvent)
-				{
+				foreach ($subEvents as $subEvent) {
 					if (isset($sePrice[$subEvent->OccasionID]) && count($sePrice[$subEvent->OccasionID]) > 0) {
 						$s = current($sePrice[$subEvent->OccasionID])->Price;
 					} else {

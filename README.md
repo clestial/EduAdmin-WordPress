@@ -18,7 +18,7 @@ Stats
 [![Closed issues](https://img.shields.io/github/issues-closed/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/issues?q=is%3Aissue+is%3Aclosed)
 [![Contributors](https://img.shields.io/github/contributors/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/graphs/contributors)
 [![Forks](https://img.shields.io/github/forks/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/network)
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/?branch=master)
 
 
 Pull Requests

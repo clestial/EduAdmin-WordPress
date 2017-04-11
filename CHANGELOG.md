@@ -5,6 +5,8 @@
 - Bugfix: Sessions are now set before the class is loaded
 - Changed how we handle redirects (Login/Logout)
 - Plugin-support: We can now save plugin-settings
+- Added .scrutinizer.yml
+- Fixing issues stated by scrutinizer
 
 ## [0.10.8]
 ### Added

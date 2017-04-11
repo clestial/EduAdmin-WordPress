@@ -12,8 +12,6 @@ if(!function_exists('edu_api_loginwidget'))
 		if(isset($_SESSION['eduadmin-loginUser']))
 		{
 			$user = $_SESSION['eduadmin-loginUser'];
-			$c1 = json_encode($user->Customer);
-			$customer = json_decode($c1);
 			$c2 = json_encode($user->Contact);
 			$contact = json_decode($c2);
 		}

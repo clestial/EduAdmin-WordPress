@@ -1,24 +1,19 @@
 <?php
 date_default_timezone_set('UTC');
 
-if (!function_exists('edu_encrypt'))
-{
-	function edu_encrypt($key, $toEncrypt)
-	{
+if (!function_exists('edu_encrypt')) {
+	function edu_encrypt($key, $toEncrypt) {
 		return base64_encode(openssl_encrypt($toEncrypt, "AES-128-ECB", md5($key), OPENSSL_RAW_DATA, ""));
 	}
 }
 
-if (!function_exists('edu_decrypt'))
-{
-	function edu_decrypt($key, $toDecrypt)
-	{
+if (!function_exists('edu_decrypt')) {
+	function edu_decrypt($key, $toDecrypt) {
 		return rtrim(openssl_decrypt(base64_decode($toDecrypt), "AES-128-ECB", md5($key), OPENSSL_RAW_DATA, ""));
 	}
 }
 
-function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
-{
+function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3) {
 	if ($maxSpots === 0) {
 		return edu__('Spots left');
 	}
@@ -294,47 +289,34 @@ if (!function_exists('noDiacritics')) {
 	}
 }
 
-if (!function_exists('makeSlugs'))
-{
-	function makeSlugs($string, $maxlen = 0)
-	{
+if (!function_exists('makeSlugs')) {
+	function makeSlugs($string, $maxlen = 0) {
 		$newStringTab = array();
 		$string = strtolower(noDiacritics($string));
-		if (function_exists('str_split'))
-		{
+		if (function_exists('str_split')) {
 			$stringTab = str_split($string);
-		}
-		else
-		{
+		} else {
 			$stringTab = my_str_split($string);
 		}
 
 		$numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-");
 
-		foreach ($stringTab as $letter)
-		{
-			if (in_array($letter, range("a", "z")) || in_array($letter, $numbers))
-			{
+		foreach ($stringTab as $letter) {
+			if (in_array($letter, range("a", "z")) || in_array($letter, $numbers)) {
 				$newStringTab[] = $letter;
-	 		}
-			elseif ($letter === " ")
-			{
+	 		} elseif ($letter === " ") {
 				$newStringTab[] = "-";
 			}
 		}
 
-		if (!empty($newStringTab))
-		{
+		if (!empty($newStringTab)) {
 			$newString = implode($newStringTab);
-			if ($maxlen > 0)
-			{
+			if ($maxlen > 0) {
 				$newString = substr($newString, 0, $maxlen);
 			}
 
 			$newString = removeDuplicates('--', '-', $newString);
-		}
-		else
-		{
+		} else {
 			$newString = '';
 		}
 

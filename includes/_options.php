@@ -201,8 +201,7 @@ function eduadmin_backend_content() {
 	wp_enqueue_script('eduadmin_admin_script', false, array('jquery'));
 }
 
-function eduadmin_backend_menu()
-{
+function eduadmin_backend_menu() {
 	$level = 'administrator';
 	add_menu_page('EduAdmin', 'EduAdmin', $level, 'eduadmin-settings', 'eduadmin_settings_general', 'dashicons-welcome-learn-more');
 	add_submenu_page('eduadmin-settings', __('EduAdmin - General', 'eduadmin'), __('General settings', 'eduadmin'), $level, 'eduadmin-settings', 'eduadmin_settings_general');

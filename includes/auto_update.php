@@ -1,6 +1,5 @@
 <?php
-class wp_auto_update
-{
+class wp_auto_update {
 	/**
 	 * The plugin current version
 	 * @var string
@@ -30,8 +29,7 @@ class wp_auto_update
 	 * @param string $current_version
 	 * @param string $plugin_slug
 	 */
-	function __construct($current_version, $plugin_slug)
-	{
+	function __construct($current_version, $plugin_slug) {
 		// Set the class public variables
 		$this->current_version = $current_version;
 		$this->update_path = 'http://ws10.multinet.se/edu-plugin/update.php?oldv=' . $this->current_version;
@@ -52,8 +50,7 @@ class wp_auto_update
 	 * @param $transient
 	 * @return object $ transient
 	 */
-	public function check_update($transient)
-	{
+	public function check_update($transient) {
 		if (empty($transient->checked)) {
 			return $transient;
 		}
@@ -81,8 +78,7 @@ class wp_auto_update
 	 * @param object $arg
 	 * @return bool|object
 	 */
-	public function check_info($false, $action, $arg)
-	{
+	public function check_info($false, $action, $arg) {
 		if ($arg->slug === $this->slug) {
 			$information = $this->getRemote_information();
 			return $information;
@@ -94,8 +90,7 @@ class wp_auto_update
 	 * Return the remote version
 	 * @return string $remote_version
 	 */
-	public function getRemote_version()
-	{
+	public function getRemote_version() {
 		$request = wp_remote_post($this->update_path, array('body' => array('action' => 'version')));
 		if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
 			return $request['body'];
@@ -107,8 +102,7 @@ class wp_auto_update
 	 * Get information about the remote version
 	 * @return bool|object
 	 */
-	public function getRemote_information()
-	{
+	public function getRemote_information() {
 		$request = wp_remote_post($this->update_path, array('body' => array('action' => 'info')));
 		if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
 			return unserialize($request['body']);
@@ -120,8 +114,7 @@ class wp_auto_update
 	 * Return the status of the plugin licensing
 	 * @return boolean $remote_license
 	 */
-	public function getRemote_license()
-	{
+	public function getRemote_license() {
 		$request = wp_remote_post($this->update_path, array('body' => array('action' => 'license')));
 		if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
 			return $request['body'];

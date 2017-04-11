@@ -49,8 +49,9 @@ function edu__($key) {
 	}
 
 	if (isset($phrases[$key]["OldPhrase"])) {
-			if ($phrases[$key]["OldPhrase"] != $key)
-			return $phrases[$key]["OldPhrase"];
+			if ($phrases[$key]["OldPhrase"] != $key) {
+						return $phrases[$key]["OldPhrase"];
+			}
 	}
 
 	return __($key, "eduadmin"); //$phrases[$key];

@@ -84,6 +84,7 @@ function logoutUser()
 	unset($_SESSION['needsLogin']);
 	unset($_SESSION['checkEmail']);
 	wp_redirect($baseUrl . edu_getQueryString());
+	exit();
 }
 
 add_action(
@@ -133,6 +134,7 @@ function() {
 							} else {
 								wp_redirect($baseUrl. "/profile/myprofile/" . edu_getQueryString());
 							}
+							exit();
 						}
 						else
 						{

@@ -54,6 +54,7 @@ function edu_getQueryString($prepend = "?", $removeParameters = array())
 
 function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
 {
+	$spotOption = get_option('eduadmin-spotsLeft', 'exactNumbers');
 	if($maxSpots === 0)
 		return edu__('Spots left');
 
@@ -76,7 +77,7 @@ function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spot
 				return edu__('No spots left');
 			}
 		case "intervals":
-			$interval = $spotSettings;
+			$interval = get_option('eduadmin-spotsSettings', "1-5\n5-10\n10+");
 			if(empty($interval)) {
 				return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 			} else {
@@ -170,17 +171,17 @@ function getRangeFromDays($days, $short, $event, $showDays) {
 	// walk through the dates, breaking at gaps
 	foreach ($days as $key => $date)
 	if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
-	$result[] = edu_GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
+	$result[] = GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
 	$startDate = $date;
 	}
 	// force the end
-	$result[] = edu_GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
+	$result[] = GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
 
 	if (count($result) > 3)
 	{
 		$nRes = array();
 		$ret =
-"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), edu_GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
+"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
 "</span><div class=\"edu-DayPopup\">
 <b>" . edu__("Schedule") . "</b><br />
 " . join("<br />\n", $result) . "

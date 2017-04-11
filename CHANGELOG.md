@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Fixing issues stated by scrutinizer
+- Added `exit()` after `wp_redirect()`
 
 ## [0.10.9]
 ### Added

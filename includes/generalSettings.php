@@ -1,5 +1,5 @@
 <?php
-if(isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
+if (isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 {
 	global $wpdb;
 
@@ -8,7 +8,7 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 	$t = esc_sql("%transient%$prefix%");
 	$sql = $wpdb->prepare("SELECT option_name FROM $options WHERE option_name LIKE '%s'", $t);
 	$transients = $wpdb->get_col($sql);
-	foreach($transients as $transient) {
+	foreach ($transients as $transient) {
 		$key = str_replace('_transient_timeout_', '', $transient);
 		delete_transient($key);
 	}
@@ -63,9 +63,9 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 <?php
 	$pages = get_pages();
 	$eduPages = array();
-	foreach($pages as $p)
+	foreach ($pages as $p)
 	{
-		if(strstr($p->post_content, '[eduadmin'))
+		if (strstr($p->post_content, '[eduadmin'))
 		{
 			$eduPages[] = $p;
 		}
@@ -79,10 +79,10 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == "clearTransients")
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $listPage = get_option('eduadmin-listViewPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-listview'))
+	if (stristr($p->post_content, '[eduadmin-listview'))
 	{
 		$suggested = true;
 	}
@@ -105,10 +105,10 @@ foreach($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $detailPage = get_option('eduadmin-detailViewPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-detailview'))
+	if (stristr($p->post_content, '[eduadmin-detailview'))
 	{
 		$suggested = true;
 	}
@@ -131,10 +131,10 @@ foreach($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $bookingPage = get_option('eduadmin-bookingViewPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-bookingview'))
+	if (stristr($p->post_content, '[eduadmin-bookingview'))
 	{
 		$suggested = true;
 	}
@@ -157,7 +157,7 @@ foreach($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $thankPage = get_option('eduadmin-thankYouPage');
-foreach($pages as $p)
+foreach ($pages as $p)
 {
 	echo "\t\t\t\t\t\t\t<option" . ($thankPage == $p->ID ? " selected=\"selected\"" : "") . " value=\"" . $p->ID . "\">" .
 		htmlentities($p->post_title . " (ID: " . $p->ID . ")") .
@@ -175,10 +175,10 @@ foreach($pages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $loginPage = get_option('eduadmin-loginViewPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-loginview'))
+	if (stristr($p->post_content, '[eduadmin-loginview'))
 	{
 		$suggested = true;
 	}
@@ -201,10 +201,10 @@ foreach($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $objectInterestPage = get_option('eduadmin-interestObjectPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-objectinterest'))
+	if (stristr($p->post_content, '[eduadmin-objectinterest'))
 	{
 		$suggested = true;
 	}
@@ -227,10 +227,10 @@ foreach($eduPages as $p)
 							<option value="">-- <?php _e("No page selected", "eduadmin"); ?> --</option>
 <?php
 $eventInterestPage = get_option('eduadmin-interestEventPage');
-foreach($eduPages as $p)
+foreach ($eduPages as $p)
 {
 	$suggested = false;
-	if(stristr($p->post_content, '[eduadmin-eventinterest'))
+	if (stristr($p->post_content, '[eduadmin-eventinterest'))
 	{
 		$suggested = true;
 	}

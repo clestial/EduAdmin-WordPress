@@ -38,7 +38,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 				</div>
 			</label>
 			<?php $selectedLoginField = get_option('eduadmin-loginField', 'Email'); ?>
-			<?php if($selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber') { ?>
+			<?php if ($selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber') { ?>
 			<label>
 				<div class="inputLabel">
 					<?php edu_e("Civic Registration Number"); ?>
@@ -48,7 +48,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 				</div>
 			</label>
 			<?php } ?>
-			<?php if(get_option('eduadmin-useLogin', false) && empty($contact->Loginpass)) { ?>
+			<?php if (get_option('eduadmin-useLogin', false) && empty($contact->Loginpass)) { ?>
 			<label>
 				<div class="inputLabel">
 					<?php edu_e("Please enter a password"); ?>
@@ -72,9 +72,9 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 			$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 			$db = array();
-			if(isset($contact) && isset($contact->CustomerContactID))
+			if (isset($contact) && isset($contact->CustomerContactID))
 			{
-				if($contact->CustomerContactID != 0) {
+				if ($contact->CustomerContactID != 0) {
 					$fo = new XFiltering();
 					$f = new XFilter('CustomerContactID', '=', $contact->CustomerContactID);
 					$fo->AddItem($f);
@@ -82,13 +82,13 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 				}
 			}
 
-			foreach($contactAttributes as $attr)
+			foreach ($contactAttributes as $attr)
 			{
 				$data = null;
-				foreach($db as $d)
+				foreach ($db as $d)
 				{
-					if($d->AttributeID == $attr->AttributeID) {
-						switch($d->AttributeTypeID) {
+					if ($d->AttributeID == $attr->AttributeID) {
+						switch ($d->AttributeTypeID) {
 							case 1:
 								$data = $d->AttributeChecked;
 								break;

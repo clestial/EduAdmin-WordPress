@@ -5,22 +5,22 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if(!$apiKey || empty($apiKey))
+if (!$apiKey || empty($apiKey))
 {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 }
 else
 {
-	if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'objectInquiry')
+	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'objectInquiry')
 	{
 		include_once("sendObjectInquiry.php");
 	}
 
 	$edo = get_transient('eduadmin-listCourses');
-	if(!$edo)
+	if (!$edo)
 	{
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb','=','true');
+		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
 		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
@@ -29,17 +29,17 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach($edo as $object)
+	foreach ($edo as $object)
 	{
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if(makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
 		{
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if(!$selectedCourse)
+	if (!$selectedCourse)
 	{
 		?>
 		<script>history.go(-1);</script>
@@ -100,7 +100,7 @@ else
 					</textarea>
 				</div>
 			</label>
-			<?php if(get_option('eduadmin-singlePersonBooking', false)) { ?>
+			<?php if (get_option('eduadmin-singlePersonBooking', false)) { ?>
 			<input type="hidden" name="edu-participants" value="1" />
 			<?php } else { ?>
 			<label>

@@ -3,7 +3,7 @@ $user = $_SESSION['eduadmin-loginUser'];
 $contact = $user->Contact;
 $customer = $user->Customer;
 
-if(isset($_POST['eduaction']) && $_POST['eduaction'] == "saveInfo") {
+if (isset($_POST['eduaction']) && $_POST['eduaction'] == "saveInfo") {
 	global $eduapi;
 	global $edutoken;
 

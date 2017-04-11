@@ -5,22 +5,22 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if(!$apiKey || empty($apiKey))
+if (!$apiKey || empty($apiKey))
 {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 }
 else
 {
-	if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'eventInquiry')
+	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'eventInquiry')
 	{
 		include_once("sendEventInquiry.php");
 	}
 
 	$edo = get_transient('eduadmin-listCourses');
-	if(!$edo)
+	if (!$edo)
 	{
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb','=','true');
+		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
 		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
@@ -29,17 +29,17 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach($edo as $object)
+	foreach ($edo as $object)
 	{
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if(makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
 		{
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if(!$selectedCourse)
+	if (!$selectedCourse)
 	{
 		?>
 		<script>history.go(-1);</script>
@@ -48,7 +48,7 @@ else
 	}
 
 	$ft = new XFiltering();
-	if(isset($_REQUEST['eid']))
+	if (isset($_REQUEST['eid']))
 	{
 		$eventid = $_REQUEST['eid'];
 		$f = new XFilter('EventID', '=', $eventid);
@@ -60,7 +60,7 @@ else
 	$ft->AddItem($f);
 	$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 	$ft->AddItem($f);
-	$f = new XFilter('StatusID','=','1');
+	$f = new XFilter('StatusID', '=', '1');
 	$ft->AddItem($f);
 
 	$st = new XSorting();
@@ -73,7 +73,7 @@ else
 		$ft->ToString()
 	);
 
-	if(count($events) == 0)
+	if (count($events) == 0)
 	{
 		?>
 		<script>history.go(-1);</script>
@@ -94,7 +94,7 @@ else
 	echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate($event->PeriodStart, $event->PeriodEnd) . ", ";
 				echo date("H:i", strtotime($event->PeriodStart)); ?> - <?php echo date("H:i", strtotime($event->PeriodEnd));
 				$addresses = get_transient('eduadmin-location-' . $event->LocationAddressID);
-				if(!$addresses)
+				if (!$addresses)
 				{
 					$ft = new XFiltering();
 					$f = new XFilter('LocationAddressID', '=', $event->LocationAddressID);
@@ -103,9 +103,9 @@ else
 					set_transient('eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS);
 				}
 
-				foreach($addresses as $address)
+				foreach ($addresses as $address)
 				{
-					if($address->LocationAddressID === $event->LocationAddressID)
+					if ($address->LocationAddressID === $event->LocationAddressID)
 					{
 						echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
 						break;
@@ -158,7 +158,7 @@ else
 					</textarea>
 				</div>
 			</label>
-			<?php if(get_option('eduadmin-singlePersonBooking', false)) { ?>
+			<?php if (get_option('eduadmin-singlePersonBooking', false)) { ?>
 			<input type="hidden" name="edu-participants" value="1" />
 			<?php } else { ?>
 			<label>

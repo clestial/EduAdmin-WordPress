@@ -1,7 +1,7 @@
 <?php
 function renderAttribute($attribute, $multiple = false, $suffix = "", $data = null)
 {
-	switch($attribute->AttributeTypeID)
+	switch ($attribute->AttributeTypeID)
 	{
 		case 1: // Checkbox
 			renderCheckField($attribute, $multiple, $suffix, $data);
@@ -89,7 +89,7 @@ function renderSelectField($attribute, $multiple, $suffix, $data)
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
 	echo "<select name=\"edu-attr_" . $attribute->AttributeID . ($suffix != "" ? "-" . $suffix : "") . ($multiple ? "[]" : "") . "\">\n";
-	foreach($attribute->AttributeAlternative as $val)
+	foreach ($attribute->AttributeAlternative as $val)
 	{
 		echo "\t<option" . ($data != null && $data == $val->AttributeAlternativeID ? " selected=\"selected\"" : "") . " value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</option>\n";
 	}
@@ -102,7 +102,7 @@ function renderCheckboxListField($attribute, $multiple, $suffix, $data)
 	echo "<div class=\"inputLabel\">";
 	echo $attribute->AttributeDescription;
 	echo "</div><div class=\"inputHolder\">";
-	foreach($attribute->AttributeAlternative as $val)
+	foreach ($attribute->AttributeAlternative as $val)
 	{
 		echo "\t<label><input" . ($data != null && $data == $val->AttributeAlternativeID ? " checked=\"checked\"" : "") . " type=\"checkbox\" name=\"edu-attr_" . $attribute->AttributeID . ($suffix != "" ? "-" . $suffix : "") . ($multiple ? "[]" : "") . "\" value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</label>\n";
 	}

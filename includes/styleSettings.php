@@ -1,5 +1,5 @@
 <?php
-if(isset($_POST['resetStyle']))
+if (isset($_POST['resetStyle']))
 {
 	delete_option('eduadmin-style');
 }

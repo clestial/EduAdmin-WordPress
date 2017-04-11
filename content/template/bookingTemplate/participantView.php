@@ -38,7 +38,7 @@
 							<input type="tel" readonly class="contactMobile" placeholder="<?php edu_e("Mobile number"); ?>" />
 						</div>
 					</label>
-					<?php if($selectedCourse->RequireCivicRegistrationNumber) { ?>
+					<?php if ($selectedCourse->RequireCivicRegistrationNumber) { ?>
 					<label>
 						<div class="inputLabel">
 							<?php edu_e("Civic Registration Number"); ?>
@@ -69,13 +69,13 @@
 						$db = $eduapi->GetPersonAttribute($edutoken, '', $fo->ToString());
 					}*/
 
-					foreach($contactAttributes as $attr)
+					foreach ($contactAttributes as $attr)
 					{
 						$data = null;
-						foreach($db as $d)
+						foreach ($db as $d)
 						{
-							if($d->AttributeID == $attr->AttributeID) {
-								switch($d->AttributeTypeID) {
+							if ($d->AttributeID == $attr->AttributeID) {
+								switch ($d->AttributeTypeID) {
 									case 1:
 										$data = $d->AttributeChecked;
 										break;
@@ -93,7 +93,7 @@
 					}
 
 					?>
-					<?php if(get_option('eduadmin-selectPricename', 'firstPublic') == "selectParticipant") { ?>
+					<?php if (get_option('eduadmin-selectPricename', 'firstPublic') == "selectParticipant") { ?>
 					<label>
 						<div class="inputLabel">
 							<?php edu_e("Price name"); ?>
@@ -101,14 +101,14 @@
 						<div class="inputHolder">
 							<select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required onchange="eduBookingView.UpdatePrice();">
 								<option value=""><?php edu_e("Choose price"); ?></option>
-								<?php foreach($prices as $price) { ?>
+								<?php foreach ($prices as $price) { ?>
 								<option
 									data-price="<?php echo esc_attr($price->Price); ?>"
 									date-discountpercent="<?php echo esc_attr($price->DiscountPercent); ?>"
 									data-pricelnkid="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>"
 									data-maxparticipants="<?php echo @esc_attr($price->MaxPriceNameParticipantNr); ?>"
 									data-currentparticipants="<?php echo @esc_attr($price->ParticipantNr); ?>"
-									<?php if($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
+									<?php if ($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
 									disabled
 									<?php } ?>
 									value="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>">
@@ -121,17 +121,17 @@
 					</label>
 					<?php } ?>
 					<?php
-						if(count($subEvents) > 0) {
+						if (count($subEvents) > 0) {
 							echo "<h4>" . edu__("Sub events") . "</h4>\n";
-							foreach($subEvents as $subEvent)
+							foreach ($subEvents as $subEvent)
 							{
-								if(count($sePrice[$subEvent->OccasionID]) > 0) {
+								if (count($sePrice[$subEvent->OccasionID]) > 0) {
 									$s = current($sePrice[$subEvent->OccasionID])->Price;
 								} else {
 									$s = 0;
 								}
 								// PriceNameVat
-								echo "<label>".
+								echo "<label>" .
 								"<input class=\"subEventCheckBox\" data-price=\"" . $s . "\" onchange=\"eduBookingView.UpdatePrice();\" " .
 									"name=\"contactSubEvent_" . $subEvent->EventID . "\" " .
 									"type=\"checkbox\"" .
@@ -140,7 +140,7 @@
 								" value=\"" . $subEvent->EventID . "\"> " .
 									$subEvent->Description .
 									($hideSubEventDateInfo ? "" : " (" . date("d/m H:i", strtotime($subEvent->StartDate)) . " - " . date("d/m H:i", strtotime($subEvent->EndDate)) . ") ") .
-									($s > 0  ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
+									($s > 0 ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
 								"</label>\n";
 							}
 							echo "<br />";
@@ -185,7 +185,7 @@
 							<input type="tel" name="participantMobile[]" placeholder="<?php edu_e("Mobile number"); ?>" />
 						</div>
 					</label>
-					<?php if($selectedCourse->RequireCivicRegistrationNumber) { ?>
+					<?php if ($selectedCourse->RequireCivicRegistrationNumber) { ?>
 					<label>
 						<div class="inputLabel">
 							<?php edu_e("Civic Registration Number"); ?>
@@ -208,13 +208,13 @@
 					$fo->AddItem($f);
 					$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
-					foreach($contactAttributes as $attr)
+					foreach ($contactAttributes as $attr)
 					{
 						renderAttribute($attr, true);
 					}
 
 					?>
-					<?php if(get_option('eduadmin-selectPricename', 'firstPublic') == "selectParticipant") { ?>
+					<?php if (get_option('eduadmin-selectPricename', 'firstPublic') == "selectParticipant") { ?>
 					<label>
 						<div class="inputLabel">
 							<?php edu_e("Price name"); ?>
@@ -222,14 +222,14 @@
 						<div class="inputHolder">
 							<select name="participantPriceName[]" required class="edudropdown participantPriceName edu-pricename" onchange="eduBookingView.UpdatePrice();">
 								<option value=""><?php edu_e("Choose price"); ?></option>
-								<?php foreach($prices as $price) { ?>
+								<?php foreach ($prices as $price) { ?>
 								<option
 									data-price="<?php echo esc_attr($price->Price); ?>"
 									date-discountpercent="<?php echo esc_attr($price->DiscountPercent); ?>"
 									data-pricelnkid="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>"
 									data-maxparticipants="<?php echo @esc_attr($price->MaxPriceNameParticipantNr); ?>"
 									data-currentparticipants="<?php echo @esc_attr($price->ParticipantNr); ?>"
-									<?php if($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
+									<?php if ($price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr) { ?>
 									disabled
 									<?php } ?>
 									value="<?php echo esc_attr($price->OccationPriceNameLnkID); ?>">
@@ -242,17 +242,17 @@
 					</label>
 					<?php } ?>
 					<?php
-						if(count($subEvents) > 0) {
+						if (count($subEvents) > 0) {
 							echo "<h4>" . edu__("Sub events") . "</h4>\n";
-							foreach($subEvents as $subEvent)
+							foreach ($subEvents as $subEvent)
 							{
-								if(count($sePrice[$subEvent->OccasionID]) > 0) {
+								if (count($sePrice[$subEvent->OccasionID]) > 0) {
 									$s = current($sePrice[$subEvent->OccasionID])->Price;
 								} else {
 									$s = 0;
 								}
 								// PriceNameVat
-								echo "<label>".
+								echo "<label>" .
 								"<input class=\"subEventCheckBox\" data-price=\"" . $s . "\" onchange=\"eduBookingView.UpdatePrice();\" " .
 									"name=\"participantSubEvent_" . $subEvent->EventID . "[]\" " .
 									"type=\"checkbox\"" .
@@ -261,7 +261,7 @@
 								" value=\"" . $subEvent->EventID . "\"> " .
 									$subEvent->Description .
 									($hideSubEventDateInfo ? "" : " (" . date("d/m H:i", strtotime($subEvent->StartDate)) . " - " . date("d/m H:i", strtotime($subEvent->EndDate)) . ") ") .
-									($s > 0  ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
+									($s > 0 ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
 								"</label>\n";
 							}
 							echo "<br />";

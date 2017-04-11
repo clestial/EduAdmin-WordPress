@@ -1,5 +1,5 @@
 <?php
-if(get_option('eduadmin-credentials_have_changed'))
+if (get_option('eduadmin-credentials_have_changed'))
 {
 	delete_transient('eduadmin-token');
 	delete_transient('eduadmin-listCourses');

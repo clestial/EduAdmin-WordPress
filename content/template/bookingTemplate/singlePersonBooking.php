@@ -38,7 +38,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 		</div>
 	</label>
 	<?php $selectedLoginField = get_option('eduadmin-loginField', 'Email'); ?>
-	<?php if($selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber') { ?>
+	<?php if ($selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber') { ?>
 	<label>
 		<div class="inputLabel">
 			<?php edu_e("Civic Registration Number"); ?>
@@ -48,7 +48,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 		</div>
 	</label>
 	<?php } ?>
-	<?php if(get_option('eduadmin-useLogin', false) && empty($contact->Loginpass)) { ?>
+	<?php if (get_option('eduadmin-useLogin', false) && empty($contact->Loginpass)) { ?>
 	<label>
 		<div class="inputLabel">
 			<?php edu_e("Please enter a password"); ?>
@@ -64,7 +64,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 </div>
 <?php
 $noInvoiceFreeEvents = get_option('eduadmin-noInvoiceFreeEvents', false);
-if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
+if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 ?>
 <div class="customerView">
 	<label>
@@ -186,9 +186,9 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 
 	$db = array();
 
-	if(isset($contact) && isset($contact->CustomerContactID))
+	if (isset($contact) && isset($contact->CustomerContactID))
 	{
-		if($contact->CustomerContactID != 0) {
+		if ($contact->CustomerContactID != 0) {
 			$fo = new XFiltering();
 			$f = new XFilter('CustomerContactID', '=', $contact->CustomerContactID);
 			$fo->AddItem($f);
@@ -196,13 +196,13 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		}
 	}
 
-	foreach($contactAttributes as $attr)
+	foreach ($contactAttributes as $attr)
 	{
 		$data = null;
-		foreach($db as $d)
+		foreach ($db as $d)
 		{
-			if($d->AttributeID == $attr->AttributeID) {
-				switch($d->AttributeTypeID) {
+			if ($d->AttributeID == $attr->AttributeID) {
+				switch ($d->AttributeTypeID) {
 					case 1:
 						$data = $d->AttributeChecked;
 						break;
@@ -231,9 +231,9 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 	$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 	$db = array();
-	if(isset($customer) && isset($customer->CustomerID))
+	if (isset($customer) && isset($customer->CustomerID))
 	{
-		if($customer->CustomerID != 0) {
+		if ($customer->CustomerID != 0) {
 			$fo = new XFiltering();
 			$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 			$fo->AddItem($f);
@@ -241,13 +241,13 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		}
 	}
 
-	foreach($contactAttributes as $attr)
+	foreach ($contactAttributes as $attr)
 	{
 		$data = null;
-		foreach($db as $d)
+		foreach ($db as $d)
 		{
-			if($d->AttributeID == $attr->AttributeID) {
-				switch($d->AttributeTypeID) {
+			if ($d->AttributeID == $attr->AttributeID) {
+				switch ($d->AttributeTypeID) {
 					case 1:
 						$data = $d->AttributeChecked;
 						break;
@@ -283,13 +283,13 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 		$db = $eduapi->GetPersonAttribute($edutoken, '', $fo->ToString());
 	}*/
 
-	foreach($contactAttributes as $attr)
+	foreach ($contactAttributes as $attr)
 	{
 		$data = null;
-		foreach($db as $d)
+		foreach ($db as $d)
 		{
-			if($d->AttributeID == $attr->AttributeID) {
-				switch($d->AttributeTypeID) {
+			if ($d->AttributeID == $attr->AttributeID) {
+				switch ($d->AttributeTypeID) {
 					case 1:
 						$data = $d->AttributeChecked;
 						break;
@@ -308,17 +308,17 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 	?>
 	<div class="participantItem contactPerson">
 		<?php
-			if(count($subEvents) > 0) {
+			if (count($subEvents) > 0) {
 				echo "<h4>" . edu__("Sub events") . "</h4>\n";
-				foreach($subEvents as $subEvent)
+				foreach ($subEvents as $subEvent)
 				{
-					if(isset($sePrice[$subEvent->OccasionID]) && count($sePrice[$subEvent->OccasionID]) > 0) {
+					if (isset($sePrice[$subEvent->OccasionID]) && count($sePrice[$subEvent->OccasionID]) > 0) {
 						$s = current($sePrice[$subEvent->OccasionID])->Price;
 					} else {
 						$s = 0;
 					}
 					// PriceNameVat
-					echo "<label>".
+					echo "<label>" .
 					"<input class=\"subEventCheckBox\" data-price=\"" . $s . "\" onchange=\"eduBookingView.UpdatePrice();\" " .
 						"name=\"contactSubEvent_" . $subEvent->EventID . "\" " .
 						"type=\"checkbox\"" .
@@ -327,7 +327,7 @@ if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 					" value=\"" . $subEvent->EventID . "\"> " .
 						$subEvent->Description .
 						($hideSubEventDateInfo ? "" : " (" . date("d/m H:i", strtotime($subEvent->StartDate)) . " - " . date("d/m H:i", strtotime($subEvent->EndDate)) . ") ") .
-						($s > 0  ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
+						($s > 0 ? " <i class=\"priceLabel\">" . convertToMoney($s) . "</i>" : "") .
 					"</label>\n";
 				}
 			}

@@ -2,8 +2,7 @@
 
 function DecryptApiKey($key) {
 	$decrypted = explode('|', base64_decode($key));
-	if (count($decrypted) == 2)
-	{
+	if (count($decrypted) == 2) {
 		$apiKey = new stdClass();
 		$apiKey->UserId = $decrypted[0];
 		$apiKey->Hash = $decrypted[1];

@@ -77,33 +77,24 @@ final class EduAdmin {
 
 	public function get_token() {
 		$apiKey = get_option('eduadmin-api-key');
-		if (!$apiKey || empty($apiKey))
-		{
+		if (!$apiKey || empty($apiKey)) {
 			add_action('admin_notices', array($this, 'SetupWarning'));
 			return;
-		}
-		else
-		{
+		} else {
 			$key = DecryptApiKey($apiKey);
-			if (!$key)
-			{
+			if (!$key) {
 				add_action('admin_notices', array($this, 'SetupWarning'));
 				return;
 			}
 
 			$edutoken = get_transient('eduadmin-token');
-			if (!$edutoken)
-			{
+			if (!$edutoken) {
 				$edutoken = $this->api->GetAuthToken($key->UserId, $key->Hash);
 				set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
-			}
-			else
-			{
-				if (get_transient('eduadmin-validatedToken_' . $edutoken) === false)
-				{
+			} else {
+				if (get_transient('eduadmin-validatedToken_' . $edutoken) === false) {
 					$valid = $this->api->ValidateAuthToken($edutoken);
-					if (!$valid)
-					{
+					if (!$valid) {
 						$edutoken = $this->api->GetAuthToken($key->UserId, $key->Hash);
 						set_transient('eduadmin-token', $edutoken, HOUR_IN_SECONDS);
 					}
@@ -136,8 +127,7 @@ final class EduAdmin {
 		include_once("includes/_textFunctions.php");
 		include_once("includes/_loginFunctions.php");
 
-		if (file_exists(dirname(__FILE__) . "/.official.plugin.php"))
-		{
+		if (file_exists(dirname(__FILE__) . "/.official.plugin.php")) {
 			include_once(".official.plugin.php");
 		}
 	}
@@ -158,8 +148,7 @@ final class EduAdmin {
 		$this->integrations = new EDU_IntegrationLoader();
 	}
 
-	public static function SetupWarning()
-	{
+	public static function SetupWarning() {
 		?>
         <div class="notice notice-warning is-dismissable">
             <p><?php echo sprintf(__('Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin'), '<a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">', '</a>'); ?></p>
@@ -182,8 +171,7 @@ final class EduAdmin {
 		return $version;
 	}
 
-	public function call_home()
-	{
+	public function call_home() {
 		global $wp_version;
 		$usageData = array(
 			'siteUrl' => get_site_url(),
@@ -198,8 +186,7 @@ final class EduAdmin {
 		wp_remote_post($callHomeUrl, array('body' => $usageData));
 	}
 
-	public function load_language()
-	{
+	public function load_language() {
 		$domain = 'eduadmin';
 		$locale = apply_filters('plugin_locale', get_locale(), $domain);
 		load_textdomain($domain, WP_LANG_DIR . '/eduadmin/' . $domain . '-' . $locale . '.mo');
@@ -210,8 +197,7 @@ final class EduAdmin {
 		}
 	}
 
-	public function new_theme()
-	{
+	public function new_theme() {
 		update_option('eduadmin-options_have_changed', true);
 	}
 
@@ -226,8 +212,7 @@ function EDU() {
 }
 
 $GLOBALS['eduadmin'] = EDU();
-if (function_exists('wp_get_timezone_string'))
-{
+if (function_exists('wp_get_timezone_string')) {
 	date_default_timezone_set(wp_get_timezone_string());
 	if (@ini_set('date.timezone', wp_get_timezone_string()) === FALSE) {
 		add_action('admin_notices', function() {

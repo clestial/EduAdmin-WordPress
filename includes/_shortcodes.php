@@ -2,8 +2,9 @@
 defined('ABSPATH') or die('This plugin must be run within the scope of WordPress.');
 if (!function_exists('normalize_empty_atts')) {
 	function normalize_empty_atts($atts) {
-		if (empty($atts))
-			return $atts;
+		if (empty($atts)) {
+					return $atts;
+		}
 		foreach ($atts as $attribute => $value) {
 			if (is_int($attribute)) {
 				$atts[strtolower($value)] = true;
@@ -471,8 +472,7 @@ function eduadmin_get_detailinfo($attributes) {
 				 $eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 				 $eventDates = array();
-				 foreach ($eventDays as $ed)
-				 {
+				 foreach ($eventDays as $ed) {
 					 $eventDates[$ed->EventID][] = $ed;
 				 }
 

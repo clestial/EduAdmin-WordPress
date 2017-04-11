@@ -43,19 +43,16 @@
 	}
  }
 
-function edu_getQueryString($prepend = "?", $removeParameters = array())
-{
+function edu_getQueryString($prepend = "?", $removeParameters = array()) {
 	array_push($removeParameters, 'eduadmin-thankyou');
-	foreach ($removeParameters as $par)
-	{
+	foreach ($removeParameters as $par) {
 		unset($_GET[$par]);
 	}
 	if (!empty($_GET)) { return $prepend . http_build_query($_GET); }
 	return "";
 }
 
-function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
-{
+function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3) {
 	$spotOption = get_option('eduadmin-spotsLeft', 'exactNumbers');
 	if ($maxSpots === 0) {
 		return edu__('Spots left');
@@ -65,8 +62,7 @@ function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spot
 		return edu__('No spots left');
 	}
 
-	switch ($spotOption)
-	{
+	switch ($spotOption) {
 		case "exactNumbers":
 			return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 		case "onlyText":

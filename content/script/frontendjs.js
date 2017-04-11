@@ -1,3 +1,5 @@
+/** global: edu */
+
 var eduBookingView = {
 	Customer: null,
 	ContactPerson: null,
@@ -142,7 +144,7 @@ var eduBookingView = {
 			if(participantPriceNames.length > 0) {
 				var participants = eduBookingView.CurrentParticipants;
 				for(var i = 0; i < participants; i++) {
-					if(discountPerParticipant !== undefined && discountPerParticipant > 0) {
+					if(window.discountPerParticipant !== undefined && window.discountPerParticipant > 0) {
 						var lpr = parseFloat(participantPriceNames[i].selectedOptions[0].attributes['data-price'].value);
 						var disc = window.discountPerParticipant * lpr;
 						newPrice += lpr - disc;
@@ -358,7 +360,7 @@ var eduBookingView = {
 			var year = RegExp.$1, month = RegExp.$2, day = RegExp.$3, unique = RegExp.$4;
 			if(year.toString().length <= 2) {
 				year = date.getFullYear().toString().substring(0, 2) + '' + year;
-				while(year > date.getFullYear()) year -= 100;
+				while(year > date.getFullYear()) { year -= 100; }
 			}
 
 			var checkDate = new Date(year, month - 1, day);

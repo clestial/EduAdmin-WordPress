@@ -1,4 +1,5 @@
 /** global: wp_edu */
+/** global: edu */
 var edu = edu ? edu : {};
 
 edu.apiclient = {

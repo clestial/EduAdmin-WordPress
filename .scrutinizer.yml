@@ -2,6 +2,7 @@ filter:
     excluded_paths:
         - 'tests/*'
         - 'languages/*'
+        - 'includes/loApiClient.php'
 checks:
     php:
         fix_php_opening_tag: true

@@ -2429,7 +2429,7 @@
       return null;
     }
 
-    private function __debug($result = null)
+    private function __debug()
     {
       $requestHeaders = $this->__server->__getLastRequestHeaders();
         $request = $this->__server->__getLastRequest();

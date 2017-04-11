@@ -1,9 +1,7 @@
 <?php
 date_default_timezone_set('UTC');
-if (!function_exists('edu_api_listview_eventlist'))
-{
-	function edu_api_listview_eventlist($request)
-	{
+if (!function_exists('edu_api_listview_eventlist')) {
+	function edu_api_listview_eventlist($request) {
 		header("Content-type: text/html; charset=UTF-8");
 		global $eduapi;
 
@@ -17,14 +15,10 @@ if (!function_exists('edu_api_listview_eventlist'))
 
 		$filterCourses = array();
 
-		if (!empty($request['subject']))
-		{
-			foreach ($subjects as $subject)
-			{
-				if ($subject->SubjectID == $request['subject'])
-				{
-					if (!in_array($subject->ObjectID, $filterCourses))
-					{
+		if (!empty($request['subject'])) {
+			foreach ($subjects as $subject) {
+				if ($subject->SubjectID == $request['subject']) {
+					if (!in_array($subject->ObjectID, $filterCourses)) {
 						$filterCourses[] = $subject->ObjectID;
 					}
 				}
@@ -35,26 +29,22 @@ if (!function_exists('edu_api_listview_eventlist'))
 		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
-		if (isset($request['category']))
-		{
+		if (isset($request['category'])) {
 			$f = new XFilter('CategoryID', '=', $request['category']);
 			$filtering->AddItem($f);
 		}
 
-		if (!empty($filterCourses))
-		{
+		if (!empty($filterCourses)) {
 			$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
 			$filtering->AddItem($f);
 		}
 
-		if (isset($request['city']))
-		{
+		if (isset($request['city'])) {
 			$f = new XFilter('LocationID', '=', $request['city']);
 			$filtering->AddItem($f);
 		}
 
-		if (isset($request['courselevel']))
-		{
+		if (isset($request['courselevel'])) {
 			$f = new XFilter('EducationLevelID', '=', $request['courselevel']);
 			$filtering->AddItem($f);
 		}
@@ -66,8 +56,7 @@ if (!function_exists('edu_api_listview_eventlist'))
 
 		$edo = $eduapi->GetEducationObjectV2($edutoken, '', $filtering->ToString(), false);
 
-		if (!empty($request['search']))
-		{
+		if (!empty($request['search'])) {
 			$edo = array_filter($edo, function($object) use(&$request) {
 				$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 				$descrMatch = stripos($object->CourseDescription, $request['search']) !== FALSE;
@@ -97,26 +86,22 @@ if (!function_exists('edu_api_listview_eventlist'))
 		$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 		$filtering->AddItem($f);
 
-		if (!empty($filterCourses))
-		{
+		if (!empty($filterCourses)) {
 			$f = new XFilter('ObjectID', 'IN', join(',', $filterCourses));
 			$filtering->AddItem($f);
 		}
 
-		if (isset($request['city']))
-		{
+		if (isset($request['city'])) {
 			$f = new XFilter('LocationID', '=', $request['city']);
 			$filtering->AddItem($f);
 		}
 
-		if (isset($request['subject']))
-		{
+		if (isset($request['subject'])) {
 			$f = new XFilter('SubjectID', '=', $request['subject']);
 			$filtering->AddItem($f);
 		}
 
-		if (isset($request['category']))
-		{
+		if (isset($request['category'])) {
 			$f = new XFilter('CategoryID', '=', $request['category']);
 			$filtering->AddItem($f);
 		}
@@ -131,33 +116,28 @@ if (!function_exists('edu_api_listview_eventlist'))
 
 		$customOrderBy = null;
 		$customOrderByOrder = null;
-		if (!empty($request['orderby']))
-		{
+		if (!empty($request['orderby'])) {
 			$customOrderBy = $request['orderby'];
 		}
 
-		if (!empty($request['order']))
-		{
+		if (!empty($request['order'])) {
 			$customOrderByOrder = $request['order'];
 		}
 
-		if ($customOrderBy != null)
-		{
+		if ($customOrderBy != null) {
 			$orderby = explode(' ', $customOrderBy);
 			$sortorder = explode(' ', $customOrderByOrder);
-			foreach ($orderby as $od => $v)
-			{
-				if (isset($sortorder[$od]))
-					$or = $sortorder[$od];
-				else
-					$or = "ASC";
+			foreach ($orderby as $od => $v) {
+				if (isset($sortorder[$od])) {
+									$or = $sortorder[$od];
+				} else {
+									$or = "ASC";
+				}
 
 				$s = new XSort($v, $or);
 				$sorting->AddItem($s);
 			}
-		}
-		else
-		{
+		} else {
 			$s = new XSort('PeriodStart', 'ASC');
 			$sorting->AddItem($s);
 		}
@@ -166,10 +146,8 @@ if (!function_exists('edu_api_listview_eventlist'))
 
 		$ede = array_filter($ede, function($object) use (&$edo) {
 			$pn = $edo;
-			foreach ($pn as $subj)
-			{
-				if ($object->ObjectID == $subj->ObjectID)
-				{
+			foreach ($pn as $subj) {
+				if ($object->ObjectID == $subj->ObjectID) {
 					return true;
 				}
 			}
@@ -179,8 +157,7 @@ if (!function_exists('edu_api_listview_eventlist'))
 		$occIds = array();
 		$evIds = array();
 
-		foreach ($ede as $e)
-		{
+		foreach ($ede as $e) {
 			$occIds[] = $e->OccationID;
 			$evIds[] = $e->EventID;
 		}
@@ -192,8 +169,7 @@ if (!function_exists('edu_api_listview_eventlist'))
 		$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 		$eventDates = array();
-		foreach ($eventDays as $ed)
-		{
+		foreach ($eventDays as $ed) {
 			$eventDates[$ed->EventID][] = $ed;
 		}
 
@@ -204,14 +180,11 @@ if (!function_exists('edu_api_listview_eventlist'))
 		$ft->AddItem($f);
 		$pricenames = $eduapi->GetPriceName($edutoken, '', $ft->ToString());
 
-		if (!empty($pricenames))
-		{
+		if (!empty($pricenames)) {
 			$ede = array_filter($ede, function($object) use (&$pricenames) {
 				$pn = $pricenames;
-				foreach ($pn as $subj)
-				{
-					if ($object->OccationID == $subj->OccationID)
-					{
+				foreach ($pn as $subj) {
+					if ($object->OccationID == $subj->OccationID) {
 						return true;
 					}
 				}
@@ -219,13 +192,10 @@ if (!function_exists('edu_api_listview_eventlist'))
 			});
 		}
 
-		foreach ($ede as $object)
-		{
-			foreach ($edo as $course)
-			{
+		foreach ($ede as $object) {
+			foreach ($edo as $course) {
 				$id = $course->ObjectID;
-				if ($id == $object->ObjectID)
-				{
+				if ($id == $object->ObjectID) {
 					$object->Days = $course->Days;
 					$object->StartTime = $course->StartTime;
 					$object->EndTime = $course->EndTime;
@@ -235,11 +205,9 @@ if (!function_exists('edu_api_listview_eventlist'))
 				}
 			}
 
-			foreach ($pricenames as $pn)
-			{
+			foreach ($pricenames as $pn) {
 				$id = $pn->OccationID;
-				if ($id == $object->OccationID)
-				{
+				if ($id == $object->OccationID) {
 					$object->Price = $pn->Price;
 					$object->PriceNameVat = $pn->PriceNameVat;
 					break;
@@ -247,12 +215,9 @@ if (!function_exists('edu_api_listview_eventlist'))
 			}
 		}
 
-		if ($request['template'] == "A")
-		{
+		if ($request['template'] == "A") {
 			echo edu_api_listview_eventlist_template_A($ede, $eventDates, $request);
-		}
-		else if ($request['template'] == "B")
-		{
+		} else if ($request['template'] == "B") {
 			echo edu_api_listview_eventlist_template_B($ede, $eventDates, $request);
 		}
 
@@ -260,10 +225,8 @@ if (!function_exists('edu_api_listview_eventlist'))
 	}
 }
 
-if (!function_exists('edu_api_listview_eventlist_template_A'))
-{
-	function edu_api_listview_eventlist_template_A($data, $eventDates, $request)
-	{
+if (!function_exists('edu_api_listview_eventlist_template_A')) {
+	function edu_api_listview_eventlist_template_A($data, $eventDates, $request) {
 		global $eduapi;
 		$edutoken = edu_decrypt("edu_js_token_crypto", $request["token"]);
 		$spotLeftOption = $request['spotsleft'];
@@ -306,10 +269,8 @@ if (!function_exists('edu_api_listview_eventlist_template_A'))
 
 		$currentEvents = 0;
 
-		foreach ($data as $object)
-		{
-			if ($numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents)
-			{
+		foreach ($data as $object) {
+			if ($numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents) {
 				break;
 			}
 			$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
@@ -329,12 +290,12 @@ if (!function_exists('edu_api_listview_eventlist_template_A'))
 				$spotsLeft = ($object->MaxParticipantNr - $object->TotalParticipantNr);
 				echo /*isset($eventDates[$object->EventID]) ? edu_GetLogicalDateGroups($eventDates[$object->EventID], true, $object, true) :*/ GetOldStartEndDisplayDate($object->PeriodStart, $object->PeriodEnd, true);
 
-				if (!empty($object->City))
-				{
+				if (!empty($object->City)) {
 					echo " <span class=\"cityInfo\">";
 					echo $object->City;
-					if ($showVenue && !empty($object->AddressName))
-						echo "<span class=\"venueInfo\">, " . $object->AddressName . "</span>";
+					if ($showVenue && !empty($object->AddressName)) {
+											echo "<span class=\"venueInfo\">, " . $object->AddressName . "</span>";
+					}
 					echo "</span>";
 				}
 
@@ -350,7 +311,7 @@ if (!function_exists('edu_api_listview_eventlist_template_A'))
 					"</div>";
 				}
 
-				if($request['showcourseprices'] && isset($object->Price)) {
+				if ($request['showcourseprices'] && isset($object->Price)) {
 					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), convertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo "<span class=\"spotsLeftInfo\">" . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots) . "</span>";
@@ -379,10 +340,8 @@ if (!function_exists('edu_api_listview_eventlist_template_A'))
 	}
 }
 
-if (!function_exists('edu_api_listview_eventlist_template_B'))
-{
-	function edu_api_listview_eventlist_template_B($data, $eventDates, $request)
-	{
+if (!function_exists('edu_api_listview_eventlist_template_B')) {
+	function edu_api_listview_eventlist_template_B($data, $eventDates, $request) {
 		global $eduapi;
 		$edutoken = edu_decrypt("edu_js_token_crypto", $request["token"]);
 
@@ -424,10 +383,8 @@ if (!function_exists('edu_api_listview_eventlist_template_B'))
 
 		$currentEvents = 0;
 
-		foreach ($data as $object)
-		{
-			if ($numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents)
-			{
+		foreach ($data as $object) {
+			if ($numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents) {
 				break;
 			}
 			$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
@@ -446,12 +403,12 @@ if (!function_exists('edu_api_listview_eventlist_template_B'))
 				$spotsLeft = ($object->MaxParticipantNr - $object->TotalParticipantNr);
 				echo /*isset($eventDates[$object->EventID]) ? edu_GetLogicalDateGroups($eventDates[$object->EventID]) :*/ GetOldStartEndDisplayDate($object->PeriodStart, $object->PeriodEnd, true);
 
-				if (!empty($object->City))
-				{
+				if (!empty($object->City)) {
 					echo " <span class=\"cityInfo\">";
 					echo $object->City;
-					if ($showVenue && !empty($object->AddressName))
-						echo ", " . $object->AddressName;
+					if ($showVenue && !empty($object->AddressName)) {
+											echo ", " . $object->AddressName;
+					}
 					echo "</span>";
 				}
 
@@ -465,7 +422,7 @@ if (!function_exists('edu_api_listview_eventlist_template_B'))
 					"</div>";
 				}
 
-				if($request['showcourseprices'] && isset($object->Price)) {
+				if ($request['showcourseprices'] && isset($object->Price)) {
 					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), convertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo '<br />' . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots);
@@ -482,7 +439,6 @@ if (!function_exists('edu_api_listview_eventlist_template_B'))
 	}
 }
 
-if (isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_eventlist")
-{
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_eventlist") {
 	echo edu_api_listview_eventlist($_REQUEST);
 }

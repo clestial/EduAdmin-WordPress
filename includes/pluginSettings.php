@@ -12,8 +12,7 @@
 		<hr noshade="noshade" />
 		<?php
 		$integrations = EDU()->integrations->integrations;
-		foreach ($integrations as $integration)
-		{
+		foreach ($integrations as $integration) {
 			echo "<h3>" . esc_html($integration->displayName) . "</h3>\n";
 			echo $integration->get_settings();
 			echo "<hr />\n";

@@ -3,8 +3,7 @@
 	<?php
 	$selectedLoginField = get_option('eduadmin-loginField', 'Email');
 	$loginLabel = edu__("E-mail address");
-	switch ($selectedLoginField)
-	{
+	switch ($selectedLoginField) {
 		case "Email":
 			$loginLabel = edu__("E-mail address");
 			break;

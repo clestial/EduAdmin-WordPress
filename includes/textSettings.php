@@ -1,6 +1,5 @@
 <?php
-if (isset($_POST['resetTranslation']))
-{
+if (isset($_POST['resetTranslation'])) {
 	delete_option('eduadmin-phrases');
 }
 ?>
@@ -25,8 +24,7 @@ if (isset($_POST['resetTranslation']))
 
 	ksort($phrases, SORT_NATURAL | SORT_FLAG_CASE);
 
-	foreach ($phrases as $phrase => $translation)
-	{
+	foreach ($phrases as $phrase => $translation) {
 		__($phrase, "eduadmin");
 		?>
 		<tr>

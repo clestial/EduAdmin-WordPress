@@ -3,22 +3,17 @@ $requiredFields = array();
 $requiredFields[] = 'edu-companyName';
 
 $missingFields = false;
-foreach ($requiredFields as $field)
-{
-	if (empty($_REQUEST[$field]))
-	{
+foreach ($requiredFields as $field) {
+	if (empty($_REQUEST[$field])) {
 		$missingFields = true;
 	}
 }
 
-if ($missingFields)
-{
+if ($missingFields) {
 	// TODO: Show an error message that some fields are missing
 	// Should not be able to happen, since we should validate the fields first
 	// And then we'd have to go through the trouble to recreate all participants.
-}
-else
-{
+} else {
 	$inquiry = new InterestRegObject();
 	$inquiry->ObjectID = $_POST['objectid'];
 	$inquiry->ParticipantNr = $_POST['edu-participants'];

@@ -5,15 +5,11 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey))
-{
+if (!$apiKey || empty($apiKey)) {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-}
-else
-{
+} else {
 	$edo = get_transient('eduadmin-listCourses');
-	if (!$edo)
-	{
+	if (!$edo) {
 		$filtering = new XFiltering();
 		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
@@ -24,26 +20,22 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach ($edo as $object)
-	{
+	foreach ($edo as $object) {
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
-		{
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"]) {
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if (!$selectedCourse)
-	{
+	if (!$selectedCourse) {
 		?>
 		<script>history.go(-1);</script>
 		<?php
 		die();
 	}
 	$ft = new XFiltering();
-	if (isset($_REQUEST['eid']))
-	{
+	if (isset($_REQUEST['eid'])) {
 		$eventid = $_REQUEST['eid'];
 		$f = new XFilter('EventID', '=', $eventid);
 		$ft->AddItem($f);
@@ -72,16 +64,14 @@ else
 
 	$event = $events[0];
 
-	if (!$event)
-	{
+	if (!$event) {
 		?>
 		<script>history.go(-1);</script>
 		<?php
 		die();
 	}
 
-	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'bookCourse')
-	{
+	if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'bookCourse') {
 		include_once("createBooking.php");
 	}
 
@@ -93,29 +83,21 @@ else
 	$customerInvoiceEmail = "";
 	$incVat = $eduapi->GetAccountSetting($edutoken, 'PriceIncVat') == "yes";
 
-	if (isset($_SESSION['eduadmin-loginUser']))
-	{
+	if (isset($_SESSION['eduadmin-loginUser'])) {
 		$user = $_SESSION['eduadmin-loginUser'];
 		$contact = $user->Contact;
 		$customer = $user->Customer;
-		if (isset($customer->CustomerID))
-		{
+		if (isset($customer->CustomerID)) {
 			$f = new XFiltering();
 			$ft = new XFilter('CustomerID', '=', $customer->CustomerID);
 			$f->AddItem($ft);
 			$extraInfo = $eduapi->GetCustomerExtraInfo($edutoken, '', $f->ToString());
-			foreach ($extraInfo as $info)
-			{
-				if ($info->Key == "DiscountPercent" && isset($info->Value))
-				{
+			foreach ($extraInfo as $info) {
+				if ($info->Key == "DiscountPercent" && isset($info->Value)) {
 					$discountPercent = (double)$info->Value;
-				}
-				else if ($info->Key == "ParticipantDiscountPercent" && isset($info->Value))
-				{
+				} else if ($info->Key == "ParticipantDiscountPercent" && isset($info->Value)) {
 					$participantDiscountPercent = (double)$info->Value;
-				}
-				else if ($info->Key == "CustomerInvoiceEmail" && isset($info->Value))
-				{
+				} else if ($info->Key == "CustomerInvoiceEmail" && isset($info->Value)) {
 					$customerInvoiceEmail = $info->Value;
 				}
 			}
@@ -124,15 +106,11 @@ else
 
 	$occIds = Array();
 	$occIds[] = -1;
-	if (isset($_REQUEST['eid']))
-	{
-		foreach ($events as $ev)
-		{
+	if (isset($_REQUEST['eid'])) {
+		foreach ($events as $ev) {
 			$occIds[] = $ev->OccationID;
 		}
-	}
-	else
-	{
+	} else {
 		$occIds[] = $event->OccationID;
 	}
 
@@ -149,8 +127,7 @@ else
 	$prices = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 
 	$uniquePrices = Array();
-	foreach ($prices as $price)
-	{
+	foreach ($prices as $price) {
 		$uniquePrices[$price->Description] = $price;
 	}
 	// PriceNameVat
@@ -183,8 +160,7 @@ else
 
 	$subPrices = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 	$sePrice = array();
-	foreach ($subPrices as $sp)
-	{
+	foreach ($subPrices as $sp) {
 		$sePrice[$sp->OccationID][] = $sp;
 	}
 
@@ -219,8 +195,7 @@ else
 								echo date("H:i", strtotime($ev->PeriodStart)); ?> - <?php echo date("H:i", strtotime($ev->PeriodEnd));
 								$addresses = get_transient('eduadmin-location-' . $ev->LocationAddressID);
 
-								if (!$addresses)
-								{
+								if (!$addresses) {
 									$ft = new XFiltering();
 									$f = new XFilter('LocationAddressID', '=', $ev->LocationAddressID);
 									$ft->AddItem($f);
@@ -228,10 +203,8 @@ else
 									set_transient('eduadmin-location-' . $ev->LocationAddressID, $addresses, DAY_IN_SECONDS);
 								}
 
-								foreach ($addresses as $address)
-								{
-									if ($address->LocationAddressID === $ev->LocationAddressID)
-									{
+								foreach ($addresses as $address) {
+									if ($address->LocationAddressID === $ev->LocationAddressID) {
 										echo ", " . $ev->AddressName . ", " . $address->Address . ", " . $address->City;
 										break;
 									}
@@ -240,13 +213,14 @@ else
 							</option>
 						<?php endforeach; ?>
 					</select>
-				<?php else: ?>
+				<?php else {
+	: ?>
 					<?php
 						echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate($event->PeriodStart, $event->PeriodEnd) . ", ";
+}
 						echo date("H:i", strtotime($event->PeriodStart)); ?> - <?php echo date("H:i", strtotime($event->PeriodEnd));
 						$addresses = get_transient('eduadmin-location-' . $event->LocationAddressID);
-						if (!$addresses)
-						{
+						if (!$addresses) {
 							$ft = new XFiltering();
 							$f = new XFilter('LocationAddressID', '=', $event->LocationAddressID);
 							$ft->AddItem($f);
@@ -254,10 +228,8 @@ else
 							set_transient('eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS);
 						}
 
-						foreach ($addresses as $address)
-						{
-							if ($address->LocationAddressID === $event->LocationAddressID)
-							{
+						foreach ($addresses as $address) {
+							if ($address->LocationAddressID === $event->LocationAddressID) {
 								echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
 								break;
 							}
@@ -388,8 +360,7 @@ else
 		$newTitle = $name . " | " . $originalTitle;
 
 		$discountValue = 0.0;
-		if ($participantDiscountPercent != 0)
-		{
+		if ($participantDiscountPercent != 0) {
 			$discountValue = ($participantDiscountPercent / 100) * $firstPrice->Price;
 		}
 	?>

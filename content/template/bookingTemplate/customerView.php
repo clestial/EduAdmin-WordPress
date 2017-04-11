@@ -141,8 +141,7 @@
 			$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 			$db = array();
-			if (isset($customer) && isset($customer->CustomerID))
-			{
+			if (isset($customer) && isset($customer->CustomerID)) {
 				if ($customer->CustomerID != 0) {
 					$fo = new XFiltering();
 					$f = new XFilter('CustomerID', '=', $customer->CustomerID);
@@ -151,11 +150,9 @@
 				}
 			}
 
-			foreach ($contactAttributes as $attr)
-			{
+			foreach ($contactAttributes as $attr) {
 				$data = null;
-				foreach ($db as $d)
-				{
+				foreach ($db as $d) {
 					if ($d->AttributeID == $attr->AttributeID) {
 						switch ($d->AttributeTypeID) {
 							case 1:

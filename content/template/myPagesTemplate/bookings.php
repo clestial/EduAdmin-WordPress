@@ -25,8 +25,7 @@ include_once("login_tab_header.php");
 	$bookings = $eduapi->GetEventBooking($edutoken, $sorting->ToString(), $filtering->ToString());
 
 	$eclIds = array();
-	foreach ($bookings as $book)
-	{
+	foreach ($bookings as $book) {
 		$eclIds[] = $book->EventCustomerLnkID;
 	}
 
@@ -40,8 +39,7 @@ include_once("login_tab_header.php");
 	$participants = $eduapi->GetEventParticipantV2($edutoken, $sorting->ToString(), $filtering->ToString());
 
 	$partPerEvent = array();
-	foreach ($participants as $p)
-	{
+	foreach ($participants as $p) {
 		$partPerEvent[$p->EventCustomerLnkID][] = $p;
 	}
 
@@ -62,12 +60,9 @@ include_once("login_tab_header.php");
 		<?php
 		} else {
 			foreach ($bookings as $book) {
-				if (array_key_exists($book->EventCustomerLnkID, $partPerEvent))
-				{
+				if (array_key_exists($book->EventCustomerLnkID, $partPerEvent)) {
 					$book->Participants = $partPerEvent[$book->EventCustomerLnkID];
-				}
-				else
-				{
+				} else {
 					$book->Participants = array();
 				}
 		?>
@@ -90,8 +85,7 @@ include_once("login_tab_header.php");
 						<th align="right" class="edu-participantList-grade"><?php edu_e("Grade"); ?></th>
 					</tr>
 					<?php
-					foreach ($book->Participants as $participant)
-					{
+					foreach ($book->Participants as $participant) {
 						?>
 					<tr>
 						<td align="left"><?php echo $participant->PersonName; ?></td>

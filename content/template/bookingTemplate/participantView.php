@@ -69,11 +69,9 @@
 						$db = $eduapi->GetPersonAttribute($edutoken, '', $fo->ToString());
 					}*/
 
-					foreach ($contactAttributes as $attr)
-					{
+					foreach ($contactAttributes as $attr) {
 						$data = null;
-						foreach ($db as $d)
-						{
+						foreach ($db as $d) {
 							if ($d->AttributeID == $attr->AttributeID) {
 								switch ($d->AttributeTypeID) {
 									case 1:
@@ -123,8 +121,7 @@
 					<?php
 						if (count($subEvents) > 0) {
 							echo "<h4>" . edu__("Sub events") . "</h4>\n";
-							foreach ($subEvents as $subEvent)
-							{
+							foreach ($subEvents as $subEvent) {
 								if (count($sePrice[$subEvent->OccasionID]) > 0) {
 									$s = current($sePrice[$subEvent->OccasionID])->Price;
 								} else {
@@ -208,8 +205,7 @@
 					$fo->AddItem($f);
 					$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
-					foreach ($contactAttributes as $attr)
-					{
+					foreach ($contactAttributes as $attr) {
 						renderAttribute($attr, true);
 					}
 
@@ -244,8 +240,7 @@
 					<?php
 						if (count($subEvents) > 0) {
 							echo "<h4>" . edu__("Sub events") . "</h4>\n";
-							foreach ($subEvents as $subEvent)
-							{
+							foreach ($subEvents as $subEvent) {
 								if (count($sePrice[$subEvent->OccasionID]) > 0) {
 									$s = current($sePrice[$subEvent->OccasionID])->Price;
 								} else {

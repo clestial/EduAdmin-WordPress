@@ -5,12 +5,9 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey))
-{
+if (!$apiKey || empty($apiKey)) {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-}
-else
-{
+} else {
 	$surl = get_home_url();
 	$cat = get_option('eduadmin-rewriteBaseUrl');
 	$baseUrl = $surl . '/' . $cat;
@@ -23,18 +20,15 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach ($edo as $object)
-	{
+	foreach ($edo as $object) {
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
-		{
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"]) {
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if (!$selectedCourse)
-	{
+	if (!$selectedCourse) {
 		?>
 		<script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
 		<?php
@@ -66,8 +60,7 @@ else
 	$st = new XSorting();
 	$groupByCity = get_option('eduadmin-groupEventsByCity', FALSE);
 	$groupByCityClass = "";
-	if ($groupByCity)
-	{
+	if ($groupByCity) {
 		$s = new XSort('City', 'ASC');
 		$st->AddItem($s);
 		$groupByCityClass = " noCity";
@@ -172,8 +165,7 @@ else
 		$eventIds = array();
 		$eventIds[] = -1;
 
-		foreach ($events as $e)
-		{
+		foreach ($events as $e) {
 			$occIds[] = $e->OccationID;
 			$eventIds[] = $e->EventID;
 		}
@@ -185,8 +177,7 @@ else
 		$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 		$eventDates = array();
-		foreach ($eventDays as $ed)
-		{
+		foreach ($eventDays as $ed) {
 			$eventDates[$ed->EventID][] = $ed;
 		}
 
@@ -204,8 +195,7 @@ else
 
 		$prices = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 		$uniquePrices = Array();
-		foreach ($prices as $price)
-		{
+		foreach ($prices as $price) {
 			$uniquePrices[$price->Description] = $price;
 		}
 
@@ -218,11 +208,8 @@ else
 		?>
 		<?php echo sprintf('%1$s %2$s', current($uniquePrices)->Description, convertToMoney(current($uniquePrices)->Price, $currency)) . " " . edu__($incVat ? "inc vat" : "ex vat"); ?>
 		<?php
-			}
-			else
-			{
-				foreach ($uniquePrices as $up)
-				{
+			} else {
+				foreach ($uniquePrices as $up) {
 		?>
 		<?php echo sprintf('%1$s %2$s', $up->Description, convertToMoney($up->Price, $currency)) . " " . edu__($incVat ? "inc vat" : "ex vat"); ?><br />
 		<?php
@@ -247,21 +234,17 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 		data-eventinquiry="<?php echo @esc_attr(get_option('eduadmin-allowInterestRegEvent', false)); ?>"
 	>
 	<?php
-	foreach ($events as $ev)
-	{
+	foreach ($events as $ev) {
 
-		if ($groupByCity && $lastCity != $ev->City)
-		{
+		if ($groupByCity && $lastCity != $ev->City) {
 			echo '<div class="eventSeparator">';
 			echo $ev->City;
 
 			echo '</div>';
 		}
 
-		if (isset($_REQUEST['eid']))
-		{
-			if ($ev->EventID != $_REQUEST['eid'])
-			{
+		if (isset($_REQUEST['eid'])) {
+			if ($ev->EventID != $_REQUEST['eid']) {
 				continue;
 			}
 		}
@@ -275,8 +258,9 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 			<div class="eventCity">
 				<?php
 				echo $ev->City;
-				if ($showEventVenue && !empty($ev->AddressName))
-					echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
+				if ($showEventVenue && !empty($ev->AddressName)) {
+									echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
+				}
 				?>
 			</div>
 			<?php } ?>
@@ -311,8 +295,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 		$lastCity = $ev->City;
 	}
 
-	if (empty($events))
-	{
+	if (empty($events)) {
 	?>
 	<div class="noDatesAvailable">
 		<i><?php edu_e("No available dates for the selected course"); ?></i>

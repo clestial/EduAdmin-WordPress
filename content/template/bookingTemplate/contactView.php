@@ -72,8 +72,7 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 			$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 			$db = array();
-			if (isset($contact) && isset($contact->CustomerContactID))
-			{
+			if (isset($contact) && isset($contact->CustomerContactID)) {
 				if ($contact->CustomerContactID != 0) {
 					$fo = new XFiltering();
 					$f = new XFilter('CustomerContactID', '=', $contact->CustomerContactID);
@@ -82,11 +81,9 @@ $__block = ($blockEditIfLoggedIn && $contact->CustomerContactID != 0);
 				}
 			}
 
-			foreach ($contactAttributes as $attr)
-			{
+			foreach ($contactAttributes as $attr) {
 				$data = null;
-				foreach ($db as $d)
-				{
+				foreach ($db as $d) {
 					if ($d->AttributeID == $attr->AttributeID) {
 						switch ($d->AttributeTypeID) {
 							case 1:

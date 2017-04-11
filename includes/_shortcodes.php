@@ -307,8 +307,7 @@ function eduadmin_get_detailinfo($attributes)
 					{
 						case 5:
 							$value = $attr->AttributeAlternative;
-						/*case 7:
-							$value = $attr->AttributeDate;*/
+						break;
 						default:
 							$value = $attr->AttributeValue;
 						break;

@@ -113,6 +113,8 @@ var eduBookingView = {
 							questionPrice += price;
 						}
 						break;
+					default:
+						break;
 				}
 			}
 		}
@@ -126,16 +128,15 @@ var eduBookingView = {
 			if(selected !== null && undefined !== selected.attributes["data-price"]) {
 				ppp = parseFloat(selected.attributes["data-price"].value);
 			}
-			if(discountPerParticipant !== undefined && discountPerParticipant > 0) {
-				var disc = discountPerParticipant * ppp;
-				pricePerParticipant = ppp - disc;
+			if(typeof window.discountPerParticipant !== 'undefined' && window.discountPerParticipant > 0) {
+				var disc = window.discountPerParticipant * ppp;
+				window.pricePerParticipant = ppp - disc;
 			} else {
-				pricePerParticipant = ppp;
+				window.pricePerParticipant = ppp;
 			}
 		}
 
-		if(priceObject && pricePerParticipant !== undefined && currency != '') {
-
+		if(priceObject && typeof window.pricePerParticipant !== 'undefined' && window.currency != '') {
 			var newPrice = 0.0;
 			var participantPriceNames = document.querySelectorAll('.participantItem:not(.template) .participantPriceName');
 			if(participantPriceNames.length > 0) {
@@ -143,14 +144,14 @@ var eduBookingView = {
 				for(var i = 0; i < participants; i++) {
 					if(discountPerParticipant !== undefined && discountPerParticipant > 0) {
 						var lpr = parseFloat(participantPriceNames[i].selectedOptions[0].attributes['data-price'].value);
-						var disc = discountPerParticipant * lpr;
+						var disc = window.discountPerParticipant * lpr;
 						newPrice += lpr - disc;
 					} else {
 						newPrice += parseFloat(participantPriceNames[i].selectedOptions[0].attributes['data-price'].value);
 					}
 				}
 			} else {
-				newPrice = (eduBookingView.CurrentParticipants * pricePerParticipant);
+				newPrice = (eduBookingView.CurrentParticipants * window.pricePerParticipant);
 			}
 			if(!isNaN(questionPrice)) {
 				newPrice += questionPrice;
@@ -172,12 +173,12 @@ var eduBookingView = {
 				}
 			}
 
-			if(totalPriceDiscountPercent != 0 || eduBookingView.DiscountPercent != 0) {
-				var disc = ((totalPriceDiscountPercent + eduBookingView.DiscountPercent) / 100) * newPrice;
+			if(window.totalPriceDiscountPercent != 0 || eduBookingView.DiscountPercent != 0) {
+				var disc = ((window.totalPriceDiscountPercent + eduBookingView.DiscountPercent) / 100) * newPrice;
 				newPrice = newPrice - disc;
 			}
 
-			priceObject.innerHTML = numberWithSeparator(newPrice, ' ') + ' ' + currency + ' ' + vatText;
+			priceObject.innerHTML = numberWithSeparator(newPrice, ' ') + ' ' + window.currency + ' ' + window.vatText;
 		}
 
 	},

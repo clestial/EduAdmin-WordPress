@@ -124,6 +124,7 @@ if(!function_exists('getRangeFromDays'))
 		sort($days);
 		$startDate  = $days[0];
 		$finishDate = $days[count($days) - 1];
+		$result = array();
 		// walk through the dates, breaking at gaps
 		foreach ($days as $key => $date)
 		if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key-1]->StartDate) > 99999)) {
@@ -431,6 +432,7 @@ if(!function_exists('my_str_split'))
 	function my_str_split($string)
 	{
 		$slen = strlen($string);
+		$sArray = array();
 		for($i = 0; $i < $slen; $i++)
 		{
 			$sArray[$i] = $string{$i};

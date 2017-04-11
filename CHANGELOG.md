@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.10.9]
+### Added
 - Bugfix: Sessions are now set before the class is loaded
 - Changed how we handle redirects (Login/Logout)
 - Plugin-support: We can now save plugin-settings

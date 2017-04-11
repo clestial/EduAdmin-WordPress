@@ -12,7 +12,7 @@ var EduAdmin = {
 				success: function(d) {
 					alert(d.indexOf('true') > -1 ? 'The api connection succeded!' : 'The api connection failed!\nCheck credentials!');
 				},
-				error: function(e, d, x) {
+				error: function() {
 					alert('An error occured while checking the api connection');
 				}
 			});
@@ -49,6 +49,8 @@ var EduAdmin = {
 			case 'alwaysFewSpots':
 			case 'onlyText':
 			jQuery('#eduadmin-alwaysFewSpots').show();
+			break;
+			default:
 			break;
 		}
 	},

@@ -1,3 +1,4 @@
+/** global: wp_edu */
 var edu = edu ? edu : {};
 
 edu.apiclient = {
@@ -7,7 +8,7 @@ edu.apiclient = {
 	CookieBase: 'edu_',
 	AfterUpdate: null,
 	parseDocument: function() {
-		if(wp_edu != undefined) {
+		if(typeof wp_edu !== 'undefined') {
 			edu.apiclient.baseUrl = wp_edu.BaseUrlBackend + '/edu.api.backend.php';
 			edu.apiclient.courseFolder = wp_edu.CourseFolder;
 			edu.apiclient.authJS(wp_edu.ApiKey, function() {
@@ -100,8 +101,10 @@ edu.apiclient = {
 			},
 			success: function(d) {
 				var o = d;
-				if(typeof d !== "object")
+				if(typeof d !== "object") {
 					o = JSON.parse(d);
+				}
+
 				for(var k in o) {
 					if(o.hasOwnProperty(k)) {
 						var target = document.querySelector('[data-eduwidget="courseitem-date"][data-objectid="' + k + '"]');
@@ -246,8 +249,10 @@ edu.apiclient = {
             }
             valueStart += name.length;
             var valueEnd = cookie.indexOf(";", valueStart);
-            if (valueEnd == -1)
+            if (valueEnd == -1) {
                 valueEnd = cookie.length;
+			}
+
             return decodeURIComponent(cookie.substring(valueStart, valueEnd));
         } catch (e) {
             ;

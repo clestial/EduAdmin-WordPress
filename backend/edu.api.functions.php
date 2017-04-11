@@ -2,27 +2,27 @@
 date_default_timezone_set('UTC');
 function edu_getQueryString($prepend = "?", $removeParameters = array())
 {
-	foreach($removeParameters as $par)
+	foreach ($removeParameters as $par)
 	{
 		unset($_GET[$par]);
 	}
-	if(!empty($_GET)) { return $prepend . http_build_query($_GET); }
+	if (!empty($_GET)) { return $prepend . http_build_query($_GET); }
 	return "";
 }
 
-if(!function_exists('edu_ConvertToMoney'))
+if (!function_exists('edu_ConvertToMoney'))
 {
 	function edu_ConvertToMoney($value, $currency = "SEK", $decimal = ',', $thousand = ' ')
 	{
 		$d = $value;
-		if(empty($d))
+		if (empty($d))
 			$d = 0;
 		$d = sprintf('%1$s %2$s', number_format($d, 0, $decimal, $thousand), $currency);
 		return $d;
 	}
 }
 
-if(!function_exists('edu_encrypt'))
+if (!function_exists('edu_encrypt'))
 {
 	function edu_encrypt($key, $toEncrypt)
 	{
@@ -30,7 +30,7 @@ if(!function_exists('edu_encrypt'))
 	}
 }
 
-if(!function_exists('edu_decrypt'))
+if (!function_exists('edu_decrypt'))
 {
 	function edu_decrypt($key, $toDecrypt)
 	{
@@ -38,11 +38,11 @@ if(!function_exists('edu_decrypt'))
 	}
 }
 
-if(!function_exists('edu_DecryptApiKey'))
+if (!function_exists('edu_DecryptApiKey'))
 {
 	function edu_DecryptApiKey($key) {
 		$decrypted = explode('|', base64_decode($key));
-		if(count($decrypted) == 2)
+		if (count($decrypted) == 2)
 		{
 			$apiKey = new stdClass();
 			$apiKey->UserId = $decrypted[0];
@@ -55,18 +55,18 @@ if(!function_exists('edu_DecryptApiKey'))
 
 function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
 {
-	if($maxSpots === 0)
+	if ($maxSpots === 0)
 		return edu__('Spots left');
 
-	if($freeSpots === 0)
+	if ($freeSpots === 0)
 		return edu__('No spots left');
 
-	switch($spotOption)
+	switch ($spotOption)
 	{
 		case "exactNumbers":
 			return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 		case "onlyText":
-			if($freeSpots > ($maxSpots - $alwaysFewSpots)) {
+			if ($freeSpots > ($maxSpots - $alwaysFewSpots)) {
 				return edu__('Spots left');
 			} else if ($freeSpots <= ($maxSpots - $alwaysFewSpots) && $freeSpots != 1 && $freeSpots > 0) {
 				return edu__('Few spots left');
@@ -77,20 +77,20 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 			}
 		case "intervals":
 			$interval = $spotSettings;
-			if(empty($interval)) {
+			if (empty($interval)) {
 				return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 			} else {
 				$lines = explode("\n", $interval);
-				foreach($lines as $line)
+				foreach ($lines as $line)
 				{
-					if(stripos($line, '-') > -1) {
+					if (stripos($line, '-') > -1) {
 						$range = explode("-", $line);
 						$min = $range[0];
 						$max = $range[1];
-						if($freeSpots <= $max && $freeSpots >= $min) {
+						if ($freeSpots <= $max && $freeSpots >= $min) {
 							return sprintf(edu__('%1$s spots left'), $line);
 						}
-					} else if(stripos($line, '+') > -1) {
+					} else if (stripos($line, '+') > -1) {
 						return sprintf(edu__('%1$s spots left'), $line);
 					}
 				}
@@ -99,7 +99,7 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 
 		case "alwaysFewSpots":
 			$minParticipants = $alwaysFewSpots;
-			if(($maxSpots - $freeSpots) >= $minParticipants)
+			if (($maxSpots - $freeSpots) >= $minParticipants)
 				return edu__('Few spots left');
 			return edu__('Spots left');
 	}
@@ -107,7 +107,7 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 
 function edu_GetLogicalDateGroups($dates, $short = false, $event = null, $showDays = false)
 {
-	if(count($dates) > 3)
+	if (count($dates) > 3)
 	{
 		$short = true;
 		$showDays = true;
@@ -118,7 +118,7 @@ function edu_GetLogicalDateGroups($dates, $short = false, $event = null, $showDa
 }
 
 // Copied from http://codereview.stackexchange.com/a/83095/27610
-if(!function_exists('getRangeFromDays'))
+if (!function_exists('getRangeFromDays'))
 {
 	function getRangeFromDays($days, $short, $event, $showDays) {
 		sort($days);
@@ -127,14 +127,14 @@ if(!function_exists('getRangeFromDays'))
 		$result = array();
 		// walk through the dates, breaking at gaps
 		foreach ($days as $key => $date)
-		if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key-1]->StartDate) > 99999)) {
-		$result[] = edu_GetStartEndDisplayDate($startDate, $days[$key-1], $short, $event, $showDays);
+		if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
+		$result[] = edu_GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
 		$startDate = $date;
 		}
 		// force the end
 		$result[] = edu_GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
 
-		if(count($result) > 3)
+		if (count($result) > 3)
 		{
 			$nRes = array();
 			$ret =
@@ -166,7 +166,7 @@ function edu_GetDisplayDate($inDate, $short = false)
 	);
 
 	$months = array(
-		1 => !$short ? edu__('january'): edu__('jan'),
+		1 => !$short ? edu__('january') : edu__('jan'),
 		2 => !$short ? edu__('february') : edu__('feb'),
 		3 => !$short ? edu__('march') : edu__('mar'),
 		4 => !$short ? edu__('april') : edu__('apr'),
@@ -198,7 +198,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 	);
 
 	$months = array(
-		1 => !$short ? edu__('january'): edu__('jan'),
+		1 => !$short ? edu__('january') : edu__('jan'),
 		2 => !$short ? edu__('february') : edu__('feb'),
 		3 => !$short ? edu__('march') : edu__('mar'),
 		4 => !$short ? edu__('april') : edu__('apr'),
@@ -217,19 +217,19 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 	$endYear = date('Y', strtotime($endDate->EndDate));
 	$endMonth = date('n', strtotime($endDate->EndDate));
 	$nowYear = date('Y');
-	$str =  '<span class="eduadmin-dateText">';
-	if($showDays)
+	$str = '<span class="eduadmin-dateText">';
+	if ($showDays)
 	{
 		$str .= $days[date('N', strtotime($startDate->StartDate))] . " ";
 	}
 	$str .= date('d', strtotime($startDate->StartDate));
-	if(date('Y-m-d', strtotime($startDate->StartDate)) != date('Y-m-d', strtotime($endDate->EndDate)))
+	if (date('Y-m-d', strtotime($startDate->StartDate)) != date('Y-m-d', strtotime($endDate->EndDate)))
 	{
-		if($startYear === $endYear)
+		if ($startYear === $endYear)
 		{
-			if($startMonth === $endMonth)
+			if ($startMonth === $endMonth)
 			{
-				if($showDays &&
+				if ($showDays &&
 					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
 					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
 				)
@@ -237,7 +237,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate)) . '</span>';
 				}
 				$str .= ' - ';
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= $days[date('N', strtotime($endDate->EndDate))] . " ";
 				}
@@ -245,14 +245,14 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ' ';
 				$str .= $months[date('n', strtotime($startDate->StartDate))];
 				$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
 			}
 			else
 			{
-				if($showDays &&
+				if ($showDays &&
 					(date('H:i', strtotime($startDate->StartDate)) != date('H:i', strtotime($endDate->StartDate)) &&
 					date('H:i', strtotime($startDate->EndDate)) != date('H:i', strtotime($endDate->EndDate)))
 				)
@@ -262,7 +262,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ' ';
 				$str .= $months[date('n', strtotime($startDate->StartDate))];
 				$str .= ' - ';
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= $days[date('N', strtotime($endDate->EndDate))] . " ";
 				}
@@ -270,7 +270,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ' ';
 				$str .= $months[date('n', strtotime($endDate->EndDate))];
 				$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
@@ -282,7 +282,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= $months[date('n', strtotime($startDate->StartDate))];
 				$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
 				$str .= ' - ';
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= $days[date('N', strtotime($endDate->EndDate))] . " ";
 				}
@@ -290,7 +290,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 				$str .= ' ';
 				$str .= $months[date('n', strtotime($endDate->EndDate))];
 				$str .= ($nowYear != $endYear ? ' ' . $endYear : '');
-				if($showDays)
+				if ($showDays)
 				{
 					$str .= '<span class="eventTime"> ' . date('H:i', strtotime($endDate->StartDate)) . '-' . date('H:i', strtotime($endDate->EndDate)) . '</span>';
 				}
@@ -301,7 +301,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 		$str .= ' ';
 		$str .= $months[date('n', strtotime($startDate->EndDate))];
 		$str .= ($nowYear != $startYear ? ' ' . $startYear : '');
-		if($showDays)
+		if ($showDays)
 		{
 			$str .= '<span class="eventTime"> ' . date('H:i', strtotime($startDate->StartDate)) . '-' . date('H:i', strtotime($startDate->EndDate)) . '</span>';
 		}
@@ -316,7 +316,7 @@ function edu_GetStartEndDisplayDate($startDate, $endDate, $short = false, $event
 function edu_GetOldStartEndDisplayDate($startDate, $endDate, $short = false)
 {
 	$months = array(
-		1 => !$short ? edu__('january'): edu__('jan'),
+		1 => !$short ? edu__('january') : edu__('jan'),
 		2 => !$short ? edu__('february') : edu__('feb'),
 		3 => !$short ? edu__('march') : edu__('mar'),
 		4 => !$short ? edu__('april') : edu__('apr'),
@@ -334,13 +334,13 @@ function edu_GetOldStartEndDisplayDate($startDate, $endDate, $short = false)
 	$endYear = date('Y', strtotime($endDate));
 	$endMonth = date('n', strtotime($endDate));
 	$nowYear = date('Y');
-	$str =  '<span class="eduadmin-dateText">';
+	$str = '<span class="eduadmin-dateText">';
 	$str .= date('d', strtotime($startDate));
-	if(date('Y-m-d', strtotime($startDate)) != date('Y-m-d', strtotime($endDate)))
+	if (date('Y-m-d', strtotime($startDate)) != date('Y-m-d', strtotime($endDate)))
 	{
-		if($startYear === $endYear)
+		if ($startYear === $endYear)
 		{
-			if($startMonth === $endMonth)
+			if ($startMonth === $endMonth)
 			{
 				$str .= ' - ' . date('d', strtotime($endDate));
 				$str .= ' ';
@@ -382,7 +382,7 @@ function edu_DateComparer($a, $b)
 {
 	$aDate = date("Y-m-d H:i:s", strtotime($a->PeriodStart));
 	$bDate = date("Y-m-d H:i:s", strtotime($b->PeriodStart));
-	if($aDate === $bDate) {
+	if ($aDate === $bDate) {
 		return 0;
 	}
 
@@ -391,7 +391,7 @@ function edu_DateComparer($a, $b)
 
 function edu_KeySort($key)
 {
-	return function ($a, $b) use ($key) {
+	return function($a, $b) use ($key) {
 		return strcmp($a->{$key},$b->{$key});
 	};
 }
@@ -401,16 +401,16 @@ function edu__($key)
 	global $_SESSION;
 	$phrases = $_SESSION['eduadmin-phrases'];
 
-	if(!array_key_exists($key, $phrases))
+	if (!array_key_exists($key, $phrases))
 	{
 		$phrases[$key] = $key;
 	}
 
-	if(isset($phrases[$key]["OldPhrase"]))
-		if($phrases[$key]["OldPhrase"] != $key)
+	if (isset($phrases[$key]["OldPhrase"]))
+		if ($phrases[$key]["OldPhrase"] != $key)
 			return $phrases[$key]["OldPhrase"];
 
-	if(isset($phrases[$key]["NewPhrase"]))
+	if (isset($phrases[$key]["NewPhrase"]))
 		return $phrases[$key]["NewPhrase"]; //$phrases[$key];
 	return $key;
 }
@@ -427,13 +427,13 @@ function edu_n($single, $plural, $number)
 
 
 // Credits go to https://code.google.com/p/php-slugs/
-if(!function_exists('my_str_split'))
+if (!function_exists('my_str_split'))
 {
 	function my_str_split($string)
 	{
 		$slen = strlen($string);
 		$sArray = array();
-		for($i = 0; $i < $slen; $i++)
+		for ($i = 0; $i < $slen; $i++)
 		{
 			$sArray[$i] = $string{$i};
 		}
@@ -441,7 +441,7 @@ if(!function_exists('my_str_split'))
 	}
 }
 
-if(!function_exists('noDiacritics'))
+if (!function_exists('noDiacritics'))
 {
 	function noDiacritics($string)
 	{
@@ -456,18 +456,18 @@ if(!function_exists('noDiacritics'))
 		$from = array_merge($from, $cyrylicFrom);
 		$to   = array_merge($to, $cyrylicTo);
 
-		$newstring=str_replace($from, $to, $string);
+		$newstring = str_replace($from, $to, $string);
 		return $newstring;
 	}
 }
 
-if(!function_exists('makeSlugs'))
+if (!function_exists('makeSlugs'))
 {
-	function makeSlugs($string, $maxlen=0)
+	function makeSlugs($string, $maxlen = 0)
 	{
 		$newStringTab = array();
 		$string = strtolower(noDiacritics($string));
-		if(function_exists('str_split'))
+		if (function_exists('str_split'))
 		{
 			$stringTab = str_split($string);
 		}
@@ -476,24 +476,24 @@ if(!function_exists('makeSlugs'))
 			$stringTab = my_str_split($string);
 		}
 
-		$numbers = array("0","1","2","3","4","5","6","7","8","9","-");
+		$numbers = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-");
 
-		foreach($stringTab as $letter)
+		foreach ($stringTab as $letter)
 		{
-			if(in_array($letter, range("a", "z")) || in_array($letter, $numbers))
+			if (in_array($letter, range("a", "z")) || in_array($letter, $numbers))
 			{
 				$newStringTab[] = $letter;
 	 		}
-			elseif($letter === " ")
+			elseif ($letter === " ")
 			{
 				$newStringTab[] = "-";
 			}
 		}
 
-		if(!empty($newStringTab))
+		if (!empty($newStringTab))
 		{
 			$newString = implode($newStringTab);
-			if($maxlen > 0)
+			if ($maxlen > 0)
 			{
 	        	$newString = substr($newString, 0, $maxlen);
 			}
@@ -509,11 +509,11 @@ if(!function_exists('makeSlugs'))
 	}
 }
 
-if(!function_exists('checkSlug'))
+if (!function_exists('checkSlug'))
 {
 	function checkSlug($sSlug)
 	{
-		if(ereg("^[a-zA-Z0-9]+[a-zA-Z0-9\_\-]*$", $sSlug))
+		if (ereg("^[a-zA-Z0-9]+[a-zA-Z0-9\_\-]*$", $sSlug))
 		{
 			return true;
 		}
@@ -522,7 +522,7 @@ if(!function_exists('checkSlug'))
 	}
 }
 
-if(!function_exists('removeDuplicates'))
+if (!function_exists('removeDuplicates'))
 {
 	function removeDuplicates($sSearch, $sReplace, $sSubject)
 	{
@@ -533,12 +533,12 @@ if(!function_exists('removeDuplicates'))
 			$pos = strpos($sSubject, $sSearch);
 
 			$i++;
-			if($i > 100)
+			if ($i > 100)
 			{
 				die('removeDuplicates() loop error');
 			}
 		}
-		while($pos !== false);
+		while ($pos !== false);
 
 		return $sSubject;
 	}

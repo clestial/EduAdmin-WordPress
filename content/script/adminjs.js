@@ -37,6 +37,7 @@ var EduAdmin = {
 		me.find('.eduadmin-attributelist').slideToggle('fast');
 	},
 	SpotExampleText: function() {
+		/** global: availText */
 		var selVal = jQuery('.eduadmin-spotsLeft :selected').val();
 		jQuery('#eduadmin-spotExampleText').text(availText[selVal]);
 		jQuery('#eduadmin-intervalSetting').hide();

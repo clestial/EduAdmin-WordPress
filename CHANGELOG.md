@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Fixing issues stated by scrutinizer
 
 ## [0.10.9]
 ### Added

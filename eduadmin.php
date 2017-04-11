@@ -2,13 +2,12 @@
 defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 function edu_register_session() {
-		$sess_Status = session_status();
-		//if($sess_Status != PHP_SESSION_DISABLED)
-		{
-			if(!session_id())
-				session_start();
-		}
-	}
+    if(session_status() != PHP_SESSION_DISABLED)
+    {
+        if(!session_id())
+            session_start();
+    }
+}
 
 edu_register_session();
 
@@ -228,7 +227,9 @@ $GLOBALS['eduadmin'] = EDU();
 if(function_exists('wp_get_timezone_string'))
 {
     date_default_timezone_set(wp_get_timezone_string());
-    @ini_set('date.timezone', wp_get_timezone_string());
+    if(@ini_set('date.timezone', wp_get_timezone_string()) === FALSE) {
+        // Could not set timezone
+    }
 }
 
 /* Handle plugin-settings */

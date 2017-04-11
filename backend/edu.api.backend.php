@@ -1,6 +1,10 @@
 <?php
 include_once("edu.api.functions.php");
-@session_start();
+if(session_status() != PHP_SESSION_DISABLED)
+{
+	if(!session_id())
+		session_start();
+}
 date_default_timezone_set('UTC');
 
 $modules = scandir(__DIR__ . '/modules');

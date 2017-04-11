@@ -23,7 +23,24 @@ checks:
         avoid_superglobals: false
         security_vulnerabilities: false
         no_exit: false
-    javascript: true
+        remove_extra_empty_lines: true
+        avoid_todo_comments: true
+        avoid_fixme_comments: true
+    javascript:
+        no_else_return: true
+
+coding_style:
+    php:
+        indentation:
+            general:
+                use_tabs: true
+        spaces:
+            general:
+                linefeed_character: return-newline
+            around_operators:
+                concatenation: true
+            other:
+                after_type_cast: false
 
 tools:
   sensiolabs_security_checker: true

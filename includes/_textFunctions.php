@@ -52,9 +52,8 @@ function edu_getQueryString($prepend = "?", $removeParameters = array())
 	return "";
 }
 
-function getSpotsLeft($freeSpots, $maxSpots)
+function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
 {
-	$spotOption = get_option('eduadmin-spotsLeft', 'exactNumbers');
 	if($maxSpots === 0)
 		return edu__('Spots left');
 
@@ -77,7 +76,7 @@ function getSpotsLeft($freeSpots, $maxSpots)
 				return edu__('No spots left');
 			}
 		case "intervals":
-			$interval = get_option('eduadmin-spotsSettings', "1-5\n5-10\n10+");
+			$interval = $spotSettings;
 			if(empty($interval)) {
 				return sprintf(edu_n('%1$s spot left', '%1$s spots left', $freeSpots), $freeSpots);
 			} else {
@@ -164,26 +163,24 @@ function GetLogicalDateGroups($dates, $short = false, $event = null, $showDays =
 
 // Copied from http://codereview.stackexchange.com/a/83095/27610
 function getRangeFromDays($days, $short, $event, $showDays) {
-	if(count($days) == 0) return '';
-    sort($days);
-    $startDate  = $days[0];
-    $finishDate = $days[count($days) - 1];
-    // walk through the dates, breaking at gaps
-    foreach ($days as $key => $date)
-	{
-		if (($key > 0) && (strtotime($date->StartDate)-strtotime($days[$key-1]->StartDate) > 99999)) {
-			$result[] = GetStartEndDisplayDate($startDate, $days[$key-1], $short, $event, $showDays);
-			$startDate = $date;
-		}
+	sort($days);
+	$startDate  = $days[0];
+	$finishDate = $days[count($days) - 1];
+	$result = array();
+	// walk through the dates, breaking at gaps
+	foreach ($days as $key => $date)
+	if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
+	$result[] = edu_GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
+	$startDate = $date;
 	}
-    // force the end
-    $result[] = GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
+	// force the end
+	$result[] = edu_GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
 
-	if(count($result) > 3)
+	if (count($result) > 3)
 	{
 		$nRes = array();
 		$ret =
-"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
+"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), edu_GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
 "</span><div class=\"edu-DayPopup\">
 <b>" . edu__("Schedule") . "</b><br />
 " . join("<br />\n", $result) . "
@@ -194,7 +191,7 @@ function getRangeFromDays($days, $short, $event, $showDays) {
 		return $nRes;
 	}
 
-  return $result;
+	return $result;
 }
 
 function GetStartEndDisplayDate($startDate, $endDate, $short = false, $event, $showDays = false)

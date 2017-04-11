@@ -351,7 +351,7 @@ if(!function_exists('edu_api_listview_eventlist_template_A'))
 				}
 
 				if($request['showcourseprices'] && isset($object->Price)) {
-					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), edu_ConvertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
+					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), convertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo "<span class=\"spotsLeftInfo\">" . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots) . "</span>";
 
@@ -466,7 +466,7 @@ if(!function_exists('edu_api_listview_eventlist_template_B'))
 				}
 
 				if($request['showcourseprices'] && isset($object->Price)) {
-					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), edu_ConvertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
+					echo "<div class=\"priceInfo\">" . sprintf(edu__('From %1$s'), convertToMoney($object->Price, $request['currency'])) . " " . edu__($incVat ? "inc vat" : "ex vat") . "</div> ";
 				}
 				echo '<br />' . edu_getSpotsLeft($spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots);
 		?></div>

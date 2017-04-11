@@ -1,26 +1,5 @@
 <?php
 date_default_timezone_set('UTC');
-function edu_getQueryString($prepend = "?", $removeParameters = array())
-{
-	foreach ($removeParameters as $par)
-	{
-		unset($_GET[$par]);
-	}
-	if (!empty($_GET)) { return $prepend . http_build_query($_GET); }
-	return "";
-}
-
-if (!function_exists('edu_ConvertToMoney'))
-{
-	function edu_ConvertToMoney($value, $currency = "SEK", $decimal = ',', $thousand = ' ')
-	{
-		$d = $value;
-		if (empty($d))
-			$d = 0;
-		$d = sprintf('%1$s %2$s', number_format($d, 0, $decimal, $thousand), $currency);
-		return $d;
-	}
-}
 
 if (!function_exists('edu_encrypt'))
 {
@@ -35,21 +14,6 @@ if (!function_exists('edu_decrypt'))
 	function edu_decrypt($key, $toDecrypt)
 	{
 		return rtrim(openssl_decrypt(base64_decode($toDecrypt), "AES-128-ECB", md5($key), OPENSSL_RAW_DATA, ""));
-	}
-}
-
-if (!function_exists('edu_DecryptApiKey'))
-{
-	function edu_DecryptApiKey($key) {
-		$decrypted = explode('|', base64_decode($key));
-		if (count($decrypted) == 2)
-		{
-			$apiKey = new stdClass();
-			$apiKey->UserId = $decrypted[0];
-			$apiKey->Hash = $decrypted[1];
-			return $apiKey;
-		}
-		return false;
 	}
 }
 
@@ -115,42 +79,6 @@ function edu_GetLogicalDateGroups($dates, $short = false, $event = null, $showDa
 
 	$nDates = getRangeFromDays($dates, $short, $event, $showDays);
 	return join($showDays ? "\n" : ", ", $nDates);
-}
-
-// Copied from http://codereview.stackexchange.com/a/83095/27610
-if (!function_exists('getRangeFromDays'))
-{
-	function getRangeFromDays($days, $short, $event, $showDays) {
-		sort($days);
-		$startDate  = $days[0];
-		$finishDate = $days[count($days) - 1];
-		$result = array();
-		// walk through the dates, breaking at gaps
-		foreach ($days as $key => $date)
-		if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
-		$result[] = edu_GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
-		$startDate = $date;
-		}
-		// force the end
-		$result[] = edu_GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);
-
-		if (count($result) > 3)
-		{
-			$nRes = array();
-			$ret =
-"<span class=\"edu-manyDays\" title=\"" . edu__("Show schedule") . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf(edu__('%1$d days between %2$s'), count($days), edu_GetStartEndDisplayDate($days[0], end($days), $short, $showDays)) .
-"</span><div class=\"edu-DayPopup\">
-<b>" . edu__("Schedule") . "</b><br />
-" . join("<br />\n", $result) . "
-<br />
-<a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . edu__("Close") . "</a>
-</div>";
-			$nRes[] = $ret;
-			return $nRes;
-		}
-
-	return $result;
-	}
 }
 
 function edu_GetDisplayDate($inDate, $short = false)

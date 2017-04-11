@@ -1,5 +1,4 @@
 <?php
-defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 function DecryptApiKey($key) {
 	$decrypted = explode('|', base64_decode($key));

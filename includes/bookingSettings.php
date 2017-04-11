@@ -9,7 +9,7 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if(!$apiKey || empty($apiKey))
+if (!$apiKey || empty($apiKey))
 {
 	add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 }
@@ -28,7 +28,7 @@ else
 
 			$cg = $eduapi->GetCustomerGroup($edutoken, $st->ToString(), $ft->ToString());
 
-			foreach($cg as $i => $v)
+			foreach ($cg as $i => $v)
 			{
 				$parent[$i] = $v->ParentCustomerGroupID;
 			}
@@ -36,7 +36,7 @@ else
 			array_multisort($parent, SORT_ASC, $cg);
 
 			$levelStack = array();
-			foreach($cg as $g)
+			foreach ($cg as $g)
 			{
 				$levelStack[$g->ParentCustomerGroupID][] = $g;
 			}
@@ -52,10 +52,10 @@ else
 					str_repeat('&nbsp;', $depth * 4) .
 					$g->CustomerGroupName .
 				"</option>\n";
-				if(array_key_exists($g->CustomerGroupID, $array))
+				if (array_key_exists($g->CustomerGroupID, $array))
 				{
 					$depth++;
-					foreach($array[$g->CustomerGroupID] as $ng)
+					foreach ($array[$g->CustomerGroupID] as $ng)
 					{
 						edu_writeOptions($ng, $array, $depth, $selectedOption);
 					}
@@ -69,7 +69,7 @@ else
 			<?php
 			$root = $levelStack['0'];
 			$selectedOption = get_option('eduadmin-customerGroupId', NULL);
-			foreach($root as $g)
+			foreach ($root as $g)
 			{
 				edu_writeOptions($g, $levelStack, $depth, $selectedOption);
 			}
@@ -377,7 +377,7 @@ else
 			<input type="url" class="form-control" style="width: 100%;" name="eduadmin-bookingTermsLink" placeholder="<?php _e("Booking terms link", "eduadmin"); ?>" value="<?php echo get_option('eduadmin-bookingTermsLink'); ?>" />
 			<br />
 			<label>
-				<input type="checkbox" name="eduadmin-useBookingTermsCheckbox" value="true"<?php if(get_option('eduadmin-useBookingTermsCheckbox', false)) { echo " checked=\"checked\""; } ?> /> <?php _e("Use booking terms", "eduadmin"); ?>
+				<input type="checkbox" name="eduadmin-useBookingTermsCheckbox" value="true"<?php if (get_option('eduadmin-useBookingTermsCheckbox', false)) { echo " checked=\"checked\""; } ?> /> <?php _e("Use booking terms", "eduadmin"); ?>
 			</label>
 			<h3><?php _e("Javascript to run when a booking is completed", "eduadmin"); ?></h3>
 			<i><?php htmlentities(_e("You do not need to include &lt;script&gt;-tags", "eduadmin")); ?></i><br />

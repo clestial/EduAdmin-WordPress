@@ -31,12 +31,12 @@ include_once("login_tab_header.php");
 			<th align="right"><?php edu_e("Price"); ?></th>
 		</tr>
 		<?php
-		if(empty($cards)) {
+		if (empty($cards)) {
 		?>
 		<tr><td colspan="4" align="center"><i><?php edu_e("You don't have any discount cards registered."); ?></i></td></tr>
 		<?php
 		} else {
-			foreach($cards as $card) {
+			foreach ($cards as $card) {
 		?>
 		<tr>
 			<td><?php echo $card->PublicName; ?></td>

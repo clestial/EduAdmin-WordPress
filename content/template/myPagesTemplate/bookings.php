@@ -25,7 +25,7 @@ include_once("login_tab_header.php");
 	$bookings = $eduapi->GetEventBooking($edutoken, $sorting->ToString(), $filtering->ToString());
 
 	$eclIds = array();
-	foreach($bookings as $book)
+	foreach ($bookings as $book)
 	{
 		$eclIds[] = $book->EventCustomerLnkID;
 	}
@@ -40,7 +40,7 @@ include_once("login_tab_header.php");
 	$participants = $eduapi->GetEventParticipantV2($edutoken, $sorting->ToString(), $filtering->ToString());
 
 	$partPerEvent = array();
-	foreach($participants as $p)
+	foreach ($participants as $p)
 	{
 		$partPerEvent[$p->EventCustomerLnkID][] = $p;
 	}
@@ -56,13 +56,13 @@ include_once("login_tab_header.php");
 			<th align="right"><?php edu_e("Price"); ?></th>
 		</tr>
 		<?php
-		if(empty($bookings)) {
+		if (empty($bookings)) {
 		?>
 		<tr><td colspan="5" align="center"><i><?php edu_e("No courses booked"); ?></i></td></tr>
 		<?php
 		} else {
-			foreach($bookings as $book) {
-				if(array_key_exists($book->EventCustomerLnkID, $partPerEvent))
+			foreach ($bookings as $book) {
+				if (array_key_exists($book->EventCustomerLnkID, $partPerEvent))
 				{
 					$book->Participants = $partPerEvent[$book->EventCustomerLnkID];
 				}
@@ -79,7 +79,7 @@ include_once("login_tab_header.php");
 			<td align="right"><?php echo convertToMoney($book->TotalPrice, $currency); ?></td>
 		</tr>
 		<?php
-		if(count($book->Participants) > 0) {
+		if (count($book->Participants) > 0) {
 		?>
 		<tr class="edu-participants-row">
 			<td colspan="5">
@@ -90,7 +90,7 @@ include_once("login_tab_header.php");
 						<th align="right" class="edu-participantList-grade"><?php edu_e("Grade"); ?></th>
 					</tr>
 					<?php
-					foreach($book->Participants as $participant)
+					foreach ($book->Participants as $participant)
 					{
 						?>
 					<tr>

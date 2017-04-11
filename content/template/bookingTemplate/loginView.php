@@ -5,17 +5,17 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if(!$apiKey || empty($apiKey))
+if (!$apiKey || empty($apiKey))
 {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 }
 else
 {
 	$edo = get_transient('eduadmin-listCourses');
-	if(!$edo)
+	if (!$edo)
 	{
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb','=','true');
+		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
 		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
@@ -24,17 +24,17 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach($edo as $object)
+	foreach ($edo as $object)
 	{
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if(makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
 		{
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if(!$selectedCourse)
+	if (!$selectedCourse)
 	{
 		?>
 		<script>history.go(-1);</script>
@@ -42,7 +42,7 @@ else
 		die();
 	}
 	$ft = new XFiltering();
-	if(isset($_REQUEST['eid']))
+	if (isset($_REQUEST['eid']))
 	{
 		$eventid = $_REQUEST['eid'];
 		$f = new XFilter('EventID', '=', $eventid);
@@ -54,9 +54,9 @@ else
 	$ft->AddItem($f);
 	$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 	$ft->AddItem($f);
-	$f = new XFilter('StatusID','=','1');
+	$f = new XFilter('StatusID', '=', '1');
 	$ft->AddItem($f);
-	$f = new XFilter('CustomerID','=','0');
+	$f = new XFilter('CustomerID', '=', '0');
 	$ft->AddItem($f);
 
 	$st = new XSorting();
@@ -71,7 +71,7 @@ else
 
 	$event = $events[0];
 
-	if(!$event)
+	if (!$event)
 	{
 		?>
 		<script>history.go(-1);</script>
@@ -87,17 +87,17 @@ else
 	<div class="title">
 		<img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>" />
 		<h1 class="courseTitle"><?php echo $name; ?></h1>
-			<?php if(count($events) > 1) { ?>
+			<?php if (count($events) > 1) { ?>
 				<div class="dateSelectLabel"><?php edu_e("Select the event you want to book"); ?></div>
 			<select name="eid" class="dateInfo">
 <?php
-				foreach($events as $ev)
+				foreach ($events as $ev)
 				{
 					?>				<option value="<?php echo $ev->EventID; ?>"><?php
 						echo wp_strip_all_tags(GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd)) . ", ";
 						echo date("H:i", strtotime($ev->PeriodStart)); ?> - <?php echo date("H:i", strtotime($ev->PeriodEnd));
 						$addresses = get_transient('eduadmin-location-' . $ev->LocationAddressID);
-						if(!$addresses)
+						if (!$addresses)
 						{
 							$ft = new XFiltering();
 							$f = new XFilter('LocationAddressID', '=', $ev->LocationAddressID);
@@ -106,9 +106,9 @@ else
 							set_transient('eduadmin-location-' . $ev->LocationAddressID, $addresses, DAY_IN_SECONDS);
 						}
 
-						foreach($addresses as $address)
+						foreach ($addresses as $address)
 						{
-							if($address->LocationAddressID === $ev->LocationAddressID)
+							if ($address->LocationAddressID === $ev->LocationAddressID)
 							{
 								echo ", " . $ev->AddressName . ", " . $address->Address . ", " . $address->City;
 								break;
@@ -124,7 +124,7 @@ else
 				echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate($event->PeriodStart, $event->PeriodEnd) . ", ";
 				echo date("H:i", strtotime($event->PeriodStart)); ?> - <?php echo date("H:i", strtotime($event->PeriodEnd));
 				$addresses = get_transient('eduadmin-location-' . $event->LocationAddressID);
-				if(!$addresses)
+				if (!$addresses)
 				{
 					$ft = new XFiltering();
 					$f = new XFilter('LocationAddressID', '=', $event->LocationAddressID);
@@ -133,9 +133,9 @@ else
 					set_transient('eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS);
 				}
 
-				foreach($addresses as $address)
+				foreach ($addresses as $address)
 				{
-					if($address->LocationAddressID === $event->LocationAddressID)
+					if ($address->LocationAddressID === $event->LocationAddressID)
 					{
 						echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
 						break;
@@ -144,13 +144,13 @@ else
 				echo "</div>\n";
 			}
 
-	if(!isset($_SESSION['checkEmail']))
+	if (!isset($_SESSION['checkEmail']))
 	{
 		include_once("__checkEmail.php");
 	}
-	else if(isset($_SESSION['checkEmail']))
+	else if (isset($_SESSION['checkEmail']))
 	{
-		if(isset($_SESSION['needsLogin']) && $_SESSION['needsLogin'] == true)
+		if (isset($_SESSION['needsLogin']) && $_SESSION['needsLogin'] == true)
 		{
 			include_once("__loginForm.php");
 		}

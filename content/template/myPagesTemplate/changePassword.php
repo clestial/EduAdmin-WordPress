@@ -2,19 +2,19 @@
 $user = $_SESSION['eduadmin-loginUser'];
 $contact = $user->Contact;
 $customer = $user->Customer;
-if(isset($_POST['eduaction']) && $_POST['eduaction'] == "savePassword") {
+if (isset($_POST['eduaction']) && $_POST['eduaction'] == "savePassword") {
 
-	if($_POST['currentPassword'] == $contact->Loginpass)
+	if ($_POST['currentPassword'] == $contact->Loginpass)
 	{
-		if(strlen($_POST['newPassword']) == 0)
+		if (strlen($_POST['newPassword']) == 0)
 		{
 			$msg = edu__("You must fill in a password to change it.");
 		}
-		else if($_POST['newPassword'] != $_POST['confirmPassword'])
+		else if ($_POST['newPassword'] != $_POST['confirmPassword'])
 		{
 			$msg = edu__("Given password does not match.");
 		}
-		else if($_POST['newPassword'] == $_POST['currentPassword'])
+		else if ($_POST['newPassword'] == $_POST['currentPassword'])
 		{
 			$msg = edu__("You cannot set your password to be the same as the one before.");
 		}
@@ -54,7 +54,7 @@ include_once("login_tab_header.php");
 		</div>
 		<button class="profileSaveButton"><?php edu_e("Save"); ?></button>
 </form>
-<?php if(isset($msg)) { ?>
+<?php if (isset($msg)) { ?>
 	<div class="edu-modal warning" style="display: block; clear: both;">
 		<?php echo $msg; ?>
 	</div>

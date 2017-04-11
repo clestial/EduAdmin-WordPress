@@ -4,7 +4,7 @@
 	<?php
 	$selectedLoginField = get_option('eduadmin-loginField', 'Email');
 	$loginLabel = edu__("E-mail address");
-	switch($selectedLoginField)
+	switch ($selectedLoginField)
 	{
 		case "Email":
 			$loginLabel = edu__("E-mail address");
@@ -39,18 +39,18 @@
 	<button class="loginButton" onclick="this.form.eduadminpassword.required = true; this.form.bookingLoginAction.value = 'loginEmail';<?php echo $click; ?>"><?php edu_e("Log in"); ?></button>
 	<button class="forgotPasswordButton" onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e("Forgot password"); ?></button>
 </div>
-	<?php if(isset($_SESSION['eduadminLoginError'])) { ?>
+	<?php if (isset($_SESSION['eduadminLoginError'])) { ?>
 	<div class="edu-modal warning" style="display: block; clear: both;">
 		<?php echo $_SESSION['eduadminLoginError']; ?>
 	</div>
 	<?php unset($_SESSION['eduadminLoginError']); } ?>
-	<?php if(isset($_SESSION['eduadmin-forgotPassSent']) && $_SESSION['eduadmin-forgotPassSent'] == true) {
+	<?php if (isset($_SESSION['eduadmin-forgotPassSent']) && $_SESSION['eduadmin-forgotPassSent'] == true) {
 		unset($_SESSION['eduadmin-forgotPassSent']);
 	?>
 	<div class="edu-modal warning" style="display: block; clear: both;">
 		<?php edu_e("A new password has been sent by email."); ?>
 	</div>
-	<?php } else if(isset($_SESSION['eduadmin-forgotPassSent']) && $_SESSION['eduadmin-forgotPassSent'] == false) {
+	<?php } else if (isset($_SESSION['eduadmin-forgotPassSent']) && $_SESSION['eduadmin-forgotPassSent'] == false) {
 		unset($_SESSION['eduadmin-forgotPassSent']);
 	?>
 	<div class="edu-modal warning" style="display: block; clear: both;">

@@ -10,7 +10,7 @@
 			</label>
 			<?php
 			$noInvoiceFreeEvents = get_option('eduadmin-noInvoiceFreeEvents', false);
-			if(!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
+			if (!$noInvoiceFreeEvents || ($noInvoiceFreeEvents && $firstPrice->Price > 0)) {
 			?>
 			<label>
 				<div class="inputLabel">
@@ -141,9 +141,9 @@
 			$contactAttributes = $eduapi->GetAttribute($edutoken, $so->ToString(), $fo->ToString());
 
 			$db = array();
-			if(isset($customer) && isset($customer->CustomerID))
+			if (isset($customer) && isset($customer->CustomerID))
 			{
-				if($customer->CustomerID != 0) {
+				if ($customer->CustomerID != 0) {
 					$fo = new XFiltering();
 					$f = new XFilter('CustomerID', '=', $customer->CustomerID);
 					$fo->AddItem($f);
@@ -151,13 +151,13 @@
 				}
 			}
 
-			foreach($contactAttributes as $attr)
+			foreach ($contactAttributes as $attr)
 			{
 				$data = null;
-				foreach($db as $d)
+				foreach ($db as $d)
 				{
-					if($d->AttributeID == $attr->AttributeID) {
-						switch($d->AttributeTypeID) {
+					if ($d->AttributeID == $attr->AttributeID) {
+						switch ($d->AttributeTypeID) {
 							case 1:
 								$data = $d->AttributeChecked;
 								break;
@@ -173,7 +173,7 @@
 				}
 				renderAttribute($attr, false, "", $data);
 			}
-			if($noInvoiceFreeEvents && $firstPrice->Price > 0) {
+			if ($noInvoiceFreeEvents && $firstPrice->Price > 0) {
 			?>
 			<label>
 				<div class="inputHolder alsoInvoiceCustomer">

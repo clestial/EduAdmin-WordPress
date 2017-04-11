@@ -1,6 +1,6 @@
 <?php
 include_once("loApiClient.php");
-if(isset($_REQUEST['aui']) && isset($_REQUEST['ah']))
+if (isset($_REQUEST['aui']) && isset($_REQUEST['ah']))
 {
 	$lo = new EduAdminClient();
 	$token = $lo->GetAuthToken($_REQUEST['aui'], $_REQUEST['ah']);

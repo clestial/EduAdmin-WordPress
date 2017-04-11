@@ -2352,9 +2352,9 @@
     private function __getArray($objName, $res)
     {
       $this->timers[$objName . '__getArray'] = microtime(true);
-      if(!empty($res->{$objName}))
+      if (!empty($res->{$objName}))
       {
-        if(is_array($res->{$objName}))
+        if (is_array($res->{$objName}))
         {
           $this->timers[$objName . '__getArray'] = microtime(true) - $this->timers[$objName . '__getArray'];
           return $res;
@@ -2371,16 +2371,16 @@
       else
       {
         if (!empty($res->{"ArrayOf" . $objName})) {
-                  if (is_array($res->{ "ArrayOf". $objName})) {
-                      $this->timers[$objName. '__getArray'] = microtime(true) - $this->timers[$objName. '__getArray'];
+                  if (is_array($res->{ "ArrayOf" . $objName})) {
+                      $this->timers[$objName . '__getArray'] = microtime(true) - $this->timers[$objName . '__getArray'];
                       if ($this->debugTimers) {
-                          echo "<!-- " . $objName. '__getArray' . ": " . round($this->timers[$objName. '__getArray'] * 1000, 2) . "ms -->\n";
+                          echo "<!-- " . $objName . '__getArray' . ": " . round($this->timers[$objName . '__getArray'] * 1000, 2) . "ms -->\n";
                       }
-            if(isset($res->{"ArrayOf" . $objName}[0]->{$objName}))
+            if (isset($res->{"ArrayOf" . $objName}[0]->{$objName}))
             {
               $arRes = new stdClass;
               $arRes->{$objName} = array();
-              foreach ($res->{ "ArrayOf". $objName} as $item)
+              foreach ($res->{ "ArrayOf" . $objName} as $item)
               {
                 $arRes->{$objName}[] = $item->{$objName};
               }
@@ -2389,10 +2389,10 @@
             return $res;
           } else {
             $nRes = new stdClass;
-            $nRes->{$objName}                      = $res->{ "ArrayOf". $objName}->{$objName};
-            $this->timers[$objName. '__getArray'] = microtime(true) - $this->timers[$objName. '__getArray'];
+            $nRes->{$objName} = $res->{ "ArrayOf" . $objName}->{$objName};
+            $this->timers[$objName . '__getArray'] = microtime(true) - $this->timers[$objName . '__getArray'];
             if ($this->debugTimers) {
-              echo "<!-- ". $objName. '__getArray'. ": ".round($this->timers[$objName. '__getArray'] * 1000, 2). "ms -->\n";
+              echo "<!-- " . $objName . '__getArray' . ": " . round($this->timers[$objName . '__getArray'] * 1000, 2) . "ms -->\n";
             }
             return $nRes;
           }
@@ -2414,17 +2414,17 @@
           array($params)
         );
       }
-      catch(SoapFault $fault)
+      catch (SoapFault $fault)
       {
-        if($this->debug)
+        if ($this->debug)
         {
           echo '<pre>' . print_r($fault, true) . '</pre>';
         }
       }
-      if($this->debug)
+      if ($this->debug)
         $this->__debug();
       $this->timers[$methodName . '__callServer'] = microtime(true) - $this->timers[$methodName . '__callServer'];
-      if(isset($result->{$methodName . 'Result'}))
+      if (isset($result->{$methodName . 'Result'}))
         return $result->{$methodName . 'Result'};
       return null;
     }
@@ -2436,14 +2436,14 @@
         $responseHeaders = $this->__server->__getLastResponseHeaders();
         $response = $this->__server->__getLastResponse();
 
-      if(!empty($requestHeaders))
+      if (!empty($requestHeaders))
           echo '<code>' . nl2br(htmlspecialchars($requestHeaders, true)) . '</code>' . '<br/>';
-      if(!empty($request))
+      if (!empty($request))
           echo highlight_string($request, true) . '<br/>';
 
-      if(!empty($responseHeaders))
+      if (!empty($responseHeaders))
           echo '<code>' . nl2br(htmlspecialchars($responseHeaders, true)) . '</code>' . '<br/>';
-      if(!empty($response))
+      if (!empty($response))
           echo highlight_string($response, true) . '<br/>';
 
     }

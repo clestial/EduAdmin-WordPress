@@ -5,17 +5,17 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if(!$apiKey || empty($apiKey))
+if (!$apiKey || empty($apiKey))
 {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 }
 else
 {
 	$edo = get_transient('eduadmin-listCourses');
-	if(!$edo)
+	if (!$edo)
 	{
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb','=','true');
+		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
 		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
@@ -28,17 +28,17 @@ else
 
 	$selectedCourse = false;
 	$name = "";
-	foreach($edo as $object)
+	foreach ($edo as $object)
 	{
 		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 		$id = $object->ObjectID;
-		if(makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
+		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"])
 		{
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if(!$selectedCourse)
+	if (!$selectedCourse)
 	{
 		?>
 		<script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
@@ -47,7 +47,7 @@ else
 	}
 
 	$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
-	if(!is_numeric($fetchMonths)) {
+	if (!is_numeric($fetchMonths)) {
 		$fetchMonths = 6;
 	}
 
@@ -65,13 +65,13 @@ else
 	$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 	$ft->AddItem($f);
 
-	$f = new XFilter('CustomerID','=','0');
+	$f = new XFilter('CustomerID', '=', '0');
 	$ft->AddItem($f);
 
 	$st = new XSorting();
 	$groupByCity = get_option('eduadmin-groupEventsByCity', FALSE);
 	$groupByCityClass = "";
-	if($groupByCity)
+	if ($groupByCity)
 	{
 		$s = new XSort('City', 'ASC');
 		$st->AddItem($s);
@@ -92,7 +92,7 @@ else
 	$eventIds = array();
 	$eventIds[] = -1;
 
-	foreach($events as $e)
+	foreach ($events as $e)
 	{
 		$occIds[] = $e->OccationID;
 		$eventIds[] = $e->EventID;
@@ -105,7 +105,7 @@ else
 	$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 	$eventDates = array();
-	foreach($eventDays as $ed)
+	foreach ($eventDays as $ed)
 	{
 		$eventDates[$ed->EventID][] = $ed;
 	}
@@ -115,16 +115,16 @@ else
 	$ft->AddItem($f);
 	$f = new XFilter('OccationID', 'IN', join(",", $occIds));
 	$ft->AddItem($f);
-	$pricenames = $eduapi->GetPriceName($edutoken,'',$ft->ToString());
+	$pricenames = $eduapi->GetPriceName($edutoken, '', $ft->ToString());
 	set_transient('eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS);
 
-	if(!empty($pricenames))
+	if (!empty($pricenames))
 	{
 		$events = array_filter($events, function($object) {
 			$pn = get_transient('eduadmin-publicpricenames');
-			foreach($pn as $subj)
+			foreach ($pn as $subj)
 			{
-				if($object->OccationID == $subj->OccationID)
+				if ($object->OccationID == $subj->OccationID)
 				{
 					return true;
 				}
@@ -134,7 +134,7 @@ else
 	}
 
 	$courseLevel = get_transient('eduadmin-courseLevel-' . $selectedCourse->ObjectID);
-	if(!$courseLevel)
+	if (!$courseLevel)
 	{
 		$ft = new XFiltering();
 		$f = new XFilter('ObjectID', '=', $selectedCourse->ObjectID);
@@ -157,8 +157,8 @@ else
 	</div>
 	<hr />
 	<div class="textblock">
-		<?php if(!empty($selectedCourse->CourseDescription)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->CourseDescription)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("Course description"); ?></h3>
 			<?php } ?>
 		<div>
@@ -167,8 +167,8 @@ else
 		?>
 		</div>
 		<?php } ?>
-		<?php if(!empty($selectedCourse->CourseGoal)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->CourseGoal)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("Course goal"); ?></h3>
 			<?php } ?>
 		<div>
@@ -177,8 +177,8 @@ else
 		?>
 		</div>
 		<?php } ?>
-		<?php if(!empty($selectedCourse->TargetGroup)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->TargetGroup)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("Target group"); ?></h3>
 			<?php } ?>
 		<div>
@@ -187,8 +187,8 @@ else
 		?>
 		</div>
 		<?php } ?>
-		<?php if(!empty($selectedCourse->Prerequisites)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->Prerequisites)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("Prerequisites"); ?></h3>
 			<?php } ?>
 		<div>
@@ -197,8 +197,8 @@ else
 		?>
 		</div>
 		<?php } ?>
-		<?php if(!empty($selectedCourse->CourseAfter)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->CourseAfter)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("After the course"); ?></h3>
 			<?php } ?>
 		<div>
@@ -207,8 +207,8 @@ else
 		?>
 		</div>
 		<?php } ?>
-		<?php if(!empty($selectedCourse->Quote)) { ?>
-			<?php if($showHeaders) { ?>
+		<?php if (!empty($selectedCourse->Quote)) { ?>
+			<?php if ($showHeaders) { ?>
 		<h3><?php edu_e("Quotes"); ?></h3>
 			<?php } ?>
 		<div>
@@ -219,7 +219,7 @@ else
 		<?php } ?>
 	</div>
 	<div class="eventInformation">
-		<?php if(!empty($selectedCourse->StartTime) && !empty($selectedCourse->EndTime)) { ?>
+		<?php if (!empty($selectedCourse->StartTime) && !empty($selectedCourse->EndTime)) { ?>
 		<h3><?php edu_e("Time"); ?></h3>
 		<?php
 			echo ($selectedCourse->Days > 0 ? sprintf(edu_n('%1$d day', '%1$d days', $selectedCourse->Days), $selectedCourse->Days) . ', ' : '') . date("H:i", strtotime($selectedCourse->StartTime)) . ' - ' . date("H:i", strtotime($selectedCourse->EndTime));
@@ -229,7 +229,7 @@ else
 
 		$occIds = Array();
 		$occIds[] = -1;
-		foreach($events as $ev)
+		foreach ($events as $ev)
 		{
 			$occIds[] = $ev->OccationID;
 		}
@@ -249,18 +249,18 @@ else
 		$prices = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 		$uniquePrices = Array();
 
-		foreach($prices as $price)
+		foreach ($prices as $price)
 		{
 			$uniquePrices[$price->Description] = $price;
 		}
 
-		if(!empty($prices)) {
+		if (!empty($prices)) {
 		?>
 		<h3><?php edu_e("Price"); ?></h3>
 		<?php
 			$currency = get_option('eduadmin-currency', 'SEK');
 			// PriceNameVat
-			foreach($uniquePrices as $price) {
+			foreach ($uniquePrices as $price) {
 		?>
 		<?php echo sprintf('%1$s: %2$s', $price->Description, convertToMoney($price->Price, $currency)) . " " . edu__($incVat ? "inc vat" : "ex vat"); ?><br />
 		<?php
@@ -285,11 +285,11 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	>
 	<?php
 	$i = 0;
-	if(!empty($prices))
+	if (!empty($prices))
 	{
-		foreach($events as $ev)
+		foreach ($events as $ev)
 		{
-			if($groupByCity && $lastCity != $ev->City)
+			if ($groupByCity && $lastCity != $ev->City)
 			{
 				$i = 0;
 				echo '<div class="eventSeparator">';
@@ -297,9 +297,9 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 
 				echo '</div>';
 			}
-			if(isset($_REQUEST['eid']))
+			if (isset($_REQUEST['eid']))
 			{
-				if($ev->EventID != $_REQUEST['eid'])
+				if ($ev->EventID != $_REQUEST['eid'])
 				{
 					continue;
 				}
@@ -308,13 +308,13 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 			<div class="eventItem">
 				<div class="eventDate<?php echo $groupByCityClass; ?>">
 					<?php echo isset($eventDates[$ev->EventID]) ? GetLogicalDateGroups($eventDates[$ev->EventID]) : GetOldStartEndDisplayDate($ev->PeriodStart, $ev->PeriodEnd); ?>
-					<?php echo (!isset($eventDates[$ev->EventID]) ? "<span class=\"eventTime\">, " . date("H:i", strtotime($ev->PeriodStart)) .' - ' . date("H:i", strtotime($ev->PeriodEnd)) . "</span>" : ""); ?>
+					<?php echo (!isset($eventDates[$ev->EventID]) ? "<span class=\"eventTime\">, " . date("H:i", strtotime($ev->PeriodStart)) . ' - ' . date("H:i", strtotime($ev->PeriodEnd)) . "</span>" : ""); ?>
 				</div>
-				<?php if(!$groupByCity) { ?>
+				<?php if (!$groupByCity) { ?>
 				<div class="eventCity">
 					<?php
 					echo $ev->City;
-					if($showEventVenue && !empty($ev->AddressName))
+					if ($showEventVenue && !empty($ev->AddressName))
 						echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
 					?>
 				</div>
@@ -327,7 +327,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 				</div>
 				<div class="eventBook<?php echo $groupByCityClass; ?>">
 				<?php
-				if($ev->MaxParticipantNr == 0 ||$spotsLeft > 0) {
+				if ($ev->MaxParticipantNr == 0 || $spotsLeft > 0) {
 				?>
 					<a class="book-link" href="<?php echo $baseUrl; ?>/<?php echo makeSlugs($name); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString("&"); ?>" style="text-align: center;"><?php edu_e("Book"); ?></a>
 				<?php
@@ -336,7 +336,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 				<?php
 				$eventInterestPage = get_option('eduadmin-interestEventPage');
 				$allowInterestRegEvent = get_option('eduadmin-allowInterestRegEvent', false);
-				if($allowInterestRegEvent && $eventInterestPage != false) {
+				if ($allowInterestRegEvent && $eventInterestPage != false) {
 				?>
 					<a class="inquiry-link" href="<?php echo $baseUrl; ?>/<?php echo makeSlugs($name); ?>__<?php echo $object->ObjectID; ?>/book/interest/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString("&"); ?>"><?php edu_e("Inquiry"); ?></a>
 				<?php
@@ -351,7 +351,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 			$i++;
 		}
 	}
-	if(empty($prices) || empty($events))
+	if (empty($prices) || empty($events))
 	{
 	?>
 	<div class="noDatesAvailable">
@@ -364,7 +364,7 @@ $showEventVenue = get_option('eduadmin-showEventVenueName', false);
 	<?php
 	$objectInterestPage = get_option('eduadmin-interestObjectPage');
 	$allowInterestRegObject = get_option('eduadmin-allowInterestRegObject', false);
-	if($allowInterestRegObject && $objectInterestPage != false) {
+	if ($allowInterestRegObject && $objectInterestPage != false) {
 	?>
 	<br />
 	<div class="inquiry">

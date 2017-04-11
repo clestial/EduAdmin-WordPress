@@ -3,15 +3,15 @@ $requiredFields = array();
 $requiredFields[] = 'edu-companyName';
 
 $missingFields = false;
-foreach($requiredFields as $field)
+foreach ($requiredFields as $field)
 {
-	if(empty($_REQUEST[$field]))
+	if (empty($_REQUEST[$field]))
 	{
 		$missingFields = true;
 	}
 }
 
-if($missingFields)
+if ($missingFields)
 {
 	// TODO: Show an error message that some fields are missing
 	// Should not be able to happen, since we should validate the fields first

@@ -17,7 +17,7 @@ function loginContactPerson($loginValue, $password)
 	$f = new XFilter('Disabled', '=', false);
 	$filter->AddItem($f);
 	$cc = $eduapi->GetCustomerContact($edutoken, '', $filter->ToString(), true);
-	if(count($cc) == 1)
+	if (count($cc) == 1)
 	{
 		$contact = $cc[0];
 		$filter = new XFiltering();
@@ -26,7 +26,7 @@ function loginContactPerson($loginValue, $password)
 		$f = new XFilter('Disabled', '=', false);
 		$filter->AddItem($f);
 		$customers = $eduapi->GetCustomerV2($edutoken, '', $filter->ToString(), true);
-		if(count($customers) == 1)
+		if (count($customers) == 1)
 		{
 			$customer = $customers[0];
 			$user = new stdClass;
@@ -62,11 +62,11 @@ function sendForgottenPassword($loginValue) {
 	$f = new XFilter('CanLogin', '=', true);
 	$filter->AddItem($f);
 	$cc = $eduapi->GetCustomerContact($edutoken, '', $filter->ToString(), false);
-	if(count($cc) == 1)
+	if (count($cc) == 1)
 		$ccId = current($cc)->CustomerContactID;
 
-	if($ccId > 0 && !empty(current($cc)->Email)) {
-		$sent = $eduapi->SendCustomerContactPassword($edutoken, $ccId, get_bloginfo( 'name' ));
+	if ($ccId > 0 && !empty(current($cc)->Email)) {
+		$sent = $eduapi->SendCustomerContactPassword($edutoken, $ccId, get_bloginfo('name'));
 		return $sent;
 	}
 
@@ -93,14 +93,14 @@ function() {
 
 	$apiKey = get_option('eduadmin-api-key');
 
-	if(!$apiKey || empty($apiKey))
+	if (!$apiKey || empty($apiKey))
 	{
 		add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 	}
 	else
 	{
 		$key = DecryptApiKey($apiKey);
-		if(!$key)
+		if (!$key)
 		{
 			add_action('admin_notices', array('EduAdmin', 'SetupWarning'));
 			return;
@@ -112,27 +112,27 @@ function() {
 		$cat = get_option('eduadmin-rewriteBaseUrl');
 		$baseUrl = $surl . '/' . $cat;
 
-		if($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/")
+		if ($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/")
 		{
 			logoutUser();
 		}
 
 		/* BACKEND FUNCTIONS FOR FORMS */
-		if(isset($_POST['eduformloginaction']))
+		if (isset($_POST['eduformloginaction']))
 		{
 			$act = $_POST['eduformloginaction'];
-			if(isset($_POST['eduadminloginEmail']))
+			if (isset($_POST['eduadminloginEmail']))
 			{
-				switch($act)
+				switch ($act)
 				{
 					case "login":
 						$loginContact = loginContactPerson($_POST['eduadminloginEmail'], $_POST['eduadminpassword']);
-						if($loginContact)
+						if ($loginContact)
 						{
-							if(isset($_REQUEST['eduReturnUrl']) && !empty($_REQUEST['eduReturnUrl'])) {
+							if (isset($_REQUEST['eduReturnUrl']) && !empty($_REQUEST['eduReturnUrl'])) {
 								wp_redirect($_REQUEST['eduReturnUrl']);
 							} else {
-								wp_redirect($baseUrl. "/profile/myprofile/" . edu_getQueryString());
+								wp_redirect($baseUrl . "/profile/myprofile/" . edu_getQueryString());
 							}
 							exit();
 						}

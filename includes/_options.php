@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
+defined('ABSPATH') or die('This plugin must be run within the scope of WordPress.');
 
 add_action('admin_init', 'eduadmin_settings_init');
 add_action('admin_menu', 'eduadmin_backend_menu');
@@ -14,39 +14,39 @@ function eduadmin_page_title($title, $sep = "|")
 	global $edutoken;
 	global $wp;
 
-	if($sep == null || empty($sep))
+	if ($sep == null || empty($sep))
 	{
 		$sep = "|";
 	}
 
-	if(isset($wp) && isset($wp->query_vars) && isset($wp->query_vars["courseId"]))
+	if (isset($wp) && isset($wp->query_vars) && isset($wp->query_vars["courseId"]))
 	{
 		$edo = get_transient('eduadmin-listCourses');
-		if(!$edo)
+		if (!$edo)
 		{
 			$filtering = new XFiltering();
-			$f = new XFilter('ShowOnWeb','=','true');
+			$f = new XFilter('ShowOnWeb', '=', 'true');
 			$filtering->AddItem($f);
 
 			$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
 			set_transient('eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS);
 		}
 
-		foreach($edo as $object)
+		foreach ($edo as $object)
 		{
 			$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
 			$id = $object->ObjectID;
-			if($id == $wp->query_vars["courseId"])
+			if ($id == $wp->query_vars["courseId"])
 			{
 				$selectedCourse = $object;
 				break;
 			}
 		}
 
-		if($selectedCourse != null)
+		if ($selectedCourse != null)
 		{
 			$titleField = get_option('eduadmin-pageTitleField', 'PublicName');
-			if(stristr($titleField, "attr_") !== false)
+			if (stristr($titleField, "attr_") !== false)
 			{
 				$attrid = substr($titleField, 5);
 				$ft = new XFiltering();
@@ -55,10 +55,10 @@ function eduadmin_page_title($title, $sep = "|")
 				$f = new XFilter('AttributeID', '=', $attrid);
 				$ft->AddItem($f);
 				$objAttr = $eduapi->GetObjectAttribute($edutoken, '', $ft->ToString());
-				if(!empty($objAttr))
+				if (!empty($objAttr))
 				{
 					$attr = $objAttr[0];
-					switch($attr->AttributeTypeID)
+					switch ($attr->AttributeTypeID)
 					{
 						case 5:
 							$value = $attr->AttributeAlternative;
@@ -68,7 +68,7 @@ function eduadmin_page_title($title, $sep = "|")
 							$value = $attr->AttributeValue;
 						break;
 					}
-					if(!empty($value) && stristr($title, $value) === FALSE)
+					if (!empty($value) && stristr($title, $value) === FALSE)
 					{
 						$title = $value . " " . $sep . " " . $title;
 					}
@@ -84,7 +84,7 @@ function eduadmin_page_title($title, $sep = "|")
 			}
 			else
 			{
-				if(!empty($selectedCourse->{$titleField}) && stristr($title, $selectedCourse->{$titleField}) === FALSE)
+				if (!empty($selectedCourse->{$titleField}) && stristr($title, $selectedCourse->{$titleField}) === FALSE)
 				{
 					$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
 				}
@@ -293,9 +293,9 @@ function eduadmin_RewriteJavaScript($script)
 	global $eduapi;
 	global $edutoken;
 
-	if(isset($_REQUEST['edu-thankyou']))
+	if (isset($_REQUEST['edu-thankyou']))
 	{
-		if(stripos($script, "$") !== FALSE)
+		if (stripos($script, "$") !== FALSE)
 		{
 			$ft = new XFiltering();
 			$f = new XFilter('EventCustomerLnkID', '=', $_REQUEST['edu-thankyou']);
@@ -326,7 +326,7 @@ function eduadmin_RewriteJavaScript($script)
 
 function eduadmin_printJavascript()
 {
-	if(trim(get_option('eduadmin-javascript', '')) != '' && isset($_SESSION['eduadmin-printJS']))
+	if (trim(get_option('eduadmin-javascript', '')) != '' && isset($_SESSION['eduadmin-printJS']))
 	{
 		$str = "<script type=\"text/javascript\">\n";
 		$script = get_option('eduadmin-javascript');

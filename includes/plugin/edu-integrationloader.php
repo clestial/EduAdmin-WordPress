@@ -7,7 +7,7 @@ class EDU_IntegrationLoader {
 
 		$integrationList = apply_filters('edu_integrations', array());
 
-		foreach($integrationList as $int) {
+		foreach ($integrationList as $int) {
 			$load_int = new $int();
 			$this->integrations[$load_int->id] = $load_int;
 		}

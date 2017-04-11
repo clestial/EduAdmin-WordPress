@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('UTC');
-if(!function_exists('edu_api_listview_courselist'))
+if (!function_exists('edu_api_listview_courselist'))
 {
 	function edu_api_listview_courselist($request)
 	{
@@ -13,31 +13,31 @@ if(!function_exists('edu_api_listview_courselist'))
 		$objectIds = $request['objectIds'];
 
 		$fetchMonths = $request['fetchmonths'];
-		if(!is_numeric($fetchMonths)) {
+		if (!is_numeric($fetchMonths)) {
 			$fetchMonths = 6;
 		}
 
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb','=','true');
+		$f = new XFilter('ShowOnWeb', '=', 'true');
 		$filtering->AddItem($f);
 
-		$f = new XFilter('PeriodStart','<=', date("Y-m-d 23:59:59", strtotime("now +" . $fetchMonths . " months")));
+		$f = new XFilter('PeriodStart', '<=', date("Y-m-d 23:59:59", strtotime("now +" . $fetchMonths . " months")));
 		$filtering->AddItem($f);
 		$f = new XFilter('PeriodEnd', '>=', date("Y-m-d", strtotime("now")));
 		$filtering->AddItem($f);
-		$f = new XFilter('StatusID','=','1');
+		$f = new XFilter('StatusID', '=', '1');
 		$filtering->AddItem($f);
 
-		$f = new XFilter('LastApplicationDate','>=',date("Y-m-d H:i:s"));
+		$f = new XFilter('LastApplicationDate', '>=', date("Y-m-d H:i:s"));
 		$filtering->AddItem($f);
 
-		if(!empty($objectIds))
+		if (!empty($objectIds))
 		{
 			$f = new XFilter('ObjectID', 'IN', join(',', $objectIds));
 			$filtering->AddItem($f);
 		}
 
-		$f = new XFilter('CustomerID','=','0');
+		$f = new XFilter('CustomerID', '=', '0');
 		$filtering->AddItem($f);
 
 		$sorting = new XSorting();
@@ -49,7 +49,7 @@ if(!function_exists('edu_api_listview_courselist'))
 		$occIds = array();
 		$evIds = array();
 
-		foreach($ede as $e)
+		foreach ($ede as $e)
 		{
 			$occIds[] = $e->OccationID;
 			$evIds[] = $e->EventID;
@@ -62,7 +62,7 @@ if(!function_exists('edu_api_listview_courselist'))
 		$eventDays = $eduapi->GetEventDate($edutoken, '', $ft->ToString());
 
 		$eventDates = array();
-		foreach($eventDays as $ed)
+		foreach ($eventDays as $ed)
 		{
 			$eventDates[$ed->EventID][] = $ed;
 		}
@@ -72,15 +72,15 @@ if(!function_exists('edu_api_listview_courselist'))
 		$ft->AddItem($f);
 		$f = new XFilter('OccationID', 'IN', join(",", $occIds));
 		$ft->AddItem($f);
-		$pricenames = $eduapi->GetPriceName($edutoken,'',$ft->ToString());
+		$pricenames = $eduapi->GetPriceName($edutoken, '', $ft->ToString());
 
-		if(!empty($pricenames))
+		if (!empty($pricenames))
 		{
 			$ede = array_filter($ede, function($object) use (&$pricenames) {
 				$pn = $pricenames;
-				foreach($pn as $subj)
+				foreach ($pn as $subj)
 				{
-					if($object->OccationID == $subj->OccationID)
+					if ($object->OccationID == $subj->OccationID)
 					{
 						return true;
 					}
@@ -90,9 +90,9 @@ if(!function_exists('edu_api_listview_courselist'))
 		}
 
 		$returnValue = array();
-		foreach($ede as $event)
+		foreach ($ede as $event)
 		{
-			if(!isset($returnValue[$event->ObjectID]))
+			if (!isset($returnValue[$event->ObjectID]))
 			{
 				$returnValue[$event->ObjectID] = sprintf(edu__('Next event %1$s'), date("Y-m-d", strtotime($event->PeriodStart))) . " " . $event->City;
 			}
@@ -102,7 +102,7 @@ if(!function_exists('edu_api_listview_courselist'))
 	}
 }
 
-if(isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_courselist")
+if (isset($_REQUEST['module']) && $_REQUEST['module'] == "listview_courselist")
 {
 	echo edu_api_listview_courselist($_REQUEST);
 }

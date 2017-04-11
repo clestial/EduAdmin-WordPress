@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -35,12 +35,12 @@ abstract class EDU_Integration {
 	}
 
 	public function init_settings() {
-		 $this->settings = get_option( $this->get_option_key(), null );
+		 $this->settings = get_option($this->get_option_key(), null);
 		 add_action('eduadmin-plugin-save_' . $this->id, array($this, 'save_options'));
 
-		 if( ! is_array( $this->settings ) ) {
+		 if (!is_array($this->settings)) {
 			$form_fields = $this->get_form_fields();
-			$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
+			$this->settings = array_merge(array_fill_keys(array_keys($form_fields), ''), wp_list_pluck($form_fields, 'default'));
 		 }
 	}
 
@@ -50,7 +50,7 @@ abstract class EDU_Integration {
 		?>
 		<table class="form-table">
 		<?php
-		foreach($fields as $key => $field)
+		foreach ($fields as $key => $field)
 		{
 			echo $this->renderField($key, $field);
 		}
@@ -65,7 +65,7 @@ abstract class EDU_Integration {
 	}
 
 	private function get_post_data() {
-		if(!empty($this->data) && is_array($this->data)) {
+		if (!empty($this->data) && is_array($this->data)) {
 			return $this->data;
 		}
 
@@ -73,9 +73,9 @@ abstract class EDU_Integration {
 	}
 
 	private function get_field_value($key, $post_data = array()) {
-		$fKey 		= $this->get_field_key($key);
-		$post_data 	= empty($post_data) ? $_POST : $post_data;
-		$value 		= isset($post_data[$fKey]) ? $post_data[$fKey] : null;
+		$fKey = $this->get_field_key($key);
+		$post_data = empty($post_data) ? $_POST : $post_data;
+		$value = isset($post_data[$fKey]) ? $post_data[$fKey] : null;
 
 		return $value;
 	}
@@ -86,7 +86,7 @@ abstract class EDU_Integration {
 		$post_data = $this->get_post_data();
 		$fields = $this->get_form_fields();
 
-		foreach($fields as $key => $field)
+		foreach ($fields as $key => $field)
 		{
 			try {
 				$this->settings[$key] = $this->get_field_value($key, $post_data);
@@ -98,20 +98,20 @@ abstract class EDU_Integration {
 	}
 
 	public function get_option($key, $empty_value = null) {
-		if( empty( $this->settings ) ) {
+		if (empty($this->settings)) {
 			$this->init_settings();
 		}
 
-		if(!isset($this->settings[$key])) {
+		if (!isset($this->settings[$key])) {
 			$form_fields = $this->get_form_fields();
 			$this->settings[$key] = isset($form_fields[$key]) ? $form_fields[$key]['default'] : '';
 		}
 
-		if(!is_null($empty_value) && '' === $this->settings[$key]) {
+		if (!is_null($empty_value) && '' === $this->settings[$key]) {
 			$this->settings[$key] = $empty_value;
 		}
 
-		return $this->settings[ $key ];
+		return $this->settings[$key];
 	}
 
 	private function set_defaults($field)
@@ -127,7 +127,7 @@ abstract class EDU_Integration {
 			'default' 				=> '',
 			'custom_attributes'		=> array()
 		);
-		$field = wp_parse_args( $field, $defaults );
+		$field = wp_parse_args($field, $defaults);
 		return $field;
 	}
 
@@ -140,7 +140,7 @@ abstract class EDU_Integration {
 <td>
 <fieldset>
 <?php
-switch($field['type'])
+switch ($field['type'])
 {
 	case 'checkbox':
 		echo $this->renderCheckBox($key, $field);

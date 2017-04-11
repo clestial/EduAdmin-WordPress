@@ -350,9 +350,9 @@ var eduBookingView = {
 
 		function __isValid(civRegField) {
 			var civReg = civRegField.value;
-			if(!civReg || civReg.length == 0) return false;
+			if(!civReg || civReg.length == 0) { return false; }
 
-			if(!civReg.match(/^(\d{2,4})-?(\d{2})-?(\d{2})-?(\d{4})$/i)) return false;
+			if(!civReg.match(/^(\d{2,4})-?(\d{2})-?(\d{2})-?(\d{4})$/i)) { return false; }
 
 			var date = new Date();
 			var year = RegExp.$1, month = RegExp.$2, day = RegExp.$3, unique = RegExp.$4;
@@ -362,12 +362,10 @@ var eduBookingView = {
 			}
 
 			var checkDate = new Date(year, month - 1, day);
-			if(Object.prototype.toString.call(checkDate) !== '[object Date]' || isNaN(checkDate.getTime())) return false;
+			if(Object.prototype.toString.call(checkDate) !== '[object Date]' || isNaN(checkDate.getTime())) { return false; }
 
 			if(month.toString().length == 1) {
-				console.log('Adding zero to month');
 				month = '0' + month;
-			} else {
 			}
 
 			if(day.toString().length == 1) {
@@ -440,6 +438,7 @@ function numberWithSeparator(x, sep) {
 
 var oldonload = window.onload;
 window.onload = function(e) {
-	if(oldonload)
+	if(oldonload) {
 		oldonload();
+	}
 };

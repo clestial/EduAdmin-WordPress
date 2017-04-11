@@ -19,11 +19,13 @@ if (!function_exists('edu_decrypt'))
 
 function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
 {
-	if ($maxSpots === 0)
+	if ($maxSpots === 0) {
 		return edu__('Spots left');
+	}
 
-	if ($freeSpots === 0)
+	if ($freeSpots === 0) {
 		return edu__('No spots left');
+	}
 
 	switch ($spotOption)
 	{
@@ -63,8 +65,9 @@ function edu_getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $
 
 		case "alwaysFewSpots":
 			$minParticipants = $alwaysFewSpots;
-			if (($maxSpots - $freeSpots) >= $minParticipants)
+			if (($maxSpots - $freeSpots) >= $minParticipants) {
 				return edu__('Few spots left');
+			}
 			return edu__('Spots left');
 	}
 }
@@ -269,12 +272,15 @@ function edu__($key)
 		$phrases[$key] = $key;
 	}
 
-	if (isset($phrases[$key]["OldPhrase"]))
-		if ($phrases[$key]["OldPhrase"] != $key)
+	if (isset($phrases[$key]["OldPhrase"])) {
+		if ($phrases[$key]["OldPhrase"] != $key) {
 			return $phrases[$key]["OldPhrase"];
+		}
+	}
 
-	if (isset($phrases[$key]["NewPhrase"]))
+	if (isset($phrases[$key]["NewPhrase"])) {
 		return $phrases[$key]["NewPhrase"]; //$phrases[$key];
+	}
 	return $key;
 }
 

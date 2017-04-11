@@ -5,7 +5,7 @@ include_once(__DIR__ . '/../includes/_apiFunctions.php');
 include_once(__DIR__ . '/../includes/_textFunctions.php');
 if (session_status() != PHP_SESSION_DISABLED)
 {
-	if(!session_id())
+	if (!session_id())
 		session_start();
 }
 date_default_timezone_set('UTC');

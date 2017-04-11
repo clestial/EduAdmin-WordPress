@@ -2,10 +2,10 @@
 defined('ABSPATH') or die('This plugin must be run within the scope of WordPress.');
 
 function edu_register_session() {
-    if (session_status() != PHP_SESSION_DISABLED)
-    {
-        if (!session_id())
+    if (session_status() != PHP_SESSION_DISABLED) {
+        if (!session_id()) {
             session_start();
+        }
     }
 }
 
@@ -162,18 +162,20 @@ final class EduAdmin {
     {
         ?>
         <div class="notice notice-warning is-dismissable">
-            <p><?php echo sprintf(__('Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s'), '<a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">', '</a>'); ?></p>
+            <p><?php echo sprintf(__('Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin'), '<a href="<?php echo admin_url(); ?>admin.php?page=eduadmin-settings">', '</a>'); ?></p>
         </div>
         <?php
     }
 
     public function get_plugin_version() {
         $cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');
-        if ($cachedVersion !== FALSE)
+        if ($cachedVersion !== FALSE) {
             return $cachedVersion;
+        }
 
-        if (!function_exists('get_plugin_data'))
+        if (!function_exists('get_plugin_data')) {
             require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        }
 
         $version = get_plugin_data(__FILE__)['Version'];
         wp_cache_set('eduadmin-version', $version, 'eduadmin', 3600);
@@ -228,7 +230,13 @@ if (function_exists('wp_get_timezone_string'))
 {
     date_default_timezone_set(wp_get_timezone_string());
     if (@ini_set('date.timezone', wp_get_timezone_string()) === FALSE) {
-        // Could not set timezone
+        add_action('admin_notices', function() {
+            ?>
+            <div class="notice notice-warning is-dismissable">
+                <p><?php echo __('Could not set timezone', 'eduadmin'); ?></p>
+            </div>
+            <?php
+        });
     }
 }
 

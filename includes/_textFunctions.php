@@ -11,12 +11,14 @@
 	function wp_get_timezone_string() {
 
 		// if site timezone string exists, return it
-		if ($timezone = get_option('timezone_string'))
+		if ($timezone = get_option('timezone_string')) {
 			return $timezone;
+		}
 
 		// get UTC offset, if it isn't set then return UTC
-		if (0 === ($utc_offset = get_option('gmt_offset', 0)))
+		if (0 === ($utc_offset = get_option('gmt_offset', 0))) {
 			return 'UTC';
+		}
 
 		// adjust UTC offset from hours to seconds
 		$utc_offset *= 3600;
@@ -31,8 +33,9 @@
 
 		foreach (timezone_abbreviations_list() as $abbr) {
 			foreach ($abbr as $city) {
-				if ($city['dst'] == $is_dst && $city['offset'] == $utc_offset)
+				if ($city['dst'] == $is_dst && $city['offset'] == $utc_offset) {
 					return $city['timezone_id'];
+				}
 			}
 		}
 
@@ -55,11 +58,13 @@ function edu_getQueryString($prepend = "?", $removeParameters = array())
 function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3)
 {
 	$spotOption = get_option('eduadmin-spotsLeft', 'exactNumbers');
-	if($maxSpots === 0)
+	if($maxSpots === 0) {
 		return edu__('Spots left');
+	}
 
-	if($freeSpots === 0)
+	if($freeSpots === 0) {
 		return edu__('No spots left');
+	}
 
 	switch($spotOption)
 	{
@@ -100,8 +105,10 @@ function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spot
 
 		case "alwaysFewSpots":
 			$minParticipants = get_option('eduadmin-alwaysFewSpots');
-			if (($maxSpots - $freeSpots) >= $minParticipants)
+			if (($maxSpots - $freeSpots) >= $minParticipants) {
 				return edu__('Few spots left');
+			}
+
 			return edu__('Spots left');
 	}
 }
@@ -109,8 +116,10 @@ function getSpotsLeft($freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spot
 function getUTF8($input)
 {
    	$order = array('utf-8', 'iso-8859-1', 'iso-8859-15', 'windows-1251');
-	if (mb_detect_encoding($input, $order, TRUE) === "UTF-8")
+	if (mb_detect_encoding($input, $order, TRUE) === "UTF-8") {
 		return $input;
+	}
+
    	return mb_convert_encoding($input, 'utf-8', $order);
 }
 
@@ -122,8 +131,10 @@ function dateVersion($date)
 function convertToMoney($value, $currency = "SEK", $decimal = ',', $thousand = ' ')
 {
 	$d = $value;
-	if (empty($d))
+	if (empty($d)) {
 		$d = 0;
+	}
+
 	$d = sprintf('%1$s %2$s', number_format($d, 0, $decimal, $thousand), $currency);
 	return $d;
 }
@@ -169,10 +180,11 @@ function getRangeFromDays($days, $short, $event, $showDays) {
 	$finishDate = $days[count($days) - 1];
 	$result = array();
 	// walk through the dates, breaking at gaps
-	foreach ($days as $key => $date)
-	if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
-	$result[] = GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
-	$startDate = $date;
+	foreach ($days as $key => $date) {
+		if (($key > 0) && (strtotime($date->StartDate) - strtotime($days[$key - 1]->StartDate) > 99999)) {
+			$result[] = GetStartEndDisplayDate($startDate, $days[$key - 1], $short, $event, $showDays);
+			$startDate = $date;
+		}
 	}
 	// force the end
 	$result[] = GetStartEndDisplayDate($startDate, $finishDate, $short, $event, $showDays);

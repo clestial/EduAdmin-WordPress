@@ -1,5 +1,5 @@
 <?php
-defined('ABSPATH') or die('This plugin must be run within the scope of WordPress.');
+defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 function edu_register_session() {
 	if ( session_status() != PHP_SESSION_DISABLED ) {
@@ -45,7 +45,7 @@ edu_register_session();
     along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-if ( ! class_exists('EduAdmin')) :
+if ( ! class_exists( 'EduAdmin' ) ) :
 
 final class EduAdmin {
 	protected static $_instance = null;
@@ -62,7 +62,7 @@ final class EduAdmin {
 	private $token = null;
 
 	public static function instance() {
-		if ( is_null(self::$_instance) ) {
+		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
@@ -78,12 +78,12 @@ final class EduAdmin {
 	public function get_token() {
 		$apiKey = get_option( 'eduadmin-api-key' );
 		if ( ! $apiKey || empty( $apiKey ) ) {
-			add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
+			add_action( 'admin_notices', array ( $this, 'SetupWarning' ) );
 			return;
 		} else {
 			$key = DecryptApiKey( $apiKey );
 			if ( ! $key ) {
-				add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
+				add_action( 'admin_notices', array ( $this, 'SetupWarning' ) );
 				return;
 			}
 
@@ -94,7 +94,7 @@ final class EduAdmin {
 			} else {
 				if ( get_transient( 'eduadmin-validatedToken_' . $edutoken ) === false ) {
 					$valid = $this->api->ValidateAuthToken( $edutoken );
-					if ( ! $valid) {
+					if ( ! $valid ) {
 						$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
 						set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
 					}
@@ -107,25 +107,25 @@ final class EduAdmin {
 	}
 
 	private function includes() {
-		include_once('includes/_apiFunctions.php');
-		include_once('includes/plugin/edu-integration.php'); // Integration interface
-		include_once('includes/plugin/edu-integrationloader.php'); // Integration loader
-		include_once('includes/loApiClient.php');
+		include_once( 'includes/_apiFunctions.php' );
+		include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
+		include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
+		include_once( 'includes/loApiClient.php' );
 
 		$this->api = new EduAdminClient();
 		global $eduapi;
 		global $edutoken;
 		$eduapi = $this->api;
 		$edutoken = $this->get_token();
-		include_once('includes/_options.php');
-		include_once('includes/_rewrites.php');
-		include_once('includes/_shortcodes.php');
+		include_once( 'includes/_options.php' );
+		include_once( 'includes/_rewrites.php' );
+		include_once( 'includes/_shortcodes.php' );
 
-		include_once('includes/_translationFunctions.php');
-		include_once('includes/_questionFunctions.php');
-		include_once('includes/_attributeFunctions.php');
-		include_once('includes/_textFunctions.php');
-		include_once('includes/_loginFunctions.php');
+		include_once( 'includes/_translationFunctions.php' );
+		include_once( 'includes/_questionFunctions.php' );
+		include_once( 'includes/_attributeFunctions.php' );
+		include_once( 'includes/_textFunctions.php' );
+		include_once( 'includes/_loginFunctions.php' );
 
 		if ( file_exists( dirname( __FILE__ ) . '/.official.plugin.php' ) ) {
 			include_once( '.official.plugin.php' );
@@ -135,13 +135,13 @@ final class EduAdmin {
 	private function init_hooks() {
 		register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
 
-		add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
-		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'init', array( $this, 'load_language' ) );
-		add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
+		add_action( 'after_switch_theme', array ( $this, 'new_theme' ) );
+		add_action( 'init', array ( $this, 'init' ) );
+		add_action( 'init', array ( $this, 'load_language' ) );
+		add_action( 'eduadmin_call_home', array ( $this, 'call_home' ) );
 		add_action( 'wp_footer', 'edu_getTimers' );
 
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+		register_deactivation_hook( __FILE__, array ( $this, 'deactivate' ) );
 	}
 
 	public function init() {
@@ -151,7 +151,7 @@ final class EduAdmin {
 	public static function SetupWarning() {
 		?>
         <div class="notice notice-warning is-dismissable">
-            <p><?php echo sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin' ), '<a href="' . admin_url() .'admin.php?page=eduadmin-settings">', '</a>'); ?></p>
+            <p><?php echo sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ); ?></p>
         </div>
         <?php
 	}
@@ -162,18 +162,18 @@ final class EduAdmin {
 			return $cachedVersion;
 		}
 
-		if ( ! function_exists('get_plugin_data') ) {
+		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 
-		$version = get_plugin_data( __FILE__ )['Version'];
+		$version = get_plugin_data( __FILE__ )[ 'Version' ];
 		wp_cache_set( 'eduadmin-version', $version, 'eduadmin', 3600 );
 		return $version;
 	}
 
 	public function call_home() {
 		global $wp_version;
-		$usageData = array(
+		$usageData = array (
 			'siteUrl' => get_site_url(),
 			'siteName' => get_option( 'blogname' ),
 			'wpVersion' => $wp_version,
@@ -183,7 +183,7 @@ final class EduAdmin {
 		);
 
 		$callHomeUrl = 'http://ws10.multinet.se/edu-plugin/wp_phone_home.php';
-		wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
+		wp_remote_post( $callHomeUrl, array ( 'body' => $usageData ) );
 	}
 
 	public function load_language() {
@@ -211,11 +211,11 @@ function EDU() {
 	return EduAdmin::instance();
 }
 
-$GLOBALS['eduadmin'] = EDU();
-if ( function_exists('wp_get_timezone_string') ) {
+$GLOBALS[ 'eduadmin' ] = EDU();
+if ( function_exists( 'wp_get_timezone_string' ) ) {
 	date_default_timezone_set( wp_get_timezone_string() );
 	if ( false === @ini_set( 'date.timezone', wp_get_timezone_string() ) ) {
-		add_action('admin_notices', function() {
+		add_action( 'admin_notices', function() {
 			?>
             <div class="notice notice-warning is-dismissable">
                 <p><?php echo __( 'Could not set timezone', 'eduadmin' ); ?></p>
@@ -229,10 +229,10 @@ if ( function_exists('wp_get_timezone_string') ) {
 add_action(
 	'wp_loaded',
 	function() {
-	if ( isset($_POST['option_page']) && 'eduadmin-plugin-settings' === $_POST['option_page'] ) {
+	if ( isset( $_POST[ 'option_page' ] ) && 'eduadmin-plugin-settings' === $_POST[ 'option_page' ] ) {
 		$integrations = EDU()->integrations->integrations;
 		foreach ( $integrations as $integration ) {
-			do_action('eduadmin-plugin-save_' . $integration->id);
+			do_action( 'eduadmin-plugin-save_' . $integration->id );
 		}
 		add_action( 'admin_notices', function() {
 			?>

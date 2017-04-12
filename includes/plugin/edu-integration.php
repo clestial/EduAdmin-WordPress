@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
@@ -11,18 +11,18 @@ abstract class EDU_Integration {
 	public $displayName = '';
 	public $description = '';
 
-	public $setting_fields = array();
+	public $setting_fields = array ();
 
-	public $settings = array();
-	public $errors = array();
+	public $settings = array ();
+	public $errors = array ();
 
-	public $data = array();
+	public $data = array ();
 
 	public function __construct() {
 
 	}
 
-	private function get_field_key($key) {
+	private function get_field_key( $key ) {
 		return $this->plugin_id . $this->id . '_' . $key;
 	}
 
@@ -31,16 +31,16 @@ abstract class EDU_Integration {
 	}
 
 	private function get_form_fields() {
-		return array_map(array($this, 'set_defaults'), $this->setting_fields);
+		return array_map( array ( $this, 'set_defaults' ), $this->setting_fields );
 	}
 
 	public function init_settings() {
-		 $this->settings = get_option($this->get_option_key(), null);
-		 add_action('eduadmin-plugin-save_' . $this->id, array($this, 'save_options'));
+		 $this->settings = get_option( $this->get_option_key(), null );
+		 add_action( 'eduadmin-plugin-save_' . $this->id, array ( $this, 'save_options' ) );
 
-		 if (!is_array($this->settings)) {
+		 if ( ! is_array( $this->settings ) ) {
 			$form_fields = $this->get_form_fields();
-			$this->settings = array_merge(array_fill_keys(array_keys($form_fields), ''), wp_list_pluck($form_fields, 'default'));
+			$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
 		 }
 	}
 
@@ -50,8 +50,8 @@ abstract class EDU_Integration {
 		?>
 		<table class="form-table">
 		<?php
-		foreach ($fields as $key => $field) {
-			echo $this->renderField($key, $field);
+		foreach ( $fields as $key => $field ) {
+			echo $this->renderField( $key, $field );
 		}
 		?>
 		</table>
@@ -59,22 +59,22 @@ abstract class EDU_Integration {
 		return ob_get_clean();
 	}
 
-	private function set_post_data($data = array()) {
+	private function set_post_data( $data = array () ) {
 		$this->data = $data;
 	}
 
 	private function get_post_data() {
-		if (!empty($this->data) && is_array($this->data)) {
+		if ( ! empty( $this->data ) && is_array( $this->data ) ) {
 			return $this->data;
 		}
 
 		return $_POST;
 	}
 
-	private function get_field_value($key, $post_data = array()) {
-		$fKey = $this->get_field_key($key);
-		$post_data = empty($post_data) ? $_POST : $post_data;
-		$value = isset($post_data[$fKey]) ? $post_data[$fKey] : null;
+	private function get_field_value( $key, $post_data = array () ) {
+		$fKey = $this->get_field_key( $key );
+		$post_data = empty( $post_data ) ? $_POST : $post_data;
+		$value = isset( $post_data[ $fKey ] ) ? $post_data[ $fKey ] : null;
 
 		return $value;
 	}
@@ -85,36 +85,36 @@ abstract class EDU_Integration {
 		$post_data = $this->get_post_data();
 		$fields = $this->get_form_fields();
 
-		foreach ($fields as $key => $field) {
+		foreach ( $fields as $key => $field ) {
 			try {
-				$this->settings[$key] = $this->get_field_value($key, $post_data);
+				$this->settings[ $key ] = $this->get_field_value( $key, $post_data );
 			}
-			catch (Exception $e) {
+			catch ( Exception $e ) {
 
 			}
 		}
-		return update_option($this->get_option_key(), $this->settings);
+		return update_option( $this->get_option_key(), $this->settings );
 	}
 
-	public function get_option($key, $empty_value = null) {
-		if (empty($this->settings)) {
+	public function get_option( $key, $empty_value = null ) {
+		if ( empty( $this->settings ) ) {
 			$this->init_settings();
 		}
 
-		if (!isset($this->settings[$key])) {
+		if ( ! isset( $this->settings[ $key ] ) ) {
 			$form_fields = $this->get_form_fields();
-			$this->settings[$key] = isset($form_fields[$key]) ? $form_fields[$key]['default'] : '';
+			$this->settings[ $key ] = isset( $form_fields[ $key ] ) ? $form_fields[ $key ][ 'default' ] : '';
 		}
 
-		if (!is_null($empty_value) && '' === $this->settings[$key]) {
-			$this->settings[$key] = $empty_value;
+		if ( ! is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
+			$this->settings[ $key ] = $empty_value;
 		}
 
-		return $this->settings[$key];
+		return $this->settings[ $key ];
 	}
 
-	private function set_defaults($field) {
-		$defaults = array(
+	private function set_defaults( $field ) {
+		$defaults = array (
 			'title'					=> '',
 			'disabled'				=> false,
 			'class'					=> '',
@@ -123,30 +123,30 @@ abstract class EDU_Integration {
 			'type'					=> 'text',
 			'description'			=> '',
 			'default' 				=> '',
-			'custom_attributes'		=> array()
+			'custom_attributes'		=> array ()
 		);
-		$field = wp_parse_args($field, $defaults);
+		$field = wp_parse_args( $field, $defaults );
 		return $field;
 	}
 
-	private function renderField($key, $field) {
+	private function renderField( $key, $field ) {
 		ob_start();
 ?>
 <tr valign="top">
-<th scope="row"><label for="<?php echo esc_attr($this->get_field_key($key)); ?>"><?php echo wp_kses_post($field['title']); ?></label></th>
+<th scope="row"><label for="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"><?php echo wp_kses_post( $field[ 'title' ] ); ?></label></th>
 <td>
 <fieldset>
 <?php
-switch ($field['type']) {
+switch ( $field[ 'type' ] ) {
 	case 'checkbox':
-		echo $this->renderCheckBox($key, $field);
+		echo $this->renderCheckBox( $key, $field );
 		break;
 	case 'text':
 	case 'password':
-		echo $this->renderTextBox($key, $field);
+		echo $this->renderTextBox( $key, $field );
 		break;
 	default: // Unhandled field types
-		echo '<pre id="' . esc_attr($this->get_field_key($key)) . '">' . print_r($field, true) . '</pre>';
+		echo '<pre id="' . esc_attr( $this->get_field_key( $key ) ) . '">' . print_r( $field, true ) . '</pre>';
 		break;
 }
 ?>
@@ -157,35 +157,35 @@ switch ($field['type']) {
 		return ob_get_clean();
 	}
 
-	private function renderCheckBox($key, $field) {
+	private function renderCheckBox( $key, $field ) {
 		ob_start();
 		?>
 		<label>
 		<input
 			type="checkbox"
-			name="<?php echo esc_attr($this->get_field_key($key)); ?>"
-			id="<?php echo esc_attr($this->get_field_key($key)); ?>"
-			<?php checked($this->get_option($key), '1'); ?>
+			name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
+			id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
+			<?php checked( $this->get_option( $key ), '1' ); ?>
 			value="1"
 		/>
-		<?php echo $field['description']; ?>
+		<?php echo $field[ 'description' ]; ?>
 		</label>
 		<?php
 		return ob_get_clean();
 	}
 
-	private function renderTextBox($key, $field) {
+	private function renderTextBox( $key, $field ) {
 		ob_start();
 		?>
 		<input
 			class="regular-text"
-			type="<?php echo esc_attr($field['type']); ?>"
-			name="<?php echo esc_attr($this->get_field_key($key)); ?>"
-			id="<?php echo esc_attr($this->get_field_key($key)); ?>"
-			placeholder="<?php echo esc_attr($field['placeholder']); ?>"
-			value="<?php echo esc_attr($this->get_option($key)); ?>"
+			type="<?php echo esc_attr( $field[ 'type' ] ); ?>"
+			name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
+			id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
+			placeholder="<?php echo esc_attr( $field[ 'placeholder' ] ); ?>"
+			value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
 		/>
-		<p class="description"><?php echo $field['description']; ?></p>
+		<p class="description"><?php echo $field[ 'description' ]; ?></p>
 		<?php
 		return ob_get_clean();
 	}

@@ -1,5 +1,5 @@
 <?php
-$eventId = $_REQUEST['eid'];
+$eventId = $_REQUEST[ 'eid' ];
 
 $singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
 if ( $singlePersonBooking ) {

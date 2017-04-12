@@ -1,25 +1,25 @@
 <?php
-if (isset($_POST['resetStyle'])) {
-	delete_option('eduadmin-style');
+if ( isset( $_POST[ 'resetStyle' ] ) ) {
+	delete_option( 'eduadmin-style' );
 }
 ?>
 <div class="eduadmin wrap">
-	<h2><?php echo sprintf(__("EduAdmin settings - %s", "eduadmin"), __("Style", "eduadmin")); ?></h2>
+	<h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin" ), __( "Style", "eduadmin" ) ); ?></h2>
 
 	<form method="post" action="options.php">
-		<?php settings_fields('eduadmin-style'); ?>
-		<?php do_settings_sections('eduadmin-style'); ?>
+		<?php settings_fields( 'eduadmin-style' ); ?>
+		<?php do_settings_sections( 'eduadmin-style' ); ?>
 		<div class="block">
 			<div id="eduadmin-style-editor" style="position: relative; min-width: 1000px; width: 100%; min-height: 600px; border: 1px solid #c3c3c3;"></div>
 			<textarea name="eduadmin-style" id="eduadmin-style" style="width: 100%;" cols="250" rows="40" spellcheck="false"><?php
-			$defaultCss = file_get_contents(dirname(__FILE__) . '/../content/style/frontendstyle.css');
-			$css = get_option('eduadmin-style', $defaultCss);
+			$defaultCss = file_get_contents( dirname( __FILE__ ) . '/../content/style/frontendstyle.css' );
+			$css = get_option( 'eduadmin-style', $defaultCss );
 			echo $css;
 ?></textarea>
 
 			<p class="submit">
-				<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __("Save settings", "eduadmin"); ?>" />
-				<input type="button" onclick="var c = confirm('<?php _e("Are you sure you want to reset the style settings?", "eduadmin"); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }" class="button button-secondary" value="<?php echo esc_attr__("Reset styles", "eduadmin"); ?>" />
+				<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __( "Save settings", "eduadmin" ); ?>" />
+				<input type="button" onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", "eduadmin" ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }" class="button button-secondary" value="<?php echo esc_attr__( "Reset styles", "eduadmin" ); ?>" />
 			</p>
 		</div>
 	</form>

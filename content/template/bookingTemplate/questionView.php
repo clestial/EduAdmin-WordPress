@@ -1,32 +1,32 @@
 		<div class="questionPanel">
 		<?php
-		if (isset($_REQUEST['eid'])) {
-			$questions = $eduapi->GetEventBookingQuestion($edutoken, $_REQUEST['eid']);
+		if ( isset( $_REQUEST[ 'eid' ] ) ) {
+			$questions = $eduapi->GetEventBookingQuestion( $edutoken, $_REQUEST[ 'eid' ] );
 			// VatPercent EventBookingAnswer
-			$groupedQuestions = array();
+			$groupedQuestions = array ();
 
-			$qCategories = array();
-			$qSortIndex = array();
+			$qCategories = array ();
+			$qSortIndex = array ();
 
-			foreach ($questions as $q => $row) {
+			foreach ( $questions as $q => $row ) {
 
-				$qCategories[$q] = $row->CategoryID;
-				$qSortIndex[$q] = $row->SortIndex;
+				$qCategories[ $q ] = $row->CategoryID;
+				$qSortIndex[ $q ] = $row->SortIndex;
 			}
 
-			array_multisort($qCategories, SORT_ASC, $qSortIndex, SORT_ASC, $questions);
+			array_multisort( $qCategories, SORT_ASC, $qSortIndex, SORT_ASC, $questions );
 
-			foreach ($questions as $q) {
-				if ($q->ShowExternal) {
-					$groupedQuestions[$q->QuestionID] = $q;
+			foreach ( $questions as $q ) {
+				if ( $q->ShowExternal ) {
+					$groupedQuestions[ $q->QuestionID ] = $q;
 				}
 			}
 
-			if (!empty($groupedQuestions)) {
+			if ( ! empty( $groupedQuestions ) ) {
 				$lastQuestionId = -1;
-				foreach ($groupedQuestions as $question) {
-					if ($lastQuestionId != $question->QuestionID) {
-						renderQuestion($question);
+				foreach ( $groupedQuestions as $question ) {
+					if ( $lastQuestionId != $question->QuestionID ) {
+						renderQuestion( $question );
 					}
 
 					$lastQuestionId = $question->QuestionID;

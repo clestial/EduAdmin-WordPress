@@ -114,9 +114,7 @@ edu.apiclient = {
 						}
 					}
 				}
-				if(edu.apiclient.AfterUpdate && typeof edu.apiclient.AfterUpdate == 'function') {
-					edu.apiclient.AfterUpdate.call(null);
-				}
+				edu.apiclient.RunAfterUpdate();
 			}
 		});
 	},
@@ -151,9 +149,7 @@ edu.apiclient = {
 			},
 			success: function(d) {
 				jQuery(target).html(d);
-				if(edu.apiclient.AfterUpdate && typeof edu.apiclient.AfterUpdate == 'function') {
-					edu.apiclient.AfterUpdate.call(null);
-				}
+				edu.apiclient.RunAfterUpdate();
 			}
 		});
 	},
@@ -181,9 +177,7 @@ edu.apiclient = {
 			},
 			success: function(d) {
 				jQuery(target).replaceWith(d);
-				if(edu.apiclient.AfterUpdate && typeof edu.apiclient.AfterUpdate == 'function') {
-					edu.apiclient.AfterUpdate.call(null);
-				}
+				edu.apiclient.RunAfterUpdate();
 			}
 		});
 	},
@@ -217,11 +211,14 @@ edu.apiclient = {
 			},
 			success: function(d) {
 				jQuery(target).replaceWith(d);
-				if(edu.apiclient.AfterUpdate && typeof edu.apiclient.AfterUpdate == 'function') {
-					edu.apiclient.AfterUpdate.call(null);
-				}
+				edu.apiclient.RunAfterUpdate();
 			}
 		});
+	},
+	RunAfterUpdate: function() {
+		if(edu.apiclient.AfterUpdate && typeof edu.apiclient.AfterUpdate == 'function') {
+			edu.apiclient.AfterUpdate.call(null);
+		}
 	},
 	CheckCouponCode: function(code, objectId, categoryId, onData) {
 		jQuery.ajax({

@@ -284,7 +284,7 @@ var eduBookingView = {
 			'participantCivReg[]'
 		];
 
-		if(ShouldValidateCivRegNo && !eduBookingView.ValidateCivicRegNo()) return false;
+		if(ShouldValidateCivRegNo && !eduBookingView.ValidateCivicRegNo()) { return false };
 
 		var contactParticipant = document.getElementById('contactIsAlsoParticipant');
 		var contact = 0;
@@ -296,8 +296,9 @@ var eduBookingView = {
 			}
 		}
 
-		if(eduBookingView.SingleParticipant)
+		if(eduBookingView.SingleParticipant) {
 			contact = 1;
+		}
 
 		if(participants.length + contact == 0) {
 			var noPartWarning = document.getElementById('edu-warning-no-participants');
@@ -439,7 +440,7 @@ function numberWithSeparator(x, sep) {
 }
 
 var oldonload = window.onload;
-window.onload = function(e) {
+window.onload = function() {
 	if(oldonload) {
 		oldonload();
 	}

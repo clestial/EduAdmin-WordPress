@@ -76,7 +76,7 @@ function logoutUser() {
 	unset($_SESSION['eduadmin-loginUser']);
 	unset($_SESSION['needsLogin']);
 	unset($_SESSION['checkEmail']);
-	wp_redirect($baseUrl . edu_getQueryString());
+	wp_redirect($baseUrl . edu_getQueryString("q"));
 	exit();
 }
 
@@ -101,7 +101,7 @@ function() {
 		$cat = get_option('eduadmin-rewriteBaseUrl');
 		$baseUrl = $surl . '/' . $cat;
 
-		if ($_SERVER['REQUEST_URI'] == "/$cat/profile/logout" || $_SERVER['REQUEST_URI'] == "/$cat/profile/logout/") {
+		if ( stristr( $_SERVER['REQUEST_URI'], "/$cat/profile/logout" ) !== false ) {
 			logoutUser();
 		}
 

@@ -1,9 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.10.10]
 ### Added
 - Fixing issues stated by scrutinizer
 - Added `exit()` after `wp_redirect()`
+- Bugfix: Correctly matching logout with `stristr`
 
 ## [0.10.9]
 ### Added
@@ -288,7 +289,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.9...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...HEAD
+[0.10.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.9...v0.10.10
 [0.10.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.8...v0.10.9
 [0.10.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.7...v0.10.8
 [0.10.7]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.6...v0.10.7

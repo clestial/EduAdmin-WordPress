@@ -16,7 +16,7 @@ edu_register_session();
  * Plugin URI:	http://www.eduadmin.se
  * Description:	EduAdmin plugin to allow visitors to book courses at your website
  * Tags:	booking, participants, courses, events, eduadmin, lega online
- * Version:	0.10.9
+ * Version:	0.10.10
  * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
  * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
  * Requires at least: 3.0
@@ -76,12 +76,12 @@ final class EduAdmin {
 	}
 
 	public function get_token() {
-		$apiKey = get_option('eduadmin-api-key');
-		if ( ! $apiKey || empty($apiKey) ) {
+		$apiKey = get_option( 'eduadmin-api-key' );
+		if ( ! $apiKey || empty( $apiKey ) ) {
 			add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
 			return;
 		} else {
-			$key = DecryptApiKey($apiKey);
+			$key = DecryptApiKey( $apiKey );
 			if ( ! $key ) {
 				add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
 				return;
@@ -93,7 +93,7 @@ final class EduAdmin {
 				set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
 			} else {
 				if ( get_transient( 'eduadmin-validatedToken_' . $edutoken ) === false ) {
-					$valid = $this->api->ValidateAuthToken($edutoken);
+					$valid = $this->api->ValidateAuthToken( $edutoken );
 					if ( ! $valid) {
 						$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
 						set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
@@ -135,13 +135,13 @@ final class EduAdmin {
 	private function init_hooks() {
 		register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
 
-		add_action( 'after_switch_theme', array($this, 'new_theme') );
-		add_action( 'init', array($this, 'init') );
-		add_action( 'init', array($this, 'load_language') );
-		add_action( 'eduadmin_call_home', array($this, 'call_home') );
+		add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
+		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'load_language' ) );
+		add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
 		add_action( 'wp_footer', 'edu_getTimers' );
 
-		register_deactivation_hook( __FILE__, array($this, 'deactivate') );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 	}
 
 	public function init() {
@@ -157,7 +157,7 @@ final class EduAdmin {
 	}
 
 	public function get_plugin_version() {
-		$cachedVersion = wp_cache_get('eduadmin-version', 'eduadmin');
+		$cachedVersion = wp_cache_get( 'eduadmin-version', 'eduadmin' );
 		if ( false !== $cachedVersion ) {
 			return $cachedVersion;
 		}
@@ -167,7 +167,7 @@ final class EduAdmin {
 		}
 
 		$version = get_plugin_data( __FILE__ )['Version'];
-		wp_cache_set('eduadmin-version', $version, 'eduadmin', 3600);
+		wp_cache_set( 'eduadmin-version', $version, 'eduadmin', 3600 );
 		return $version;
 	}
 
@@ -175,15 +175,15 @@ final class EduAdmin {
 		global $wp_version;
 		$usageData = array(
 			'siteUrl' => get_site_url(),
-			'siteName' => get_option('blogname'),
+			'siteName' => get_option( 'blogname' ),
 			'wpVersion' => $wp_version,
-			'token' => get_option('eduadmin-api-key'),
-			'officialVersion' => file_exists(dirname(__FILE__) . "/.official.plugin.php"),
+			'token' => get_option( 'eduadmin-api-key' ),
+			'officialVersion' => file_exists( dirname( __FILE__ ) . "/.official.plugin.php" ),
 			'pluginVersion' => $this->get_plugin_version()
 		);
 
 		$callHomeUrl = 'http://ws10.multinet.se/edu-plugin/wp_phone_home.php';
-		wp_remote_post($callHomeUrl, array('body' => $usageData));
+		wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
 	}
 
 	public function load_language() {

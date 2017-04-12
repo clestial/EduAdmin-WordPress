@@ -1,6 +1,3 @@
-<?php
-
-?>
 <div class="eduadmin wrap">
 	<h2><?php echo sprintf(__("EduAdmin settings - %s", "eduadmin"), __("Plugins", "eduadmin")); ?></h2>
 

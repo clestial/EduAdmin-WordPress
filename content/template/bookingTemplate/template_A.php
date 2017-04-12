@@ -5,59 +5,59 @@ global $eduapi;
 global $edutoken;
 $apiKey = get_option('eduadmin-api-key');
 
-if (!$apiKey || empty($apiKey)) {
+if ( ! $apiKey || empty( $apiKey ) ) {
 	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 } else {
-	$edo = get_transient('eduadmin-listCourses');
+	$edo = get_transient( 'eduadmin-listCourses' );
 	if (!$edo) {
 		$filtering = new XFiltering();
-		$f = new XFilter('ShowOnWeb', '=', 'true');
-		$filtering->AddItem($f);
+		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+		$filtering->AddItem( $f );
 
-		$edo = $eduapi->GetEducationObject($edutoken, '', $filtering->ToString());
-		set_transient('eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS);
+		$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+		set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 	}
 
 	$selectedCourse = false;
 	$name = "";
 	foreach ($edo as $object) {
-		$name = (!empty($object->PublicName) ? $object->PublicName : $object->ObjectName);
+		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 		$id = $object->ObjectID;
-		if (makeSlugs($name) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"]) {
+		if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 			$selectedCourse = $object;
 			break;
 		}
 	}
-	if (!$selectedCourse) {
+	if ( ! $selectedCourse ) {
 		?>
 		<script>history.go(-1);</script>
 		<?php
 		die();
 	}
 	$ft = new XFiltering();
-	if (isset($_REQUEST['eid'])) {
+	if ( isset( $_REQUEST['eid'] ) ) {
 		$eventid = $_REQUEST['eid'];
-		$f = new XFilter('EventID', '=', $eventid);
-		$ft->AddItem($f);
+		$f = new XFilter( 'EventID', '=', $eventid );
+		$ft->AddItem( $f );
 	}
-	$fetchMonths = get_option('eduadmin-monthsToFetch', 6);
-	if (!is_numeric($fetchMonths)) {
+	$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
+	if ( ! is_numeric( $fetchMonths ) ) {
 		$fetchMonths = 6;
 	}
 
 	$ft = new XFiltering();
-	$f = new XFilter('PeriodStart', '<=', date("Y-m-d 23:59:59", strtotime('now +' . $fetchMonths . ' months')));
-	$ft->AddItem($f);
+	$f = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetchMonths . ' months' ) ) );
+	$ft->AddItem( $f );
 	$f = new XFilter( 'PeriodEnd', '>=', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) );
-	$ft->AddItem($f);
+	$ft->AddItem( $f );
 	$f = new XFilter( 'ShowOnWeb', '=', 'true');
-	$ft->AddItem($f);
+	$ft->AddItem( $f );
 	$f = new XFilter( 'StatusID', '=', '1');
-	$ft->AddItem($f);
+	$ft->AddItem( $f );
 	$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID);
-	$ft->AddItem($f);
+	$ft->AddItem( $f );
 	$f = new XFilter( 'LastApplicationDate', '>=', date( 'Y-m-d H:i:s' ) );
-	$ft->AddItem($f);
+	$ft->AddItem( $f );
 
 	$f = new XFilter( 'CustomerID', '=', '0' );
 	$ft->AddItem( $f );
@@ -84,7 +84,7 @@ if (!$apiKey || empty($apiKey)) {
 
 	$event = $events[0];
 
-	if ( isset( $_REQUEST['act'] ) && 'bookCourse' === $_REQUEST['act'] ) {
+	if ( isset( $_POST['act'] ) && 'bookCourse' === $_POST['act'] ) {
 		include_once( 'createBooking.php' );
 	}
 
@@ -251,7 +251,7 @@ if (!$apiKey || empty($apiKey)) {
 				<?php endif; ?>
 			</div>
 			<?php
-				if ( isset($_SESSION['eduadmin-loginUser']) && isset($contact->CustomerContactID) && $contact->CustomerContactID > 0 ) {
+				if ( isset( $_SESSION['eduadmin-loginUser'] ) && isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
 
 					$surl = get_home_url();
 					$cat = get_option('eduadmin-rewriteBaseUrl');
@@ -264,15 +264,15 @@ if (!$apiKey || empty($apiKey)) {
 				}
 			?>
 			<?php
-			$singlePersonBooking = get_option('eduadmin-singlePersonBooking', false);
+			$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
 			if ( $singlePersonBooking ) {
 				include_once("singlePersonBooking.php");
 			} else {
-				$fieldOrder = get_option('eduadmin-fieldOrder', 'contact_customer');
-				if ($fieldOrder == "contact_customer") {
-					include_once("contactView.php");
+				$fieldOrder = get_option( 'eduadmin-fieldOrder', 'contact_customer' );
+				if ('contact_customer' == $fieldOrder) {
+					include_once( "contactView.php" );
 					include_once("customerView.php");
-				} else if ( $fieldOrder == "customer_contact" ) {
+				} else if ( "customer_contact" == $fieldOrder  ) {
 					include_once("customerView.php");
 					include_once("contactView.php");
 				}
@@ -281,9 +281,7 @@ if (!$apiKey || empty($apiKey)) {
 			?>
 			<?php if ( "selectWholeEvent" === get_option('eduadmin-selectPricename', 'firstPublic')): ?>
 			<div class="priceView">
-				<?php
-					edu_e("Price name");
-				?>
+				<?php edu_e("Price name"); ?>
 				<select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename" onchange="eduBookingView.UpdatePrice();">
 				<option value=""><?php edu_e("Choose price"); ?></option>
 					<?php foreach ($prices as $price): ?>

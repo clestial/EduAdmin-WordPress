@@ -85,9 +85,9 @@ if (!function_exists('edu_api_eventlist')) {
 			$sortorder = explode(' ', $customOrderByOrder);
 			foreach ($orderby as $od => $v) {
 				if (isset($sortorder[$od])) {
-									$or = $sortorder[$od];
+					$or = $sortorder[$od];
 				} else {
-									$or = "ASC";
+					$or = "ASC";
 				}
 
 				$s = new XSort($v, $or);
@@ -138,7 +138,7 @@ if (!function_exists('edu_api_eventlist')) {
 
 		$pricenames = $eduapi->GetPriceName($edutoken, $st->ToString(), $ft->ToString());
 
-		if (!empty($pricenames)) {
+		if ( ! empty($pricenames)) {
 			$events = array_filter($events, function($object) use (&$pricenames) {
 				$pn = $pricenames;
 				foreach ($pn as $subj) {

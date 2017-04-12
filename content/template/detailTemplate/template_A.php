@@ -61,6 +61,9 @@ if (!$apiKey || empty($apiKey)) {
 	$f = new XFilter('CustomerID', '=', '0');
 	$ft->AddItem($f);
 
+	$f = new XFilter('ParentEventID', '=', '0');
+	$ft->AddItem($f);
+
 	$st = new XSorting();
 	$groupByCity = get_option('eduadmin-groupEventsByCity', FALSE);
 	$groupByCityClass = "";

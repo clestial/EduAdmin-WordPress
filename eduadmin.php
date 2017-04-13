@@ -48,6 +48,9 @@ edu_register_session();
 if ( ! class_exists( 'EduAdmin' ) ) :
 
 final class EduAdmin {
+	/**
+	 * @var EduAdmin
+	 */
 	protected static $_instance = null;
 
 	/**
@@ -59,8 +62,14 @@ final class EduAdmin {
 	 * @var EduAdminClient
 	 */
 	public $api = null;
+	/**
+	 * @var string
+	 */
 	private $token = null;
 
+	/**
+	 * @return EduAdmin
+	 */
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
@@ -75,16 +84,21 @@ final class EduAdmin {
 		do_action( 'eduadmin_loaded' );
 	}
 
+	/**
+	 * @return mixed|null|string
+	 */
 	public function get_token() {
 		$apiKey = get_option( 'eduadmin-api-key' );
 		if ( ! $apiKey || empty( $apiKey ) ) {
 			add_action( 'admin_notices', array ( $this, 'SetupWarning' ) );
-			return;
+
+			return '';
 		} else {
 			$key = DecryptApiKey( $apiKey );
 			if ( ! $key ) {
 				add_action( 'admin_notices', array ( $this, 'SetupWarning' ) );
-				return;
+
+				return '';
 			}
 
 			$edutoken = get_transient( 'eduadmin-token' );
@@ -107,7 +121,9 @@ final class EduAdmin {
 	}
 
 	private function includes() {
+		include_once( 'includes/loApiClasses.php' );
 		include_once( 'includes/_apiFunctions.php' );
+		include_once( 'class/class-eduadmin-bookinginfo.php' );
 		include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
 		include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
 		include_once( 'includes/loApiClient.php' );
@@ -207,6 +223,9 @@ final class EduAdmin {
 	}
 }
 
+	/**
+	 * @return EduAdmin
+	 */
 function EDU() {
 	return EduAdmin::instance();
 }

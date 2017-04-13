@@ -63,9 +63,7 @@
 	display: inline-block;
 	margin-bottom: -1px;
 	padding: 0.4em 0.8em;
-	border-radius: 1em;
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
+    border-radius: 1em 1em 0 0;
 }
 
 .eduadmin .title {
@@ -109,10 +107,7 @@
 .eduadmin h3
 {
     display: block;
-    margin-top: 1em;
-    margin-bottom: 0.4em;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 1em 0 0.4em;
 }
 
 .eduadmin .backLink
@@ -185,18 +180,15 @@
 
 .eduadmin .objectBlock
 {
-	padding-top: 1em;
 	display: block;
 	width: 19em;
 	text-align: center;
 	box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	padding-bottom: 4em;
 	float: left;
 	margin-left: 1.0em;
 	margin-bottom: 1.0em;
 	position: relative;
-	padding-left: 1em;
-	padding-right: 1em;
+    padding: 1em 1em 4em;
 }
 
 .eduadmin .objectBlock .objectDescription
@@ -218,9 +210,8 @@
 .eduadmin .objectBlock .objectImage
 {
 	min-height: 9em;
-	background-repeat: no-repeat;
 	background-size: contain;
-	background-position: center center;
+    background: no-repeat center center;
 	margin-top: -1em;
 	margin-bottom: 0.5em;
 	display: block;
@@ -276,9 +267,8 @@
 
 .eduadmin .objectItem .objectImage
 {
-	background-repeat: no-repeat;
 	background-size: contain;
-	background-position: center center;
+    background: no-repeat center center;
 	width: 12%;
 	float: left;
 	min-height: 8em;
@@ -295,7 +285,7 @@
 .eduadmin .objectItem .objectBook
 {
 	position: absolute;
-	right: 0em;
+    right: 0;
 	top: 1em;
 }
 
@@ -308,10 +298,7 @@
 {
 	display: block;
 	list-style-type: disc;
-	margin-top: 1em;
-	margin-bottom: 1em;
-	margin-left: 0;
-	margin-right: 0;
+    margin: 1em 0;
 	padding-left: 40px;
 }
 
@@ -505,9 +492,8 @@
 }
 
 .eduadmin .edu-manyDays {
-	border: 0;
-	border-bottom: 1px solid;
-	border-style: dotted;
+    border: 0 dotted;
+    border-bottom-width: 1px;
 	position: relative;
 }
 

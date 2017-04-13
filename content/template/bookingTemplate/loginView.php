@@ -136,7 +136,10 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		} else {
 			unset( $_SESSION[ 'checkEmail' ] );
 			unset( $_SESSION[ 'needsLogin' ] );
-			?><script type="text/javascript">(function() { location.href = location.href; })();</script><?php
+			?>
+			<script type="text/javascript">(function () {
+					location.reload( true );
+				})();</script><?php
 		}
 	}
 ?>

@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Added
+- Fixing issues stated by scrutinizer
+- Added class `EduAdminBookingInfo` that is passed to action `eduadmin-processbooking`
+
 ## [0.10.10]
 ### Added
 - Fixing issues stated by scrutinizer

@@ -48,10 +48,8 @@ var eduBookingView = {
 	CheckParticipantCount: function()
 	{
 		var participants = (eduBookingView.SingleParticipant ? 1 : document.querySelectorAll('.eduadmin .participantItem:not(.template):not(.contactPerson)').length - 1);
-		if(participants >= eduBookingView.MaxParticipants && eduBookingView.MaxParticipants >= 0) {
-			return false;
-		}
-		return true;
+		return !(participants >= eduBookingView.MaxParticipants && eduBookingView.MaxParticipants >= 0);
+
 	},
 	UpdatePrice: function() {
 		var contactParticipant = document.getElementById('contactIsAlsoParticipant');
@@ -167,7 +165,7 @@ var eduBookingView = {
 			}
 
 			if(eduBookingView.SingleParticipant || (contactParticipant && contactParticipant.checked)) {
-				var subEventPrices = document.querySelectorAll('.eduadmin .participantItem.contactPerson:not(.template) input.subEventCheckBox:checked');
+				subEventPrices = document.querySelectorAll( '.eduadmin .participantItem.contactPerson:not(.template) input.subEventCheckBox:checked' );
 				if(subEventPrices.length > 0) {
 					for(var i = 0; i < subEventPrices.length; i++) {
 						newPrice += parseFloat(subEventPrices[i].attributes['data-price'].value);
@@ -215,10 +213,9 @@ var eduBookingView = {
 			document.querySelector('.contactEmail').value = cEmail;
 			document.querySelector('.contactPhone').value = cPhone;
 			document.querySelector('.contactMobile').value = cMobile;
-			var tCivReg = document.querySelector('.contactCivReg')
+			var tCivReg = document.querySelector( '.contactCivReg' );
 			if(tCivReg) {
-				var cCivReg = document.getElementById('edu-contactCivReg').value;
-				tCivReg.value = cCivReg;
+				tCivReg.value = document.getElementById( 'edu-contactCivReg' ).value;
 			}
 
 			if(contact == 1 && !this.AddedContactPerson) {

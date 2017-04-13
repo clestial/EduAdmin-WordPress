@@ -34,6 +34,8 @@ function edu_getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', 
 				return edu__( 'One spot left' );
 			} else if ( $freeSpots <= 0 ) {
 				return edu__( 'No spots left' );
+			} else {
+				return '';
 			}
 		case "intervals":
 			$interval = $spotSettings;
@@ -62,6 +64,8 @@ function edu_getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', 
 				return edu__( 'Few spots left' );
 			}
 			return edu__( 'Spots left' );
+		default:
+			return '';
 	}
 }
 
@@ -76,16 +80,6 @@ function edu_GetLogicalDateGroups( $dates, $short = false, $event = null, $showD
 }
 
 function edu_GetDisplayDate( $inDate, $short = false ) {
-	$days = array (
-		1 => ! $short ? edu__( 'monday' ) : edu__( 'mon' ),
-		2 => ! $short ? edu__( 'tuesday' ) : edu__( 'tue' ),
-		3 => ! $short ? edu__( 'wednesday' ) : edu__( 'wed' ),
-		4 => ! $short ? edu__( 'thursday' ) : edu__( 'thu' ),
-		5 => ! $short ? edu__( 'friday' ) : edu__( 'fri' ),
-		6 => ! $short ? edu__( 'saturday' ) : edu__( 'sat' ),
-		7 => ! $short ? edu__( 'sunday' ) : edu__( 'sun' ),
-	);
-
 	$months = array (
 		1 => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
 		2 => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
@@ -326,7 +320,7 @@ if ( ! function_exists( 'makeSlugs' ) ) {
 
 if ( ! function_exists( 'checkSlug' ) ) {
 	function checkSlug( $sSlug ) {
-		if ( ereg( "^[a-zA-Z0-9]+[a-zA-Z0-9\_\-]*$", $sSlug ) ) {
+		if ( preg_match( "^[a-zA-Z0-9]+[a-zA-Z0-9_-]*$", $sSlug ) ) {
 			return true;
 		}
 

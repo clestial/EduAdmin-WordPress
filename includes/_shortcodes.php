@@ -75,6 +75,8 @@ function eduadmin_get_detail_view( $attributes ) {
 		$str = include_once( plugin_dir_path( __DIR__ ) . "content/template/detailTemplate/" . $attributes[ 'template' ] . ".php" );
 		return $str;
 	}
+
+	return '';
 }
 
 function edu_no_index() {

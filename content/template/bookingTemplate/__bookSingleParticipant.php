@@ -165,15 +165,15 @@ if ( $customer->CustomerID == 0 ) {
 
 $contact->CustomerID = $customer->CustomerID;
 
-if ( ! empty( $_POST[ 'contactFirstName' ] ) ) {
-	$contact->ContactName = trim( $_POST[ 'contactFirstName' ] ) . ";" . trim( $_POST[ 'contactLastName' ] );
-	$contact->Phone = trim( $_POST[ 'contactPhone' ] );
-	$contact->Mobile = trim( $_POST[ 'contactMobile' ] );
-	$contact->Email = trim( $_POST[ 'contactEmail' ] );
-	if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-		$contact->CivicRegistrationNumber = trim( $_POST[ 'contactCivReg' ] );
+if ( ! empty( $_POST['contactFirstName'] ) ) {
+	$contact->ContactName = trim( $_POST['contactFirstName'] ) . ";" . trim( $_POST['contactLastName'] );
+	$contact->Phone       = trim( $_POST['contactPhone'] );
+	$contact->Mobile      = trim( $_POST['contactMobile'] );
+	$contact->Email       = trim( $_POST['contactEmail'] );
+	if ( isset( $_POST['contactCivReg'] ) ) {
+		$contact->CivicRegistrationNumber = trim( $_POST['contactCivReg'] );
 	}
-	if ( isset( $_POST[ 'contactPass' ] ) ) {
+	if ( isset( $_POST['contactPass'] ) ) {
 		$contact->Loginpass = $_POST[ 'contactPass' ];
 	}
 	$contact->CanLogin = 'true';
@@ -199,13 +199,13 @@ if ( ! empty( $_POST[ 'contactFirstName' ] ) ) {
 		$contact->CustomerContactID = 0;
 		$contact->CustomerContactID = $eduapi->SetCustomerContact( $edutoken, array ( $contact ) )[ 0 ];
 	} else {
-		if ( $selectedMatch === "name-zip-match-overwrite" ) {
+		if ( $selectedMatch === 'name-zip-match-overwrite' ) {
 			$contact->CustomerContactID = $matchingContacts[ 0 ]->CustomerContactID;
 			$eduapi->SetCustomerContact( $edutoken, array ( $contact ) );
 		} else {
 			$contact = $matchingContacts[ 0 ];
 			if ( isset( $_POST[ 'contactPass' ] ) && empty( $contact->Loginpass ) ) {
-				$contact->Loginpass = $_POST[ 'contactPass' ];
+				$contact->Loginpass = $_POST['contactPass'];
 				$eduapi->SetCustomerContact( $edutoken, array ( $contact ) );
 			}
 		}
@@ -303,7 +303,7 @@ if ( $contact->CustomerContactID > 0 ) {
 	$ft->AddItem( $f );
 	$matchingPersons = $eduapi->GetPerson( $edutoken, '', $ft->ToString(), false );
 	if ( ! empty( $matchingPersons ) ) {
-		$person = $matchingPersons[ 0 ];
+		$person = $matchingPersons[0];
 	}
 
 	$cmpArr = array ();
@@ -334,12 +334,12 @@ if ( $contact->CustomerContactID > 0 ) {
 
 	$person->Attribute = $cmpArr;
 
-	if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-		$person->PersonCivicRegistrationNumber = trim( $_POST[ 'contactCivReg' ] );
+	if ( isset( $_POST['contactCivReg'] ) ) {
+		$person->PersonCivicRegistrationNumber = trim( $_POST['contactCivReg'] );
 	}
 
-	if ( isset( $_POST[ 'contactPriceName' ] ) ) {
-		$person->OccasionPriceNameLnkID = trim( $_POST[ 'contactPriceName' ] );
+	if ( isset( $_POST['contactPriceName'] ) ) {
+		$person->OccasionPriceNameLnkID = trim( $_POST['contactPriceName'] );
 	}
 	$person->SubEvents = array ();
 	foreach ( $subEvents as $subEvent ) {
@@ -350,13 +350,13 @@ if ( $contact->CustomerContactID > 0 ) {
 			$subEventInfo->EventID = $fieldValue;
 			$person->SubEvents[ ] = $subEventInfo;
 		} else if ( $subEvent->MandatoryParticipation ) {
-			$subEventInfo = new SubEventInfo();
+			$subEventInfo          = new SubEventInfo();
 			$subEventInfo->EventID = $subEvent->EventID;
-			$person->SubEvents[ ] = $subEventInfo;
+			$person->SubEvents[]   = $subEventInfo;
 		}
 	}
 
-	$pArr[ ] = $person;
+	$pArr[] = $person;
 }
 
 if ( ! empty( $pArr ) ) {
@@ -368,16 +368,16 @@ if ( ! empty( $pArr ) ) {
 	if ( isset( $purchaseOrderNumber ) ) {
 			$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 	}
-	if ( isset( $_POST[ 'edu-pricename' ] ) ) {
-		$bi->OccasionPriceNameLnkID = $_POST[ 'edu-pricename' ];
+	if ( isset( $_POST['edu-pricename'] ) ) {
+		$bi->OccasionPriceNameLnkID = $_POST['edu-pricename'];
 	}
 
-	if ( isset( $_POST[ 'edu-discountCodeID' ] ) && $_POST[ 'edu-discountCodeID' ] != "0" ) {
-		$bi->CouponID = $_POST[ 'edu-discountCodeID' ];
+	if ( isset( $_POST['edu-discountCodeID'] ) && $_POST['edu-discountCodeID'] != "0" ) {
+		$bi->CouponID = $_POST['edu-discountCodeID'];
 	}
 
-	$bi->CustomerReference = ( ! empty( $_POST[ 'invoiceReference' ] ) ? trim( $_POST[ 'invoiceReference' ] ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
-	$eventCustomerLnkID = $eduapi->CreateSubEventBooking(
+	$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( $_POST['invoiceReference'] ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
+	$eventCustomerLnkID    = $eduapi->CreateSubEventBooking(
 		$edutoken,
 		$bi
 	);
@@ -386,8 +386,8 @@ if ( ! empty( $pArr ) ) {
 	foreach ( $_POST as $input => $value ) {
 		if ( strpos( $input, "question_" ) !== FALSE ) {
 			$question = explode( '_', $input );
-			$answerID = $question[ 1 ];
-			$type = $question[ 2 ];
+			$answerID = $question[1];
+			$type     = $question[2];
 
 			switch ( $type ) {
 				case 'radio':
@@ -397,7 +397,7 @@ if ( ! empty( $pArr ) ) {
 					break;
 			}
 			if ( $type === "time" ) {
-				$answers[ $answerID ][ 'AnswerTime' ] = trim( $value );
+				$answers[ $answerID ]['AnswerTime'] = trim( $value );
 			} else {
 				$answers[ $answerID ] =
 				array (
@@ -414,12 +414,12 @@ if ( ! empty( $pArr ) ) {
 	if ( ! empty( $answers ) ) {
 		$sanswers = array ();
 		foreach ( $answers as $answer ) {
-			$sanswers[ ] = $answer;
+			$sanswers[] = $answer;
 		}
 		$eduapi->SetEventCustomerAnswerV2( $edutoken, $sanswers );
 	}
 
-	$ai = $eduapi->GetAccountInfo( $edutoken )[ 0 ];
+	$ai = $eduapi->GetAccountInfo( $edutoken )[0];
 
 	$senderEmail = $ai->Email;
 	if ( empty( $senderEmail ) ) {
@@ -429,10 +429,10 @@ if ( ! empty( $pArr ) ) {
 		$eduapi->SendConfirmationEmail( $edutoken, $eventCustomerLnkID, $senderEmail, $personEmail );
 	}
 
-	$_SESSION[ 'eduadmin-printJS' ] = true;
+	$_SESSION['eduadmin-printJS'] = true;
 
-	if ( isset( $_SESSION[ 'eduadmin-loginUser' ] ) ) {
-			$user = $_SESSION[ 'eduadmin-loginUser' ];
+	if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
+		$user = $_SESSION['eduadmin-loginUser'];
 	} else {
 			$user = new stdClass;
 	}
@@ -442,7 +442,14 @@ if ( ! empty( $pArr ) ) {
 
 	$jsEncCustomer = json_encode( $customer );
 	@$user->Customer = json_decode( $jsEncCustomer );
-	$_SESSION[ 'eduadmin-loginUser' ] = $user;
+	$_SESSION['eduadmin-loginUser'] = $user;
+
+	$bookingInfo = array(
+		'eventCustomerLnkId' => $eventCustomerLnkID,
+		'eventId'            => $eventId,
+		'customerId'         => $customer->CustomerID,
+		'contactId'          => $contact->CustomerContactID,
+	);
 
 	die( "<script type=\"text/javascript\">location.href = '" . get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . "?edu-thankyou=" . $eventCustomerLnkID . "';</script>" );
 }

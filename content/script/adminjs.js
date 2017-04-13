@@ -1,5 +1,5 @@
 var EduAdmin = {
-	TestApiConnection: function() {
+	TestApiConnection: function () {
 		var apiUserId = document.getElementById('eduadmin-api_user_id').value;
 		var apiHash = document.getElementById('eduadmin-api_hash').value;
 		if(typeof jQuery != 'undefined') {
@@ -21,11 +21,6 @@ var EduAdmin = {
 		}
 	},
 	UnlockApiAuthentication: function() {
-		/*var apiUserId = document.getElementById('eduadmin-api_user_id');
-		var apiHash = document.getElementById('eduadmin-api_hash');
-		apiUserId.readOnly = false;
-		apiHash.readOnly = false;*/
-
 		var apiKey = document.getElementById('eduadmin-api-key');
 		apiKey.readOnly = false;
 
@@ -36,7 +31,7 @@ var EduAdmin = {
 		var me = jQuery(item);
 		me.find('.eduadmin-attributelist').slideToggle('fast');
 	},
-	SpotExampleText: function() {
+	SpotExampleText: function () {
 		/** global: availText */
 		var selVal = jQuery('.eduadmin-spotsLeft :selected').val();
 		jQuery('#eduadmin-spotExampleText').text(availText[selVal]);

@@ -104,6 +104,8 @@ function getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spo
 			}
 
 			return edu__( 'Spots left' );
+		default:
+			return '';
 	}
 }
 

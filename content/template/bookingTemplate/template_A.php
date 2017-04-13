@@ -172,9 +172,9 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	$st->AddItem( $s );
 
 	$subPrices = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
-	$sePrice = array ();
+	$sePrice   = array();
 	foreach ( $subPrices as $sp ) {
-		$sePrice[ $sp->OccationID ][ ] = $sp;
+		$sePrice[ $sp->OccationID ][] = $sp;
 	}
 
 	$hideSubEventDateInfo = get_option( 'eduadmin-hideSubEventDateTime', false );
@@ -251,7 +251,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 				<?php endif; ?>
 			</div>
 			<?php
-				if ( isset( $_SESSION[ 'eduadmin-loginUser' ] ) && isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
+			if ( isset( $_SESSION['eduadmin-loginUser'] ) && isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
 
 					$surl = get_home_url();
 					$cat = get_option( 'eduadmin-rewriteBaseUrl' );

@@ -518,5 +518,12 @@ if ( ! empty( $pArr ) ) {
 	@$user->Customer = json_decode( $jsEncCustomer );
 	$_SESSION[ 'eduadmin-loginUser' ] = $user;
 
-	die( "<script type=\"text/javascript\">location.href = '" . get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . "?edu-thankyou=" . $eventCustomerLnkID . "';</script>" );
+	$bookingInfo = array(
+		'eventCustomerLnkId' => $eventCustomerLnkID,
+		'eventId'            => $eventId,
+		'customerId'         => $customer->CustomerID,
+		'contactId'          => $contact->CustomerContactID,
+	);
+
+
 }

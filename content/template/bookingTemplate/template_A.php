@@ -308,7 +308,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 			<div class="discountView">
 				<label>
 					<div class="inputLabel">
-						<?php edu_e( "Discount code" ); ?>
+						<?php edu_e( 'Discount code' ); ?>
 					</div>
 					<div class="inputHolder">
 						<input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;" placeholder="<?php edu_e( "Discount code" ); ?>" />
@@ -323,7 +323,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					</div>
 				</label>
 				<div class="edu-modal warning" id="edu-warning-discount">
-					<?php edu_e( "Invalid discount code, please check your code and try again." ); ?>
+					<?php edu_e( 'Invalid discount code, please check your code and try again.' ); ?>
 				</div>
 			</div>
 			<?php endif; ?>
@@ -350,16 +350,16 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 				<input type="submit" class="bookButton" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php edu_e( "Book now" ); ?>" />
 
 				<div class="edu-modal warning" id="edu-warning-terms">
-					<?php edu_e( "You must accept Terms and Conditions to continue." ); ?>
+					<?php edu_e( 'You must accept Terms and Conditions to continue.' ); ?>
 				</div>
 				<div class="edu-modal warning" id="edu-warning-no-participants">
-					<?php edu_e( "You must add some participants." ); ?>
+					<?php edu_e( 'You must add some participants.' ); ?>
 				</div>
 				<div class="edu-modal warning" id="edu-warning-missing-participants">
-					<?php edu_e( "One or more participants is missing a name." ); ?>
+					<?php edu_e( 'One or more participants is missing a name.' ); ?>
 				</div>
 				<div class="edu-modal warning" id="edu-warning-missing-civicregno">
-					<?php edu_e( "One or more participants is missing their civic registration number." ); ?>
+					<?php edu_e( 'One or more participants is missing their civic registration number.' ); ?>
 				</div>
 			</div>
 		</form>

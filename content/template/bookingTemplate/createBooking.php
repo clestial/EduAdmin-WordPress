@@ -1,8 +1,9 @@
 <?php
-$eventId = $_REQUEST[ 'eid' ];
+$eventId = $_REQUEST['eid'];
 
 $singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
 $bookingInfo         = array();
+$eventCustomerLinkID = 0;
 if ( $singlePersonBooking ) {
 	include_once( '__bookSingleParticipant.php' );
 } else {
@@ -31,3 +32,6 @@ $ebi = new EduAdminBookingInfo( $eventBooking, $_customer, $_contact );
 do_action( 'eduadmin-processbooking', $ebi );
 
 do_action( 'eduadmin-bookingcompleted', $ebi );
+if ( ! $ebi->NoRedirect ) {
+	die( "<script type=\"text/javascript\">location.href = '" . get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . "?edu-thankyou=" . $eventCustomerLnkID . "';</script>" );
+}

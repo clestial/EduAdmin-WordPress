@@ -16,6 +16,11 @@ class EduAdminBookingInfo {
 	 */
 	public $Contact;
 
+	/**
+	 * @var bool
+	 */
+	public $NoRedirect = false;
+
 	public function __construct( $eventBooking = null, $customer = null, $contact = null ) {
 		$this->EventBooking = $eventBooking;
 		$this->Customer     = $customer;

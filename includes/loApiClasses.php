@@ -106,7 +106,7 @@ class XSort {
 	 * @param        $name
 	 * @param string $direction
 	 */
-	function __construct( $name, $direction = 'ASC' ) {
+	public function __construct( $name, $direction = 'ASC' ) {
 		$this->SortName      = $name;
 		$this->SortDirection = $direction;
 	}

@@ -6,6 +6,7 @@
 - Added class `EduAdminBookingInfo` that is passed to action `eduadmin-processbooking`
 - Moved the redirect from when you've completed a booking to `createBooking.php`
 - Added `NoRedirect`-property to `EduAdminBookingInfo` to skip the redirects after a booking is completed.
+- Redid the `EduAdminClient` to conform to coding standards
 
 ## [0.10.10]
 ### Added

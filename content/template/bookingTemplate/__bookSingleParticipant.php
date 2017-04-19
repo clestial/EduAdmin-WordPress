@@ -1,42 +1,42 @@
 <?php
 $customer = new CustomerV2();
-$contact = new CustomerContact();
+$contact  = new CustomerContact();
 
-if ( isset( $_SESSION[ 'eduadmin-loginUser' ] ) ) {
-	$user = $_SESSION[ 'eduadmin-loginUser' ];
+if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
+	$user                       = $_SESSION['eduadmin-loginUser'];
 	$contact->CustomerContactID = $user->Contact->CustomerContactID;
-	$customer->CustomerID = $user->Customer->CustomerID;
+	$customer->CustomerID       = $user->Customer->CustomerID;
 }
-$first = trim( $_POST[ 'contactFirstName' ] );
-$last = trim( $_POST[ "contactLastName" ] );
-$customer->CustomerName = $first . " " . $last;
-$customer->CustomerGroupID = get_option( 'eduadmin-customerGroupId', NULL );
-if ( isset( $_POST[ 'contactCivRegNr' ] ) ) {
-	$customer->InvoiceOrgnr = trim( $_POST[ 'contactCivRegNr' ] );
+$first                     = trim( $_POST['contactFirstName'] );
+$last                      = trim( $_POST["contactLastName"] );
+$customer->CustomerName    = $first . " " . $last;
+$customer->CustomerGroupID = get_option( 'eduadmin-customerGroupId', null );
+if ( isset( $_POST['contactCivRegNr'] ) ) {
+	$customer->InvoiceOrgnr = trim( $_POST['contactCivRegNr'] );
 }
-$customer->Address1 = trim( $_POST[ 'customerAddress1' ] );
-$customer->Address2 = trim( $_POST[ 'customerAddress2' ] );
-$customer->Zip = trim( $_POST[ 'customerPostalCode' ] );
-$customer->City = trim( $_POST[ 'customerPostalCity' ] );
-$customer->Phone = trim( $_POST[ 'contactPhone' ] );
-$customer->Mobile = trim( $_POST[ 'contactMobile' ] );
-$customer->Email = trim( $_POST[ 'contactEmail' ] );
-$customer->CustomerReference = trim( $_POST[ 'invoiceReference' ] );
+$customer->Address1          = trim( $_POST['customerAddress1'] );
+$customer->Address2          = trim( $_POST['customerAddress2'] );
+$customer->Zip               = trim( $_POST['customerPostalCode'] );
+$customer->City              = trim( $_POST['customerPostalCity'] );
+$customer->Phone             = trim( $_POST['contactPhone'] );
+$customer->Mobile            = trim( $_POST['contactMobile'] );
+$customer->Email             = trim( $_POST['contactEmail'] );
+$customer->CustomerReference = trim( $_POST['invoiceReference'] );
 
-$customerInvoiceEmailAddress = trim( $_POST[ 'invoiceEmail' ] );
+$customerInvoiceEmailAddress = trim( $_POST['invoiceEmail'] );
 
-if ( ! isset( $_POST[ 'alsoInvoiceCustomer' ] ) ) {
-	$customer->InvoiceName = $first . " " . $last;
-	$customer->InvoiceAddress1 = trim( $_POST[ 'customerAddress1' ] );
-	$customer->InvoiceAddress2 = trim( $_POST[ 'customerAddress2' ] );
-	$customer->InvoiceZip = trim( $_POST[ 'customerPostalCode' ] );
-	$customer->InvoiceCity = trim( $_POST[ 'customerPostalCity' ] );
+if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
+	$customer->InvoiceName     = $first . " " . $last;
+	$customer->InvoiceAddress1 = trim( $_POST['customerAddress1'] );
+	$customer->InvoiceAddress2 = trim( $_POST['customerAddress2'] );
+	$customer->InvoiceZip      = trim( $_POST['customerPostalCode'] );
+	$customer->InvoiceCity     = trim( $_POST['customerPostalCity'] );
 } else {
-	$customer->InvoiceName = trim( $_POST[ 'invoiceName' ] );
-	$customer->InvoiceAddress1 = trim( $_POST[ 'invoiceAddress1' ] );
-	$customer->InvoiceAddress2 = trim( $_POST[ 'invoiceAddress2' ] );
-	$customer->InvoiceZip = trim( $_POST[ 'invoicePostalCode' ] );
-	$customer->InvoiceCity = trim( $_POST[ 'invoicePostalCity' ] );
+	$customer->InvoiceName     = trim( $_POST['invoiceName'] );
+	$customer->InvoiceAddress1 = trim( $_POST['invoiceAddress1'] );
+	$customer->InvoiceAddress2 = trim( $_POST['invoiceAddress2'] );
+	$customer->InvoiceZip      = trim( $_POST['invoicePostalCode'] );
+	$customer->InvoiceCity     = trim( $_POST['invoicePostalCity'] );
 }
 
 if ( ! empty( $customerInvoiceEmailAddress ) ) {
@@ -63,10 +63,10 @@ if ( $selectedMatch === "name-zip-match" ) {
 	$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
 	if ( empty( $matchingCustomer ) ) {
 		$customer->CustomerID = 0;
-		$cres = $eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
-		$customer->CustomerID = $cres[ 0 ];
+		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$customer->CustomerID = $cres[0];
 	} else {
-		$customer = $matchingCustomer[ 0 ];
+		$customer = $matchingCustomer[0];
 	}
 } else if ( $selectedMatch === "name-zip-match-overwrite" ) {
 	$ft = new XFiltering();
@@ -87,59 +87,58 @@ if ( $selectedMatch === "name-zip-match" ) {
 	$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
 	if ( empty( $matchingCustomer ) ) {
 		$customer->CustomerID = 0;
-		$cres = $eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
-		$customer->CustomerID = $cres[ 0 ];
+		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$customer->CustomerID = $cres[0];
 	} else {
-		$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
-		$eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
+		$customer->CustomerID = $matchingCustomer[0]->CustomerID;
+		$eduapi->SetCustomerV2( $edutoken, array( $customer ) );
 	}
 } else if ( $selectedMatch === "no-match" ) {
 	$customer->CustomerID = 0;
-	$cres = $eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
-	$customer->CustomerID = $cres[ 0 ];
+	$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+	$customer->CustomerID = $cres[0];
 } else if ( $selectedMatch === "no-match-new-overwrite" ) {
 	if ( $contact->CustomerContactID == 0 ) {
 		$customer->CustomerID = 0;
-		$cres = $eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
-		$customer->CustomerID = $cres[ 0 ];
+		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$customer->CustomerID = $cres[0];
 	} else {
 		$ft = new XFiltering();
-		$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+		$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$ft->AddItem( $f );
 		$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
 		if ( empty( $matchingCustomer ) ) {
 			$customer->CustomerID = 0;
-			$cres = $eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
-			$customer->CustomerID = $cres[ 0 ];
+			$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+			$customer->CustomerID = $cres[0];
 		} else {
-			$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
-			$eduapi->SetCustomerV2( $edutoken, array ( $customer ) );
+			$customer->CustomerID = $matchingCustomer[0]->CustomerID;
+			$eduapi->SetCustomerV2( $edutoken, array( $customer ) );
 		}
 	}
-
 }
 
 if ( $customer->CustomerID == 0 ) {
 	die( "Kunde inte skapa kundposten" );
 } else {
 	$so = new XSorting();
-	$s = new XSort( 'SortIndex', 'ASC' );
+	$s  = new XSort( 'SortIndex', 'ASC' );
 	$so->AddItem( $s );
 
 	$fo = new XFiltering();
-	$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+	$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
 	$fo->AddItem( $f );
 	$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 	$fo->AddItem( $f );
 	$customerAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
-	$cmpArr = array ();
+	$cmpArr = array();
 
 	foreach ( $customerAttributes as $attr ) {
 		$fieldId = "edu-attr_" . $attr->AttributeID;
 		if ( isset( $_POST[ $fieldId ] ) ) {
-			$at = new CustomerAttribute();
-			$at->CustomerID = $customer->CustomerID;
+			$at              = new CustomerAttribute();
+			$at->CustomerID  = $customer->CustomerID;
 			$at->AttributeID = $attr->AttributeID;
 
 			switch ( $attr->AttributeTypeID ) {
@@ -147,16 +146,16 @@ if ( $customer->CustomerID == 0 ) {
 					$at->AttributeChecked = true;
 					break;
 				case 5:
-					$alt = new AttributeAlternative();
+					$alt                         = new AttributeAlternative();
 					$alt->AttributeAlternativeID = $_POST[ $fieldId ];
-					$at->AttributeAlternative[ ] = $alt;
+					$at->AttributeAlternative[]  = $alt;
 					break;
 				default:
 					$at->AttributeValue = $_POST[ $fieldId ];
 					break;
 			}
 
-			$cmpArr[ ] = $at;
+			$cmpArr[] = $at;
 		}
 	}
 
@@ -173,14 +172,14 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 	if ( isset( $_POST['contactCivReg'] ) ) {
 		$contact->CivicRegistrationNumber = trim( $_POST['contactCivReg'] );
 	}
-	if ( isset( $_POST['contactPass'] ) ) {
-		$contact->Loginpass = $_POST[ 'contactPass' ];
+	if ( isset( $_POST['contactPass'] ) && ! empty ( $_POST['contactPass'] ) ) {
+		$contact->Loginpass = $_POST['contactPass'];
 	}
-	$contact->CanLogin = 'true';
+	$contact->CanLogin    = 'true';
 	$contact->PublicGroup = 'true';
 
 	$ft = new XFiltering();
-	$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+	$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 	$ft->AddItem( $f );
 	if ( $contact->CustomerContactID == 0 ) {
 		$f = new XFilter( 'ContactName', '=', trim( str_replace( ';', ' ', $contact->ContactName ) ) );
@@ -188,7 +187,7 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
 
-		$f = new XFilter( $selectedLoginField, '=', $contact->{$selectedLoginField});
+		$f = new XFilter( $selectedLoginField, '=', $contact->{$selectedLoginField} );
 		$ft->AddItem( $f );
 	} else {
 		$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
@@ -197,16 +196,16 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 	$matchingContacts = $eduapi->GetCustomerContact( $edutoken, '', $ft->ToString(), false );
 	if ( empty( $matchingContacts ) ) {
 		$contact->CustomerContactID = 0;
-		$contact->CustomerContactID = $eduapi->SetCustomerContact( $edutoken, array ( $contact ) )[ 0 ];
+		$contact->CustomerContactID = $eduapi->SetCustomerContact( $edutoken, array( $contact ) )[0];
 	} else {
 		if ( $selectedMatch === 'name-zip-match-overwrite' ) {
-			$contact->CustomerContactID = $matchingContacts[ 0 ]->CustomerContactID;
-			$eduapi->SetCustomerContact( $edutoken, array ( $contact ) );
+			$contact->CustomerContactID = $matchingContacts[0]->CustomerContactID;
+			$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
 		} else {
-			$contact = $matchingContacts[ 0 ];
-			if ( isset( $_POST[ 'contactPass' ] ) && empty( $contact->Loginpass ) ) {
+			$contact = $matchingContacts[0];
+			if ( isset( $_POST['contactPass'] ) && empty( $contact->Loginpass ) ) {
 				$contact->Loginpass = $_POST['contactPass'];
-				$eduapi->SetCustomerContact( $edutoken, array ( $contact ) );
+				$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
 			}
 		}
 	}
@@ -217,87 +216,87 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 if ( $contact->CustomerContactID == 0 ) {
 } else {
 	$so = new XSorting();
-	$s = new XSort( 'SortIndex', 'ASC' );
+	$s  = new XSort( 'SortIndex', 'ASC' );
 	$so->AddItem( $s );
 
 	$fo = new XFiltering();
-	$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+	$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
 	$fo->AddItem( $f );
 	$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 	$fo->AddItem( $f );
 	$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
-	$cmpArr = array ();
+	$cmpArr = array();
 
 	foreach ( $contactAttributes as $attr ) {
 		$fieldId = "edu-attr_" . $attr->AttributeID;
 		if ( isset( $_POST[ $fieldId ] ) ) {
-			$at = new CustomerContactAttribute();
+			$at                    = new CustomerContactAttribute();
 			$at->CustomerContactID = $contact->CustomerContactID;
-			$at->AttributeID = $attr->AttributeID;
+			$at->AttributeID       = $attr->AttributeID;
 
 			switch ( $attr->AttributeTypeID ) {
 				case 1:
 					$at->AttributeChecked = true;
 					break;
 				case 5:
-					$alt = new AttributeAlternative();
+					$alt                         = new AttributeAlternative();
 					$alt->AttributeAlternativeID = $_POST[ $fieldId ];
-					$at->AttributeAlternative[ ] = $alt;
+					$at->AttributeAlternative[]  = $alt;
 					break;
 				default:
 					$at->AttributeValue = $_POST[ $fieldId ];
 					break;
 			}
 
-			$cmpArr[ ] = $at;
+			$cmpArr[] = $at;
 		}
 	}
 
 	$res = $eduapi->SetCustomerContactAttributes( $edutoken, $cmpArr );
 }
 
-$persons = array ();
-$personEmail = array ();
+$persons     = array();
+$personEmail = array();
 if ( ! empty( $contact->Email ) && ! in_array( $contact->Email, $personEmail ) ) {
-	$personEmail[ ] = $contact->Email;
+	$personEmail[] = $contact->Email;
 }
 
 $st = new XSorting();
-$s = new XSort( 'StartDate', 'ASC' );
+$s  = new XSort( 'StartDate', 'ASC' );
 $st->AddItem( $s );
 $s = new XSort( 'EndDate', 'ASC' );
 $st->AddItem( $s );
 
 $ft = new XFiltering();
-$f = new XFilter( 'ParentEventID', '=', $eventId );
+$f  = new XFilter( 'ParentEventID', '=', $eventId );
 $ft->AddItem( $f );
 $subEvents = $eduapi->GetSubEvent( $edutoken, $st->ToString(), $ft->ToString() );
 
-$pArr = array ();
+$pArr = array();
 
 $so = new XSorting();
-$s = new XSort( 'SortIndex', 'ASC' );
+$s  = new XSort( 'SortIndex', 'ASC' );
 $so->AddItem( $s );
 
 $fo = new XFiltering();
-$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
 $fo->AddItem( $f );
 $f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 $fo->AddItem( $f );
 $personAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 if ( $contact->CustomerContactID > 0 ) {
-	$person = new SubEventPerson();
-	$person->CustomerID = $customer->CustomerID;
-	$person->CustomerContactID = $contact->CustomerContactID;
-	$person->PersonName = $contact->ContactName;
-	$person->PersonEmail = $contact->Email;
-	$person->PersonPhone = $contact->Phone;
-	$person->PersonMobile = $contact->Mobile;
+	$person                                = new SubEventPerson();
+	$person->CustomerID                    = $customer->CustomerID;
+	$person->CustomerContactID             = $contact->CustomerContactID;
+	$person->PersonName                    = $contact->ContactName;
+	$person->PersonEmail                   = $contact->Email;
+	$person->PersonPhone                   = $contact->Phone;
+	$person->PersonMobile                  = $contact->Mobile;
 	$person->PersonCivicRegistrationNumber = $contact->CivicRegistrationNumber;
-	$ft = new XFiltering();
-	$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+	$ft                                    = new XFiltering();
+	$f                                     = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 	$ft->AddItem( $f );
 	$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 	$ft->AddItem( $f );
@@ -306,12 +305,12 @@ if ( $contact->CustomerContactID > 0 ) {
 		$person = $matchingPersons[0];
 	}
 
-	$cmpArr = array ();
+	$cmpArr = array();
 
 	foreach ( $personAttributes as $attr ) {
 		$fieldId = "edu-attr_" . $attr->AttributeID . "-contact";
 		if ( isset( $_POST[ $fieldId ] ) ) {
-			$at = new Attribute();
+			$at              = new Attribute();
 			$at->AttributeID = $attr->AttributeID;
 
 			switch ( $attr->AttributeTypeID ) {
@@ -319,16 +318,16 @@ if ( $contact->CustomerContactID > 0 ) {
 					//$at->AttributeChecked = true;
 					break;
 				case 5:
-					$alt = new AttributeAlternative();
+					$alt                         = new AttributeAlternative();
 					$alt->AttributeAlternativeID = $_POST[ $fieldId ];
-					$at->AttributeAlternative[ ] = $alt;
+					$at->AttributeAlternative[]  = $alt;
 					break;
 				default:
 					$at->AttributeValue = $_POST[ $fieldId ];
 					break;
 			}
 
-			$cmpArr[ ] = $at;
+			$cmpArr[] = $at;
 		}
 	}
 
@@ -341,14 +340,14 @@ if ( $contact->CustomerContactID > 0 ) {
 	if ( isset( $_POST['contactPriceName'] ) ) {
 		$person->OccasionPriceNameLnkID = trim( $_POST['contactPriceName'] );
 	}
-	$person->SubEvents = array ();
+	$person->SubEvents = array();
 	foreach ( $subEvents as $subEvent ) {
 		$fieldName = "contactSubEvent_" . $subEvent->EventID;
 		if ( isset( $_POST[ $fieldName ] ) ) {
-			$fieldValue = $_POST[ $fieldName ];
-			$subEventInfo = new SubEventInfo();
+			$fieldValue            = $_POST[ $fieldName ];
+			$subEventInfo          = new SubEventInfo();
 			$subEventInfo->EventID = $fieldValue;
-			$person->SubEvents[ ] = $subEventInfo;
+			$person->SubEvents[]   = $subEventInfo;
 		} else if ( $subEvent->MandatoryParticipation ) {
 			$subEventInfo          = new SubEventInfo();
 			$subEventInfo->EventID = $subEvent->EventID;
@@ -360,13 +359,13 @@ if ( $contact->CustomerContactID > 0 ) {
 }
 
 if ( ! empty( $pArr ) ) {
-	$bi = new BookingInfoSubEvent();
-	$bi->EventID = $eventId;
-	$bi->CustomerID = $customer->CustomerID;
+	$bi                    = new BookingInfoSubEvent();
+	$bi->EventID           = $eventId;
+	$bi->CustomerID        = $customer->CustomerID;
 	$bi->CustomerContactID = $contact->CustomerContactID;
-	$bi->SubEventPersons = $pArr;
+	$bi->SubEventPersons   = $pArr;
 	if ( isset( $purchaseOrderNumber ) ) {
-			$bi->PurchaseOrderNumber = $purchaseOrderNumber;
+		$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 	}
 	if ( isset( $_POST['edu-pricename'] ) ) {
 		$bi->OccasionPriceNameLnkID = $_POST['edu-pricename'];
@@ -382,9 +381,9 @@ if ( ! empty( $pArr ) ) {
 		$bi
 	);
 
-	$answers = array ();
+	$answers = array();
 	foreach ( $_POST as $input => $value ) {
-		if ( strpos( $input, "question_" ) !== FALSE ) {
+		if ( strpos( $input, "question_" ) !== false ) {
 			$question = explode( '_', $input );
 			$answerID = $question[1];
 			$type     = $question[2];
@@ -400,19 +399,19 @@ if ( ! empty( $pArr ) ) {
 				$answers[ $answerID ]['AnswerTime'] = trim( $value );
 			} else {
 				$answers[ $answerID ] =
-				array (
-					'AnswerID' => $answerID,
-					'AnswerText' => trim( $value ),
-					'EventID' => $eventId,
-					'EventCustomerLnkID' => $eventCustomerLnkID
-				);
+					array(
+						'AnswerID'           => $answerID,
+						'AnswerText'         => trim( $value ),
+						'EventID'            => $eventId,
+						'EventCustomerLnkID' => $eventCustomerLnkID,
+					);
 			}
 		}
 	}
 
 	// Spara alla frågor till eventcustomeranswerv2
 	if ( ! empty( $answers ) ) {
-		$sanswers = array ();
+		$sanswers = array();
 		foreach ( $answers as $answer ) {
 			$sanswers[] = $answer;
 		}
@@ -434,7 +433,7 @@ if ( ! empty( $pArr ) ) {
 	if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
 		$user = $_SESSION['eduadmin-loginUser'];
 	} else {
-			$user = new stdClass;
+		$user = new stdClass;
 	}
 
 	$jsEncContact = json_encode( $contact );

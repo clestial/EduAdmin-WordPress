@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set( 'UTC' );
 include_once( __DIR__ . "/../../includes/loApiClient.php" );
+include_once( __DIR__ . "/../../includes/loApiClasses.php" );
 $eduapi = new EduAdminClient();
 
 if ( isset( $_REQUEST[ 'authenticate' ] ) && isset( $_REQUEST[ 'key' ] ) ) {

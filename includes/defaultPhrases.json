@@ -167,7 +167,7 @@
 	"wed": "ons",
 	"wednesday": "onsdag",
 	"Wrong email or password.": "Fel e-post eller lösenord.",
-	"Wrong username or password.": "Fel användernamn eller lösenord.",
+  "Wrong username or password.": "Fel användarnamn eller lösenord.",
 	"You cannot add any more participants.": "Du kan inte lägga till fler deltagare.",
 	"You cannot set your password to be the same as the one before.": "Du kan inte sätta samma lösenord som ditt tidigare.",
 	"You don't have any discount cards registered.": "Du har inga registrerade klippkort.",

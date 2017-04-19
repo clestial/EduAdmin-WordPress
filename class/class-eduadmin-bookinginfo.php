@@ -7,12 +7,12 @@ class EduAdminBookingInfo {
 	public $EventBooking;
 
 	/**
-	 * @var Customer
+	 * @var CustomerV3
 	 */
 	public $Customer;
 
 	/**
-	 * @var CustomerContact
+	 * @var CustomerContactV2
 	 */
 	public $Contact;
 

@@ -7,6 +7,7 @@
 - Moved the redirect from when you've completed a booking to `createBooking.php`
 - Added `NoRedirect`-property to `EduAdminBookingInfo` to skip the redirects after a booking is completed.
 - Redid the `EduAdminClient` to conform to coding standards
+- Added filter `edu-booking-error` so we can show dynamic errors in booking process.
 
 ## [0.10.10]
 ### Added

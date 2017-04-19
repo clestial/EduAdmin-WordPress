@@ -11,7 +11,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	$edo = get_transient( 'eduadmin-listCourses' );
 	if ( ! $edo ) {
 		$filtering = new XFiltering();
-		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$filtering->AddItem( $f );
 
 		$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
@@ -19,25 +19,25 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	}
 
 	$selectedCourse = false;
-	$name = "";
+	$name           = "";
 	foreach ( $edo as $object ) {
 		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-		$id = $object->ObjectID;
-		if ( makeSlugs( $name ) == $wp_query->query_vars[ 'courseSlug' ] && $id == $wp_query->query_vars[ "courseId" ] ) {
+		$id   = $object->ObjectID;
+		if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 			$selectedCourse = $object;
 			break;
 		}
 	}
 	if ( ! $selectedCourse ) {
 		?>
-		<script>history.go(-1);</script>
+		<script>history.go( -1 );</script>
 		<?php
 		die();
 	}
 	$ft = new XFiltering();
-	if ( isset( $_REQUEST[ 'eid' ] ) ) {
-		$eventid = $_REQUEST[ 'eid' ];
-		$f = new XFilter( 'EventID', '=', $eventid );
+	if ( isset( $_REQUEST['eid'] ) ) {
+		$eventid = $_REQUEST['eid'];
+		$f       = new XFilter( 'EventID', '=', $eventid );
 		$ft->AddItem( $f );
 	}
 	$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
@@ -46,7 +46,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	}
 
 	$ft = new XFiltering();
-	$f = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetchMonths . ' months' ) ) );
+	$f  = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetchMonths . ' months' ) ) );
 	$ft->AddItem( $f );
 	$f = new XFilter( 'PeriodEnd', '>=', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) );
 	$ft->AddItem( $f );
@@ -66,7 +66,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	$ft->AddItem( $f );
 
 	$st = new XSorting();
-	$s = new XSort( 'PeriodStart', 'ASC' );
+	$s  = new XSort( 'PeriodStart', 'ASC' );
 	$st->AddItem( $s );
 
 	$events = $eduapi->GetEvent(
@@ -77,31 +77,31 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 
 	if ( 0 === count( $events ) ) {
 		?>
-		<script>history.go(-1);</script>
+		<script>history.go( -1 );</script>
 		<?php
 		die();
 	}
 
-	$event = $events[ 0 ];
+	$event = $events[0];
 
-	if ( isset( $_POST[ 'act' ] ) && 'bookCourse' === $_POST[ 'act' ] ) {
+	if ( isset( $_POST['act'] ) && 'bookCourse' === $_POST['act'] ) {
 		include_once( 'createBooking.php' );
 	}
 
-	$contact = new CustomerContact();
+	$contact  = new CustomerContact();
 	$customer = new Customer();
 
-	$discountPercent = 0.0;
+	$discountPercent            = 0.0;
 	$participantDiscountPercent = 0.0;
-	$customerInvoiceEmail = '';
-	$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+	$customerInvoiceEmail       = '';
+	$incVat                     = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
-	if ( isset( $_SESSION[ 'eduadmin-loginUser' ] ) ) {
-		$user = $_SESSION[ 'eduadmin-loginUser' ];
-		$contact = $user->Contact;
+	if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
+		$user     = $_SESSION['eduadmin-loginUser'];
+		$contact  = $user->Contact;
 		$customer = $user->Customer;
 		if ( isset( $customer->CustomerID ) ) {
-			$f = new XFiltering();
+			$f  = new XFiltering();
 			$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 			$f->AddItem( $ft );
 			$extraInfo = $eduapi->GetCustomerExtraInfo( $edutoken, '', $f->ToString() );
@@ -117,29 +117,29 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		}
 	}
 
-	$occIds = Array ();
-	$occIds[ ] = -1;
-	if ( isset( $_REQUEST[ 'eid' ] ) ) {
+	$occIds   = Array();
+	$occIds[] = - 1;
+	if ( isset( $_REQUEST['eid'] ) ) {
 		foreach ( $events as $ev ) {
-			$occIds[ ] = $ev->OccationID;
+			$occIds[] = $ev->OccationID;
 		}
 	} else {
-		$occIds[ ] = $event->OccationID;
+		$occIds[] = $event->OccationID;
 	}
 
 	$ft = new XFiltering();
-	$f = new XFilter( 'PublicPriceName', '=', 'true' );
+	$f  = new XFilter( 'PublicPriceName', '=', 'true' );
 	$ft->AddItem( $f );
 	$f = new XFilter( 'OccationID', 'IN', join( ',', $occIds ) );
 	$ft->AddItem( $f );
 
 	$st = new XSorting();
-	$s = new XSort( 'Price', 'ASC' );
+	$s  = new XSort( 'Price', 'ASC' );
 	$st->AddItem( $s );
 
 	$prices = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 
-	$uniquePrices = Array ();
+	$uniquePrices = Array();
 	foreach ( $prices as $price ) {
 		$uniquePrices[ $price->Description ] = $price;
 	}
@@ -147,28 +147,28 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	$firstPrice = current( $uniquePrices );
 
 	$st = new XSorting();
-	$s = new XSort( 'StartDate', 'ASC' );
+	$s  = new XSort( 'StartDate', 'ASC' );
 	$st->AddItem( $s );
 	$s = new XSort( 'EndDate', 'ASC' );
 	$st->AddItem( $s );
 
 	$ft = new XFiltering();
-	$f = new XFilter( 'ParentEventID', '=', $event->EventID );
+	$f  = new XFilter( 'ParentEventID', '=', $event->EventID );
 	$ft->AddItem( $f );
 	$subEvents = $eduapi->GetSubEvent( $edutoken, $st->ToString(), $ft->ToString() );
-	$occIds = Array ();
+	$occIds    = Array();
 	foreach ( $subEvents as $se ) {
-		$occIds[ ] = $se->OccasionID;
+		$occIds[] = $se->OccasionID;
 	}
 
 	$ft = new XFiltering();
-	$f = new XFilter( 'PublicPriceName', '=', 'true' );
+	$f  = new XFilter( 'PublicPriceName', '=', 'true' );
 	$ft->AddItem( $f );
 	$f = new XFilter( 'OccationID', 'IN', join( ',', $occIds ) );
 	$ft->AddItem( $f );
 
 	$st = new XSorting();
-	$s = new XSort( 'Price', 'ASC' );
+	$s  = new XSort( 'Price', 'ASC' );
 	$st->AddItem( $s );
 
 	$subPrices = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
@@ -178,7 +178,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	}
 
 	$hideSubEventDateInfo = get_option( 'eduadmin-hideSubEventDateTime', false );
-?>
+	?>
 
 	<div class="eduadmin">
 		<form action="" method="post">
@@ -203,14 +203,15 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 						<option value=""><?php edu_e( "Select event" ); ?></option>
 						<?php foreach ( $events as $ev ): ?>
 							<option value="<?php echo $ev->EventID; ?>">
-							<?php
+								<?php
 								echo wp_strip_all_tags( GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . ", ";
-								echo date( "H:i", strtotime( $ev->PeriodStart ) ); ?> - <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
+								echo date( "H:i", strtotime( $ev->PeriodStart ) ); ?>
+								- <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
 								$addresses = get_transient( 'eduadmin-location-' . $ev->LocationAddressID );
 
 								if ( ! $addresses ) {
 									$ft = new XFiltering();
-									$f = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
+									$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 									$ft->AddItem( $f );
 									$addresses = $eduapi->GetLocationAddress( $edutoken, '', $ft->ToString() );
 									set_transient( 'eduadmin-location-' . $ev->LocationAddressID, $addresses, DAY_IN_SECONDS );
@@ -222,46 +223,46 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 										break;
 									}
 								}
-							?>
+								?>
 							</option>
 						<?php endforeach; ?>
 					</select>
 				<?php else : ?>
 					<?php
-						echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate( $event->PeriodStart, $event->PeriodEnd ) . ", ";
+					echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate( $event->PeriodStart, $event->PeriodEnd ) . ", ";
 
-						echo date( "H:i", strtotime( $event->PeriodStart ) ); ?> - <?php echo date( "H:i", strtotime( $event->PeriodEnd ) );
-						$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );
-						if ( ! $addresses ) {
-							$ft = new XFiltering();
-							$f = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
-							$ft->AddItem( $f );
-							$addresses = $eduapi->GetLocationAddress( $edutoken, '', $ft->ToString() );
-							set_transient( 'eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS );
-						}
+					echo date( "H:i", strtotime( $event->PeriodStart ) ); ?> - <?php echo date( "H:i", strtotime( $event->PeriodEnd ) );
+					$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );
+					if ( ! $addresses ) {
+						$ft = new XFiltering();
+						$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
+						$ft->AddItem( $f );
+						$addresses = $eduapi->GetLocationAddress( $edutoken, '', $ft->ToString() );
+						set_transient( 'eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS );
+					}
 
-						foreach ( $addresses as $address ) {
-							if ( $address->LocationAddressID === $event->LocationAddressID ) {
-								echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
-								break;
-							}
+					foreach ( $addresses as $address ) {
+						if ( $address->LocationAddressID === $event->LocationAddressID ) {
+							echo ", " . $event->AddressName . ", " . $address->Address . ", " . $address->City;
+							break;
 						}
-						echo "</div>";
-						?>
+					}
+					echo "</div>";
+					?>
 				<?php endif; ?>
 			</div>
 			<?php
 			if ( isset( $_SESSION['eduadmin-loginUser'] ) && isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
 
-					$surl = get_home_url();
-					$cat = get_option( 'eduadmin-rewriteBaseUrl' );
-					$baseUrl = $surl . '/' . $cat;
-			?>
-			<div class="notUserCheck">
-			<i><?php echo sprintf( edu__( "Not %s? %sLog out%s" ), "<b>" . $contact->ContactName . "</b>", "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
-			</div>
-			<?php
-				}
+				$surl    = get_home_url();
+				$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
+				$baseUrl = $surl . '/' . $cat;
+				?>
+				<div class="notUserCheck">
+					<i><?php echo sprintf( edu__( "Not %s? %sLog out%s" ), "<b>" . $contact->ContactName . "</b>", "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
+				</div>
+				<?php
+			}
 			?>
 			<?php
 			$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
@@ -280,52 +281,56 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 			}
 			?>
 			<?php if ( "selectWholeEvent" === get_option( 'eduadmin-selectPricename', 'firstPublic' ) ): ?>
-			<div class="priceView">
-				<?php edu_e( "Price name" ); ?>
-				<select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename" onchange="eduBookingView.UpdatePrice();">
-				<option value=""><?php edu_e( "Choose price" ); ?></option>
-					<?php foreach ( $prices as $price ): ?>
-						<option
-							data-price="<?php echo esc_attr( $price->Price ); ?>"
-							date-discountpercent="<?php echo esc_attr( $price->DiscountPercent ); ?>"
-							data-pricelnkid="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>"
-							data-maxparticipants="<?php echo @esc_attr( $price->MaxPriceNameParticipantNr ); ?>"
-							data-currentparticipants="<?php echo @esc_attr( $price->ParticipantNr ); ?>"
-							<?php if ( $price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr ) { ?>
-							disabled
-							<?php } ?>
-							value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
-							<?php echo trim( $price->Description ); ?> (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>)
-						</option>
-					<?php endforeach; ?>
-				</select>
-			</div>
+				<div class="priceView">
+					<?php edu_e( "Price name" ); ?>
+					<select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename"
+							onchange="eduBookingView.UpdatePrice();">
+						<option value=""><?php edu_e( "Choose price" ); ?></option>
+						<?php foreach ( $prices as $price ): ?>
+							<option
+									data-price="<?php echo esc_attr( $price->Price ); ?>"
+									date-discountpercent="<?php echo esc_attr( $price->DiscountPercent ); ?>"
+									data-pricelnkid="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>"
+									data-maxparticipants="<?php echo @esc_attr( $price->MaxPriceNameParticipantNr ); ?>"
+									data-currentparticipants="<?php echo @esc_attr( $price->ParticipantNr ); ?>"
+								<?php if ( $price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr ) { ?>
+									disabled
+								<?php } ?>
+									value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
+								<?php echo trim( $price->Description ); ?>
+								(<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+								)
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
 			<?php endif; ?>
 
 			<?php include_once( "questionView.php" ); ?>
 
 			<?php if ( get_option( 'eduadmin-allowDiscountCode', false ) ): ?>
-			<div class="discountView">
-				<label>
-					<div class="inputLabel">
-						<?php edu_e( 'Discount code' ); ?>
+				<div class="discountView">
+					<label>
+						<div class="inputLabel">
+							<?php edu_e( 'Discount code' ); ?>
+						</div>
+						<div class="inputHolder">
+							<input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;"
+								   placeholder="<?php edu_e( "Discount code" ); ?>" />
+							<button class="validateDiscount"
+									style="width: 20%;"
+									data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
+									data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
+									onclick="eduBookingView.ValidateDiscountCode(); return false;">
+								<?php edu_e( "Validate" ); ?>
+							</button>
+							<input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID" />
+						</div>
+					</label>
+					<div class="edu-modal warning" id="edu-warning-discount">
+						<?php edu_e( 'Invalid discount code, please check your code and try again.' ); ?>
 					</div>
-					<div class="inputHolder">
-						<input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;" placeholder="<?php edu_e( "Discount code" ); ?>" />
-						<button class="validateDiscount"
-							style="width: 20%;"
-							data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
-							data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
-							onclick="eduBookingView.ValidateDiscountCode(); return false;">
-							<?php edu_e( "Validate" ); ?>
-						</button>
-						<input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID" />
-					</div>
-				</label>
-				<div class="edu-modal warning" id="edu-warning-discount">
-					<?php edu_e( 'Invalid discount code, please check your code and try again.' ); ?>
 				</div>
-			</div>
 			<?php endif; ?>
 			<?php
 			$useLimitedDiscount = get_option( 'eduadmin-useLimitedDiscount', false );
@@ -347,7 +352,9 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					</div>
 				<?php endif; ?>
 
-				<input type="submit" class="bookButton" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php edu_e( "Book now" ); ?>" />
+				<input type="submit" class="bookButton"
+					   onclick="var validated = eduBookingView.CheckValidation(); return validated;"
+					   value="<?php edu_e( "Book now" ); ?>" />
 
 				<div class="edu-modal warning" id="edu-warning-terms">
 					<?php edu_e( 'You must accept Terms and Conditions to continue.' ); ?>
@@ -361,18 +368,28 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 				<div class="edu-modal warning" id="edu-warning-missing-civicregno">
 					<?php edu_e( 'One or more participants is missing their civic registration number.' ); ?>
 				</div>
+				<?php
+				$errorList = apply_filters( 'edu-booking-error', array() );
+				foreach ( $errorList as $error ) {
+					?>
+					<div class="edu-modal warning">
+						<?php _e( $error, 'eduadmin' ); ?>
+					</div>
+					<?php
+				}
+				?>
 			</div>
 		</form>
 	</div>
 
 	<?php
-		$originalTitle = get_the_title();
-		$newTitle = $name . " | " . $originalTitle;
+	$originalTitle = get_the_title();
+	$newTitle      = $name . " | " . $originalTitle;
 
-		$discountValue = 0.0;
-		if ( $participantDiscountPercent != 0 ) {
-			$discountValue = ( $participantDiscountPercent / 100 ) * $firstPrice->Price;
-		}
+	$discountValue = 0.0;
+	if ( $participantDiscountPercent != 0 ) {
+		$discountValue = ( $participantDiscountPercent / 100 ) * $firstPrice->Price;
+	}
 	?>
 	<script type="text/javascript">
 		var pricePerParticipant = <?php echo round( $firstPrice->Price - $discountValue, 2 ); ?>;
@@ -380,18 +397,18 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		var totalPriceDiscountPercent = <?php echo $discountPercent; ?>;
 		var currency = '<?php echo esc_attr( get_option( 'eduadmin-currency', 'SEK' ) ); ?>';
 		var vatText = '<?php echo edu__( $incVat ? "inc vat" : "ex vat" ); ?>';
-		var ShouldValidateCivRegNo = <?php echo ( get_option( 'eduadmin-validateCivicRegNo', false ) ? "true" : "false" ); ?>;
-		(function() {
+		var ShouldValidateCivRegNo = <?php echo( get_option( 'eduadmin-validateCivicRegNo', false ) ? "true" : "false" ); ?>;
+		(function () {
 			var title = document.title;
-			title = title.replace('<?php echo esc_attr( $originalTitle ); ?>', '<?php echo esc_attr( $newTitle ); ?>');
+			title = title.replace( '<?php echo esc_attr( $originalTitle ); ?>', '<?php echo esc_attr( $newTitle ); ?>' );
 			document.title = title;
-			eduBookingView.MaxParticipants = <?php echo ( $event->MaxParticipantNr == 0 ? -1 : ( $event->MaxParticipantNr - $event->TotalParticipantNr ) ); ?>;
-			<?php echo ( get_option( 'eduadmin-singlePersonBooking', false ) ? "eduBookingView.SingleParticipant = true;" : "" ); ?>
+			eduBookingView.MaxParticipants = <?php echo( $event->MaxParticipantNr == 0 ? - 1 : ( $event->MaxParticipantNr - $event->TotalParticipantNr ) ); ?>;
+			<?php echo( get_option( 'eduadmin-singlePersonBooking', false ) ? "eduBookingView.SingleParticipant = true;" : "" ); ?>
 			eduBookingView.AddParticipant();
 			eduBookingView.UpdatePrice();
 		})();
 	</script>
-<?php
+	<?php
 }
 $out = ob_get_clean();
 return $out;

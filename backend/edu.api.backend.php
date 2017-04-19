@@ -1,5 +1,8 @@
 <?php
 error_reporting( E_ALL );
+include_once( __DIR__ . "/../includes/loApiClient.php" );
+include_once( __DIR__ . "/../includes/loApiClasses.php" );
+
 include_once( 'edu.api.functions.php' );
 include_once( __DIR__ . '/../includes/_apiFunctions.php' );
 include_once( __DIR__ . '/../includes/_textFunctions.php' );

@@ -5,18 +5,18 @@ if ( ! function_exists( 'edu_api_listview_courselist' ) ) {
 		header( "Content-type: application/json; charset=UTF-8" );
 		global $eduapi;
 
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $request[ "token" ] );
-		$_SESSION[ 'eduadmin-phrases' ] = $request[ 'phrases' ];
+		$edutoken                     = edu_decrypt( "edu_js_token_crypto", $request["token"] );
+		$_SESSION['eduadmin-phrases'] = $request['phrases'];
 
-		$objectIds = $request[ 'objectIds' ];
+		$objectIds = $request['objectIds'];
 
-		$fetchMonths = $request[ 'fetchmonths' ];
+		$fetchMonths = $request['fetchmonths'];
 		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
 		$filtering = new XFiltering();
-		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$filtering->AddItem( $f );
 
 		$f = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( "now +" . $fetchMonths . " months" ) ) );
@@ -38,32 +38,32 @@ if ( ! function_exists( 'edu_api_listview_courselist' ) ) {
 		$filtering->AddItem( $f );
 
 		$sorting = new XSorting();
-		$s = new XSort( 'PeriodStart', 'ASC' );
+		$s       = new XSort( 'PeriodStart', 'ASC' );
 		$sorting->AddItem( $s );
 
 		$ede = $eduapi->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
 
-		$occIds = array ();
-		$evIds = array ();
+		$occIds = array();
+		$evIds  = array();
 
 		foreach ( $ede as $e ) {
-			$occIds[ ] = $e->OccationID;
-			$evIds[ ] = $e->EventID;
+			$occIds[] = $e->OccationID;
+			$evIds[]  = $e->EventID;
 		}
 
 		$ft = new XFiltering();
-		$f = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
+		$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
 		$ft->AddItem( $f );
 
 		$eventDays = $eduapi->GetEventDate( $edutoken, '', $ft->ToString() );
 
-		$eventDates = array ();
+		$eventDates = array();
 		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][ ] = $ed;
+			$eventDates[ $ed->EventID ][] = $ed;
 		}
 
 		$ft = new XFiltering();
-		$f = new XFilter( 'PublicPriceName', '=', 'true' );
+		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
 		$ft->AddItem( $f );
 		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 		$ft->AddItem( $f );
@@ -77,11 +77,12 @@ if ( ! function_exists( 'edu_api_listview_courselist' ) ) {
 						return true;
 					}
 				}
+
 				return false;
-			});
+			} );
 		}
 
-		$returnValue = array ();
+		$returnValue = array();
 		foreach ( $ede as $event ) {
 			if ( ! isset( $returnValue[ $event->ObjectID ] ) ) {
 				$returnValue[ $event->ObjectID ] = sprintf( edu__( 'Next event %1$s' ), date( "Y-m-d", strtotime( $event->PeriodStart ) ) ) . " " . $event->City;
@@ -92,6 +93,6 @@ if ( ! function_exists( 'edu_api_listview_courselist' ) ) {
 	}
 }
 
-if ( isset( $_REQUEST[ 'module' ] ) && $_REQUEST[ 'module' ] == "listview_courselist" ) {
+if ( isset( $_REQUEST['module'] ) && $_REQUEST['module'] == "listview_courselist" ) {
 	echo edu_api_listview_courselist( $_REQUEST );
 }

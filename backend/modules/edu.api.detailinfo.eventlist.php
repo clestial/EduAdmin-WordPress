@@ -21,9 +21,7 @@ if ( ! function_exists( 'edu_api_eventlist' ) ) {
 
 		$edo            = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
 		$selectedCourse = false;
-		$name           = "";
 		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
 			if ( $id == $objectId ) {
 				$selectedCourse = $object;

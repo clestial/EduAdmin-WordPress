@@ -294,7 +294,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					<div class="eventItem">
 						<div class="eventDate<?php echo $groupByCityClass; ?>">
 							<?php echo isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ); ?>
-							<?php echo( ! isset( $eventDates[ $ev->EventID ] ) ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
+							<?php echo( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
 						</div>
 						<?php if ( ! $groupByCity ) { ?>
 							<div class="eventCity">

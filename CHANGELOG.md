@@ -2,12 +2,16 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.10.11]
+### Added
 - Fixing issues stated by scrutinizer
 - Added class `EduAdminBookingInfo` that is passed to action `eduadmin-processbooking`
 - Moved the redirect from when you've completed a booking to `createBooking.php`
 - Added `NoRedirect`-property to `EduAdminBookingInfo` to skip the redirects after a booking is completed.
 - Redid the `EduAdminClient` to conform to coding standards
 - Added filter `edu-booking-error` so we can show dynamic errors in booking process.
+- Fix: Show start/end-time on events with only one course day
 
 ## [0.10.10]
 ### Added
@@ -27,7 +31,7 @@
 ### Added
 - Trying to build everything as classes instead, just like WooCommerce
 - Bugfix: While fetching prices, we should use the same date span as everything else.
-- Started coding support for plugins (THIS IS NOT WORKING YET)
+- Started coding support for plugins
 
 ## [0.10.7]
 ### Added
@@ -298,7 +302,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...HEAD
+[0.10.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...v0.10.11
 [0.10.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.9...v0.10.10
 [0.10.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.8...v0.10.9
 [0.10.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.7...v0.10.8

@@ -21,13 +21,13 @@ function eduadmin_rewrite_init() {
 	add_rewrite_tag( '%edu-logout%', '([^&]+)' );
 	add_rewrite_tag( '%edu-password%', '([^&]+)' );
 
-	$listView = get_option( 'eduadmin-listViewPage' );
-	$loginView = get_option( 'eduadmin-loginViewPage' );
+	$listView    = get_option( 'eduadmin-listViewPage' );
+	$loginView   = get_option( 'eduadmin-loginViewPage' );
 	$detailsView = get_option( 'eduadmin-detailViewPage' );
 	$bookingView = get_option( 'eduadmin-bookingViewPage' );
 
 	$objectInterestPage = get_option( 'eduadmin-interestObjectPage' );
-	$eventInterestPage = get_option( 'eduadmin-interestEventPage' );
+	$eventInterestPage  = get_option( 'eduadmin-interestEventPage' );
 
 	$courseFolder = get_option( 'eduadmin-rewriteBaseUrl' );
 	$courseFolder = trim( $courseFolder );
@@ -64,7 +64,7 @@ function eduadmin_rewrite_init() {
 
 	if ( get_option( 'eduadmin-options_have_changed', 'false' ) == true ) {
 		flush_rewrite_rules();
- 		update_option( 'eduadmin-options_have_changed', false );
+		update_option( 'eduadmin-options_have_changed', false );
 	}
 }
 

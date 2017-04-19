@@ -2,8 +2,8 @@
 function edu_LoadPhrases() {
 	$phrases = get_transient( 'eduadmin-phrases' );
 	if ( ! $phrases ) {
-		$phrases = get_option( 'eduadmin-phrases' );
-		$file = file_get_contents( ( dirname( __FILE__ ) ) . '/defaultPhrases.json' );
+		$phrases         = get_option( 'eduadmin-phrases' );
+		$file            = file_get_contents( ( dirname( __FILE__ ) ) . '/defaultPhrases.json' );
 		$originalPhrases = json_decode( $file );
 		if ( ! $phrases ) {
 			$phrases = $originalPhrases;
@@ -20,19 +20,19 @@ function edu_LoadPhrases() {
 		set_transient( 'eduadmin-phrases', $phrases, DAY_IN_SECONDS );
 	}
 
-	$nPhrases = array ();
+	$nPhrases = array();
 	foreach ( $phrases as $p => $ph ) {
 
-		$nPhrases[ $p ] = array ();
+		$nPhrases[ $p ] = array();
 		if ( ! is_array( $ph ) ) {
-			$nPhrases[ $p ][ "OldPhrase" ] = $ph;
+			$nPhrases[ $p ]["OldPhrase"] = $ph;
 		} else {
-			$nPhrases[ $p ][ "OldPhrase" ] = $ph[ "OldPhrase" ];
+			$nPhrases[ $p ]["OldPhrase"] = $ph["OldPhrase"];
 		}
-		$nPhrases[ $p ][ "NewPhrase" ] = __( $p, "eduadmin" );
+		$nPhrases[ $p ]["NewPhrase"] = __( $p, "eduadmin" );
 	}
 
-	$_SESSION[ 'eduadmin-phrases' ] = $nPhrases;
+	$_SESSION['eduadmin-phrases'] = $nPhrases;
 
 	if ( is_array( $nPhrases ) ) {
 		return $nPhrases;
@@ -48,10 +48,10 @@ function edu__( $key ) {
 		update_option( 'eduadmin-phrases', json_encode( $phrases ) );
 	}
 
-	if ( isset( $phrases[ $key ][ "OldPhrase" ] ) ) {
-			if ( $phrases[ $key ][ "OldPhrase" ] != $key ) {
-						return $phrases[ $key ][ "OldPhrase" ];
-			}
+	if ( isset( $phrases[ $key ]["OldPhrase"] ) ) {
+		if ( $phrases[ $key ]["OldPhrase"] != $key ) {
+			return $phrases[ $key ]["OldPhrase"];
+		}
 	}
 
 	return __( $key, "eduadmin" ); //$phrases[$key];

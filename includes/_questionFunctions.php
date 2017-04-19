@@ -36,7 +36,7 @@ function renderQuestion( $question ) {
 			break;
 		default:
 			echo "<xmp>" . print_r( $question, true ) . "</xmp>";
-		break;
+			break;
 	}
 }
 

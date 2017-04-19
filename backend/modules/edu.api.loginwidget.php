@@ -9,7 +9,7 @@ if ( ! function_exists( 'edu_api_loginwidget' ) ) {
 		$baseUrl = $surl . '/' . $cat;
 		if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
 			$user    = $_SESSION['eduadmin-loginUser'];
-			$c2 = json_encode( $user->Contact );
+			$c2      = json_encode( $user->Contact );
 			$contact = json_decode( $c2 );
 		}
 

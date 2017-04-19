@@ -17,11 +17,11 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 		$sep = "|";
 	}
 
-	if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars[ "courseId" ] ) ) {
+	if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
 		$edo = get_transient( 'eduadmin-listCourses' );
 		if ( ! $edo ) {
 			$filtering = new XFiltering();
-			$f = new XFilter( 'ShowOnWeb', '=', 'true' );
+			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
 			$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
@@ -30,8 +30,8 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 
 		foreach ( $edo as $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			$id = $object->ObjectID;
-			if ( $id == $wp->query_vars[ "courseId" ] ) {
+			$id   = $object->ObjectID;
+			if ( $id == $wp->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -41,14 +41,14 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 			$titleField = get_option( 'eduadmin-pageTitleField', 'PublicName' );
 			if ( stristr( $titleField, "attr_" ) !== false ) {
 				$attrid = substr( $titleField, 5 );
-				$ft = new XFiltering();
-				$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+				$ft     = new XFiltering();
+				$f      = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 				$ft->AddItem( $f );
 				$f = new XFilter( 'AttributeID', '=', $attrid );
 				$ft->AddItem( $f );
 				$objAttr = $eduapi->GetObjectAttribute( $edutoken, '', $ft->ToString() );
 				if ( ! empty( $objAttr ) ) {
-					$attr = $objAttr[ 0 ];
+					$attr = $objAttr[0];
 					switch ( $attr->AttributeTypeID ) {
 						case 5:
 							$value = $attr->AttributeAlternative;
@@ -56,9 +56,9 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 							$value = $attr->AttributeDate;*/
 						default:
 							$value = $attr->AttributeValue;
-						break;
+							break;
 					}
-					if ( ! empty( $value ) && stristr( $title, $value ) === FALSE ) {
+					if ( ! empty( $value ) && stristr( $title, $value ) === false ) {
 						$title = $value . " " . $sep . " " . $title;
 					} else {
 						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
@@ -67,7 +67,7 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 					$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
 				}
 			} else {
-				if ( ! empty( $selectedCourse->{$titleField}) && stristr( $title, $selectedCourse->{$titleField}) === FALSE ) {
+				if ( ! empty( $selectedCourse->{$titleField} ) && stristr( $title, $selectedCourse->{$titleField} ) === false ) {
 					$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
 				} else {
 					$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
@@ -98,7 +98,6 @@ function eduadmin_settings_init() {
 	register_setting( 'eduadmin-rewrite', 'eduadmin-thankYouPage' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-interestObjectPage' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-interestEventPage' );
-
 
 	/* Booking settings */
 	register_setting( 'eduadmin-booking', 'eduadmin-useLogin' );
@@ -175,20 +174,19 @@ function eduadmin_frontend_content() {
 	$scriptVersion = filemtime( dirname( __DIR__ ) . '/content/script/educlient/edu.apiclient.js' );
 	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
 	wp_localize_script( 'eduadmin_apiclient_script', 'wp_edu',
-	array (
-		'BaseUrl' => home_url(),
-		'BaseUrlBackend' => plugins_url( 'backend', dirname( __FILE__ ) ),
-		'BaseUrlScripts' => plugins_url( 'content/script', dirname( __FILE__ ) ),
-		'CourseFolder' => get_option( 'eduadmin-rewriteBaseUrl' ),
-		'Phrases' => edu_LoadPhrases(),
-		'ApiKey' => get_option( 'eduadmin-api-key' )
-	) );
-	wp_enqueue_script( 'eduadmin_apiclient_script', false, array ( 'jquery' ) );
+		array(
+			'BaseUrl'        => home_url(),
+			'BaseUrlBackend' => plugins_url( 'backend', dirname( __FILE__ ) ),
+			'BaseUrlScripts' => plugins_url( 'content/script', dirname( __FILE__ ) ),
+			'CourseFolder'   => get_option( 'eduadmin-rewriteBaseUrl' ),
+			'Phrases'        => edu_LoadPhrases(),
+			'ApiKey'         => get_option( 'eduadmin-api-key' ),
+		) );
+	wp_enqueue_script( 'eduadmin_apiclient_script', false, array( 'jquery' ) );
 
 	$scriptVersion = filemtime( dirname( __DIR__ ) . '/content/script/frontendjs.js' );
 	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
-	wp_enqueue_script( 'eduadmin_frontend_script', false, array ( 'jquery' ) );
-
+	wp_enqueue_script( 'eduadmin_frontend_script', false, array( 'jquery' ) );
 }
 
 function eduadmin_backend_content() {
@@ -198,7 +196,7 @@ function eduadmin_backend_content() {
 
 	$scriptVersion = filemtime( dirname( __DIR__ ) . '/content/script/adminjs.js' );
 	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
-	wp_enqueue_script( 'eduadmin_admin_script', false, array ( 'jquery' ) );
+	wp_enqueue_script( 'eduadmin_admin_script', false, array( 'jquery' ) );
 }
 
 function eduadmin_backend_menu() {
@@ -258,25 +256,25 @@ function eduadmin_RewriteJavaScript( $script ) {
 	global $eduapi;
 	global $edutoken;
 
-	if ( isset( $_REQUEST[ 'edu-thankyou' ] ) ) {
-		if ( stripos( $script, "$" ) !== FALSE ) {
+	if ( isset( $_REQUEST['edu-thankyou'] ) ) {
+		if ( stripos( $script, "$" ) !== false ) {
 			$ft = new XFiltering();
-			$f = new XFilter( 'EventCustomerLnkID', '=', $_REQUEST[ 'edu-thankyou' ] );
+			$f  = new XFilter( 'EventCustomerLnkID', '=', $_REQUEST['edu-thankyou'] );
 			$ft->AddItem( $f );
 			$bookingInfo = $eduapi->GetEventBooking( $edutoken, '', $ft->ToString() );
 
 			$script = str_replace(
-				array (
+				array(
 					'$bookingno$',
 					'$productname$',
 					'$totalsum$',
-					'$participants$'
+					'$participants$',
 				),
-				array (
-					esc_js( $bookingInfo[ 0 ]->EventCustomerLnkID ), // $bookingno$
-					esc_js( $bookingInfo[ 0 ]->ObjectName ), // $productname$
-					esc_js( $bookingInfo[ 0 ]->TotalPrice ), // $totalsum$
-					esc_js( $bookingInfo[ 0 ]->ParticipantNr ) // $participants$
+				array(
+					esc_js( $bookingInfo[0]->EventCustomerLnkID ), // $bookingno$
+					esc_js( $bookingInfo[0]->ObjectName ), // $productname$
+					esc_js( $bookingInfo[0]->TotalPrice ), // $totalsum$
+					esc_js( $bookingInfo[0]->ParticipantNr ) // $participants$
 				),
 				$script
 			);
@@ -284,16 +282,17 @@ function eduadmin_RewriteJavaScript( $script ) {
 
 		return $script;
 	}
+
 	return '';
 }
 
 function eduadmin_printJavascript() {
-	if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( $_SESSION[ 'eduadmin-printJS' ] ) ) {
-		$str = "<script type=\"text/javascript\">\n";
+	if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( $_SESSION['eduadmin-printJS'] ) ) {
+		$str    = "<script type=\"text/javascript\">\n";
 		$script = get_option( 'eduadmin-javascript' );
-		$str .= eduadmin_RewriteJavaScript( $script );
-		$str .= "\n</script>";
-		unset( $_SESSION[ 'eduadmin-printJS' ] );
+		$str    .= eduadmin_RewriteJavaScript( $script );
+		$str    .= "\n</script>";
+		unset( $_SESSION['eduadmin-printJS'] );
 		echo $str;
 	}
 }

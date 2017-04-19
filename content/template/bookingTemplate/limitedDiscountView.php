@@ -1,13 +1,13 @@
 <?php
 if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
-	$f = new XFiltering();
+	$f  = new XFiltering();
 	$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 	$f->AddItem( $ft );
 
 	$cards = $eduapi->GetLimitedDiscount( $edutoken, '', $f->ToString() );
 
-	$cCards = array ();
-	$cCardIds = array ();
+	$cCards   = array();
+	$cCardIds = array();
 	foreach ( $cards as $card ) {
 		$addCard = false;
 		if ( empty( $card->CustomerContactID ) || empty( $card->CategoryID ) ) {
@@ -28,15 +28,18 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 			$addCard = false;
 		}
 
-		if ( $addCard ) { $cCards[ ] = $card; $cCardIds[ ] = $card->LimitedDiscountID; }
+		if ( $addCard ) {
+			$cCards[]   = $card;
+			$cCardIds[] = $card->LimitedDiscountID;
+		}
 	}
 
-	$f = new XFiltering();
+	$f  = new XFiltering();
 	$ft = new XFilter( 'LimitedDiscountID', 'in', join( ',', $cCardIds ) );
 	$f->AddItem( $ft );
 
 	$objectCards = $eduapi->GetLimitedDiscountObjectStatus( $edutoken, '', $f->ToString() );
-	$cCardIds = array ();
+	$cCardIds    = array();
 	foreach ( $objectCards as $oCard ) {
 		$addCard = false;
 		if ( $oCard->ObjectID == $selectedCourse->ObjectID ) {
@@ -44,12 +47,12 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 		}
 
 		if ( $addCard && ! in_array( $oCard->LimitedDiscountID, $cCardIds ) ) {
-			$cCardIds[ ] = $oCard->LimitedDiscountID;
+			$cCardIds[] = $oCard->LimitedDiscountID;
 		}
 	}
 
 	if ( count( $objectCards ) > 0 && count( $cCardIds ) == 0 ) {
-		$cCards = array ();
+		$cCards = array();
 	}
 
 	array_filter( $cCards, function( $card ) use ( &$cCardIds ) {
@@ -59,11 +62,12 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 				$valid = true;
 			}
 		}
-		return $valid;
-	});
-?>
-<div class="discountCardView">
 
-</div>
-<?php
+		return $valid;
+	} );
+	?>
+	<div class="discountCardView">
+
+	</div>
+	<?php
 }

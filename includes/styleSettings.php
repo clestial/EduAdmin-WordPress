@@ -1,5 +1,5 @@
 <?php
-if ( isset( $_POST[ 'resetStyle' ] ) ) {
+if ( isset( $_POST['resetStyle'] ) ) {
 	delete_option( 'eduadmin-style' );
 }
 ?>
@@ -10,38 +10,46 @@ if ( isset( $_POST[ 'resetStyle' ] ) ) {
 		<?php settings_fields( 'eduadmin-style' ); ?>
 		<?php do_settings_sections( 'eduadmin-style' ); ?>
 		<div class="block">
-			<div id="eduadmin-style-editor" style="position: relative; min-width: 1000px; width: 100%; min-height: 600px; border: 1px solid #c3c3c3;"></div>
-			<textarea name="eduadmin-style" id="eduadmin-style" style="width: 100%;" cols="250" rows="40" spellcheck="false"><?php
-			$defaultCss = file_get_contents( dirname( __FILE__ ) . '/../content/style/frontendstyle.css' );
-			$css = get_option( 'eduadmin-style', $defaultCss );
-			echo $css;
-?></textarea>
+			<div id="eduadmin-style-editor"
+				 style="position: relative; min-width: 1000px; width: 100%; min-height: 600px; border: 1px solid #c3c3c3;"></div>
+			<textarea name="eduadmin-style" id="eduadmin-style" style="width: 100%;" cols="250" rows="40"
+					  spellcheck="false"><?php
+				$defaultCss = file_get_contents( dirname( __FILE__ ) . '/../content/style/frontendstyle.css' );
+				$css        = get_option( 'eduadmin-style', $defaultCss );
+				echo $css;
+				?></textarea>
 
 			<p class="submit">
-				<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __( "Save settings", "eduadmin" ); ?>" />
-				<input type="button" onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", "eduadmin" ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }" class="button button-secondary" value="<?php echo esc_attr__( "Reset styles", "eduadmin" ); ?>" />
+				<input type="submit" name="submit" id="submit" class="button button-primary"
+					   value="<?php echo __( "Save settings", "eduadmin" ); ?>" />
+				<input type="button"
+					   onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", "eduadmin" ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }"
+					   class="button button-secondary"
+					   value="<?php echo esc_attr__( "Reset styles", "eduadmin" ); ?>" />
 			</p>
 		</div>
 	</form>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js" type="text/javascript"
+			charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js" type="text/javascript"
+			charset="utf-8"></script>
 	<script>
-		ace.require("ace/ext/language_tools");
-	    var editor = ace.edit("eduadmin-style-editor");
-	    var textarea = jQuery('#eduadmin-style').hide();
-	    editor.getSession().setValue(textarea.val());
-	    editor.getSession().setUseWorker(false);
-	    editor.setTheme("ace/theme/dawn");
-	    editor.getSession().setMode("ace/mode/css");
-	    editor.getSession().on('change', function() {
-	    	textarea.val(editor.getSession().getValue());
-	    });
+		ace.require( "ace/ext/language_tools" );
+		var editor = ace.edit( "eduadmin-style-editor" );
+		var textarea = jQuery( '#eduadmin-style' ).hide();
+		editor.getSession().setValue( textarea.val() );
+		editor.getSession().setUseWorker( false );
+		editor.setTheme( "ace/theme/dawn" );
+		editor.getSession().setMode( "ace/mode/css" );
+		editor.getSession().on( 'change', function () {
+			textarea.val( editor.getSession().getValue() );
+		} );
 
-	    editor.setOptions({
-	    	enableBasicAutocompletion: true,
-	    	enableSnippets: false,
-	    	enableLiveAutocompletion: true
-	    });
+		editor.setOptions( {
+			enableBasicAutocompletion: true,
+			enableSnippets: false,
+			enableLiveAutocompletion: true
+		} );
 	</script>
 	<form method="post" action="" id="resetForm">
 		<input type="hidden" name="resetStyle" value="1" />

@@ -50,8 +50,8 @@ if ( isset( $_REQUEST[ 'searchCourses' ] ) && ! empty( $_REQUEST[ 'searchCourses
 		$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 		$descr = strip_tags( $object->{$descrField});
 
-		$nameMatch = stripos( $name, $_REQUEST[ 'searchCourses' ] ) !== FALSE;
-		$descrMatch = stripos( $descr, $_REQUEST[ 'searchCourses' ] ) !== FALSE;
+		$nameMatch = stripos( $name, $_REQUEST[ 'searchCourses' ] ) !== false;
+		$descrMatch = stripos( $descr, $_REQUEST[ 'searchCourses' ] ) !== false;
 		return ( $nameMatch || $descrMatch );
 	});
 }
@@ -239,13 +239,13 @@ if ( isset( $_REQUEST[ 'searchCourses' ] ) && ! empty( $_REQUEST[ 'searchCourses
 	$ede = array_filter( $ede, function( $object ) {
 		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 
-		$nameMatch = stripos( $name, $_REQUEST[ 'searchCourses' ] ) !== FALSE;
+		$nameMatch = stripos( $name, $_REQUEST[ 'searchCourses' ] ) !== false;
 		return $nameMatch;
 	});
 }
 
 $descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
-if ( stripos( $descrField, "attr_" ) !== FALSE ) {
+if ( stripos( $descrField, "attr_" ) !== false ) {
 	$ft = new XFiltering();
 	$f = new XFilter( "AttributeID", "=", substr( $descrField, 5 ) );
 	$ft->AddItem( $f );

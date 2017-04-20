@@ -45,7 +45,6 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		$fetchMonths = 6;
 	}
 
-	$ft = new XFiltering();
 	$f  = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetchMonths . ' months' ) ) );
 	$ft->AddItem( $f );
 	$f = new XFilter( 'PeriodEnd', '>=', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) );

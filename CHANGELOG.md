@@ -1,7 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [0.10.12]
 ### Added
+- Bugfix: Fixed a bug where you were unable to select a single event.
 
 ## [0.10.11]
 ### Added

@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Added
+- Added new class `EduAdminBookingHandler`, to process bookings from the plugin
+
+
 ## [0.10.12]
 ### Added
 - Bugfix: Fixed a bug where you were unable to select a single event.
@@ -303,7 +308,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.12...HEAD
+[0.10.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...v0.10.12
 [0.10.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...v0.10.11
 [0.10.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.9...v0.10.10
 [0.10.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.8...v0.10.9

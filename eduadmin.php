@@ -20,7 +20,7 @@ edu_register_session();
  * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
  * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
  * Requires at least: 3.0
- * Tested up to: 4.7.3
+ * Tested up to: 4.7.4
  * Author:	Chris Gårdenberg, MultiNet Interactive AB
  * Author URI:	http://www.multinet.se
  * License:	GPL3
@@ -66,6 +66,11 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 * @var string
 		 */
 		private $token = null;
+
+		/**
+		 * @var EduAdminBookingHandler
+		 */
+		public $bookingHandler = null;
 
 		/**
 		 * @return EduAdmin
@@ -126,6 +131,8 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			include_once( 'includes/loApiClasses.php' );
 			include_once( 'includes/_apiFunctions.php' );
 			include_once( 'class/class-eduadmin-bookinginfo.php' );
+			include_once( 'class/class-eduadmin-bookinghandler.php' );
+
 			include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
 			include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
 			include_once( 'includes/loApiClient.php' );
@@ -148,6 +155,8 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			if ( file_exists( dirname( __FILE__ ) . '/.official.plugin.php' ) ) {
 				include_once( '.official.plugin.php' );
 			}
+
+			$this->bookingHandler = new EduAdminBookingHandler( $this );
 		}
 
 		private function init_hooks() {

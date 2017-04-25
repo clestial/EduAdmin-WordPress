@@ -29,7 +29,6 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 		}
 
 		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
 			if ( $id == $wp->query_vars["courseId"] ) {
 				$selectedCourse = $object;
@@ -52,8 +51,10 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 					switch ( $attr->AttributeTypeID ) {
 						case 5:
 							$value = $attr->AttributeAlternative;
+							break;
 						/*case 7:
 							$value = $attr->AttributeDate;*/
+							break;
 						default:
 							$value = $attr->AttributeValue;
 							break;

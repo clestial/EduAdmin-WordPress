@@ -3,6 +3,9 @@
 ## [Unreleased]
 ### Added
 - Added new class `EduAdminBookingHandler`, to process bookings from the plugin
+- Added span element around event time in booking form, so you can hide it.
+- Moved booking handling to `EduAdminBookingHandler`.
+- Added custom actions `eduadmin-checkpaymentplugins`, `eduadmin-processbooking` and `eduadmin-bookingcompleted`
 
 
 ## [0.10.12]

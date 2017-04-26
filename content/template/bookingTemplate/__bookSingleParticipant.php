@@ -1,4 +1,6 @@
 <?php
+$eventId = intval( $_REQUEST['eid'] );
+
 $customer = new CustomerV2();
 $contact  = new CustomerContact();
 
@@ -20,10 +22,10 @@ $customer->Zip               = trim( $_POST['customerPostalCode'] );
 $customer->City              = trim( $_POST['customerPostalCity'] );
 $customer->Phone             = trim( $_POST['contactPhone'] );
 $customer->Mobile            = trim( $_POST['contactMobile'] );
-$customer->Email             = trim( $_POST['contactEmail'] );
+$customer->Email             = sanitize_email( $_POST['contactEmail'] );
 $customer->CustomerReference = trim( $_POST['invoiceReference'] );
 
-$customerInvoiceEmailAddress = trim( $_POST['invoiceEmail'] );
+$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
 if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
 	$customer->InvoiceName     = $first . " " . $last;
@@ -60,10 +62,10 @@ if ( $selectedMatch === "name-zip-match" ) {
 		$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$ft->AddItem( $f );
 	}
-	$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
+	$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
 	if ( empty( $matchingCustomer ) ) {
 		$customer->CustomerID = 0;
-		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 		$customer->CustomerID = $cres[0];
 	} else {
 		$customer = $matchingCustomer[0];
@@ -84,36 +86,36 @@ if ( $selectedMatch === "name-zip-match" ) {
 		$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$ft->AddItem( $f );
 	}
-	$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
+	$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
 	if ( empty( $matchingCustomer ) ) {
 		$customer->CustomerID = 0;
-		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 		$customer->CustomerID = $cres[0];
 	} else {
 		$customer->CustomerID = $matchingCustomer[0]->CustomerID;
-		$eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 	}
 } else if ( $selectedMatch === "no-match" ) {
 	$customer->CustomerID = 0;
-	$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+	$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 	$customer->CustomerID = $cres[0];
 } else if ( $selectedMatch === "no-match-new-overwrite" ) {
 	if ( $contact->CustomerContactID == 0 ) {
 		$customer->CustomerID = 0;
-		$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+		$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 		$customer->CustomerID = $cres[0];
 	} else {
 		$ft = new XFiltering();
 		$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$ft->AddItem( $f );
-		$matchingCustomer = $eduapi->GetCustomerV2( $edutoken, '', $ft->ToString(), false );
+		$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
 		if ( empty( $matchingCustomer ) ) {
 			$customer->CustomerID = 0;
-			$cres                 = $eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+			$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 			$customer->CustomerID = $cres[0];
 		} else {
 			$customer->CustomerID = $matchingCustomer[0]->CustomerID;
-			$eduapi->SetCustomerV2( $edutoken, array( $customer ) );
+			EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 		}
 	}
 }
@@ -130,7 +132,7 @@ if ( $customer->CustomerID == 0 ) {
 	$fo->AddItem( $f );
 	$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 	$fo->AddItem( $f );
-	$customerAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+	$customerAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 	$cmpArr = array();
 
@@ -159,7 +161,7 @@ if ( $customer->CustomerID == 0 ) {
 		}
 	}
 
-	$res = $eduapi->SetCustomerAttribute( $edutoken, $cmpArr );
+	$res = EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
 }
 
 $contact->CustomerID = $customer->CustomerID;
@@ -168,7 +170,7 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 	$contact->ContactName = trim( $_POST['contactFirstName'] ) . ";" . trim( $_POST['contactLastName'] );
 	$contact->Phone       = trim( $_POST['contactPhone'] );
 	$contact->Mobile      = trim( $_POST['contactMobile'] );
-	$contact->Email       = trim( $_POST['contactEmail'] );
+	$contact->Email       = sanitize_email( $_POST['contactEmail'] );
 	if ( isset( $_POST['contactCivReg'] ) ) {
 		$contact->CivicRegistrationNumber = trim( $_POST['contactCivReg'] );
 	}
@@ -193,19 +195,19 @@ if ( ! empty( $_POST['contactFirstName'] ) ) {
 		$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 		$ft->AddItem( $f );
 	}
-	$matchingContacts = $eduapi->GetCustomerContact( $edutoken, '', $ft->ToString(), false );
+	$matchingContacts = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), false );
 	if ( empty( $matchingContacts ) ) {
 		$contact->CustomerContactID = 0;
-		$contact->CustomerContactID = $eduapi->SetCustomerContact( $edutoken, array( $contact ) )[0];
+		$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[0];
 	} else {
 		if ( $selectedMatch === 'name-zip-match-overwrite' ) {
 			$contact->CustomerContactID = $matchingContacts[0]->CustomerContactID;
-			$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
+			EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 		} else {
 			$contact = $matchingContacts[0];
 			if ( isset( $_POST['contactPass'] ) && empty( $contact->Loginpass ) ) {
 				$contact->Loginpass = $_POST['contactPass'];
-				$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
+				EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 			}
 		}
 	}
@@ -224,7 +226,7 @@ if ( $contact->CustomerContactID == 0 ) {
 	$fo->AddItem( $f );
 	$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 	$fo->AddItem( $f );
-	$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+	$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 	$cmpArr = array();
 
@@ -253,7 +255,7 @@ if ( $contact->CustomerContactID == 0 ) {
 		}
 	}
 
-	$res = $eduapi->SetCustomerContactAttributes( $edutoken, $cmpArr );
+	$res = EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
 }
 
 $persons     = array();
@@ -271,7 +273,7 @@ $st->AddItem( $s );
 $ft = new XFiltering();
 $f  = new XFilter( 'ParentEventID', '=', $eventId );
 $ft->AddItem( $f );
-$subEvents = $eduapi->GetSubEvent( $edutoken, $st->ToString(), $ft->ToString() );
+$subEvents = EDU()->api->GetSubEvent( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 
 $pArr = array();
 
@@ -284,7 +286,7 @@ $f  = new XFilter( 'ShowOnWeb', '=', 'true' );
 $fo->AddItem( $f );
 $f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 $fo->AddItem( $f );
-$personAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+$personAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 if ( $contact->CustomerContactID > 0 ) {
 	$person                                = new SubEventPerson();
@@ -300,7 +302,7 @@ if ( $contact->CustomerContactID > 0 ) {
 	$ft->AddItem( $f );
 	$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 	$ft->AddItem( $f );
-	$matchingPersons = $eduapi->GetPerson( $edutoken, '', $ft->ToString(), false );
+	$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
 	if ( ! empty( $matchingPersons ) ) {
 		$person = $matchingPersons[0];
 	}
@@ -376,8 +378,8 @@ if ( ! empty( $pArr ) ) {
 	}
 
 	$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( $_POST['invoiceReference'] ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
-	$eventCustomerLnkID    = $eduapi->CreateSubEventBooking(
-		$edutoken,
+	$eventCustomerLnkID    = EDU()->api->CreateSubEventBooking(
+		EDU()->get_token(),
 		$bi
 	);
 
@@ -415,17 +417,17 @@ if ( ! empty( $pArr ) ) {
 		foreach ( $answers as $answer ) {
 			$sanswers[] = $answer;
 		}
-		$eduapi->SetEventCustomerAnswerV2( $edutoken, $sanswers );
+		EDU()->api->SetEventCustomerAnswerV2( EDU()->get_token(), $sanswers );
 	}
 
-	$ai = $eduapi->GetAccountInfo( $edutoken )[0];
+	$ai = EDU()->api->GetAccountInfo( EDU()->get_token() )[0];
 
 	$senderEmail = $ai->Email;
 	if ( empty( $senderEmail ) ) {
 		$senderEmail = "no-reply@legaonline.se";
 	}
 	if ( ! empty( $personEmail ) ) {
-		$eduapi->SendConfirmationEmail( $edutoken, $eventCustomerLnkID, $senderEmail, $personEmail );
+		EDU()->api->SendConfirmationEmail( EDU()->get_token(), $eventCustomerLnkID, $senderEmail, $personEmail );
 	}
 
 	$_SESSION['eduadmin-printJS'] = true;

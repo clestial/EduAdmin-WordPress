@@ -9,6 +9,10 @@ foreach ( $requiredFields as $field ) {
 	}
 }
 
+if ( ! empty( $_REQUEST['email'] ) ) {
+	exit( 500 );
+}
+
 if ( $missingFields ) {
 	// TODO: Show an error message that some fields are missing
 	// Should not be able to happen, since we should validate the fields first

@@ -55,6 +55,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 			<form action="" method="POST">
 				<input type="hidden" name="objectid" value="<?php echo $selectedCourse->ObjectID; ?>" />
 				<input type="hidden" name="act" value="objectInquiry" />
+				<input type="hidden" name="email" />
 				<label>
 					<div class="inputLabel"><?php edu_e( "Customer name" ); ?> *</div>
 					<div class="inputHolder">

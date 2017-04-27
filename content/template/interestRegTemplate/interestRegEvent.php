@@ -111,6 +111,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 				<input type="hidden" name="objectid" value="<?php echo $selectedCourse->ObjectID; ?>" />
 				<input type="hidden" name="eventid" value="<?php echo $event->EventID; ?>" />
 				<input type="hidden" name="act" value="eventInquiry" />
+				<input type="hidden" name="email" />
 				<label>
 					<div class="inputLabel"><?php edu_e( "Customer name" ); ?> *</div>
 					<div class="inputHolder">

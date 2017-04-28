@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 ### Added
+
+## [0.10.13]
+### Added
 - Added new class `EduAdminBookingHandler`, to process bookings from the plugin
 - Added span element around event time in booking form, so you can hide it.
 - Moved booking handling to `EduAdminBookingHandler`.
@@ -311,7 +314,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.12...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.13...HEAD
+[0.10.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.12...v0.10.13
 [0.10.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...v0.10.12
 [0.10.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...v0.10.11
 [0.10.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.9...v0.10.10

@@ -157,7 +157,7 @@ if ( $customOrderBy != null ) {
 		$sorting->AddItem( $s );
 	}
 } else {
-	$s = new XSort( 'PeriodStart', 'DESC' );
+	$s = new XSort( 'PeriodStart', 'ASC' );
 	$sorting->AddItem( $s );
 }
 
@@ -262,6 +262,7 @@ if ( ! empty( $edo ) ) {
 
 	$showDescr = get_option( 'eduadmin-showCourseDescription', true );
 	$currency = get_option( 'eduadmin-currency', 'SEK' );
+
 	?>
 
 	<table class="gf-table">

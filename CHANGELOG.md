@@ -319,7 +319,7 @@
 - Added inquiry support in course
 
 [Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.14...HEAD
-[0.10.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.13...v0.10.14
+[0.10.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.13...v0.10.14
 [0.10.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.12...v0.10.13
 [0.10.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...v0.10.12
 [0.10.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.10...v0.10.11

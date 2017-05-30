@@ -49,6 +49,7 @@ if ( isset( $_REQUEST['bookingLoginAction'] ) && ! empty( $_REQUEST['bookingLogi
 			}
 		}
 
+
 		if ( empty( $matchingContacts ) ) {
 			$contact            = new CustomerContact;
 			$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
@@ -71,6 +72,7 @@ if ( isset( $_REQUEST['bookingLoginAction'] ) && ! empty( $_REQUEST['bookingLogi
 			$user->Customer                 = json_decode( $c2 );
 			$_SESSION['eduadmin-loginUser'] = $user;
 		}
+		die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
 	} else if ( $_REQUEST['bookingLoginAction'] == "loginEmail" && ! empty( $_REQUEST['eduadminloginEmail'] ) && ! empty( $_REQUEST['eduadminpassword'] ) ) {
 		$user = loginContactPerson( $_REQUEST['eduadminloginEmail'], $_REQUEST['eduadminpassword'] );
 		if ( $user != null ) {

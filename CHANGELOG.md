@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.15]
+### Added
+- Bugfix: Logging in on non-existing contacts activated some kind of warning
+
 ## [0.10.14]
 ### Added
 - Fix in `template_GF_listCourses` to fix sorting
@@ -318,7 +322,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.14...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.15...HEAD
+[0.10.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.14...v0.10.15
 [0.10.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.13...v0.10.14
 [0.10.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.12...v0.10.13
 [0.10.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.11...v0.10.12

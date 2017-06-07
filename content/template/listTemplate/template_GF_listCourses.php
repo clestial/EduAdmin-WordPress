@@ -157,7 +157,7 @@ if ( $customOrderBy != null ) {
 		$sorting->AddItem( $s );
 	}
 } else {
-	$s = new XSort( 'PeriodStart', 'ASC' );
+	$s = new XSort( 'PeriodStart', 'DESC' );
 	$sorting->AddItem( $s );
 }
 
@@ -198,7 +198,7 @@ if ( isset( $_REQUEST[ 'eduadmin-level' ] ) && ! empty( $_REQUEST[ 'eduadmin-lev
 $occIds = array ();
 
 foreach ( $ede as $e ) {
-	$occIds[ ] = $e->OccationID;
+	$occIds[] = $e->OccationID;
 }
 
 $ft = new XFiltering();
@@ -285,9 +285,9 @@ if ( ! empty( $edo ) ) {
 			return $ev->ObjectID == $object->ObjectID;
 		});
 
-		$prices = array ();
-		$sortedEvents = array ();
-		$eventCities = array ();
+		$prices = array();
+		$sortedEvents = array();
+		$eventCities = array();
 
 		foreach ( $events as $ev ) {
 			$sortedEvents[ $ev->PeriodStart ] = $ev;
@@ -304,6 +304,7 @@ if ( ! empty( $edo ) ) {
 
 		ksort( $sortedEvents );
 		ksort( $eventCities );
+
 		$showEventsWithEventsOnly = $attributes[ 'onlyevents' ];
 		$showEventsWithoutEventsOnly = $attributes[ 'onlyempty' ];
 
@@ -313,7 +314,7 @@ if ( ! empty( $edo ) ) {
 					continue;
 		}
 
-		if ( $showEventsWithoutEventsOnly && ! empty( $sortedEvents ) || $object->CategoryID == 43690 ) {
+		if ( $showEventsWithoutEventsOnly && ! empty( $sortedEvents ) || 43690 == $object->CategoryID ) {
 			// custom exklude for this ID
 			continue;
 		}
@@ -341,7 +342,7 @@ if ( ! empty( $edo ) ) {
 				</tr>
 
 			<?php
-			$cats[ ] = $object->CategoryName;
+			$cats[] = $object->CategoryName;
 		}
 ?>
 	<tr class="GFObjectItem" data-objectid="<?php echo $object->ObjectID; ?>">

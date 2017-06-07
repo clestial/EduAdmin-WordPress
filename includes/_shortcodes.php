@@ -149,7 +149,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 			'bookurl'                   => null,
 			'courseinquiryurl'          => null,
 			'order'                     => null,
-			'orderby'                   => null
+			'orderby'                   => null,
 			//'coursesubject' => null
 		),
 		normalize_empty_atts( $attributes ),
@@ -157,8 +157,6 @@ function eduadmin_get_detailinfo( $attributes ) {
 	);
 
 	$retStr = '';
-
-	$courseId = 0;
 
 	if ( empty( $attributes['courseid'] ) || $attributes['courseid'] <= 0 ) {
 		if ( isset( $wp_query->query_vars["courseId"] ) ) {
@@ -189,7 +187,6 @@ function eduadmin_get_detailinfo( $attributes ) {
 		}
 
 		$selectedCourse = false;
-		$name           = "";
 		foreach ( $edo as $object ) {
 			$id = $object->ObjectID;
 			if ( $id == $courseId ) {
@@ -309,11 +306,9 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 				$st               = new XSorting();
 				$groupByCity      = get_option( 'eduadmin-groupEventsByCity', false );
-				$groupByCityClass = "";
 				if ( $groupByCity ) {
 					$s = new XSort( 'City', 'ASC' );
 					$st->AddItem( $s );
-					$groupByCityClass = " noCity";
 				}
 				$s = new XSort( 'PeriodStart', 'ASC' );
 				$st->AddItem( $s );
@@ -347,13 +342,13 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
 				$prices       = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
-				$uniquePrices = Array();
+				$uniquePrices = array();
 				foreach ( $prices as $price ) {
 					$uniquePrices[ $price->Description ] = $price;
 				}
 
 				$currency = get_option( 'eduadmin-currency', 'SEK' );
-				if ( count( $uniquePrices ) == 1 ) {
+				if ( 1 == count( $uniquePrices ) ) {
 					$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "\n";
 				} else {
 					foreach ( $uniquePrices as $price ) {
@@ -363,13 +358,11 @@ function eduadmin_get_detailinfo( $attributes ) {
 			}
 
 			if ( isset( $attributes['pagetitlejs'] ) ) {
-				$originalTitle = get_the_title();
 				$newTitle      = $selectedCourse->PublicName;
 				$retStr        .= "
 				<script type=\"text/javascript\">
 				(function() {
 					var title = document.title;
-					//title = title.replace('" . $originalTitle . "', '" . $newTitle . "');
 					document.title = '" . $newTitle . " | ' + title;
 				})();
 				</script>";

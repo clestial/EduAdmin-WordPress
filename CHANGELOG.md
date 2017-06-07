@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Fixing code styles
 
 ## [0.10.15]
 ### Added

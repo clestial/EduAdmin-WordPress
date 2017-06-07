@@ -63,13 +63,6 @@ if ( ! function_exists( 'edu_api_listview_eventlist' ) ) {
 				$shortDescrMatch = stripos( $object->CourseDescriptionShort, $request['search'] ) !== false;
 				$nameMatch       = stripos( $name, $request['search'] ) !== false;
 
-				/*echo "#namn!#" . $name . " state: ";
-				echo $nameMatch ? "true" : "false" . "#!#<br />";
-				echo "#besk!#" . $object->CourseDescription . " state: ";
-				echo $descrMatch ? "true" : "false" . "#!#<br />";
-				echo "#kort!#" . $object->CourseDescriptionShort . " state: ";
-				echo $shortDescrMatch ? "true" : "false" . "#!#<br /><br />";*/
-
 				return ( $nameMatch || $descrMatch || $shortDescrMatch );
 			} );
 		}
@@ -219,12 +212,11 @@ if ( ! function_exists( 'edu_api_listview_eventlist' ) ) {
 			}
 		}
 
-		if ( $request['template'] == "A" ) {
+		if ( "A" == $request['template'] ) {
 			echo edu_api_listview_eventlist_template_A( $ede, $eventDates, $request );
-		} else if ( $request['template'] == "B" ) {
+		} else if ( "B" == $request['template'] ) {
 			echo edu_api_listview_eventlist_template_B( $ede, $eventDates, $request );
 		}
-		#echo json_encode($ede);
 	}
 }
 
@@ -292,8 +284,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_A' ) ) {
 					<div class="objectDescription"><?php
 
 						$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-						echo /*isset($eventDates[$object->EventID]) ? edu_GetLogicalDateGroups($eventDates[$object->EventID], true, $object, true) :*/
-						GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
+						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
 
 						if ( ! empty( $object->City ) ) {
 							echo " <span class=\"cityInfo\">";
@@ -326,7 +317,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_A' ) ) {
 						<a class="readMoreButton"
 						   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a><br />
 						<?php
-						if ( $spotsLeft > 0 || $object->MaxParticipantNr == 0 ) {
+						if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
 							?>
 							<a class="bookButton"
 							   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
@@ -410,8 +401,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_B' ) ) {
 				<div class="objectDescription"><?php
 
 					$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-					echo /*isset($eventDates[$object->EventID]) ? edu_GetLogicalDateGroups($eventDates[$object->EventID]) :*/
-					GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
+					echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
 
 					if ( ! empty( $object->City ) ) {
 						echo " <span class=\"cityInfo\">";
@@ -451,6 +441,6 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_B' ) ) {
 	}
 }
 
-if ( isset( $_REQUEST['module'] ) && $_REQUEST['module'] == "listview_eventlist" ) {
+if ( isset( $_REQUEST['module'] ) && "listview_eventlist" == $_REQUEST['module'] ) {
 	echo edu_api_listview_eventlist( $_REQUEST );
 }

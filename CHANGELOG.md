@@ -1,7 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [0.10.17]
 ### Added
+- Added extra code to prevent bookings to go through when there are no free spots left
 
 ## [0.10.16]
 ### Added
@@ -327,7 +328,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.16...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.17...HEAD
+[0.10.17]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.16...v0.10.17
 [0.10.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.15...v0.10.16
 [0.10.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.14...v0.10.15
 [0.10.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.13...v0.10.14

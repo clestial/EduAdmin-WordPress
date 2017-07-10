@@ -284,7 +284,7 @@ var eduBookingView = {
 		if ( ShouldValidateCivRegNo && !eduBookingView.ValidateCivicRegNo() ) {
 			return false
 		}
-		;
+
 
 		var contactParticipant = document.getElementById( 'contactIsAlsoParticipant' );
 		var contact = 0;

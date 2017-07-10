@@ -251,14 +251,30 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					<?php endif; ?>
 				</div>
 				<?php
-				if ( isset( $_SESSION['eduadmin-loginUser'] ) && isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
-
+				if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
+					$userVal = '';
+					if ( isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
+						$userVal = $contact->ContactName;
+					} else {
+						$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
+						switch ( $selectedLoginField ) {
+							case 'Email':
+								$userVal = $contact->Email;
+								break;
+							case 'CivicRegistrationNumber':
+								$userVal = $contact->CivicRegistrationNumber;
+								break;
+							default:
+								$userVal = $contact->Email;
+								break;
+						}
+					}
 					$surl    = get_home_url();
 					$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 					$baseUrl = $surl . '/' . $cat;
 					?>
 					<div class="notUserCheck">
-						<i><?php echo sprintf( edu__( "Not %s? %sLog out%s" ), "<b>" . $contact->ContactName . "</b>", "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
+						<i><?php echo sprintf( edu__( "Not %s? %sLog out%s" ), "<b>" . $userVal . "</b>", "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
 					</div>
 					<?php
 				}
@@ -350,9 +366,11 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 							</label>
 						</div>
 					<?php endif; ?>
-
 					<input type="submit" class="bookButton"
 						   onclick="var validated = eduBookingView.CheckValidation(); return validated;"
+						<?php if ( $event->TotalParticipantNr >= $event->MaxParticipantNr && $event->MaxParticipantNr >= 0 ) : ?>
+							disabled title="<?php edu_e( 'No free spots left on this event' ); ?>"
+						<?php endif; ?>
 						   value="<?php edu_e( "Book now" ); ?>" />
 
 					<div class="edu-modal warning" id="edu-warning-terms">

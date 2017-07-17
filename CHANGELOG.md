@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.10.18]
+### Added
+- Added discount card-support, so end customers can use their discount cards when they book a course
+
 ## [0.10.17]
 ### Added
 - Added extra code to prevent bookings to go through when there are no free spots left

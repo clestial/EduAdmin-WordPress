@@ -368,7 +368,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					<?php endif; ?>
 					<input type="submit" class="bookButton"
 						   onclick="var validated = eduBookingView.CheckValidation(); return validated;"
-						<?php if ( $event->TotalParticipantNr >= $event->MaxParticipantNr && $event->MaxParticipantNr >= 0 ) : ?>
+						<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
 							disabled title="<?php edu_e( 'No free spots left on this event' ); ?>"
 						<?php endif; ?>
 						   value="<?php edu_e( "Book now" ); ?>" />

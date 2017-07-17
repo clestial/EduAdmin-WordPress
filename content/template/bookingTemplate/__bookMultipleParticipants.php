@@ -282,7 +282,7 @@ $f  = new XFilter( 'ShowOnWeb', '=', 'true' );
 $fo->AddItem( $f );
 $f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 $fo->AddItem( $f );
-$personAttributes                          = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
+$personAttributes                  = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 foreach ( $_POST['participantFirstName'] as $key => $value ) {
 	if ( "0" === $key ) {
@@ -447,11 +447,15 @@ if ( ! empty( $pArr ) ) {
 	$bi                      = new BookingInfoSubEvent();
 	$bi->EventID             = $eventId;
 	$bi->CustomerID          = $customer->CustomerID;
-	$bi->CustomerContactID                 = $contact->CustomerContactID;
-	$bi->SubEventPersons                   = $pArr;
-	$bi->PurchaseOrderNumber               = $purchaseOrderNumber;
+	$bi->CustomerContactID   = $contact->CustomerContactID;
+	$bi->SubEventPersons     = $pArr;
+	$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 	if ( isset( $_POST['edu-pricename'] ) ) {
 		$bi->OccasionPriceNameLnkID = $_POST['edu-pricename'];
+	}
+
+	if ( isset( $_POST['edu-limitedDiscountID'] ) ) {
+		$bi->LimitedDiscountID = $_POST['edu-limitedDiscountID'];
 	}
 
 	if ( isset( $_POST['edu-discountCodeID'] ) && $_POST['edu-discountCodeID'] != "0" ) {

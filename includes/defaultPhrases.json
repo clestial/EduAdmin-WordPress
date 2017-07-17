@@ -175,5 +175,6 @@
 	"You must accept Terms and Conditions to continue.": "Du måste godkänna villkoren för att fortsätta.",
 	"You must add some participants.": "Du måste lägga till minst en deltagare.",
 	"You must fill in a password to change it.": "Du måste fylla i ett lösenord för att ändra det.",
-	"Your search returned zero results": "Din sökning resulterade inte i något resultat."
+  "Your search returned zero results": "Din sökning resulterade inte i något resultat.",
+  "Uses left: %s / %s": "Klipp kvar: %s / %s"
 }

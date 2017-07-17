@@ -40,6 +40,9 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 
 	$objectCards = $eduapi->GetLimitedDiscountObjectStatus( $edutoken, '', $f->ToString() );
 	$cCardIds    = array();
+
+	$cardCosts = array();
+
 	foreach ( $objectCards as $oCard ) {
 		$addCard = false;
 		if ( $oCard->ObjectID == $selectedCourse->ObjectID ) {
@@ -47,7 +50,8 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 		}
 
 		if ( $addCard && ! in_array( $oCard->LimitedDiscountID, $cCardIds ) ) {
-			$cCardIds[] = $oCard->LimitedDiscountID;
+			$cCardIds[]                             = $oCard->LimitedDiscountID;
+			$cardCosts[ $oCard->LimitedDiscountID ] = $oCard->CreditCount;
 		}
 	}
 
@@ -67,7 +71,31 @@ if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
 	} );
 	?>
 	<div class="discountCardView">
+		<?php
+		if ( 0 !== count( $cCards ) ) {
+			?>
+			<h2><?php edu_e( "Discount cards" ); ?></h2>
 
+			<?php
+			foreach ( $cCards as $card ) {
+				$enoughCredits = ( $card->CreditLeft >= $cardCosts[ $card->LimitedDiscountID ] );
+				?>
+				<label class="discountCardItem">
+					<input type="radio"
+						   name="edu-limitedDiscountID"
+						<?php if ( ! $enoughCredits ) : ?>
+							disabled readonly title="<?php edu_e( "Not enough uses left on this card." ); ?>"
+						<?php endif; ?>
+						   value="<?php echo $card->LimitedDiscountID; ?>" />
+					<?php echo $card->PublicName; ?>
+					<i>(<?php echo sprintf( edu__( "Uses left: %s / %s" ), $card->CreditLeft, $card->CreditStartValue ); ?>
+						)</i>
+				</label>
+				<?php
+			}
+		}
+		?>
+		<br />
 	</div>
 	<?php
 }

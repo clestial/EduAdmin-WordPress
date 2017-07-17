@@ -369,6 +369,11 @@ if ( ! empty( $pArr ) ) {
 	if ( isset( $purchaseOrderNumber ) ) {
 		$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 	}
+
+	if ( isset( $_POST['edu-limitedDiscountID'] ) ) {
+		$bi->LimitedDiscountID = $_POST['edu-limitedDiscountID'];
+	}
+
 	if ( isset( $_POST['edu-pricename'] ) ) {
 		$bi->OccasionPriceNameLnkID = $_POST['edu-pricename'];
 	}

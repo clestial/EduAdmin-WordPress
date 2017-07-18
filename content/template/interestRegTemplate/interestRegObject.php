@@ -22,12 +22,20 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 	}
 
+	$courseId = 0;
+
+	if ( null != $attributes && isset( $attributes['courseid'] ) ) {
+		$courseId = $attributes['courseid'];
+	} else {
+		$courseId = $wp_query->query_vars["courseId"];
+	}
+
 	$selectedCourse = false;
 	$name           = "";
 	foreach ( $edo as $object ) {
 		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 		$id   = $object->ObjectID;
-		if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
+		if ( $id == $courseId ) {
 			$selectedCourse = $object;
 			break;
 		}

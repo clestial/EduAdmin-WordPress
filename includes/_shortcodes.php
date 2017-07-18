@@ -41,7 +41,9 @@ function eduadmin_get_list_view( $attributes ) {
 
 function eduadmin_get_object_interest( $attributes ) {
 	$attributes = shortcode_atts(
-		array(),
+		array(
+			'courseid' => null,
+		),
 		normalize_empty_atts( $attributes ),
 		'eduadmin-objectinterest'
 	);

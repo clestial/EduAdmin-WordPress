@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+### Added
+
+
+## [0.10.19]
+### Added
+- Added support for attribute `courseid` in `[eduadmin-objectinterest]`-shortcode
+
 ## [0.10.18]
 ### Added
 - Added discount card-support, so end customers can use their discount cards when they book a course
@@ -332,7 +340,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.18...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.19...HEAD
+[0.10.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.18...v0.10.19
 [0.10.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.17...v0.10.18
 [0.10.17]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.16...v0.10.17
 [0.10.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.15...v0.10.16

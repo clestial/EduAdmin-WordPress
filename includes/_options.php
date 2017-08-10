@@ -154,6 +154,7 @@ function eduadmin_settings_init() {
 	register_setting( 'eduadmin-list', 'eduadmin-showCourseDays' );
 	register_setting( 'eduadmin-list', 'eduadmin-showCourseTimes' );
 	register_setting( 'eduadmin-list', 'eduadmin-showEventVenueName' );
+	register_setting( 'eduadmin-list', 'eduadmin-showWeekDays' );
 
 	/* Plugin settings */
 	register_setting( 'eduadmin-plugins', 'eduadmin-plugin-settings' );

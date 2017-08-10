@@ -3,6 +3,9 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.20]
+### Added
+- Added setting for List-views, to show week days (only event lists)
 
 ## [0.10.19]
 ### Added

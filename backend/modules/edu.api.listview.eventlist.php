@@ -231,6 +231,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_A' ) ) {
 
 		$showCourseDays  = $request['showcoursedays'];
 		$showCourseTimes = $request['showcoursetimes'];
+		$showWeekDays    = $request['showweekdays'];
 
 		$showVenue = $request['showvenue'];
 
@@ -243,6 +244,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_A' ) ) {
 
 		$removeItems = array(
 			'eid',
+			'showweekdays',
 			'phrases',
 			'module',
 			'baseUrl',
@@ -284,7 +286,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_A' ) ) {
 					<div class="objectDescription"><?php
 
 						$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
+						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 						if ( ! empty( $object->City ) ) {
 							echo " <span class=\"cityInfo\">";
@@ -350,6 +352,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_B' ) ) {
 
 		$showCourseDays  = $request['showcoursedays'];
 		$showCourseTimes = $request['showcoursetimes'];
+		$showWeekDays    = $request['showweekdays'];
 
 		$showVenue = $request['showvenue'];
 
@@ -401,7 +404,7 @@ if ( ! function_exists( 'edu_api_listview_eventlist_template_B' ) ) {
 				<div class="objectDescription"><?php
 
 					$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-					echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
+					echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 					if ( ! empty( $object->City ) ) {
 						echo " <span class=\"cityInfo\">";

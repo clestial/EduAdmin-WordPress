@@ -264,6 +264,7 @@ if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] 
 
 $showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 $showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
+$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
 $incVat          = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
 $showEventPrice = get_option( 'eduadmin-showEventPrice', false );
@@ -283,6 +284,7 @@ $showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 		 data-fewspots="<?php echo @get_option( 'eduadmin-alwaysFewSpots', "3" ); ?>"
 		 data-showcoursedays="<?php echo @esc_attr( $showCourseDays ); ?>"
 		 data-showcoursetimes="<?php echo @esc_attr( $showCourseTimes ); ?>"
+		 data-showweekdays="<?php echo @esc_attr( $showWeekDays ); ?>"
 		 data-showcourseprices="<?php echo @esc_attr( $showEventPrice ); ?>"
 		 data-currency="<?php echo @esc_attr( $currency ); ?>"
 		 data-search="<?php echo @esc_attr( $_REQUEST['searchCourses'] ); ?>"
@@ -318,7 +320,7 @@ foreach ( $ede as $object ) {
 
 			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 			echo /*isset($eventDates[$object->EventID]) ? GetLogicalDateGroups($eventDates[$object->EventID]) :*/
-			GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true );
+			GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 			if ( ! empty( $object->City ) ) {
 				echo " <span class=\"cityInfo\">";

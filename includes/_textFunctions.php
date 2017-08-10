@@ -311,8 +311,8 @@ function GetStartEndDisplayDate( $startDate, $endDate, $short = false, $event, $
 	return $str;
 }
 
-function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false ) {
-	$months     = array(
+function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
+	$months = array(
 		1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
 		2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
 		3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
@@ -326,24 +326,46 @@ function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false ) {
 		11 => ! $short ? edu__( 'november' ) : edu__( 'nov' ),
 		12 => ! $short ? edu__( 'december' ) : edu__( 'dec' ),
 	);
+
+	$weekDays = array(
+		1 => ! $short ? edu__( 'monday' ) : edu__( 'mon' ),
+		2 => ! $short ? edu__( 'tuesday' ) : edu__( 'tue' ),
+		3 => ! $short ? edu__( 'wednesday' ) : edu__( 'wed' ),
+		4 => ! $short ? edu__( 'thursday' ) : edu__( 'thu' ),
+		5 => ! $short ? edu__( 'friday' ) : edu__( 'fri' ),
+		6 => ! $short ? edu__( 'saturday' ) : edu__( 'sat' ),
+		7 => ! $short ? edu__( 'sunday' ) : edu__( 'sun' ),
+	);
+
 	$startYear  = date( 'Y', strtotime( $startDate ) );
 	$startMonth = date( 'n', strtotime( $startDate ) );
 	$endYear    = date( 'Y', strtotime( $endDate ) );
 	$endMonth   = date( 'n', strtotime( $endDate ) );
 	$nowYear    = date( 'Y' );
 	$str        = '<span class="eduadmin-dateText">';
+	if ( $showWeekDays ) {
+		$str .= $weekDays[ date( 'N', strtotime( $startDate ) ) ] . ' ';
+	}
 	$str        .= date( 'd', strtotime( $startDate ) );
 	if ( date( 'Y-m-d', strtotime( $startDate ) ) != date( 'Y-m-d', strtotime( $endDate ) ) ) {
 		if ( $startYear === $endYear ) {
 			if ( $startMonth === $endMonth ) {
-				$str .= ' - ' . date( 'd', strtotime( $endDate ) );
+				$str .= ' - ';
+				if ( $showWeekDays ) {
+					$str .= $weekDays[ date( 'N', strtotime( $endDate ) ) ] . ' ';
+				}
+				$str .= date( 'd', strtotime( $endDate ) );
 				$str .= ' ';
 				$str .= $months[ date( 'n', strtotime( $startDate ) ) ];
 				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 			} else {
 				$str .= ' ';
 				$str .= $months[ date( 'n', strtotime( $startDate ) ) ];
-				$str .= ' - ' . date( 'd', strtotime( $endDate ) );
+				$str .= ' - ';
+				if ( $showWeekDays ) {
+					$str .= $weekDays[ date( 'N', strtotime( $endDate ) ) ] . ' ';
+				}
+				$str .= date( 'd', strtotime( $endDate ) );
 				$str .= ' ';
 				$str .= $months[ date( 'n', strtotime( $endDate ) ) ];
 				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
@@ -352,7 +374,11 @@ function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false ) {
 			$str .= ' ';
 			$str .= $months[ date( 'n', strtotime( $startDate ) ) ];
 			$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
-			$str .= ' - ' . date( 'd', strtotime( $endDate ) );
+			$str .= ' - ';
+			if ( $showWeekDays ) {
+				$str .= $weekDays[ date( 'N', strtotime( $endDate ) ) ] . ' ';
+			}
+			$str .= date( 'd', strtotime( $endDate ) );
 			$str .= ' ';
 			$str .= $months[ date( 'n', strtotime( $endDate ) ) ];
 			$str .= ( $nowYear != $endYear ? ' ' . $endYear : '' );

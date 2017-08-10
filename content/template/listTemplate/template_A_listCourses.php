@@ -292,6 +292,7 @@ if ( ! empty( $edo ) ) {
 
 	$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 	$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
+	$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
 
 	$showDescr = get_option( 'eduadmin-showCourseDescription', true );
 	$currency  = get_option( 'eduadmin-currency', 'SEK' );
@@ -309,6 +310,7 @@ if ( ! empty( $edo ) ) {
 	 data-fewspots="<?php echo @get_option( 'eduadmin-alwaysFewSpots', "3" ); ?>"
 	 data-showcoursedays="<?php echo @esc_attr( $showCourseDays ); ?>"
 	 data-showcoursetimes="<?php echo @esc_attr( $showCourseTimes ); ?>"
+	 data-showweekdays="<?php echo @esc_attr( $showWeekDays ); ?>"
 	 data-showcourseprices="<?php echo @esc_attr( $showEventPrice ); ?>"
 	 data-currency="<?php echo @esc_attr( $currency ); ?>"
 	 data-search="<?php echo @esc_attr( $_REQUEST['searchCourses'] ); ?>"

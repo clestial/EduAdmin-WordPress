@@ -96,6 +96,14 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 								<?php _e( "Show time", "eduadmin" ); ?>
 							</label>
 							<br />
+							<label>
+								<input type="checkbox"
+									   name="eduadmin-showWeekDays"<?php if ( get_option( 'eduadmin-showWeekDays', false ) ) {
+									echo " checked=\"checked\"";
+								} ?> />
+								<?php _e( "Show weekday names (Only event list)", "eduadmin" ); ?>
+							</label>
+							<br />
 							<table cellpadding="0" cellspacing="0">
 								<tr>
 									<td>

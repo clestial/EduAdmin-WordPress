@@ -18,7 +18,7 @@ function edu_getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', 
 		return edu__( 'Spots left' );
 	}
 
-	if ( $freeSpots === 0 ) {
+	if ( $freeSpots <= 0 ) {
 		return edu__( 'No spots left' );
 	}
 

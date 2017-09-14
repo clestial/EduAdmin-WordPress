@@ -4,6 +4,7 @@
 ### Added
 
 ## [0.10.21]
+### Added
 - Check if number of free spots is equals or less than 0, instead of only 0.
 
 ## [0.10.20]
@@ -347,7 +348,7 @@
 - Added inquiry support in course
 
 [Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.21...HEAD
-[0.10.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.20...v0.10.21
+[0.10.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.20...v0.10.21
 [0.10.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.19...v0.10.20
 [0.10.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.18...v0.10.19
 [0.10.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.17...v0.10.18

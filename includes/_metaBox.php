@@ -29,10 +29,10 @@
 			<span title="<?php esc_attr_e( "Sets which mode you want to use in the list view (event, course)", "eduadmin" ); ?>">mode</span>
 		</div>
 		<div class="eduadmin-attribute">
-			<span title="<?php esc_attr_e( "Only shows courses that do not have events", "eduadmin" ); ?>">orderby</span>
+			<span title="<?php esc_attr_e( "Sets the field to sort by", "eduadmin" ); ?>">orderby</span>
 		</div>
 		<div class="eduadmin-attribute">
-			<span title="<?php esc_attr_e( "Only shows courses that do not have events", "eduadmin" ); ?>">order</span>
+			<span title="<?php esc_attr_e( "Set which order to sort the data (ASC / DESC)", "eduadmin" ); ?>">order</span>
 		</div>
 	</div>
 </div>

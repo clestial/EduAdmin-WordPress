@@ -213,7 +213,12 @@ $f  = new XFilter( 'PublicPriceName', '=', 'true' );
 $ft->AddItem( $f );
 $f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 $ft->AddItem( $f );
-$pricenames = $eduapi->GetPriceName( $edutoken, '', $ft->ToString() );
+
+$st = new XSorting();
+$s  = new XSort( 'Price', 'ASC' );
+$st->AddItem( $s );
+
+$pricenames = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 if ( ! empty( $pricenames ) ) {

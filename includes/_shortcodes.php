@@ -210,7 +210,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$retStr .= $selectedCourse->ImageUrl;
 			}
 			if ( isset( $attributes['coursedays'] ) ) {
-				$retStr .= $selectedCourse->Days;
+				$retStr .= sprintf( edu_n( '%1$d day', '%1$d days', $selectedCourse->Days ), $selectedCourse->Days );
 			}
 			if ( isset( $attributes['coursestarttime'] ) ) {
 				$retStr .= $selectedCourse->StartTime;

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Added
+- Added pluralized text to the shortcode that shows course days `[eduadmin-detailinfo coursedays]`
+  Now outputs `1 day` or `2 days`
 
 ## [0.10.22]
 ### Added

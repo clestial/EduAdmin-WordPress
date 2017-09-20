@@ -9,12 +9,11 @@
 				<div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
 				</div>
-				<div class="inputHolder">
-					<input type="text" readonly style="width: 49%; display: inline-block;" class="contactFirstName"
-						   placeholder="<?php edu_e( "Participant first name" ); ?>" />
-					<input type="text" readonly style="width: 49%; display: inline-block; float: right;"
-						   class="contactLastName" placeholder="<?php edu_e( "Participant surname" ); ?>" />
-				</div>
+				<div class="inputHolder"><input type="text" readonly style="width: 50%; display: inline;"
+												class="contactFirstName"
+												placeholder="<?php edu_e( "Participant first name" ); ?>" /><input
+							type="text" readonly style="width: 50%; display: inline;" class="contactLastName"
+							placeholder="<?php edu_e( "Participant surname" ); ?>" /></div>
 			</label>
 			<label>
 				<div class="inputLabel">
@@ -160,12 +159,11 @@
 				<div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
 				</div>
-				<div class="inputHolder">
-					<input type="text" style="width: 48%; display: inline;" class="participantFirstName"
-						   name="participantFirstName[]" placeholder="<?php edu_e( "Participant first name" ); ?>" />
-					<input type="text" style="width: 48%; display: inline;" class="participantLastName"
-						   name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>" />
-				</div>
+				<div class="inputHolder"><input type="text" style="width: 50%; display: inline;"
+												class="participantFirstName" name="participantFirstName[]"
+												placeholder="<?php edu_e( "Participant first name" ); ?>" /><input
+							type="text" style="width: 50%; display: inline;" class="participantLastName"
+							name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>" /></div>
 			</label>
 			<label>
 				<div class="inputLabel">

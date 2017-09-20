@@ -4,6 +4,7 @@
 ### Added
 - Added pluralized text to the shortcode that shows course days `[eduadmin-detailinfo coursedays]`
   Now outputs `1 day` or `2 days`
+- Reformatted the HTML for contact/participant names, so we can use 50% width. Works in *most* cases.
 
 ## [0.10.22]
 ### Added

@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Added
 
+## [0.10.24]
+### Added
+- Fixed validation-bug in javascript if you only had the contact person as a participant.
+
 ## [0.10.23]
 ### Added
 - Added pluralized text to the shortcode that shows course days `[eduadmin-detailinfo coursedays]`
@@ -358,7 +362,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...HEAD
+[0.10.24]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...v0.10.24
 [0.10.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.22...v0.10.23
 [0.10.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.21...v0.10.22
 [0.10.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.20...v0.10.21

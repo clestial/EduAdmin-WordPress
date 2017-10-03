@@ -13,6 +13,14 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	$allowCategorySearch = get_option( 'eduadmin-allowCategorySearch', false );
 	$allowLevelSearch    = get_option( 'eduadmin-allowLevelSearch', false );
 
+	$showSearch      = $attributes['showsearch'];
+	$showMoreNumber  = $attributes['showmore'];
+	$showCity        = $attributes['showcity'];
+	$showBookBtn     = $attributes['showbookbtn'];
+	$showReadMoreBtn = $attributes['showreadmorebtn'];
+
+	$searchVisible = $showSearch == true || ( $attributes['hidesearch'] == false || $attributes['hidesearch'] == null );
+
 	$subjects = get_transient( 'eduadmin-subjects' );
 	if ( ! $subjects ) {
 		$sorting = new XSorting();
@@ -62,7 +70,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	}
 	?>
 	<div class="eduadmin">
-		<?php if ( $attributes['hidesearch'] == false ) { ?>
+		<?php if ( $searchVisible ) { ?>
 			<form method="POST" class="search-form">
 				<table style="width: 100%;">
 					<tr>

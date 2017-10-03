@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 ### Added
+- Shortcode attributes on `[eduadmin-listview]`
+  - `showsearch`: Overrides settings to show the search
+  - `showcity`: Sets if you want to show/hide city from the list
+  - `showbookbtn`: Sets if you want to show/hide the book button
+  - `showreadmorebtn`: Sets if you want to show/hide the read more button
 
 ## [0.10.24]
 ### Added

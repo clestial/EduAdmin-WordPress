@@ -327,7 +327,7 @@ foreach ( $ede as $object ) {
 			echo /*isset($eventDates[$object->EventID]) ? GetLogicalDateGroups($eventDates[$object->EventID]) :*/
 			GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
-			if ( ! empty( $object->City ) ) {
+				if ( ! empty( $object->City ) && $showCity ) {
 				echo " <span class=\"cityInfo\">";
 				echo $object->City;
 				if ( $showEventVenue && ! empty( $object->AddressName ) ) {
@@ -352,8 +352,10 @@ foreach ( $ede as $object ) {
 			echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr ) . "</span>";
 			?></div>
 		<div class="objectBook">
-			<a class="readMoreButton"
-			   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
+			<?php if ( $showReadMoreBtn ) : ?>
+                <a class="readMoreButton"
+                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php

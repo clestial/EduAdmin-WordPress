@@ -19,21 +19,21 @@
 	}
 
 	if ( isset( $_REQUEST['eduadmin-category'] ) ) {
-		$f = new XFilter( 'CategoryID', '=', $_REQUEST['eduadmin-category'] );
+		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
-		$attributes['category'] = $_REQUEST['eduadmin-category'];
+		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-city'] ) ) {
-		$f = new XFilter( 'LocationID', '=', $_REQUEST['eduadmin-city'] );
+		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
-		$attributes['city'] = $_REQUEST['eduadmin-city'];
+		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) ) {
-		$f = new XFilter( 'SubjectID', '=', $_REQUEST['eduadmin-subject'] );
+		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
-		$attributes['subject'] = $_REQUEST['eduadmin-subject'];
+		$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
 	if ( ! empty( $filterCourses ) ) {
@@ -70,8 +70,8 @@
 			$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 			$descr      = strip_tags( $object->{$descrField} );
 
-			$nameMatch  = stripos( $name, $_REQUEST['searchCourses'] ) !== false;
-			$descrMatch = stripos( $descr, $_REQUEST['searchCourses'] ) !== false;
+			$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+			$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
 			return ( $nameMatch || $descrMatch );
 		} );
@@ -90,7 +90,7 @@
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == $_REQUEST['eduadmin-subject'] ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == santize_text_field( $_REQUEST['eduadmin-subject'] ) ) {
 					return true;
 				}
 			}
@@ -100,11 +100,11 @@
 	}
 
 	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
-		$attributes['courselevel'] = $_REQUEST['eduadmin-level'];
+		$attributes['courselevel'] = intval( $_REQUEST['eduadmin-level'] );
 		$edo                       = array_filter( $edo, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
 			foreach ( $cl as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->EducationLevelID == $_REQUEST['eduadmin-level'] ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->EducationLevelID == intval( $_REQUEST['eduadmin-level'] ) ) {
 					return true;
 				}
 			}
@@ -129,18 +129,18 @@
 	}
 
 	if ( isset( $_REQUEST['eduadmin-city'] ) ) {
-		$f = new XFilter( 'LocationID', '=', $_REQUEST['eduadmin-city'] );
+		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-category'] ) ) {
-		$f = new XFilter( 'CategoryID', '=', $_REQUEST['eduadmin-category'] );
+		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
-		$attributes['category'] = $_REQUEST['eduadmin-category'];
+		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) ) {
-		$f = new XFilter( 'SubjectID', '=', $_REQUEST['eduadmin-subject'] );
+		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
 	}
 
@@ -204,7 +204,7 @@
 		$ede = array_filter( $ede, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == $_REQUEST['eduadmin-subject'] ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_REQUEST['eduadmin-subject'] ) ) {
 					return true;
 				}
 			}
@@ -218,7 +218,7 @@
 		$ede                       = array_filter( $ede, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
 			foreach ( $cl as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->EducationLevelID == $_REQUEST['eduadmin-level'] ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->EducationLevelID == intval( $_REQUEST['eduadmin-level'] ) ) {
 					return true;
 				}
 			}
@@ -271,7 +271,7 @@
 		$ede = array_filter( $ede, function( $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 
-			$nameMatch = stripos( $name, $_REQUEST['searchCourses'] ) !== false;
+			$nameMatch = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
 			return $nameMatch;
 		} );

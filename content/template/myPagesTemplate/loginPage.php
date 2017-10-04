@@ -23,11 +23,11 @@
 				<div class="loginLabel"><?php echo $loginLabel; ?></div>
 				<div class="loginInput">
 					<input type="text"
-						   name="eduadminloginEmail"<?php echo( $selectedLoginField == "CivicRegistrationNumber" ? " class=\"eduadmin-civicRegNo\" onblur=\"eduBookingView.ValidateCivicRegNo();\"" : "" ); ?>
-						   required
-						   title="<?php echo esc_attr( sprintf( edu__( "Please enter your %s here" ), $loginLabel ) ); ?>"
-						   placeholder="<?php echo esc_attr( $loginLabel ); ?>"
-						   value="<?php echo @esc_attr( $_REQUEST["eduadminloginEmail"] ); ?>" />
+                           name="eduadminloginEmail"<?php echo( $selectedLoginField == "CivicRegistrationNumber" ? " class=\"eduadmin-civicRegNo\" onblur=\"eduBookingView.ValidateCivicRegNo();\"" : "" ); ?>
+                           required
+                           title="<?php echo esc_attr( sprintf( edu__( "Please enter your %s here" ), $loginLabel ) ); ?>"
+                           placeholder="<?php echo esc_attr( $loginLabel ); ?>"
+                           value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>
 				</div>
 			</label>
 			<label>

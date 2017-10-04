@@ -85,7 +85,7 @@
 											foreach ( $addresses as $address ) {
 												$city = trim( $address->City );
 												if ( ! in_array( $address->LocationID, $addedCities ) && ! empty( $city ) ) {
-													echo '<option value="' . $address->LocationID . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && $_REQUEST['eduadmin-city'] == $address->LocationID ? " selected=\"selected\"" : "" ) . '>' . trim( $address->City ) . '</option>';
+													echo '<option value="' . $address->LocationID . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && intval( $_REQUEST['eduadmin-city'] ) == $address->LocationID ? " selected=\"selected\"" : "" ) . '>' . trim( $address->City ) . '</option>';
 													$addedCities[] = $address->LocationID;
 												}
 											}
@@ -111,7 +111,7 @@
                                         <option value=""><?php edu_e( "Choose category" ); ?></option>
 										<?php
 											foreach ( $categories as $subj ) {
-												echo '<option value="' . $subj->CategoryID . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && $_REQUEST['eduadmin-category'] == $subj->CategoryID ? " selected=\"selected\"" : "" ) . '>' . $subj->CategoryName . '</option>';
+												echo '<option value="' . $subj->CategoryID . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && intval( $_REQUEST['eduadmin-category'] ) == $subj->CategoryID ? " selected=\"selected\"" : "" ) . '>' . $subj->CategoryName . '</option>';
 											}
 										?>
                                     </select>
@@ -123,7 +123,7 @@
                                         <option value=""><?php edu_e( "Choose course level" ); ?></option>
 										<?php
 											foreach ( $levels as $level ) {
-												echo '<option value="' . $level->EducationLevelID . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && $_REQUEST['eduadmin-level'] == $level->EducationLevelID ? " selected=\"selected\"" : "" ) . '>' . $level->Name . '</option>';
+												echo '<option value="' . $level->EducationLevelID . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && intval( $_REQUEST['eduadmin-level'] ) == $level->EducationLevelID ? " selected=\"selected\"" : "" ) . '>' . $level->Name . '</option>';
 											}
 										?>
                                     </select>
@@ -133,7 +133,7 @@
                                 <input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
                                        autosave="edu-course-search_<?php echo session_id(); ?>"
                                        placeholder="<?php edu_e( "Search courses" ); ?>"<?php if ( isset( $_REQUEST['searchCourses'] ) ) {
-									echo " value=\"" . $_REQUEST['searchCourses'] . "\"";
+	                                echo " value=\"" . sanitize_text_field( $_REQUEST['searchCourses'] ) . "\"";
 								} ?> />
                             </td>
                             <td style="width: 10%;">

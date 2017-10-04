@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### WordPress-plugin compatibility/requirements
+- Removing unnecessary paths (for functions that are never used)
+- Fixing the correct way to include files (by path, not function..)
+- Sanitizing everything I can think of/find.
+
 ### Added
 - Shortcode attributes on `[eduadmin-listview]`
   - `showsearch`: Overrides settings to show the search

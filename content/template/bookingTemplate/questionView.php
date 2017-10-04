@@ -1,7 +1,7 @@
 <div class="questionPanel">
 	<?php
 	if ( isset( $_REQUEST['eid'] ) ) {
-		$questions = $eduapi->GetEventBookingQuestion( $edutoken, $_REQUEST['eid'] );
+		$questions = $eduapi->GetEventBookingQuestion( $edutoken, intval( $_REQUEST['eid'] ) );
 		// VatPercent EventBookingAnswer
 		$groupedQuestions = array();
 

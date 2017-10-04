@@ -40,7 +40,7 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-listview'
 		);
-		$str              = include( plugin_dir_path( __DIR__ ) . "content/template/listTemplate/" . $attributes['template'] . ".php" );
+		$str = include( EDUADMIN_PLUGIN_PATH . "/content/template/listTemplate/" . $attributes['template'] . ".php" );
 
 		return $str;
 	}
@@ -53,7 +53,7 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-objectinterest'
 		);
-		$str        = include( plugin_dir_path( __DIR__ ) . "content/template/interestRegTemplate/interestRegObject.php" );
+		$str        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegObject.php" );
 
 		return $str;
 	}
@@ -64,7 +64,7 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-eventinterest'
 		);
-		$str        = include( plugin_dir_path( __DIR__ ) . "content/template/interestRegTemplate/interestRegEvent.php" );
+		$str        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegEvent.php" );
 
 		return $str;
 	}
@@ -84,7 +84,7 @@
 		unset( $_SESSION['needsLogin'] );
 		unset( $_SESSION['eduadmin-loginUser']->NewCustomer );
 		if ( ! isset( $attributes['customtemplate'] ) || $attributes['customtemplate'] != 1 ) {
-			$str = include_once( plugin_dir_path( __DIR__ ) . "content/template/detailTemplate/" . $attributes['template'] . ".php" );
+			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 
 			return $str;
 		}
@@ -118,9 +118,9 @@
 			'eduadmin-bookingview'
 		);
 		if ( get_option( 'eduadmin-useLogin', false ) == false || ( isset( $_SESSION['eduadmin-loginUser'] ) && ( ( isset( $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID ) && $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID != 0 ) || isset( $_SESSION['eduadmin-loginUser']->NewCustomer ) ) ) ) {
-			$str = include_once( plugin_dir_path( __DIR__ ) . "content/template/bookingTemplate/" . $attributes['template'] . ".php" );
+			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/" . $attributes['template'] . ".php" );
 		} else {
-			$str = include_once( plugin_dir_path( __DIR__ ) . "content/template/bookingTemplate/loginView.php" );
+			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/loginView.php" );
 		}
 
 		return $str;
@@ -539,7 +539,7 @@
 						$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
 
 						if ( isset( $_REQUEST['eid'] ) ) {
-							if ( $ev->EventID != $_REQUEST['eid'] ) {
+							if ( $ev->EventID != intval( $_REQUEST['eid'] ) ) {
 								continue;
 							}
 						}
@@ -642,7 +642,7 @@
 			'eduadmin-loginview'
 		);
 
-		return include_once( plugin_dir_path( __DIR__ ) . "content/template/myPagesTemplate/login.php" );
+		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/login.php" );
 	}
 
 	add_shortcode( "eduadmin-listview", "eduadmin_get_list_view" );

@@ -5,6 +5,8 @@
 - Removing unnecessary paths (for functions that are never used)
 - Fixing the correct way to include files (by path, not function..)
 - Sanitizing everything I can think of/find.
+- Modifying how pages are outputted.
+- Implementing `WP_Session` to get rid of `$_SESSION`-usage
 
 ### Added
 - Shortcode attributes on `[eduadmin-listview]`

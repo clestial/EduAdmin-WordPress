@@ -10,13 +10,13 @@
 			$f = new XFilter( 'Disabled', '=', false );
 			$ft->AddItem( $f );
 
-			$matchingContacts       = $eduapi->GetCustomerContact( $edutoken, '', $ft->ToString(), true );
-			$_SESSION['needsLogin'] = false;
-			$_SESSION['checkEmail'] = true;
+			$matchingContacts            = $eduapi->GetCustomerContact( $edutoken, '', $ft->ToString(), true );
+			EDU()->session['needsLogin'] = false;
+			EDU()->session['checkEmail'] = true;
 			if ( ! empty( $matchingContacts ) ) {
 				foreach ( $matchingContacts as $con ) {
 					if ( $con->CanLogin == 1 ) {
-						$_SESSION['needsLogin'] = true;
+						EDU()->session['needsLogin'] = true;
 						break;
 					}
 				}
@@ -25,25 +25,25 @@
 			if ( count( $matchingContacts ) >= 1 ) {
 				$con = $matchingContacts[0];
 				if ( $con->CanLogin == 1 ) {
-					$_SESSION['needsLogin'] = true;
+					EDU()->session['needsLogin'] = true;
 
 					return;
 				}
-				$_SESSION['needsLogin'] = false;
-				$filter                 = new XFiltering();
-				$f                      = new XFilter( 'CustomerID', '=', $con->CustomerID );
+				EDU()->session['needsLogin'] = false;
+				$filter                      = new XFiltering();
+				$f                           = new XFilter( 'CustomerID', '=', $con->CustomerID );
 				$filter->AddItem( $f );
 				$f = new XFilter( 'Disabled', '=', false );
 				$filter->AddItem( $f );
 				$customers = $eduapi->GetCustomer( $edutoken, '', $filter->ToString(), true );
 				if ( count( $customers ) == 1 ) {
-					$customer                       = $customers[0];
-					$user                           = new stdClass;
-					$c1                             = json_encode( $con );
-					$user->Contact                  = json_decode( $c1 );
-					$c2                             = json_encode( $customer );
-					$user->Customer                 = json_decode( $c2 );
-					$_SESSION['eduadmin-loginUser'] = $user;
+					$customer                            = $customers[0];
+					$user                                = new stdClass;
+					$c1                                  = json_encode( $con );
+					$user->Contact                       = json_decode( $c1 );
+					$c2                                  = json_encode( $customer );
+					$user->Customer                      = json_decode( $c2 );
+					EDU()->session['eduadmin-loginUser'] = $user;
 				} else {
 					return;
 				}
@@ -63,24 +63,17 @@
 
 				$customer = new Customer;
 
-				$user                           = new stdClass;
-				$user->NewCustomer              = true;
-				$c1                             = json_encode( $contact );
-				$user->Contact                  = json_decode( $c1 );
-				$c2                             = json_encode( $customer );
-				$user->Customer                 = json_decode( $c2 );
-				$_SESSION['eduadmin-loginUser'] = $user;
+				$user                                = new stdClass;
+				$user->NewCustomer                   = true;
+				$c1                                  = json_encode( $contact );
+				$user->Contact                       = json_decode( $c1 );
+				$c2                                  = json_encode( $customer );
+				$user->Customer                      = json_decode( $c2 );
+				EDU()->session['eduadmin-loginUser'] = $user;
 			}
 			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
-		} else if ( sanitize_text_field( $_REQUEST['bookingLoginAction'] ) == "loginEmail" && ! empty( $_REQUEST['eduadminloginEmail'] ) && ! empty( $_REQUEST['eduadminpassword'] ) ) {
-			$user = loginContactPerson( $_REQUEST['eduadminloginEmail'], $_REQUEST['eduadminpassword'] );
-			if ( $user != null ) {
-				die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
-			} else {
-				$_SESSION['eduadminLoginError'] = edu__( "Wrong email or password." );
-			}
 		} else if ( $_REQUEST['bookingLoginAction'] == "forgot" ) {
-			$success                             = sendForgottenPassword( sanitize_text_field( $_POST['eduadminloginEmail'] ) );
-			$_SESSION['eduadmin-forgotPassSent'] = $success;
+			$success                                  = sendForgottenPassword( sanitize_text_field( $_POST['eduadminloginEmail'] ) );
+			EDU()->session['eduadmin-forgotPassSent'] = $success;
 		}
 	}

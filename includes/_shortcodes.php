@@ -80,9 +80,13 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-detailview'
 		);
-		unset( $_SESSION['checkEmail'] );
-		unset( $_SESSION['needsLogin'] );
-		unset( $_SESSION['eduadmin-loginUser']->NewCustomer );
+		unset( EDU()->session['checkEmail'] );
+		unset( EDU()->session['needsLogin'] );
+		unset( EDU()->session['eduadmin-loginUser']->NewCustomer );
+
+		EDU()->session->regenerate_id( true );
+		//setcookie( 'eduadmin-loginUser', '', time() - 3600, '/' );
+
 		if ( ! isset( $attributes['customtemplate'] ) || $attributes['customtemplate'] != 1 ) {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 
@@ -117,7 +121,7 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-bookingview'
 		);
-		if ( get_option( 'eduadmin-useLogin', false ) == false || ( isset( $_SESSION['eduadmin-loginUser'] ) && ( ( isset( $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID ) && $_SESSION['eduadmin-loginUser']->Contact->CustomerContactID != 0 ) || isset( $_SESSION['eduadmin-loginUser']->NewCustomer ) ) ) ) {
+		if ( get_option( 'eduadmin-useLogin', false ) == false || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID ) && EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID != 0 ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/" . $attributes['template'] . ".php" );
 		} else {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/loginView.php" );
@@ -616,8 +620,8 @@
 		$cat  = get_option( 'eduadmin-rewriteBaseUrl' );
 
 		$baseUrl = $surl . '/' . $cat;
-		if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
-			$user = $_SESSION['eduadmin-loginUser'];
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+			$user = EDU()->session['eduadmin-loginUser'];
 		}
 
 		return

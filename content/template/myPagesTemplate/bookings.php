@@ -1,5 +1,5 @@
 <?php
-$user     = $_SESSION['eduadmin-loginUser'];
+	$user = EDU()->session['eduadmin-loginUser'];
 $contact  = $user->Contact;
 $customer = $user->Customer;
 

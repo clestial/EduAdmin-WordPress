@@ -46,20 +46,20 @@
     <button class="forgotPasswordButton"
             onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e( "Forgot password" ); ?></button>
 </div>
-<?php if ( isset( $_SESSION['eduadminLoginError'] ) ) { ?>
+<?php if ( isset( EDU()->session['eduadminLoginError'] ) ) { ?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-		<?php echo $_SESSION['eduadminLoginError']; ?>
+	    <?php echo EDU()->session['eduadminLoginError']; ?>
     </div>
-	<?php unset( $_SESSION['eduadminLoginError'] );
+	<?php unset( EDU()->session['eduadminLoginError'] );
 } ?>
-<?php if ( isset( $_SESSION['eduadmin-forgotPassSent'] ) && $_SESSION['eduadmin-forgotPassSent'] == true ) {
-	unset( $_SESSION['eduadmin-forgotPassSent'] );
+<?php if ( isset( EDU()->session['eduadmin-forgotPassSent'] ) && EDU()->session['eduadmin-forgotPassSent'] == true ) {
+	unset( EDU()->session['eduadmin-forgotPassSent'] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
 		<?php edu_e( "A new password has been sent by email." ); ?>
     </div>
-<?php } else if ( isset( $_SESSION['eduadmin-forgotPassSent'] ) && $_SESSION['eduadmin-forgotPassSent'] == false ) {
-	unset( $_SESSION['eduadmin-forgotPassSent'] );
+<?php } else if ( isset( EDU()->session['eduadmin-forgotPassSent'] ) && EDU()->session['eduadmin-forgotPassSent'] == false ) {
+	unset( EDU()->session['eduadmin-forgotPassSent'] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
 		<?php edu_e( "Could not send a new password by email." ); ?>

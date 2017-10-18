@@ -7,6 +7,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 | GitHub     | [![Latest release](https://img.shields.io/github/release/multinetinteractive/eduadmin-wordpress.svg)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) | [![Github Downloads](https://img.shields.io/github/downloads/multinetinteractive/eduadmin-wordpress/total.svg?style=flat-square)](https://github.com/MultinetInteractive/EduAdmin-WordPress/releases/latest) |
 | Packagist.org | [![Latest release](https://img.shields.io/packagist/v/multinetinteractive/eduadmin-wordpress.svg)](https://packagist.org/packages/multinetinteractive/eduadmin-wordpress) | [![Downloads](https://img.shields.io/packagist/dt/multinetinteractive/eduadmin-wordpress.svg)](https://packagist.org/packages/multinetinteractive/eduadmin-wordpress) |
 
+Gitter
+
+[![Gitter chat](https://badges.gitter.im/MultinetInteractive/EduAdmin-WordPress.png)](https://gitter.im/MultinetInteractive/EduAdmin-WordPress)
 
 Build status
 

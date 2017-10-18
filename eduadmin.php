@@ -2,16 +2,6 @@
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 	define( 'EDUADMIN_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
-	function edu_register_session() {
-		if ( session_status() != PHP_SESSION_DISABLED ) {
-			if ( ! session_id() ) {
-				session_start();
-			}
-		}
-	}
-
-	edu_register_session();
-
 	/*
 	 * Plugin Name:	EduAdmin Booking
 	 * Plugin URI:	http://www.eduadmin.se
@@ -69,6 +59,14 @@
 			 * @var EduAdminBookingHandler
 			 */
 			public $bookingHandler = null;
+			/**
+			 * @var \EduAdminLoginHandler
+			 */
+			public $loginHandler = null;
+			/**
+			 * @var WP_Session
+			 */
+			public $session = null;
 
 			/**
 			 * @return EduAdmin
@@ -126,10 +124,17 @@
 			}
 
 			private function includes() {
+				include_once( 'libraries/class-recursive-arrayaccess.php' );
+				include_once( 'libraries/class-wp-session.php' );
+				include_once( 'libraries/wp-session.php' );
+
+				$this->session = WP_Session::get_instance();
+
 				include_once( 'includes/loApiClasses.php' );
 				include_once( 'includes/_apiFunctions.php' );
 				include_once( 'class/class-eduadmin-bookinginfo.php' );
 				include_once( 'class/class-eduadmin-bookinghandler.php' );
+				include_once( 'class/class-eduadmin-loginhandler.php' );
 
 				include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
 				include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
@@ -155,6 +160,7 @@
 				}
 
 				$this->bookingHandler = new EduAdminBookingHandler( $this );
+				$this->loginHandler   = new EduAdminLoginHandler( $this );
 			}
 
 			private function init_hooks() {

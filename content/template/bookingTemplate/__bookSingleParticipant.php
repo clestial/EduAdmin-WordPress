@@ -4,8 +4,8 @@
 	$customer = new CustomerV2();
 	$contact  = new CustomerContact();
 
-	if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
-		$user                       = $_SESSION['eduadmin-loginUser'];
+	if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+		$user                       = EDU()->session['eduadmin-loginUser'];
 		$contact->CustomerContactID = $user->Contact->CustomerContactID;
 		$customer->CustomerID       = $user->Customer->CustomerID;
 	}
@@ -435,10 +435,10 @@
 			EDU()->api->SendConfirmationEmail( EDU()->get_token(), $eventCustomerLnkID, $senderEmail, $personEmail );
 		}
 
-		$_SESSION['eduadmin-printJS'] = true;
+		EDU()->session['eduadmin-printJS'] = true;
 
-		if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
-			$user = $_SESSION['eduadmin-loginUser'];
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+			$user = EDU()->session['eduadmin-loginUser'];
 		} else {
 			$user = new stdClass;
 		}
@@ -448,7 +448,7 @@
 
 		$jsEncCustomer = json_encode( $customer );
 		@$user->Customer = json_decode( $jsEncCustomer );
-		$_SESSION['eduadmin-loginUser'] = $user;
+		EDU()->session['eduadmin-loginUser'] = $user;
 
 		$bookingInfo = array(
 			'eventCustomerLnkId' => $eventCustomerLnkID,

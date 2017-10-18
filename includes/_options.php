@@ -267,12 +267,12 @@
 	}
 
 	function eduadmin_printJavascript() {
-		if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( $_SESSION['eduadmin-printJS'] ) ) {
+		if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session['eduadmin-printJS'] ) ) {
 			$str    = "<script type=\"text/javascript\">\n";
 			$script = get_option( 'eduadmin-javascript' );
 			$str    .= eduadmin_RewriteJavaScript( $script );
 			$str    .= "\n</script>";
-			unset( $_SESSION['eduadmin-printJS'] );
+			unset( EDU()->session['eduadmin-printJS'] );
 			echo $str;
 		}
 	}

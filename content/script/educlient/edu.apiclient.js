@@ -268,9 +268,9 @@ edu.apiclient = {
 		document.cookie = temp;
 	},
 	CanSetCookies: function () {
-		SetCookie( '_eduCookieTest', 'true', 0 );
-		var can = GetCookie( '_eduCookieTest' ) != null;
-		DelCookie( '_eduCookieTest' );
+        edu.apiclient.SetCookie('_eduCookieTest', 'true', 0);
+        var can = edu.apiclient.GetCookie('_eduCookieTest') != null;
+        edu.apiclient.DelCookie('_eduCookieTest');
 		return can;
 	},
 	DelCookie: function ( name ) {

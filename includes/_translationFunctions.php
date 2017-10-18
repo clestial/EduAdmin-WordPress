@@ -3,7 +3,7 @@
 		$phrases = get_transient( 'eduadmin-phrases' );
 		if ( ! $phrases ) {
 			$phrases         = get_option( 'eduadmin-phrases' );
-			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . '/defaultPhrases.json' );
+			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . 'includes/defaultPhrases.json' );
 			$originalPhrases = json_decode( $file );
 			if ( ! $phrases ) {
 				$phrases = $originalPhrases;
@@ -31,7 +31,7 @@
 			$nPhrases[ $p ]["NewPhrase"] = __( $p, "eduadmin" );
 		}
 
-		$_SESSION['eduadmin-phrases'] = $nPhrases;
+		EDU()->session['eduadmin-phrases'] = $nPhrases;
 
 		if ( is_array( $nPhrases ) ) {
 			return $nPhrases;

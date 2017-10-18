@@ -94,8 +94,8 @@
 			$customerInvoiceEmail       = '';
 			$incVat                     = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
-			if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
-				$user     = $_SESSION['eduadmin-loginUser'];
+			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+				$user     = EDU()->session['eduadmin-loginUser'];
 				$contact  = $user->Contact;
 				$customer = $user->Customer;
 				if ( isset( $customer->CustomerID ) ) {
@@ -250,7 +250,7 @@
 						<?php endif; ?>
                     </div>
 					<?php
-						if ( isset( $_SESSION['eduadmin-loginUser'] ) ) {
+						if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 							$userVal = '';
 							if ( isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
 								$userVal = $contact->ContactName;

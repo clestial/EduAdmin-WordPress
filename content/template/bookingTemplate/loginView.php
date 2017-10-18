@@ -130,14 +130,14 @@
 						echo "</div>\n";
 					}
 
-						if ( ! isset( $_SESSION['checkEmail'] ) ) {
+						if ( ! isset( EDU()->session['checkEmail'] ) ) {
 							include_once( "__checkEmail.php" );
-						} else if ( isset( $_SESSION['checkEmail'] ) ) {
-							if ( isset( $_SESSION['needsLogin'] ) && $_SESSION['needsLogin'] == true ) {
+						} else if ( isset( EDU()->session['checkEmail'] ) ) {
+							if ( isset( EDU()->session['needsLogin'] ) && EDU()->session['needsLogin'] == true ) {
 								include_once( "__loginForm.php" );
 							} else {
-								unset( $_SESSION['checkEmail'] );
-								unset( $_SESSION['needsLogin'] );
+								unset( EDU()->session['checkEmail'] );
+								unset( EDU()->session['needsLogin'] );
 								?>
                                 <script type="text/javascript">(function () {
                                         location.reload(true);

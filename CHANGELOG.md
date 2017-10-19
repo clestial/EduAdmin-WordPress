@@ -7,6 +7,7 @@
 - Sanitizing everything I can think of/find.
 - Modifying how pages are outputted.
 - Implementing `WP_Session` to get rid of `$_SESSION`-usage
+  - Finally found how to get rid of `$_SESSION` in the custom ajax-handlers.
 
 ### Added
 - Shortcode attributes on `[eduadmin-listview]`

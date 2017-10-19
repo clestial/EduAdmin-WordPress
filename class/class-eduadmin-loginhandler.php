@@ -50,7 +50,7 @@
 						$c2                                  = json_encode( $customer );
 						$user->Customer                      = json_decode( $c2 );
 						EDU()->session['eduadmin-loginUser'] = $user;
-						setcookie( 'eduadmin-loginUser', json_encode( $user ) );
+						setcookie( 'eduadmin_loginUser', json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
 					}
 				}
 

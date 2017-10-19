@@ -7,14 +7,13 @@ if ( ! function_exists( 'edu_api_loginwidget' ) ) {
 		$cat  = $request['courseFolder'];
 
 		$baseUrl = $surl . '/' . $cat;
-		if ( isset( $_COOKIE['eduadmin-loginUser'] ) ) {
-			$user    = $_COOKIE['eduadmin-loginUser'];
-			$c2      = json_encode( $user->Contact );
-			$contact = json_decode( $c2 );
+		if ( isset( $_COOKIE['eduadmin_loginUser'] ) ) {
+			$user    = $_COOKIE['eduadmin_loginUser'];
+			$contact = json_decode( $user );
 		}
 
-		if ( isset( $_COOKIE['eduadmin-loginUser'] ) &&
-		     ! empty( $_COOKIE['eduadmin-loginUser'] ) &&
+		if ( isset( $_COOKIE['eduadmin_loginUser'] ) &&
+		     ! empty( $_COOKIE['eduadmin_loginUser'] ) &&
 		     isset( $contact ) &&
 		     isset( $contact->CustomerContactID ) &&
 		     $contact->CustomerContactID != 0

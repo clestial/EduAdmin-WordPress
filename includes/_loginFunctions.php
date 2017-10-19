@@ -36,7 +36,7 @@
 		unset( EDU()->session['checkEmail'] );
 		EDU()->session->regenerate_id( true );
 		unset( $_COOKIE['eduadmin-loginUser'] );
-		setcookie( 'eduadmin-loginUser', '', time() - 3600, '/' );
+		setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
 		wp_redirect( $baseUrl . edu_getQueryString() );
 		exit();
 	}

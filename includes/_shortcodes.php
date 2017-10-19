@@ -85,9 +85,8 @@
 		unset( EDU()->session['eduadmin-loginUser']->NewCustomer );
 
 		EDU()->session->regenerate_id( true );
-		//setcookie( 'eduadmin-loginUser', '', time() - 3600, '/' );
 
-		if ( ! isset( $attributes['customtemplate'] ) || $attributes['customtemplate'] != 1 ) {
+		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 
 			return $str;

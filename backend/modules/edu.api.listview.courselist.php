@@ -4,9 +4,10 @@
 		function edu_api_listview_courselist( $request ) {
 			header( "Content-type: application/json; charset=UTF-8" );
 			global $eduapi;
+			global $phrases;
 
-			$edutoken                     = edu_decrypt( "edu_js_token_crypto", $request["token"] );
-			$_SESSION['eduadmin-phrases'] = $request['phrases'];
+			$edutoken = edu_decrypt( "edu_js_token_crypto", $request["token"] );
+			$phrases  = $request['phrases'];
 
 			$objectIds = $request['objectIds'];
 

@@ -173,17 +173,25 @@
 			}
 
 			if( !empty( $attributes['numberofprices'] ) ) {
-				// Slicea array efter antal?
 				$edo = array_slice( $edo, 0, $attributes['numberofprices'], true );
 			}
 
-			$msg        = '';
 			$currency   = get_option( 'eduadmin-currency', 'SEK' );
-			foreach ( $edo as $object ) {
-				$msg .= '<p>' . $object->Description . ': ' . $object->Price . $currency . '</p>';
-			}
-
-			return $msg;
+			$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+			ob_start();
+		?>
+			<div class="eventInformation">
+				<h3>Priser</h3>
+				<?php
+					foreach ( $edo as $object ) {
+						echo sprintf( '%1$s: %2$s', $object->Description, convertToMoney( $object->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" );
+						echo "<br>";
+					}
+				?>
+				<hr/>
+			</div>
+		<?php
+			return ob_get_clean();
 		}
 	}
 

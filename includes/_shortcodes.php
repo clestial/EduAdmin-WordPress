@@ -95,6 +95,103 @@
 		return '';
 	}
 
+	function eduadmin_get_course_public_pricename( $attributes ) {
+		global $wp_query;
+		global $eduapi;
+		global $edutoken;
+		$attributes = shortcode_atts(
+			array(
+				'courseid'          => null,
+				'shownonpublic'     => false,
+				'orderby'           => null,
+				'order'             => null,
+				'numberofprices'    => null,
+			),
+			normalize_empty_atts( $attributes ),
+			'eduadmin_coursepublicpricename'
+		);
+
+		if ( empty( $attributes['courseid'] ) || $attributes['courseid'] <= 0 ) {
+			if ( isset( $wp_query->query_vars["courseId"] ) ) {
+				$courseId = $wp_query->query_vars["courseId"];
+			} else {
+				return 'Missing courseId in attributes';
+			}
+		} else {
+			$courseId = $attributes['courseid'];
+		}
+
+		$apiKey = get_option( 'eduadmin-api-key' );
+
+		if ( ! $apiKey || empty( $apiKey ) ) {
+			return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+		} else {
+			$filtering  = new XFiltering();
+			$f          = new XFilter( 'ObjectID', '=', $courseId );
+			$filtering->AddItem( $f );
+
+			$shownonpublic = GetBoolFromString( $attributes['shownonpublic'] );
+			if( ! $shownonpublic ) {
+				$f          = new XFilter( 'PublicPriceName', '=', 'true' );
+				$filtering->AddItem( $f );
+			}
+
+			$sorting        = new XSorting();
+			$customOrder    = null;
+			$customOrderBy  = null;
+			if( !empty( $attributes['order'] ) ) {
+				$customOrder = $attributes['order'];
+			}
+
+			if( !empty( $attributes['orderby'] ) ) {
+				$customOrderBy = $attributes['orderby'];
+			}
+
+			if( $customOrderBy != null ) {
+				$orderby   = explode( ' ', $customOrderBy );
+				$sortorder = explode( ' ', $customOrder );
+				foreach ( $orderby as $od => $v ) {
+					if ( isset( $sortorder[ $od ] ) ) {
+						$or = $sortorder[ $od ];
+					} else {
+						$or = "ASC";
+					}
+
+					$s = new XSort( $v, $or );
+					$sorting->AddItem( $s );
+				}
+			}
+			else {
+				$s = new XSort( 'PriceNameID', $customOrder != null ? $customOrder : 'ASC' );
+				$sorting->AddItem( $s );
+			}
+
+			$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
+			if( ! $edo ) {
+				$edo = $eduapi->GetObjectPriceName($edutoken, $sorting->ToString(), $filtering->ToString() );
+				set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
+			}
+
+			if( !empty( $attributes['numberofprices'] ) ) {
+				// Slicea array efter antal?
+				$edo = array_slice( $edo, 0, $attributes['numberofprices'], true );
+			}
+
+			$msg        = '';
+			$currency   = get_option( 'eduadmin-currency', 'SEK' );
+			foreach ( $edo as $object ) {
+				$msg .= '<p>' . $object->Description . ': ' . $object->Price . $currency . '</p>';
+			}
+
+			return $msg;
+		}
+	}
+
+	function GetBoolFromString( $value ) {
+		$value = strtolower( $value );
+		return ( $value == "false" || ! boolval( $value ) ) ? false : true;
+	}
+
 	function edu_no_index() {
 		global $wp_query;
 		$detailpage = get_option( 'eduadmin-detailViewPage' );
@@ -656,3 +753,4 @@
 	add_shortcode( 'eduadmin-loginview', 'eduadmin_get_login_view' );
 	add_shortcode( 'eduadmin-objectinterest', 'eduadmin_get_object_interest' );
 	add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
+	add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );

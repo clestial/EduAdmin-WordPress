@@ -73,9 +73,6 @@
             <span title="<?php esc_attr_e( "To get pricenames of a course, you provide a course id", "eduadmin" ); ?>">courseid</span>
         </div>
         <div class="eduadmin-attribute">
-            <span title="<?php esc_attr_e( "Displays pricenames that is not public (Insert true or false)", "eduadmin" ); ?>">shownonpublic</span>
-        </div>
-        <div class="eduadmin-attribute">
             <span title="<?php esc_attr_e( "Tells the list how many items to show at max", "eduadmin" ); ?>">numberofprices</span>
         </div>
         <div class="eduadmin-attribute">

@@ -95,6 +95,32 @@
 		return '';
 	}
 
+	function eduadmin_get_course_public_pricename( $attributes ) {
+		global $wp_query;
+		$attributes = shortcode_atts(
+			array(
+				'courseid'          => null,
+				'orderby'           => null,
+				'order'             => null,
+				'numberofprices'    => null,
+			),
+			normalize_empty_atts( $attributes ),
+			'eduadmin_coursepublicpricename'
+		);
+
+		if ( empty( $attributes['courseid'] ) || $attributes['courseid'] <= 0 ) {
+			if ( isset( $wp_query->query_vars["courseId"] ) ) {
+				$courseId = $wp_query->query_vars["courseId"];
+			} else {
+				return 'Missing courseId in attributes';
+			}
+		} else {
+			$courseId = $attributes['courseid'];
+		}
+
+		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/coursePriceNames.php" );
+	}
+
 	function edu_no_index() {
 		global $wp_query;
 		$detailpage = get_option( 'eduadmin-detailViewPage' );
@@ -656,3 +682,4 @@
 	add_shortcode( 'eduadmin-loginview', 'eduadmin_get_login_view' );
 	add_shortcode( 'eduadmin-objectinterest', 'eduadmin_get_object_interest' );
 	add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
+	add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );

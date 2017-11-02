@@ -64,6 +64,25 @@
 		[eduadmin-loginview]
 	</span>
 </div>
+<div class="eduadmin-shortcode" onclick="EduAdmin.ToggleAttributeList(this);">
+	<span title="<?php esc_attr_e( "Shortcode to display pricenames of specific course.\n(Click to view attributes)", "eduadmin" ); ?>">
+		[eduadmin-coursepublicpricename]
+	</span>
+    <div class="eduadmin-attributelist">
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "To get pricenames of a course, you provide a course id", "eduadmin" ); ?>">courseid</span>
+        </div>
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "Tells the list how many items to show at max", "eduadmin" ); ?>">numberofprices</span>
+        </div>
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "Sets the field to sort by", "eduadmin" ); ?>">orderby</span>
+        </div>
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "Set which order to sort the data (ASC / DESC)", "eduadmin" ); ?>">order</span>
+        </div>
+    </div>
+</div>
 <hr noshade="noshade"/>
 <b><?php _e( "Widgets", "eduadmin" ); ?></b><br/>
 <div class="eduadmin-shortcode" onclick="EduAdmin.ToggleAttributeList(this);">

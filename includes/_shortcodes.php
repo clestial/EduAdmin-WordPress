@@ -142,6 +142,7 @@
 			array(
 				'template' => $selectedTemplate,
 				'courseid' => null,
+				'hideinvoiceemailfield' => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-bookingview'

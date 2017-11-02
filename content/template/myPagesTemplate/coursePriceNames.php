@@ -55,7 +55,7 @@
 		}
 
 		$currency   = get_option( 'eduadmin-currency', 'SEK' );
-		$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat     = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 		?>
 		<div class="eventInformation">
 			<h3>Priser</h3>

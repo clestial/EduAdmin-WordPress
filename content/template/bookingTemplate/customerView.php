@@ -10,7 +10,8 @@
         </div>
     </label>
 	<?php
-		$noInvoiceFreeEvents = get_option( 'eduadmin-noInvoiceFreeEvents', false );
+	    $showInvoiceEmail       = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
+		$noInvoiceFreeEvents    = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 		if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
 			?>
             <label>
@@ -115,15 +116,22 @@
                     </div>
                 </label>
             </div>
-            <label>
-                <div class="inputLabel">
-					<?php edu_e( "Invoice e-mail address" ); ?>
-                </div>
-                <div class="inputHolder">
-                    <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
-                           value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
-                </div>
-            </label>
+            <?php
+                if( $showInvoiceEmail )
+                {
+                    ?>
+                    <label>
+                        <div class="inputLabel">
+			                <?php edu_e( "Invoice e-mail address" ); ?>
+                        </div>
+                        <div class="inputHolder">
+                            <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
+                                   value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
+                        </div>
+                    </label>
+                    <?php
+                }
+             ?>
             <label>
                 <div class="inputLabel">
 					<?php edu_e( "Invoice reference" ); ?>

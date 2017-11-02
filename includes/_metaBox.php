@@ -57,6 +57,9 @@
         <div class="eduadmin-attribute">
             <span title="<?php esc_attr_e( "To build custom booking view pages, you can provide a course id", "eduadmin" ); ?>">courseid</span>
         </div>
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "Hides the invoice e-mail field from the form", "eduadmin" ); ?>">hideinvoiceemailfield</span>
+        </div>
     </div>
 </div>
 <div class="eduadmin-shortcode" onclick="EduAdmin.ToggleAttributeList(this);">

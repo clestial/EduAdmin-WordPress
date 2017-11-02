@@ -197,6 +197,13 @@
                                        name="eduadmin-noInvoiceFreeEvents"<?php echo( $noInvoiceFreeEvents === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
 								<?php _e( "Hide invoice information if the event is free", "eduadmin" ); ?>
+                            </label><br/>
+						<?php $hideInvoiceEmailField = get_option( 'eduadmin-hideInvoiceEmailField', false ); ?>
+                            <label>
+                                <input type="checkbox"
+                                       name="eduadmin-hideInvoiceEmailField"<?php echo( $hideInvoiceEmailField === "true" ? " checked=\"checked\"" : "" ); ?>
+                                       value="true"/>
+	                            <?php _e( "Hide the invoice e-mail field", "eduadmin" ); ?>
                             </label>
                             <h3><?php _e( "Price name settings", "eduadmin" ); ?></h3>
 						<?php

@@ -98,6 +98,9 @@ msgstr "Shortcode för att visa bokningsformuläret."
 msgid "To build custom booking view pages, you can provide a course id"
 msgstr ""
 
+msgid "Hides the invoice e-mail field from the form"
+msgstr "Döljer fältet faktura e-postadress från formuläret"
+
 #: includes/_metaBox.php:63
 msgid ""
 "Shortcode to display the login view\n"
@@ -395,6 +398,9 @@ msgstr "Visa inställningar"
 #: includes/bookingSettings.php:170
 msgid "Hide invoice information if the event is free"
 msgstr "Göm faktureringsinformation om tillfället är gratis"
+
+msgid "Hide the invoice e-mail field"
+msgstr "Göm fältet för faktura e-postadress"
 
 #: includes/bookingSettings.php:172
 msgid "Price name settings"

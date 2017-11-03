@@ -516,7 +516,12 @@
 
 		EDU()->session['eduadmin-printJS'] = true;
 
-		$user         = EDU()->session['eduadmin-loginUser'];
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+			$user = EDU()->session['eduadmin-loginUser'];
+		} else {
+			$user = new stdClass;
+		}
+
 		$jsEncContact = json_encode( $contact );
 		@$user->Contact = json_decode( $jsEncContact );
 

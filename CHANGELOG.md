@@ -15,6 +15,9 @@
   - `showcity`: Sets if you want to show/hide city from the list
   - `showbookbtn`: Sets if you want to show/hide the book button
   - `showreadmorebtn`: Sets if you want to show/hide the read more button
+- Shortcode to show all public pricenames on Course `[eduadmin-coursepublicpricename]`
+- Setting to hide invoice email
+- Attribute to hide invoice email `[eduadmin-detailview hideinvoiceemailfield="1"]`
 
 ## [0.10.24]
 ### Added
@@ -375,7 +378,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...v1.0.0
 [0.10.24]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...v0.10.24
 [0.10.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.22...v0.10.23
 [0.10.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.21...v0.10.22

@@ -187,12 +187,13 @@
 			}
 			renderAttribute( $attr, false, "", $data );
 		}
-		if ( $showInvoiceCheckbox ) {
+		if ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) {
 			?>
-            <label>
+            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" :  "" ?>">
                 <div class="inputHolder alsoInvoiceCustomer">
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
-                           onchange="eduBookingView.UpdateInvoiceCustomer(this);"/>
+                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
+                            <?php echo $forceShowInvoiceInformation ? "checked" :  "" ?>/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
 					<?php edu_e( "Use other information for invoicing" ); ?>
                 </div>

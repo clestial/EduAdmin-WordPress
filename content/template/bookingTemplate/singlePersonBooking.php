@@ -144,16 +144,15 @@
                            value="<?php echo @esc_attr( $customer->CustomerReference ); ?>"/>
                 </div>
             </label>
-            <?php if ( ! $forceShowInvoiceInformation ) { ?>
-                <label>
-                    <div class="inputHolder alsoInvoiceCustomer">
-                        <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
-                               onchange="eduBookingView.UpdateInvoiceCustomer(this);"/>
-                        <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
-                        <?php edu_e( "Use other information for invoicing" ); ?>
-                    </div>
-                </label>
-            <?php } ?>
+            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" :  "" ?>">
+                <div class="inputHolder alsoInvoiceCustomer">
+                    <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
+                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
+                            <?php echo $forceShowInvoiceInformation ? "checked" :  "" ?>/>
+                    <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
+                    <?php edu_e( "Use other information for invoicing" ); ?>
+                </div>
+            </label>
 
             <div id="invoiceView" class="invoiceView" style="<?php echo ( $forceShowInvoiceInformation ? 'display: block;' : 'display: none;' ); ?>">
                 <h2><?php edu_e( "Invoice information" ); ?></h2>

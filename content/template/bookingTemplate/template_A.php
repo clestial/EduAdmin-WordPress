@@ -283,7 +283,6 @@
 						$singlePersonBooking            = get_option( 'eduadmin-singlePersonBooking', false );
 					    $showInvoiceEmail               = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
 					    $forceShowInvoiceInformation    = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
-                        $showInvoiceCheckbox            = ( ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) == true || ! $noInvoiceFreeEvents ) && ! $forceShowInvoiceInformation;
 						if ( $singlePersonBooking ) {
 							include_once( "singlePersonBooking.php" );
 						} else {

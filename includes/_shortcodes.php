@@ -140,9 +140,10 @@
 		$selectedTemplate = get_option( 'eduadmin-bookingTemplate', 'template_A' );
 		$attributes       = shortcode_atts(
 			array(
-				'template' => $selectedTemplate,
-				'courseid' => null,
-				'hideinvoiceemailfield' => null,
+				'template'                  => $selectedTemplate,
+				'courseid'                  => null,
+				'hideinvoiceemailfield'     => null,
+				'showinvoiceinformation'    => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-bookingview'

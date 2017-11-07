@@ -187,7 +187,7 @@
 			}
 			renderAttribute( $attr, false, "", $data );
 		}
-		if ( ! $noInvoiceFreeEvents ) {
+        if ( ! $noInvoiceFreeEvents || $firstPrice->Price > 0 ) {
 			?>
             <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" :  "" ?>">
                 <div class="inputHolder alsoInvoiceCustomer">

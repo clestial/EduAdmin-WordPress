@@ -10,8 +10,6 @@
         </div>
     </label>
 	<?php
-	    $showInvoiceEmail       = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
-		$noInvoiceFreeEvents    = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 		if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
 			?>
             <label>
@@ -68,11 +66,11 @@
                            value="<?php echo @esc_attr( $customer->Email ); ?>"/>
                 </div>
             </label>
-            <div id="invoiceView" class="invoiceView" style="display: none;">
+            <div id="invoiceView" class="invoiceView" style="<?php echo ($forceShowInvoiceInformation ? 'display: block;' : 'display: none;'); ?>">
                 <h2><?php edu_e( "Invoice information" ); ?></h2>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Customer name" ); ?>
+                        <?php edu_e( "Customer name" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceName" placeholder="<?php edu_e( "Customer name" ); ?>"
@@ -81,7 +79,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Address 1" ); ?>
+                        <?php edu_e( "Address 1" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress1" placeholder="<?php edu_e( "Address 1" ); ?>"
@@ -90,7 +88,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Address 2" ); ?>
+                        <?php edu_e( "Address 2" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress2" placeholder="<?php edu_e( "Address 2" ); ?>"
@@ -99,7 +97,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Postal code" ); ?>
+                        <?php edu_e( "Postal code" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCode" placeholder="<?php edu_e( "Postal code" ); ?>"
@@ -108,7 +106,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Postal city" ); ?>
+                        <?php edu_e( "Postal city" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCity" placeholder="<?php edu_e( "Postal city" ); ?>"
@@ -116,22 +114,17 @@
                     </div>
                 </label>
             </div>
-            <?php
-                if( $showInvoiceEmail )
-                {
-                    ?>
-                    <label>
-                        <div class="inputLabel">
-			                <?php edu_e( "Invoice e-mail address" ); ?>
-                        </div>
-                        <div class="inputHolder">
-                            <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
-                                   value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
-                        </div>
-                    </label>
-                    <?php
-                }
-             ?>
+            <?php if( $showInvoiceEmail ) { ?>
+                <label>
+                    <div class="inputLabel">
+                        <?php edu_e( "Invoice e-mail address" ); ?>
+                    </div>
+                    <div class="inputHolder">
+                        <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
+                               value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
+                    </div>
+                </label>
+            <?php } ?>
             <label>
                 <div class="inputLabel">
 					<?php edu_e( "Invoice reference" ); ?>
@@ -194,12 +187,12 @@
 			}
 			renderAttribute( $attr, false, "", $data );
 		}
-		if ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) {
+		if ( $showInvoiceCheckbox ) {
 			?>
             <label>
                 <div class="inputHolder alsoInvoiceCustomer">
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
-                           onchange="eduBookingView.UpdateInvoiceCustomer();"/>
+                           onchange="eduBookingView.UpdateInvoiceCustomer(this);"/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
 					<?php edu_e( "Use other information for invoicing" ); ?>
                 </div>

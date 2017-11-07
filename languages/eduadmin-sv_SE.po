@@ -101,6 +101,9 @@ msgstr ""
 msgid "Hides the invoice e-mail field from the form"
 msgstr "Döljer fältet faktura e-postadress från formuläret"
 
+msgid "Force show invoice information fields"
+msgstr "Visa alltid Faktureringsuppgifter"
+
 #: includes/_metaBox.php:63
 msgid ""
 "Shortcode to display the login view\n"

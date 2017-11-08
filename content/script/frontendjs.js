@@ -182,10 +182,14 @@ var eduBookingView = {
 		}
 
 	},
-	UpdateInvoiceCustomer: function () {
+	UpdateInvoiceCustomer: function (checkboxElem) {
 		var invoiceView = document.getElementById( 'invoiceView' );
 		if ( invoiceView ) {
 			invoiceView.style.display = invoiceView.style.display == 'block' ? 'none' : 'block';
+            if(checkboxElem.checked) {
+                var customerName = document.querySelector("input[name='invoiceName']");
+                customerName.focus();
+            }
 		}
 	},
 	ContactAsParticipant: function () {

@@ -60,6 +60,9 @@
         <div class="eduadmin-attribute">
             <span title="<?php esc_attr_e( "Hides the invoice e-mail field from the form", "eduadmin" ); ?>">hideinvoiceemailfield</span>
         </div>
+        <div class="eduadmin-attribute">
+            <span title="<?php esc_attr_e( "Force show invoice information fields", "eduadmin" ); ?>">showinvoiceinformation</span>
+        </div>
     </div>
 </div>
 <div class="eduadmin-shortcode" onclick="EduAdmin.ToggleAttributeList(this);">

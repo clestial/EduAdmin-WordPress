@@ -279,7 +279,10 @@
 						}
 					?>
 					<?php
-						$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
+					    $noInvoiceFreeEvents            = get_option( 'eduadmin-noInvoiceFreeEvents', false );
+						$singlePersonBooking            = get_option( 'eduadmin-singlePersonBooking', false );
+					    $showInvoiceEmail               = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
+					    $forceShowInvoiceInformation    = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
 						if ( $singlePersonBooking ) {
 							include_once( "singlePersonBooking.php" );
 						} else {

@@ -128,6 +128,7 @@
 		register_setting( 'eduadmin-booking', 'eduadmin-allowDiscountCode' );
 		register_setting( 'eduadmin-booking', 'eduadmin-noInvoiceFreeEvents' );
 		register_setting( 'eduadmin-booking', 'eduadmin-hideInvoiceEmailField' );
+		register_setting( 'eduadmin-booking', 'eduadmin-showInvoiceInformation' );
 		register_setting( 'eduadmin-booking', 'eduadmin-validateCivicRegNo' );
 		register_setting( 'eduadmin-booking', 'eduadmin-useLimitedDiscount' );
 		register_setting( 'eduadmin-booking', 'eduadmin-blockEditIfLoggedIn' );

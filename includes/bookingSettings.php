@@ -204,6 +204,13 @@
                                        name="eduadmin-hideInvoiceEmailField"<?php echo( $hideInvoiceEmailField === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
 	                            <?php _e( "Hide the invoice e-mail field", "eduadmin" ); ?>
+                            </label><br/>
+						<?php $forceShowInvoiceInformation = get_option( 'eduadmin-showInvoiceInformation', false ); ?>
+                            <label>
+                                <input type="checkbox"
+                                       name="eduadmin-showInvoiceInformation"<?php echo( $forceShowInvoiceInformation === "true" ? " checked=\"checked\"" : "" ); ?>
+                                       value="true"/>
+								<?php _e( "Force show invoice information fields", "eduadmin" ); ?>
                             </label>
                             <h3><?php _e( "Price name settings", "eduadmin" ); ?></h3>
 						<?php

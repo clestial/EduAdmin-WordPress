@@ -11,7 +11,7 @@
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 3.0
-	 * Tested up to: 4.8.2
+	 * Tested up to: 4.8.3
 	 * Author:	Chris Gårdenberg, MultiNet Interactive AB
 	 * Author URI:	http://www.multinet.se
 	 * License:	GPL3

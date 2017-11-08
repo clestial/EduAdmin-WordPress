@@ -1,9 +1,24 @@
-# Changelog
+=== EduAdmin Booking ===
+Contributors: mnchga
+Tags: booking, participants, courses, events, eduadmin, lega online
+Requires at least: 3.0
+Tested up to: 4.8.3
+Stable tag: 1.0.0
+Requires PHP: 5.0.1 (with SoapClient)
+License: GPL3
+License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
-## [Unreleased]
+EduAdmin plugin to allow visitors to book courses at your website. Requires EduAdmin-account.
 
-## [1.0.0]
-### WordPress-plugin compatibility/requirements
+== Description ==
+
+Plugin that you connect to [EduAdmin](http://www.eduadmin.se) to enable booking on your website.
+Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
+
+== Changelog ==
+
+### [1.0.0]
+#### WordPress-plugin compatibility/requirements
 - Removing unnecessary paths (for functions that are never used)
 - Fixing the correct way to include files (by path, not function..)
 - Sanitizing everything I can think of/find.
@@ -11,7 +26,7 @@
 - Implementing `WP_Session` to get rid of `$_SESSION`-usage
   - Finally found how to get rid of `$_SESSION` in the custom ajax-handlers.
 
-### Added
+#### Added
 - Shortcode attributes on `[eduadmin-listview]`
   - `showsearch`: Overrides settings to show the search
   - `showcity`: Sets if you want to show/hide city from the list
@@ -21,68 +36,68 @@
 - Setting to hide invoice email
 - Attribute to hide invoice email `[eduadmin-detailview hideinvoiceemailfield="1"]`
 
-## [0.10.24]
-### Added
+### [0.10.24]
+#### Added
 - Fixed validation-bug in javascript if you only had the contact person as a participant.
 
-## [0.10.23]
-### Added
+### [0.10.23]
+#### Added
 - Added pluralized text to the shortcode that shows course days `[eduadmin-detailinfo coursedays]`
   Now outputs `1 day` or `2 days`
 - Reformatted the HTML for contact/participant names, so we can use 50% width. Works in *most* cases.
 
-## [0.10.22]
-### Added
+### [0.10.22]
+#### Added
 - Add sorting to pricenames in Eventlists
 - Fixed faulty tooltips for `orderby` and `order`
 
-## [0.10.21]
-### Added
+### [0.10.21]
+#### Added
 - Check if number of free spots is equals or less than 0, instead of only 0.
 
-## [0.10.20]
-### Added
+### [0.10.20]
+#### Added
 - Added setting for List-views, to show week days (only event lists)
 
-## [0.10.19]
-### Added
+### [0.10.19]
+#### Added
 - Added support for attribute `courseid` in `[eduadmin-objectinterest]`-shortcode
 
-## [0.10.18]
-### Added
+### [0.10.18]
+#### Added
 - Added discount card-support, so end customers can use their discount cards when they book a course
 
-## [0.10.17]
-### Added
+### [0.10.17]
+#### Added
 - Added extra code to prevent bookings to go through when there are no free spots left
 
-## [0.10.16]
-### Added
+### [0.10.16]
+#### Added
 - Fixing code styles
 - Fix sorting in `template_GF_listCourses`, again
 
-## [0.10.15]
-### Added
+### [0.10.15]
+#### Added
 - Bugfix: Logging in on non-existing contacts activated some kind of warning
 
-## [0.10.14]
-### Added
+### [0.10.14]
+#### Added
 - Fix in `template_GF_listCourses` to fix sorting
 
-## [0.10.13]
-### Added
+### [0.10.13]
+#### Added
 - Added new class `EduAdminBookingHandler`, to process bookings from the plugin
 - Added span element around event time in booking form, so you can hide it.
 - Moved booking handling to `EduAdminBookingHandler`.
 - Added custom actions `eduadmin-checkpaymentplugins`, `eduadmin-processbooking` and `eduadmin-bookingcompleted`
 
 
-## [0.10.12]
-### Added
+### [0.10.12]
+#### Added
 - Bugfix: Fixed a bug where you were unable to select a single event.
 
-## [0.10.11]
-### Added
+### [0.10.11]
+#### Added
 - Fixing issues stated by scrutinizer
 - Added class `EduAdminBookingInfo` that is passed to action `eduadmin-processbooking`
 - Moved the redirect from when you've completed a booking to `createBooking.php`
@@ -91,41 +106,41 @@
 - Added filter `edu-booking-error` so we can show dynamic errors in booking process.
 - Fix: Show start/end-time on events with only one course day
 
-## [0.10.10]
-### Added
+### [0.10.10]
+#### Added
 - Fixing issues stated by scrutinizer
 - Added `exit()` after `wp_redirect()`
 - Bugfix: Correctly matching logout with `stristr`
 
-## [0.10.9]
-### Added
+### [0.10.9]
+#### Added
 - Bugfix: Sessions are now set before the class is loaded
 - Changed how we handle redirects (Login/Logout)
 - Plugin-support: We can now save plugin-settings
 - Added .scrutinizer.yml
 - Fixing issues stated by scrutinizer
 
-## [0.10.8]
-### Added
+### [0.10.8]
+#### Added
 - Trying to build everything as classes instead, just like WooCommerce
 - Bugfix: While fetching prices, we should use the same date span as everything else.
 - Started coding support for plugins
 
-## [0.10.7]
-### Added
+### [0.10.7]
+#### Added
 - Default translation is now in Swedish.
 
-## [0.10.6]
-### Added
+### [0.10.6]
+#### Added
 - Fixes mobile-layout on detail-page (Template-B)
 
-## [0.10.5]
-### Added
+### [0.10.5]
+#### Added
 - Added better version-check (support-wise)
 - Bugfix: civic validation (Do not validate the invisible template)
 
-## [0.10.4]
-### Added
+### [0.10.4]
+#### Added
 - Added lots of `shield.io`-badges
 - Added support to use [GitHub Updater](https://github.com/afragen/github-updater)
 - Adding Travis-CI to begin experimenting with tests
@@ -135,64 +150,64 @@
 - Redoing date limits for shown events. (Soon I'll have to make a setting for this)
 - Updated readme.txt
 
-## [0.10.3]
-### Added
+### [0.10.3]
+#### Added
 - Adding span around time in eventlist, so it can be hidden with css `.eduadmin .eventTime` and `.edu-DayPopup .eventTime`
 
-## [0.10.2]
-### Added
+### [0.10.2]
+#### Added
 - Added option to block editing user fields of they are logged in
 
-## [0.10.1]
-### Added
+### [0.10.1]
+#### Added
 - Admin notices instead of just blurting the error text into the page.
 - Pulled #64 and #63 from @ekandreas to fix composer compatibility and proper way to set access levels in menues.
 
-## [0.10.0]
-### Added
+### [0.10.0]
+#### Added
 - New date-handling, if there are more than 3 date groups, we show a popup instead
 - Bugfix: Added CustomerID-filter to more lists (it flashed some events that were customer related)
 - Bugfix: Removed debug info from "Spots left"-text
 
-## [0.9.19]
-### Added
+### [0.9.19]
+#### Added
 - Added classes to participant-lists, so that the headers can "set" the style easier than using strange CSS-selectors
 - Bugfix: Places left didn't account for max spots.
 
-## [0.9.18]
-### Added
+### [0.9.18]
+#### Added
 - Switched version-numbering to `semver` to make it easier to use with composer
 - Added participant-list under "My bookings" as requested by issue #62
 
-## [0.9.17.16]
-### Added
+### [0.9.17.16]
+#### Added
 - Bugfix: Pricenames with zero max participants should be selectable
 
-## [0.9.17.15]
-### Added
+### [0.9.17.15]
+#### Added
 - Rudimentary support to block people from booking with certain price names (Only when it's selectable)
 - Bugfix: Javascript, dates, string. Woe is me.
 
-## [0.9.17.14]
-### Added
+### [0.9.17.14]
+#### Added
 - Bugfix: Validation in Javascript is a pain in the rear.
 
-## [0.9.17.13]
-### Added
+### [0.9.17.13]
+#### Added
 - Bugfix: Added code to save invoice reference on single participant bookings
 - Bugfix: Fixed an JS-error on login pages.
 
-## [0.9.17.12]
-### Added
+### [0.9.17.12]
+#### Added
 - Added an extra option in customer groups, and a required flag, so you HAVE to choose a group before saving.
 - Added invoice reference field to single person booking
 
-## [0.9.17.11]
-### Added
+### [0.9.17.11]
+#### Added
 - Bugfix: Page title must set separator as default parameter, or else things break
 
-## [0.9.17.10]
-### Added
+### [0.9.17.10]
+#### Added
 - Why did I change how we check for subjects? We now check against name again
 - Bugfix: Page title should not contain object multiple times
 - Show an error if you are trying to login with an invalid civic reg no
@@ -200,8 +215,8 @@
 - Fixed SingleParticipant-booking so that there will be less duplicates (It actually checks the logged in user customer and contact person)
 - Fixed MultipleParticipants-booking so that there will be less duplicates
 
-## [0.9.17.9]
-### Added
+### [0.9.17.9]
+#### Added
 - Added `disabled`-filter in customer check (Login), just in case.
 - Adding support set page title on detail pages (old wp, new wp and "All in one SEO")
 - Added option to set which field you want to use as page title
@@ -209,27 +224,27 @@
 - More validation in login-form
 - Bugfix: Places-left fix when below zero. It showed "Few spots left", instead of "No spots left"
 
-## [0.9.17.8]
-### Added
+### [0.9.17.8]
+#### Added
 - Added warning for missing civic reg.no in booking form (instead of saying they participant is missing their name)
 - Bugfix in civregno formatting
 
-## [0.9.17.7]
-### Added
+### [0.9.17.7]
+#### Added
 - Readded `flush_rewrite_rules();` when `eduadmin-options_have_changed` is set to true, so we can get rid of the stupid "Go to Settings -> Permalinks and save to fix the paths" (I hate wordpress)
 - Removed a lot of `?>` from PHP-files, so we won't output any data where it's unwanted
 - Removed dashes except last one in validation
 - Added civic reg.no validation to login forms
 
-## [0.9.17.6]
-### Added
+### [0.9.17.6]
+#### Added
 - Added link in booking form to log out the current user (if logged in), in format `Not person? Log out`
 - Added more phrases to `defaultPhrases.json`
 - If you only allow one participant, inquiries also only allow a single participant.
 - Added check if `queried_object` is set before checking it.
 
-## [0.9.17.5]
-### Added
+### [0.9.17.5]
+#### Added
 - Added LICENSE.md
 - Added limitedDiscountView in bookingTemplate to handle limited discount cards
 - Added some phrases to defaultPhrases.json (I've got to find a way to do this automagically)
@@ -239,36 +254,36 @@
 - Bugfix: Event inquiry used the old date function
 - Bugfix: We should pass along the settings to use event inquiries all the way..
 
-## [0.9.17.4]
-### Added
+### [0.9.17.4]
+#### Added
 - Option to use civic reg.no validation (Swedish) in Booking settings
 - Validation support in `frontendjs.js` to validate swedish civic reg.nos
 - Added css-style to required input fields (`.eduadmin .inputHolder input[required]`)
 - Added `<meta name="robots" content="noindex" />` to detail pages if no `courseid` is present, to prevent broken detail page to be indexed by search engines.
 - Bugfix: Booking-form-login now checks the correct field when we try to login
 
-### Removed
+#### Removed
 - Removed validation of existing password to enforce password retrieval on contacts with `NULL` passwords.
 
-## [0.9.17.3]
-### Added
+### [0.9.17.3]
+#### Added
 - Added option to set how many "few" spots is when you use "Text only"
 
-## [0.9.17.2]
-### Added
+### [0.9.17.2]
+#### Added
 - Bugfix: Invoice info should be shown if you don't use the setting from [0.9.17]
 
-## [0.9.17.1]
-### Added
+### [0.9.17.1]
+#### Added
 - Bugfix: Search applies to events now as well..
 
-## [0.9.17]
-### Added
+### [0.9.17]
+#### Added
 - Option to hide invoice information when events are free
 - If the above option is used, hides invoice information from free events
 
-## [0.9.16]
-### Added
+### [0.9.16]
+#### Added
 - `edu.apiclient.AfterUpdate` can be used as a function in javascript to run after the page has loaded all EduAdmin-related things.
 - Added automatic focus on searchbox after searching
 - Bugfix: It's called `debugTimers` not `debug` :)
@@ -277,8 +292,8 @@
 - Fixed date listing in event list templates
 - Bugfix: Since you can change login field, we should populate the field used instead of only email.
 
-## [0.9.15]
-### Added
+### [0.9.15]
+#### Added
 - Added `singlePersonBooking.php` to handle when the participant is customer, contact and participant.
 - Added `__bookSingleParticipant.php` and `__bookMultipleParticipants.php` to handle different settings.
 - Fixing `frontend.js` to work with single participant-settings.
@@ -287,15 +302,15 @@
 - Added span around venue name, so you can style it, if you want to
 - Adding support to load existing attribute data to customer and contact, when loading the booking form. (Would be bad if we emptied it..)
 
-### Removed
+#### Removed
 - `getallheaders` is now gone, forever.
 
-## [0.9.14]
-### Added
+### [0.9.14]
+#### Added
 - Attributes can now be saved on customers, contacts and participants (person) (Only multiple participants currently)
 
-## [0.9.13]
-### Added
+### [0.9.13]
+#### Added
 - Added support for attributes (customer, contact and person) in booking form.
 - Added functions to render the different attribute types, attributes not supported is multi value attributes, dates, checkbox lists and HTML
 - Added: Saving customer attributes
@@ -303,24 +318,24 @@
 - Booking login form didn't care about what field you chose, it does now.
 - Pre-booking form also didn't care about what field you chose, it also does now.
 
-## [0.9.12]
-### Added
+### [0.9.12]
+#### Added
 - Added option `eduadmin-allowDiscountCode`, to enable the customers to enter a discount code when they book participants for a event.
 - Bugfix: When copying contact to participant, correct field is now copied, instead of surname.
 - Added backend-api file to handle checking coupon codes
 - Added support to validate coupon codes against the api
 - Added support to recalculate the price and post the coupon with the Booking
 
-## [0.9.11]
-### Added
+### [0.9.11]
+#### Added
 - Removed `margin-top: 1.0em; vertical-align: top;` from `.inputLabel` and replaced with `vertical-align: middle;`.
 - Bugfix: Search was not respected by ajax-reloads. (Bad, bad JS..)
 - Added extra option to show city **AND** venue name.
 - Fixed all views and endpoints that show city to include venue name if the setting is on.
 - Only show date period in the listview event list, instead of all course days.
 
-## [0.9.10]
-### Added
+### [0.9.10]
+#### Added
 - If you selected civic registration number as login field, you must now fill it in on your customer contact. It's hard to login otherwise.
 - Fixed an error with translations in Booking settings
 - Fixing [#48](https://github.com/MultinetInteractive/EduAdmin-WordPress/issues/48), to allow users to choose "username" field
@@ -329,55 +344,55 @@
 - Added extra filter to course list (ajax) to skip "next" event if there isn't a public price name set.
 - Changed the filter for LastApplicationDate on events to satisfy the needs (and proper implementation) of being able to book the same day
 
-## [0.9.9.2.40]
-### Added
+### [0.9.9.2.40]
+#### Added
 - Set `date_default_timezone_set` to `UTC` to get rid of warnings instead.
 
-### Removed
+#### Removed
 - Removed all error suppression regarding dates.
 
-## [0.9.9.2.39]
-### Added
+### [0.9.9.2.39]
+#### Added
 - More "fixes" for the broken host, only error suppression for `date` and `strtotime`
 
-## [0.9.9.2.38]
-### Added
+### [0.9.9.2.38]
+#### Added
 - Lots, and lots of warning suppression (all `strtotime`)
 
-### Updated
+#### Updated
 - `CONTRIBUTING.md` is updated (ripped from [jmaynard](https://medium.com/@jmaynard/a-contribution-policy-for-open-source-that-works-bfc4600c9d83#.c42dikaxi))
 
-## [0.9.9.2.37]
-### Added
+### [0.9.9.2.37]
+#### Added
 - This changelog
 - Bugfix: if phrase doesn't exist in our dictionary, it threw an error. It shouldn't do that.
 - Bugfix: Some users have a faulty php-config and gives warnings about that we need to set a timezone before we run `strtotime`
 
-## [0.9.9.2.36] - 2017-01-05
-### Removed
+### [0.9.9.2.36] - 2017-01-05
+#### Removed
 - Removing our translation, making it possible for third party plugins to translate the plugin by using standard WordPress-translation
 
-## [0.9.9.2.25] - 2016-12-05
-### Added
+### [0.9.9.2.25] - 2016-12-05
+#### Added
 - Added GF-course view (Hard coded with cities)
 - Added attributes `order`, `orderby` on listview and detail info shortcodes
 - Added attribute `mode` to listview shortcode, so you can select mode
 
-## [0.9.9.2.5] - 2016-10-04
-### Added
+### [0.9.9.2.5] - 2016-10-04
+#### Added
 - Added support for sub events
 - Changed links to be absolute
 - Added support for event dates
 
-## [0.9.7.5] - 2016-09-13
-### Added
+### [0.9.7.5] - 2016-09-13
+#### Added
 - Added attribute `numberofevents` to shortcode `[eduadmin-listview]`
 - Fix in rewrite-script
 - Added missing translations
 - Also adds event inquiries for fullbooked events
 
-## 0.9.7 - 2016-09-06
-### Added
+### 0.9.7 - 2016-09-06
+#### Added
 - Added inquiry support in course
 
 [Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...HEAD

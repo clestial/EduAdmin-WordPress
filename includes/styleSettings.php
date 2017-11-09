@@ -5,7 +5,7 @@
 		}
 		?>
         <div class="eduadmin wrap">
-            <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin" ), __( "Style", "eduadmin" ) ); ?></h2>
+            <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Style", "eduadmin-booking" ) ); ?></h2>
 
             <form method="post" action="options.php">
 				<?php settings_fields( 'eduadmin-style' ); ?>
@@ -22,11 +22,11 @@
 
                     <p class="submit">
                         <input type="submit" name="submit" id="submit" class="button button-primary"
-                               value="<?php echo __( "Save settings", "eduadmin" ); ?>"/>
+                               value="<?php echo __( "Save settings", "eduadmin-booking" ); ?>"/>
                         <input type="button"
-                               onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", "eduadmin" ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }"
+                               onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", "eduadmin-booking" ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }"
                                class="button button-secondary"
-                               value="<?php echo esc_attr__( "Reset styles", "eduadmin" ); ?>"/>
+                               value="<?php echo esc_attr__( "Reset styles", "eduadmin-booking" ); ?>"/>
                     </p>
                 </div>
             </form>

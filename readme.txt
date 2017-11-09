@@ -17,6 +17,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
+### [Unreleased]
+- Modified when languages should load (`plugins_loaded` instead of `init`)
+- Changing text domain everywhere to `eduadmin-booking` (new WordPress-slug)
+
 ### [1.0.0]
 #### WordPress-plugin compatibility/requirements
 - Removing unnecessary paths (for functions that are never used)

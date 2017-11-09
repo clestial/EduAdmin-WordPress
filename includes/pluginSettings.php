@@ -2,13 +2,13 @@
 	function edu_render_plugin_page() {
 		?>
         <div class="eduadmin wrap">
-            <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin" ), __( "Plugins", "eduadmin" ) ); ?></h2>
+            <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Plugins", "eduadmin-booking" ) ); ?></h2>
 
             <form method="post">
 				<?php settings_fields( 'eduadmin-plugin-settings' ); ?>
 				<?php do_settings_sections( 'eduadmin-plugin-settings' ); ?>
                 <div class="block">
-                    <h3><?php _e( "Installed plugins", "eduadmin" ); ?></h3>
+                    <h3><?php _e( "Installed plugins", "eduadmin-booking" ); ?></h3>
                     <hr noshade="noshade"/>
 					<?php
 						$integrations = EDU()->integrations->integrations;
@@ -21,7 +21,7 @@
                 </div>
                 <p class="submit">
                     <input type="submit" name="submit" id="submit" class="button button-primary"
-                           value="<?php esc_attr_e( "Save changes", "eduadmin" ); ?>"/>
+                           value="<?php esc_attr_e( "Save changes", "eduadmin-booking" ); ?>"/>
                 </p>
             </form>
         </div>

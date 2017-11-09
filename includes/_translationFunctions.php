@@ -28,7 +28,7 @@
 			} else {
 				$nPhrases[ $p ]["OldPhrase"] = $ph["OldPhrase"];
 			}
-			$nPhrases[ $p ]["NewPhrase"] = __( $p, "eduadmin" );
+			$nPhrases[ $p ]["NewPhrase"] = __( $p, "eduadmin-booking" );
 		}
 
 		EDU()->session['eduadmin-phrases'] = $nPhrases;
@@ -53,7 +53,7 @@
 			}
 		}
 
-		return __( $key, "eduadmin" ); //$phrases[$key];
+		return __( $key, "eduadmin-booking" ); //$phrases[$key];
 	}
 
 	function edu_e( $key ) {

@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+- Modified when languages should load (`plugins_loaded` instead of `init`)
+- Changing text domain everywhere to `eduadmin-booking` (new WordPress-slug)
 
 ## [1.0.0]
 ### WordPress-plugin compatibility/requirements

@@ -7,7 +7,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.0
+	 * Version:	1.0.1
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 3.0
@@ -15,8 +15,8 @@
 	 * Author:	Chris Gårdenberg, MultiNet Interactive AB
 	 * Author URI:	http://www.multinet.se
 	 * License:	GPL3
-	 * Text Domain:	eduadmin
-	 * Domain Path: /languages/
+	 * Text Domain:	eduadmin-booking
+	 * Domain Path: /languages
 	 */
 	/*
 		EduAdmin Booking plugin
@@ -168,7 +168,7 @@
 
 				add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
 				add_action( 'init', array( $this, 'init' ) );
-				add_action( 'init', array( $this, 'load_language' ) );
+				add_action( 'plugins_loaded', array( $this, 'load_language' ) );
 				add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
 				add_action( 'wp_footer', 'edu_getTimers' );
 
@@ -182,7 +182,7 @@
 			public static function SetupWarning() {
 				?>
                 <div class="notice notice-warning is-dismissable">
-                    <p><?php echo sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ); ?></p>
+                    <p><?php echo sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin-booking' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ); ?></p>
                 </div>
 				<?php
 			}
@@ -228,15 +228,14 @@
 					'pluginVersion'   => $this->get_plugin_version(),
 				);
 
-				$callHomeUrl = 'http://ws10.multinet.se/edu-plugin/wp_phone_home.php';
+				$callHomeUrl = 'https://ws10.multinet.se/edu-plugin/wp_phone_home.php';
 				wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
 			}
 
 			public function load_language() {
-				$domain = 'eduadmin';
-				$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-				load_textdomain( $domain, WP_LANG_DIR . '/eduadmin/' . $domain . '-' . $locale . '.mo' );
-				load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+				$locale = apply_filters( 'plugin_locale', get_locale(), 'eduadmin-booking' );
+				load_textdomain( 'eduadmin-booking', WP_LANG_DIR . '/eduadmin/' . 'eduadmin-booking' . '-' . $locale . '.mo' );
+				load_plugin_textdomain( 'eduadmin-booking', false, EDUADMIN_PLUGIN_PATH . '/languages' );
 
 				if ( ! wp_next_scheduled( 'eduadmin_call_home' ) ) {
 					wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
@@ -267,7 +266,7 @@
 				add_action( 'admin_notices', function() {
 					?>
                     <div class="notice notice-warning is-dismissable">
-                        <p><?php echo __( 'Could not set timezone', 'eduadmin' ); ?></p>
+                        <p><?php echo __( 'Could not set timezone', 'eduadmin-booking' ); ?></p>
                     </div>
 					<?php
 				} );
@@ -286,7 +285,7 @@
 					add_action( 'admin_notices', function() {
 						?>
                         <div class="notice notice-success is-dismissible">
-                            <p><?php _e( 'Plugin settings saved', 'eduadmin' ); ?></p>
+                            <p><?php _e( 'Plugin settings saved', 'eduadmin-booking' ); ?></p>
                         </div>
 						<?php
 					} );

@@ -11,7 +11,7 @@
 		} else {
 			?>
             <div class="eduadmin wrap">
-                <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin" ), __( "List settings", "eduadmin" ) ); ?></h2>
+                <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "List settings", "eduadmin-booking" ) ); ?></h2>
 
                 <form method="post" action="options.php">
 					<?php settings_fields( 'eduadmin-list' ); ?>
@@ -20,7 +20,7 @@
                         <table>
                             <tr>
                                 <td valign="top">
-                                    <h3><?php _e( "Template", "eduadmin" ); ?></h3>
+                                    <h3><?php _e( "Template", "eduadmin-booking" ); ?></h3>
                                     <select name="eduadmin-listTemplate">
                                         <option value="template_A"<?php echo( get_option( 'eduadmin-listTemplate' ) === "template_A" ? " selected=\"selected\"" : "" ); ?>>
                                             Layout A
@@ -32,13 +32,13 @@
                                             Layout GF
                                         </option>
                                     </select>
-                                    <h3><?php _e( "List settings", "eduadmin" ); ?></h3>
+                                    <h3><?php _e( "List settings", "eduadmin-booking" ); ?></h3>
                                     <label>
                                         <input type="checkbox" id="eduadmin-showEventsInList"
                                                name="eduadmin-showEventsInList"<?php if ( get_option( 'eduadmin-showEventsInList', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show events instead of courses", "eduadmin" ); ?>
+	                                    <?php _e( "Show events instead of courses", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -46,7 +46,7 @@
                                                name="eduadmin-showCourseImage"<?php if ( get_option( 'eduadmin-showCourseImage', true ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show course images", "eduadmin" ); ?>
+	                                    <?php _e( "Show course images", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -54,7 +54,7 @@
                                                name="eduadmin-showNextEventDate"<?php if ( get_option( 'eduadmin-showNextEventDate', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show coming dates (Only course list, not events)", "eduadmin" ); ?>
+	                                    <?php _e( "Show coming dates (Only course list, not events)", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -62,7 +62,7 @@
                                                name="eduadmin-showCourseLocations"<?php if ( get_option( 'eduadmin-showCourseLocations', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show locations (Only course list, not events)", "eduadmin" ); ?>
+	                                    <?php _e( "Show locations (Only course list, not events)", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -70,7 +70,7 @@
                                                name="eduadmin-showEventVenueName"<?php if ( get_option( 'eduadmin-showEventVenueName', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show venue name", "eduadmin" ); ?>
+	                                    <?php _e( "Show venue name", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -78,7 +78,7 @@
                                                name="eduadmin-showEventPrice"<?php if ( get_option( 'eduadmin-showEventPrice', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show price", "eduadmin" ); ?>
+	                                    <?php _e( "Show price", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -86,7 +86,7 @@
                                                name="eduadmin-showCourseDays"<?php if ( get_option( 'eduadmin-showCourseDays', true ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show days", "eduadmin" ); ?>
+	                                    <?php _e( "Show days", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -94,7 +94,7 @@
                                                name="eduadmin-showCourseTimes"<?php if ( get_option( 'eduadmin-showCourseTimes', true ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show time", "eduadmin" ); ?>
+	                                    <?php _e( "Show time", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -102,7 +102,7 @@
                                                name="eduadmin-showWeekDays"<?php if ( get_option( 'eduadmin-showWeekDays', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Show weekday names (Only event list)", "eduadmin" ); ?>
+	                                    <?php _e( "Show weekday names (Only event list)", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <table cellpadding="0" cellspacing="0">
@@ -113,7 +113,7 @@
                                                            name="eduadmin-showCourseDescription"<?php if ( get_option( 'eduadmin-showCourseDescription', true ) ) {
 														echo " checked=\"checked\"";
 													} ?> />
-													<?php _e( "Show course description", "eduadmin" ); ?>
+	                                                <?php _e( "Show course description", "eduadmin-booking" ); ?>
                                                 </label>
                                             </td>
                                             <td style="padding-left: 5px;">
@@ -127,30 +127,31 @@
 													$attributes = $eduapi->GetAttribute( $edutoken, '', $filter->ToString() );
 												?>
                                                 <select name="eduadmin-layout-descriptionfield">
-                                                    <optgroup label="<?php _e( "Course fields", "eduadmin" ); ?>">
+                                                    <optgroup
+                                                            label="<?php _e( "Course fields", "eduadmin-booking" ); ?>">
                                                         <option value="CourseDescriptionShort"<?php echo( $selectedDescriptionField === "CourseDescriptionShort" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Short course description", "eduadmin" ); ?></option>
                                                         <option value="CourseDescription"<?php if ( $selectedDescriptionField === "CourseDescription" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "Course description", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "Course description", "eduadmin-booking" ); ?></option>
                                                         <option value="CourseGoal"<?php if ( $selectedDescriptionField === "CourseGoal" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "Course goal", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "Course goal", "eduadmin-booking" ); ?></option>
                                                         <option value="CourseTarget"<?php if ( $selectedDescriptionField === "CourseTarget" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "Target group", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "Target group", "eduadmin-booking" ); ?></option>
                                                         <option value="CoursePrerequisites"<?php if ( $selectedDescriptionField === "CoursePrerequisites" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "Prerequisites", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "Prerequisites", "eduadmin-booking" ); ?></option>
                                                         <option value="CourseAfter"<?php if ( $selectedDescriptionField === "CourseAfter" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "After the course", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "After the course", "eduadmin-booking" ); ?></option>
                                                         <option value="CourseQuote"<?php if ( $selectedDescriptionField === "CourseQuote" ) {
 															echo " selected=\"selected\"";
-														} ?>><?php _e( "Quote", "eduadmin" ); ?></option>
+                                                        } ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                                                     </optgroup>
 													<?php if ( ! empty( $attributes ) ) { ?>
                                                         <optgroup
-                                                                label="<?php _e( "Course attributes", "eduadmin" ); ?>">
+                                                                label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
 															<?php foreach ( $attributes as $attr ) { ?>
                                                                 <option value="attr_<?php echo $attr->AttributeID; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr->AttributeID ? " selected=\"selected\"" : "" ); ?>><?php echo $attr->AttributeDescription; ?></option>
 															<?php } ?>
@@ -166,25 +167,25 @@
 									?>
                                     <table>
                                         <tr>
-                                            <td><?php _e( "Sort order", "eduadmin" ); ?></td>
+                                            <td><?php _e( "Sort order", "eduadmin-booking" ); ?></td>
                                             <td>
                                                 <select name="eduadmin-listSortOrder">
-                                                    <option value="SortIndex"<?php echo( $sortOrder === "SortIndex" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Sort index", "eduadmin" ); ?></option>
-                                                    <option value="PublicName"<?php echo( $sortOrder === "PublicName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Course name", "eduadmin" ); ?></option>
-                                                    <option value="CategoryName"<?php echo( $sortOrder === "CategoryName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Category name", "eduadmin" ); ?></option>
-                                                    <option value="ItemNr"<?php echo( $sortOrder === "ItemNr" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Item number", "eduadmin" ); ?></option>
+                                                    <option value="SortIndex"<?php echo( $sortOrder === "SortIndex" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Sort index", "eduadmin-booking" ); ?></option>
+                                                    <option value="PublicName"<?php echo( $sortOrder === "PublicName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Course name", "eduadmin-booking" ); ?></option>
+                                                    <option value="CategoryName"<?php echo( $sortOrder === "CategoryName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Category name", "eduadmin-booking" ); ?></option>
+                                                    <option value="ItemNr"<?php echo( $sortOrder === "ItemNr" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Item number", "eduadmin-booking" ); ?></option>
                                                 </select>
                                             </td>
                                         </tr>
                                     </table>
                                     <br/>
-                                    <h3><?php _e( "Filter options", "eduadmin" ); ?></h3>
+                                    <h3><?php _e( "Filter options", "eduadmin-booking" ); ?></h3>
                                     <label>
                                         <input type="checkbox"
                                                name="eduadmin-allowLocationSearch"<?php if ( get_option( 'eduadmin-allowLocationSearch', true ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Allow filter by city", "eduadmin" ); ?>
+	                                    <?php _e( "Allow filter by city", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -192,7 +193,7 @@
                                                name="eduadmin-allowSubjectSearch"<?php if ( get_option( 'eduadmin-allowSubjectSearch', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Allow filter by subject", "eduadmin" ); ?>
+	                                    <?php _e( "Allow filter by subject", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -200,7 +201,7 @@
                                                name="eduadmin-allowCategorySearch"<?php if ( get_option( 'eduadmin-allowCategorySearch', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Allow filter by category", "eduadmin" ); ?>
+	                                    <?php _e( "Allow filter by category", "eduadmin-booking" ); ?>
                                     </label>
                                     <br/>
                                     <label>
@@ -208,7 +209,7 @@
                                                name="eduadmin-allowLevelSearch"<?php if ( get_option( 'eduadmin-allowLevelSearch', false ) ) {
 											echo " checked=\"checked\"";
 										} ?> />
-										<?php _e( "Allow filter by course level", "eduadmin" ); ?>
+	                                    <?php _e( "Allow filter by course level", "eduadmin-booking" ); ?>
                                     </label>
                                 </td>
                                 <td valign="top">
@@ -230,7 +231,7 @@
                     </div>
                     <p class="submit">
                         <input type="submit" name="submit" id="submit" class="button button-primary"
-                               value="<?php esc_attr_e( "Save changes", "eduadmin" ); ?>"/>
+                               value="<?php esc_attr_e( "Save changes", "eduadmin-booking" ); ?>"/>
                     </p>
                 </form>
             </div>

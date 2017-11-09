@@ -216,18 +216,18 @@
 	function eduadmin_backend_menu() {
 		$level = 'administrator';
 		add_menu_page( 'EduAdmin', 'EduAdmin', $level, 'eduadmin-settings', 'edu_render_general_settings', 'dashicons-welcome-learn-more' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - General', 'eduadmin' ), __( 'General settings', 'eduadmin' ), $level, 'eduadmin-settings', 'edu_render_general_settings' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - List view', 'eduadmin' ), __( 'List settings', 'eduadmin' ), $level, 'eduadmin-settings-view', 'edu_render_list_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Detail view', 'eduadmin' ), __( 'Detail settings', 'eduadmin' ), $level, 'eduadmin-settings-detail', 'edu_render_detail_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Booking view', 'eduadmin' ), __( 'Booking settings', 'eduadmin' ), $level, 'eduadmin-settings-booking', 'edu_render_booking_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Translation', 'eduadmin' ), __( 'Translation', 'eduadmin' ), $level, 'eduadmin-settings-text', 'edu_render_text_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin' ), __( 'Style settings', 'eduadmin' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin' ), __( 'Plugins', 'eduadmin' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin' ), __( 'Api Authentication', 'eduadmin' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - General', 'eduadmin-booking' ), __( 'General settings', 'eduadmin-booking' ), $level, 'eduadmin-settings', 'edu_render_general_settings' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - List view', 'eduadmin-booking' ), __( 'List settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-view', 'edu_render_list_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Detail view', 'eduadmin-booking' ), __( 'Detail settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-detail', 'edu_render_detail_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Booking view', 'eduadmin-booking' ), __( 'Booking settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-booking', 'edu_render_booking_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Translation', 'eduadmin-booking' ), __( 'Translation', 'eduadmin-booking' ), $level, 'eduadmin-settings-text', 'edu_render_text_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin-booking' ), __( 'Style settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
+		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin-booking' ), __( 'Api Authentication', 'eduadmin-booking' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
 	}
 
 	function eduadmin_shortcode_metabox() {
-		add_meta_box( 'eduadmin-metabox', __( 'EduAdmin - Shortcodes', 'eduadmin' ), 'eduadmin_create_metabox', null, 'side', 'high' );
+		add_meta_box( 'eduadmin-metabox', __( 'EduAdmin - Shortcodes', 'eduadmin-booking' ), 'eduadmin_create_metabox', null, 'side', 'high' );
 	}
 
 	function eduadmin_create_metabox() {

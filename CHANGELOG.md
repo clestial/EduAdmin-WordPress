@@ -1,8 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+
+## [1.0.1]
 - Modified when languages should load (`plugins_loaded` instead of `init`)
 - Changing text domain everywhere to `eduadmin-booking` (new WordPress-slug)
+- Adding `autocomplete="new-password"` to password-field when you register a new account while booking
 
 ## [1.0.0]
 ### WordPress-plugin compatibility/requirements
@@ -382,7 +385,8 @@
 ### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...v1.0.0
 [0.10.24]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...v0.10.24
 [0.10.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.22...v0.10.23

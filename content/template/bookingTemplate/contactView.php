@@ -11,11 +11,13 @@
         <div class="inputHolder"><input type="text"
                                         style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
+                                        autocomplete="given-name"
                                         id="edu-contactFirstName" name="contactFirstName"
                                         placeholder="<?php edu_e( "Contact first name" ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
                     type="text" style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
+                    autocomplete="family-name"
                     name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"
                     value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
         </div>
@@ -26,7 +28,7 @@
         </div>
         <div class="inputHolder">
             <input type="email" id="edu-contactEmail" required
-                   name="contactEmail"<?php echo( $__block ? " readonly" : "" ); ?>
+                   name="contactEmail"<?php echo( $__block ? " readonly" : "" ); ?> autocomplete="email"
                    onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "E-mail address" ); ?>"
                    value="<?php echo @esc_attr( $contact->Email ); ?>"/>
         </div>
@@ -36,7 +38,7 @@
 			<?php edu_e( "Phone number" ); ?>
         </div>
         <div class="inputHolder">
-            <input type="tel" id="edu-contactPhone" name="contactPhone"
+            <input type="tel" id="edu-contactPhone" name="contactPhone" autocomplete="tel"
                    onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "Phone number" ); ?>"
                    value="<?php echo @esc_attr( $contact->Phone ); ?>"/>
         </div>
@@ -46,7 +48,7 @@
 			<?php edu_e( "Mobile number" ); ?>
         </div>
         <div class="inputHolder">
-            <input type="tel" id="edu-contactMobile" name="contactMobile"
+            <input type="tel" id="edu-contactMobile" name="contactMobile" autocomplete="tel"
                    onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "Mobile number" ); ?>"
                    value="<?php echo @esc_attr( $contact->Mobile ); ?>"/>
         </div>
@@ -72,7 +74,7 @@
 				<?php edu_e( "Please enter a password" ); ?>
             </div>
             <div class="inputHolder">
-                <input type="password" required name="contactPass"
+                <input type="password" required name="contactPass" autocomplete="new-password"
                        placeholder="<?php edu_e( "Please enter a password" ); ?>"/>
             </div>
         </label>

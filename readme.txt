@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 3.0
 Tested up to: 4.8.3
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -15,11 +15,20 @@ EduAdmin plugin to allow visitors to book courses at your website. Requires EduA
 Plugin that you connect to [EduAdmin](http://www.eduadmin.se) to enable booking on your website.
 Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
 
+== Installation ==
+
+- Upload the zip-file and activate the plugin
+- Provide the API key from EduAdmin.
+- Create pages for the different views
+
+== Upgrade Notice ==
+
 == Changelog ==
 
-### [Unreleased]
+### [1.0.1]
 - Modified when languages should load (`plugins_loaded` instead of `init`)
 - Changing text domain everywhere to `eduadmin-booking` (new WordPress-slug)
+- Adding `autocomplete="new-password"` to password-field when you register a new account while booking
 
 ### [1.0.0]
 #### WordPress-plugin compatibility/requirements
@@ -399,7 +408,8 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...v1.0.0
 [0.10.24]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...v0.10.24
 [0.10.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.22...v0.10.23

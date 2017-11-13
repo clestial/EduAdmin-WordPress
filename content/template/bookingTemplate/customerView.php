@@ -5,7 +5,8 @@
 			<?php edu_e( "Customer name" ); ?>
         </div>
         <div class="inputHolder">
-            <input type="text" required name="customerName" placeholder="<?php edu_e( "Customer name" ); ?>"
+            <input type="text" required name="customerName" autocomplete="organization"
+                   placeholder="<?php edu_e( "Customer name" ); ?>"
                    value="<?php echo @esc_attr( $customer->CustomerName ); ?>"/>
         </div>
     </label>

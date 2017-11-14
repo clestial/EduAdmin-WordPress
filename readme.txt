@@ -1,9 +1,10 @@
 === EduAdmin Booking ===
+
 Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 3.0
 Tested up to: 4.8.3
-Stable tag: 1.0.1
+Stable tag: 1.0.4
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -15,6 +16,15 @@ EduAdmin plugin to allow visitors to book courses at your website. Requires EduA
 Plugin that you connect to [EduAdmin](http://www.eduadmin.se) to enable booking on your website.
 Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
 
+| Repository | Latest version | Downloads |
+| ---------- | --------------: | ---------: |
+| WordPress.org | [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/eduadmin-booking.svg)](https://wordpress.org/plugins/eduadmin-booking/) | [![WordPress plugin](https://img.shields.io/wordpress/plugin/dt/eduadmin-booking.svg)](https://wordpress.org/plugins/eduadmin-booking/) |
+
+[![WordPress](https://img.shields.io/wordpress/v/eduadmin-booking.svg)](https://wordpress.org/plugins/eduadmin-booking/)
+[![Gitter chat](https://badges.gitter.im/MultinetInteractive/EduAdmin-WordPress.png)](https://gitter.im/MultinetInteractive/EduAdmin-WordPress)
+[![Build Status](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress.svg?branch=master)](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/?branch=master)
+
 == Installation ==
 
 - Upload the zip-file and activate the plugin
@@ -24,6 +34,17 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 == Upgrade Notice ==
 
 == Changelog ==
+
+### [1.0.4]
+- Adding action `eduadmin-bookingform-loaded`, so that plugins can fire when the booking form is loaded.
+
+### [1.0.3]
+- Removing `.official.plugin` and `auto_update`, since we are running as a normal plugin now.
+
+### [1.0.2]
+- Removing internal language files
+- Removing `README.md` and `CHANGELOG.md`, these live inside `readme.txt` (this file)
+- Bugfix for questions and attributes with only one option (SOAP API gave us an object instead of an array)
 
 ### [1.0.1]
 - Modified when languages should load (`plugins_loaded` instead of `init`)
@@ -408,7 +429,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.24...v1.0.0
 [0.10.24]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.10.23...v0.10.24

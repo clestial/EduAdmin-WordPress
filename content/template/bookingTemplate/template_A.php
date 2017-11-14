@@ -279,10 +279,10 @@
 						}
 					?>
 					<?php
-					    $noInvoiceFreeEvents            = get_option( 'eduadmin-noInvoiceFreeEvents', false );
-						$singlePersonBooking            = get_option( 'eduadmin-singlePersonBooking', false );
-					    $showInvoiceEmail               = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
-					    $forceShowInvoiceInformation    = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
+						$noInvoiceFreeEvents         = get_option( 'eduadmin-noInvoiceFreeEvents', false );
+						$singlePersonBooking         = get_option( 'eduadmin-singlePersonBooking', false );
+						$showInvoiceEmail            = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
+						$forceShowInvoiceInformation = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
 						if ( $singlePersonBooking ) {
 							include_once( "singlePersonBooking.php" );
 						} else {
@@ -392,7 +392,7 @@
 							foreach ( $errorList as $error ) {
 								?>
                                 <div class="edu-modal warning">
-									<?php _e( $error, 'eduadmin' ); ?>
+	                                <?php _e( $error, 'eduadmin-booking' ); ?>
                                 </div>
 								<?php
 							}
@@ -430,5 +430,6 @@
 			<?php
 		}
 	}
+	do_action( 'eduadmin-bookingform-loaded', EDU()->session['eduadmin-loginUser'] );
 	$out = ob_get_clean();
 	return $out;

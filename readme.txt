@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 3.0
 Tested up to: 4.8.3
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -34,9 +34,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
-### [Unreleased]
+### [1.0.2]
 - Removing internal language files
 - Removing `README.md` and `CHANGELOG.md`, these live inside `readme.txt` (this file)
+- Bugfix for questions and attributes with only one option (SOAP API gave us an object instead of an array)
 
 ### [1.0.1]
 - Modified when languages should load (`plugins_loaded` instead of `init`)

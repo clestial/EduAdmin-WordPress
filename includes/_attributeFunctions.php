@@ -81,7 +81,12 @@
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
 		echo "<select name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\">\n";
-		foreach ( $attribute->AttributeAlternative as $val ) {
+		if ( is_array( $attribute->AttributeAlternative ) ) {
+			foreach ( $attribute->AttributeAlternative as $val ) {
+				echo "\t<option" . ( $data != null && $data == $val->AttributeAlternativeID ? " selected=\"selected\"" : "" ) . " value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</option>\n";
+			}
+		} else {
+			$val = $attribute->AttributeAlternative;
 			echo "\t<option" . ( $data != null && $data == $val->AttributeAlternativeID ? " selected=\"selected\"" : "" ) . " value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</option>\n";
 		}
 		echo "</select>";
@@ -92,7 +97,12 @@
 		echo "<div class=\"inputLabel\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		foreach ( $attribute->AttributeAlternative as $val ) {
+		if ( is_array( $attribute->AttributeAlternative ) ) {
+			foreach ( $attribute->AttributeAlternative as $val ) {
+				echo "\t<label><input" . ( $data != null && $data == $val->AttributeAlternativeID ? " checked=\"checked\"" : "" ) . " type=\"checkbox\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</label>\n";
+			}
+		} else {
+			$val = $attribute->AttributeAlternative;
 			echo "\t<label><input" . ( $data != null && $data == $val->AttributeAlternativeID ? " checked=\"checked\"" : "" ) . " type=\"checkbox\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . $val->AttributeAlternativeID . "\">" . $val->AttributeAlternativeDescription . "</label>\n";
 		}
 		echo "</div>";

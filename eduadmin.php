@@ -7,7 +7,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.1
+	 * Version:	1.0.3
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 3.0
@@ -155,10 +155,6 @@
 				include_once( 'includes/_textFunctions.php' );
 				include_once( 'includes/_loginFunctions.php' );
 
-				if ( file_exists( EDUADMIN_PLUGIN_PATH . '/.official.plugin.php' ) ) {
-					include_once( '.official.plugin.php' );
-				}
-
 				$this->bookingHandler = new EduAdminBookingHandler( $this );
 				$this->loginHandler   = new EduAdminLoginHandler( $this );
 			}
@@ -169,7 +165,6 @@
 				add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
 				add_action( 'init', array( $this, 'init' ) );
 				add_action( 'plugins_loaded', array( $this, 'load_language' ) );
-				add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
 				add_action( 'wp_footer', 'edu_getTimers' );
 
 				register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -187,22 +182,6 @@
 				<?php
 			}
 
-			public function get_plugin_version() {
-				$cachedVersion = wp_cache_get( 'eduadmin-version', 'eduadmin' );
-				if ( false !== $cachedVersion ) {
-					return $cachedVersion;
-				}
-
-				if ( ! function_exists( 'get_plugin_data' ) ) {
-					require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-				}
-
-				$version = get_plugin_data( __FILE__ )['Version'];
-				wp_cache_set( 'eduadmin-version', $version, 'eduadmin', 3600 );
-
-				return $version;
-			}
-
 			/**
 			 * @return string Returns the users IP adress
 			 */
@@ -217,29 +196,10 @@
 				return "UNKNOWN";
 			}
 
-			public function call_home() {
-				global $wp_version;
-				$usageData = array(
-					'siteUrl'         => get_site_url(),
-					'siteName'        => get_option( 'blogname' ),
-					'wpVersion'       => $wp_version,
-					'token'           => get_option( 'eduadmin-api-key' ),
-					'officialVersion' => file_exists( EDUADMIN_PLUGIN_PATH . "/.official.plugin.php" ),
-					'pluginVersion'   => $this->get_plugin_version(),
-				);
-
-				$callHomeUrl = 'https://ws10.multinet.se/edu-plugin/wp_phone_home.php';
-				wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
-			}
-
 			public function load_language() {
 				$locale = apply_filters( 'plugin_locale', get_locale(), 'eduadmin-booking' );
 				load_textdomain( 'eduadmin-booking', WP_LANG_DIR . '/eduadmin/' . 'eduadmin-booking' . '-' . $locale . '.mo' );
 				load_plugin_textdomain( 'eduadmin-booking', false, EDUADMIN_PLUGIN_PATH . '/languages' );
-
-				if ( ! wp_next_scheduled( 'eduadmin_call_home' ) ) {
-					wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
-				}
 			}
 
 			public function new_theme() {
@@ -248,7 +208,6 @@
 
 			public function deactivate() {
 				eduadmin_deactivate_rewrite();
-				wp_clear_scheduled_hook( 'eduadmin_call_home' );
 			}
 		}
 

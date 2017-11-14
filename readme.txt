@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 3.0
 Tested up to: 4.8.3
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -34,6 +34,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 == Upgrade Notice ==
 
 == Changelog ==
+
+### [1.0.4]
+- Adding action `eduadmin-bookingform-loaded`, so that plugins can fire when the booking form is loaded.
 
 ### [1.0.3]
 - Removing `.official.plugin` and `auto_update`, since we are running as a normal plugin now.

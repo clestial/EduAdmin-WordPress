@@ -10,27 +10,19 @@ if [[ -z "$WP_PASSWORD" ]]; then
 	exit 1
 fi
 
-if [[ -z "$TRAVIS_BRANCH" ]]; then
-	echo "Build branch is required and must be 'production'" 1>&2
+if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+	echo "Build branch is required and must be a release-tag" 1>&2
 	exit 0
 fi
 
-echo "Branch: $TRAVIS_BRANCH" 1>&2
-exit 0
 
 PLUGIN="eduadmin-booking"
 GITHUBREPO="EduAdmin-WordPress"
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-PLUGIN_BUILDS_PATH="$PROJECT_ROOT/builds"
-PLUGIN_BUILD_CONFIG_PATH="$PROJECT_ROOT/build-cfg"
-VERSION=$(php -f "$PLUGIN_BUILD_CONFIG_PATH/utils/get_plugin_version.php" "$PROJECT_ROOT" "$PLUGIN")
-ZIP_FILE="$PLUGIN_BUILDS_PATH/$GITHUBREPO-$VERSION.zip"
+VERSION=${TRAVIS_BRANCH:1}
 
-# Ensure the zip file for the current version has been built
-if [ ! -f "$ZIP_FILE" ]; then
-    echo "Built zip file $ZIP_FILE does not exist" 1>&2
-    exit 1
-fi
+echo "Version: $VERSION of $PLUGIN"
+exit 0
 
 # Check if the tag exists for the version we are building
 TAG=$(svn ls "https://plugins.svn.wordpress.org/$PLUGIN/tags/$VERSION")

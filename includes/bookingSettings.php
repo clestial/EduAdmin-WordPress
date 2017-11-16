@@ -71,10 +71,22 @@
                             <br/>
                             <label>
                                 <input type="checkbox"
-                                       name="eduadmin-useLogin" <?php echo( get_option( "eduadmin-useLogin", false ) ? " checked=\"checked\"" : "" ); ?> />
+                                       name="eduadmin-useLogin"
+	                                <?php echo( get_option( "eduadmin-useLogin", false ) ? " checked=\"checked\"" : "" ); ?>
+                                       onchange="EduAdmin.ToggleVisibility(this.checked, '.eduadmin-forceLogin');"
+                                />
 	                            <?php _e( "Use login", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
+                            <div class="eduadmin-forceLogin"<?php echo( get_option( "eduadmin-useLogin", false ) ? " style=\"display: block;\"" : " style=\"display: none;\"" ); ?>>
+                                <label>
+                                    <input type="checkbox"
+                                           name="eduadmin-allowCustomerRegistration"
+										<?php echo get_option( "eduadmin-allowCustomerRegistration", true ) ? " checked=\"checked\"" : ""; ?>
+                                    />
+									<?php _e( "Allow customer registration", "eduadmin-booking" ); ?>
+                                </label>
+                            </div>
                             <br/>
                             <label>
 	                            <?php _e( "Login field", "eduadmin-booking" ); ?>

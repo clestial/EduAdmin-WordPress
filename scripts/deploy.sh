@@ -43,6 +43,20 @@ rm -f $PROJECT_ROOT/.gitignore
 rm -fR $PROJECT_ROOT/scripts
 rm -fR $PROJECT_ROOT/tests
 rm -fR $PROJECT_ROOT/.git
+rm -fR $PROJECT_ROOT/wp-tests
+
+# Make sure we are in the project root
+cd $PROJECT_ROOT
+
+# Go up one folder
+cd ..
+
+# Delete and recreate the deployFolder
+rm -fR deployFolder
+mkdir deployFolder
+
+# Go into the deployFolder
+cd deployFolder
 
 # Clean up any previous svn dir
 rm -fR svn

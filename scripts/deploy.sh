@@ -11,22 +11,16 @@ if [[ -z "$WP_PASSWORD" ]]; then
 fi
 
 if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" != "production" ]]; then
-	echo "Build branch is required and must be 'production'" 1>&2
+	echo "Build branch is required and must be a release-tag" 1>&2
 	exit 0
 fi
 
-PLUGIN="eduadmin-booking"
-PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-PLUGIN_BUILDS_PATH="$PROJECT_ROOT/builds"
-PLUGIN_BUILD_CONFIG_PATH="$PROJECT_ROOT/build-cfg"
-VERSION=$(/usr/bin/php -f "$PLUGIN_BUILD_CONFIG_PATH/utils/get_plugin_version.php" "$PROJECT_ROOT" "$PLUGIN")
-ZIP_FILE="$PLUGIN_BUILDS_PATH/$PLUGIN-$VERSION.zip"
 
-# Ensure the zip file for the current version has been built
-if [ ! -f "$ZIP_FILE" ]; then
-    echo "Built zip file $ZIP_FILE does not exist" 1>&2
-    exit 1
-fi
+PLUGIN="eduadmin-booking"
+PROJECT_ROOT=$TRAVIS_BUILD_DIR
+VERSION="$(cat $PROJECT_ROOT/eduadmin.php | grep Version: | head -1 | cut -d: -f2 | tr -d '[[:space:]]')"
+
+echo "Version: $VERSION of $PLUGIN"
 
 # Check if the tag exists for the version we are building
 TAG=$(svn ls "https://plugins.svn.wordpress.org/$PLUGIN/tags/$VERSION")
@@ -37,23 +31,32 @@ if [ $error == 0 ]; then
     exit 1
 fi
 
-cd "$PLUGIN_BUILDS_PATH"
-# Remove any unzipped dir so we start from scratch
-rm -fR "$PLUGIN"
-# Unzip the built plugin
-unzip -q -o "$ZIP_FILE"
-
 # Remove files not needed in plugin for deployment
-rm -f $PLUGIN/composer.json
-rm -f $PLUGIN/.scrutinizer.yml
-rm -f $PLUGIN/.travis.yml
-rm -f $PLUGIN/CONTRIBUTING.md
-rm -f $PLUGIN/LICENSE.md
-rm -f $PLUGIN/phpunit.xml
-rm -f $PLUGIN/README.md
-rm -f $PLUGIN/.gitignore
-rm -fR $PLUGIN/scripts
-rm -fR $PLUGIN/tests
+rm -f $PROJECT_ROOT/composer.json
+rm -f $PROJECT_ROOT/.scrutinizer.yml
+rm -f $PROJECT_ROOT/.travis.yml
+rm -f $PROJECT_ROOT/CONTRIBUTING.md
+rm -f $PROJECT_ROOT/LICENSE.md
+rm -f $PROJECT_ROOT/phpunit.xml
+rm -f $PROJECT_ROOT/README.md
+rm -f $PROJECT_ROOT/.gitignore
+rm -fR $PROJECT_ROOT/scripts
+rm -fR $PROJECT_ROOT/tests
+rm -fR $PROJECT_ROOT/.git
+rm -fR $PROJECT_ROOT/wp-tests
+
+# Make sure we are in the project root
+cd $PROJECT_ROOT
+
+# Go up one folder
+cd ..
+
+# Delete and recreate the deployFolder
+rm -fR deployFolder
+mkdir deployFolder
+
+# Go into the deployFolder
+cd deployFolder
 
 # Clean up any previous svn dir
 rm -fR svn
@@ -66,7 +69,7 @@ mv svn/trunk ./svn-trunk
 # Create trunk directory
 mkdir svn/trunk
 # Copy our new version of the plugin into trunk
-rsync -r -p $PLUGIN/* svn/trunk
+rsync -r -p $PROJECT_ROOT/* svn/trunk
 
 # Copy all the .svn folders from the checked out copy of trunk to the new trunk.
 # This is necessary as the Travis container runs Subversion 1.6 which has .svn dirs in every sub dir
@@ -95,7 +98,7 @@ rm -fR svn-trunk
 
 # Add new version tag
 mkdir svn/tags/$VERSION
-rsync -r -p $PLUGIN/* svn/tags/$VERSION
+rsync -r -p $PROJECT_ROOT/* svn/tags/$VERSION
 
 # Add new files to SVN
 svn stat svn | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
@@ -111,5 +114,5 @@ rm -fR svn
 
 curl -X POST \
 -H 'Content-type: application/json' \
---data '{"username": "Travis CI","channel":"#wordpress-eduadmin"icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
+--data '{"username": "Travis CI", "channel":"#wordpress-eduadmin", "icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
 $SLACK_HOOKURL

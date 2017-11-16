@@ -10,13 +10,16 @@ if [[ -z "$WP_PASSWORD" ]]; then
 	exit 1
 fi
 
-if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" != "production" ]]; then
+if [[ -z "$TRAVIS_BRANCH" ]]; then
 	echo "Build branch is required and must be 'production'" 1>&2
 	exit 0
 fi
 
+echo "Branch: $TRAVIS_BRANCH" 1>&2
+exit 0
+
 PLUGIN="eduadmin-booking"
-GITHUBREPO = "EduAdmin-WordPress"
+GITHUBREPO="EduAdmin-WordPress"
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 PLUGIN_BUILDS_PATH="$PROJECT_ROOT/builds"
 PLUGIN_BUILD_CONFIG_PATH="$PROJECT_ROOT/build-cfg"

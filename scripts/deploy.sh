@@ -16,11 +16,12 @@ if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" != "production" ]]; then
 fi
 
 PLUGIN="eduadmin-booking"
+GITHUBREPO = "EduAdmin-WordPress"
 PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 PLUGIN_BUILDS_PATH="$PROJECT_ROOT/builds"
 PLUGIN_BUILD_CONFIG_PATH="$PROJECT_ROOT/build-cfg"
-VERSION=$(/usr/bin/php -f "$PLUGIN_BUILD_CONFIG_PATH/utils/get_plugin_version.php" "$PROJECT_ROOT" "$PLUGIN")
-ZIP_FILE="$PLUGIN_BUILDS_PATH/$PLUGIN-$VERSION.zip"
+VERSION=$(php -f "$PLUGIN_BUILD_CONFIG_PATH/utils/get_plugin_version.php" "$PROJECT_ROOT" "$PLUGIN")
+ZIP_FILE="$PLUGIN_BUILDS_PATH/$GITHUBREPO-$VERSION.zip"
 
 # Ensure the zip file for the current version has been built
 if [ ! -f "$ZIP_FILE" ]; then

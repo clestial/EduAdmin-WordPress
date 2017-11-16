@@ -114,5 +114,5 @@ rm -fR svn
 
 curl -X POST \
 -H 'Content-type: application/json' \
---data '{"username": "Travis CI","channel":"#wordpress-eduadmin", icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
+--data '{"username": "Travis CI", "channel":"#wordpress-eduadmin", "icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
 $SLACK_HOOKURL

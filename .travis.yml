@@ -19,3 +19,11 @@ before_script:
 
 script:
   - cd wp-tests/spec && bundle exec rspec test.rb && cd .. && cd .. && phpunit
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ./scripts/deploy.sh
+  on:
+    branch: production
+    php: 5.6

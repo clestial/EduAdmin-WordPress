@@ -1,6 +1,10 @@
 sudo: false
 language: php
 
+notifications:
+  on_success: never
+  on_failure: change
+
 php:
   - 5.6
 
@@ -19,8 +23,5 @@ deploy:
   skip_cleanup: true
   script: chmod +x $TRAVIS_BUILD_DIR/scripts/deploy.sh && $TRAVIS_BUILD_DIR/scripts/deploy.sh
   on:
-    branches:
-      only:
-      - production
-      - /^v\d+(\.\d+)+$/
+    branch: production
     php: 5.6

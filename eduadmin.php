@@ -1,17 +1,18 @@
 <?php
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 	define( 'EDUADMIN_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+	defined( 'WP_SESSION_COOKIE' ) or define( 'WP_SESSION_COOKIE', 'eduadmin-cookie' );
 
 	/*
 	 * Plugin Name:	EduAdmin Booking
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.4
+	 * Version:	1.0.5
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 3.0
-	 * Tested up to: 4.8.3
+	 * Tested up to: 4.9
 	 * Author:	Chris Gårdenberg, MultiNet Interactive AB
 	 * Author URI:	http://www.multinet.se
 	 * License:	GPL3

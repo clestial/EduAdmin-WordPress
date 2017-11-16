@@ -10,16 +10,15 @@ if [[ -z "$WP_PASSWORD" ]]; then
 	exit 1
 fi
 
-if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+if [[ -z "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" != "production" ]]; then
 	echo "Build branch is required and must be a release-tag" 1>&2
 	exit 0
 fi
 
 
 PLUGIN="eduadmin-booking"
-GITHUBREPO="EduAdmin-WordPress"
-PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-VERSION=${TRAVIS_BRANCH:1}
+PROJECT_ROOT=$TRAVIS_BUILD_DIR
+VERSION="$(cat $PROJECT_ROOT/eduadmin.php | grep Version: | head -1 | cut -d: -f2 | tr -d '[[:space:]]')"
 
 echo "Version: $VERSION of $PLUGIN"
 exit 0

@@ -1,8 +1,9 @@
 <?php
 	if ( isset( $_REQUEST['bookingLoginAction'] ) && ! empty( $_REQUEST['bookingLoginAction'] ) ) {
 		if ( $_REQUEST['bookingLoginAction'] === "checkEmail" && ! empty( $_REQUEST['eduadminloginEmail'] ) ) {
-			$ft                 = new XFiltering();
-			$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
+			$ft                        = new XFiltering();
+			$selectedLoginField        = get_option( 'eduadmin-loginField', 'Email' );
+			$allowCustomerRegistration = get_option( "eduadmin-allowCustomerRegistration", true );
 
 			$f = new XFilter( $selectedLoginField, '=', trim( sanitize_text_field( $_REQUEST['eduadminloginEmail'] ) ) );
 			$ft->AddItem( $f );
@@ -49,7 +50,7 @@
 				}
 			}
 
-			if ( empty( $matchingContacts ) ) {
+			if ( $allowCustomerRegistration && empty( $matchingContacts ) ) {
 				$contact            = new CustomerContact;
 				$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
 				switch ( $selectedLoginField ) {
@@ -70,6 +71,10 @@
 				$c2                                  = json_encode( $customer );
 				$user->Customer                      = json_decode( $c2 );
 				EDU()->session['eduadmin-loginUser'] = $user;
+			} else {
+				EDU()->session['needsLogin']         = true;
+				EDU()->session['checkEmail']         = true;
+				EDU()->session['eduadminLoginError'] = edu__( "Could not find any users with that info." );
 			}
 			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
 		} else if ( $_REQUEST['bookingLoginAction'] == "forgot" ) {

@@ -112,7 +112,9 @@
 
 		/* Booking settings */
 		register_setting( 'eduadmin-booking', 'eduadmin-useLogin' );
+		register_setting( 'eduadmin-booking', 'eduadmin-allowCustomerRegistration' );
 		register_setting( 'eduadmin-booking', 'eduadmin-loginField' );
+
 		register_setting( 'eduadmin-booking', 'eduadmin-singlePersonBooking' );
 		register_setting( 'eduadmin-booking', 'eduadmin-customerGroupId' );
 		register_setting( 'eduadmin-booking', 'eduadmin-currency' );

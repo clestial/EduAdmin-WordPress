@@ -10,6 +10,10 @@ var EduAdmin = {
 		var me = jQuery( item );
 		me.find( '.eduadmin-attributelist' ).slideToggle( 'fast' );
 	},
+    ToggleVisibility: function (visible, selector) {
+        if (visible) jQuery(selector).show();
+        else jQuery(selector).hide();
+    },
 	SpotExampleText: function () {
 		/** global: availText */
 		var selVal = jQuery( '.eduadmin-spotsLeft :selected' ).val();

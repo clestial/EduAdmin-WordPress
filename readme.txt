@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -34,6 +34,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 == Upgrade Notice ==
 
 == Changelog ==
+
+### [1.0.6]
+- Adding setting to force customers to be registered before being able to book
 
 ### [1.0.5]
 - Defining `WP_SESSION_COOKIE` so that we won't get warnings/notices.
@@ -433,7 +436,8 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.6...HEAD
+[1.0.6]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.2...v1.0.3

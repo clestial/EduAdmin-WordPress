@@ -42,19 +42,20 @@ rm -f $PROJECT_ROOT/README.md
 rm -f $PROJECT_ROOT/.gitignore
 rm -fR $PROJECT_ROOT/scripts
 rm -fR $PROJECT_ROOT/tests
+rm -fR $PROJECT_ROOT/.git
 
 # Clean up any previous svn dir
 rm -fR svn
 
 # Checkout the SVN repo
-#svn co -q "http://svn.wp-plugins.org/$PLUGIN" svn
+svn co -q "http://svn.wp-plugins.org/$PLUGIN" svn
 
 # Move out the trunk directory to a temp location
 mv svn/trunk ./svn-trunk
 # Create trunk directory
 mkdir svn/trunk
 # Copy our new version of the plugin into trunk
-rsync -r -p $PLUGIN/* svn/trunk
+rsync -r -p $PROJECT_ROOT/* svn/trunk
 
 # Copy all the .svn folders from the checked out copy of trunk to the new trunk.
 # This is necessary as the Travis container runs Subversion 1.6 which has .svn dirs in every sub dir
@@ -83,21 +84,21 @@ rm -fR svn-trunk
 
 # Add new version tag
 mkdir svn/tags/$VERSION
-rsync -r -p $PLUGIN/* svn/tags/$VERSION
+rsync -r -p $PROJECT_ROOT/* svn/tags/$VERSION
 
 # Add new files to SVN
-#svn stat svn | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
+svn stat svn | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 # Remove deleted files from SVN
-#svn stat svn | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
-#svn stat svn
+svn stat svn | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
+svn stat svn
 
 # Commit to SVN
-#svn ci --no-auth-cache --username $WP_USERNAME --password $WP_PASSWORD svn -m "Deploy version $VERSION"
+svn ci --no-auth-cache --username $WP_USERNAME --password $WP_PASSWORD svn -m "Deploy version $VERSION"
 
 # Remove SVN temp dir
 rm -fR svn
 
 curl -X POST \
 -H 'Content-type: application/json' \
---data '{"username": "Travis CI","channel":"#wordpress-eduadmin"icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
+--data '{"username": "Travis CI","channel":"#wordpress-eduadmin", icon_url": "https://a.slack-edge.com/0180/img/services/travis_48.png","text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:"}' \
 $SLACK_HOOKURL

@@ -21,7 +21,6 @@ PROJECT_ROOT=$TRAVIS_BUILD_DIR
 VERSION="$(cat $PROJECT_ROOT/eduadmin.php | grep Version: | head -1 | cut -d: -f2 | tr -d '[[:space:]]')"
 
 echo "Version: $VERSION of $PLUGIN"
-exit 0
 
 # Check if the tag exists for the version we are building
 TAG=$(svn ls "https://plugins.svn.wordpress.org/$PLUGIN/tags/$VERSION")
@@ -32,23 +31,17 @@ if [ $error == 0 ]; then
     exit 1
 fi
 
-cd "$PLUGIN_BUILDS_PATH"
-# Remove any unzipped dir so we start from scratch
-rm -fR "$PLUGIN"
-# Unzip the built plugin
-unzip -q -o "$ZIP_FILE"
-
 # Remove files not needed in plugin for deployment
-rm -f $PLUGIN/composer.json
-rm -f $PLUGIN/.scrutinizer.yml
-rm -f $PLUGIN/.travis.yml
-rm -f $PLUGIN/CONTRIBUTING.md
-rm -f $PLUGIN/LICENSE.md
-rm -f $PLUGIN/phpunit.xml
-rm -f $PLUGIN/README.md
-rm -f $PLUGIN/.gitignore
-rm -fR $PLUGIN/scripts
-rm -fR $PLUGIN/tests
+rm -f $PROJECT_ROOT/composer.json
+rm -f $PROJECT_ROOT/.scrutinizer.yml
+rm -f $PROJECT_ROOT/.travis.yml
+rm -f $PROJECT_ROOT/CONTRIBUTING.md
+rm -f $PROJECT_ROOT/LICENSE.md
+rm -f $PROJECT_ROOT/phpunit.xml
+rm -f $PROJECT_ROOT/README.md
+rm -f $PROJECT_ROOT/.gitignore
+rm -fR $PROJECT_ROOT/scripts
+rm -fR $PROJECT_ROOT/tests
 
 # Clean up any previous svn dir
 rm -fR svn

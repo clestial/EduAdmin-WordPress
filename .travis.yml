@@ -19,8 +19,8 @@ deploy:
   skip_cleanup: true
   script: chmod +x $TRAVIS_BUILD_DIR/scripts/deploy.sh && $TRAVIS_BUILD_DIR/scripts/deploy.sh
   on:
-    #tags: true
-    #branches:
-    #  only:
-    #  - /^v\d+(\.\d+)+$/
+    branches:
+      only:
+      - production
+      - /^v\d+(\.\d+)+$/
     php: 5.6

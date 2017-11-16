@@ -60,7 +60,7 @@ rm -fR $PLUGIN/tests
 rm -fR svn
 
 # Checkout the SVN repo
-svn co -q "http://svn.wp-plugins.org/$PLUGIN" svn
+#svn co -q "http://svn.wp-plugins.org/$PLUGIN" svn
 
 # Move out the trunk directory to a temp location
 mv svn/trunk ./svn-trunk
@@ -99,13 +99,13 @@ mkdir svn/tags/$VERSION
 rsync -r -p $PLUGIN/* svn/tags/$VERSION
 
 # Add new files to SVN
-svn stat svn | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
+#svn stat svn | grep '^?' | awk '{print $2}' | xargs -I x svn add x@
 # Remove deleted files from SVN
-svn stat svn | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
-svn stat svn
+#svn stat svn | grep '^!' | awk '{print $2}' | xargs -I x svn rm --force x@
+#svn stat svn
 
 # Commit to SVN
-svn ci --no-auth-cache --username $WP_USERNAME --password $WP_PASSWORD svn -m "Deploy version $VERSION"
+#svn ci --no-auth-cache --username $WP_USERNAME --password $WP_PASSWORD svn -m "Deploy version $VERSION"
 
 # Remove SVN temp dir
 rm -fR svn

@@ -915,7 +915,7 @@
                                 } ?> /> <?php _e( "Use booking terms", "eduadmin-booking" ); ?>
                             </label>
                             <h3><?php _e( "Javascript to run when a booking is completed", "eduadmin-booking" ); ?></h3>
-                            <i><?php htmlentities( _e( "You do not need to include &lt;script&gt;-tags", "eduadmin" ) ); ?></i>
+                            <i><?php _e( "You do not need to include &lt;script&gt;-tags", "eduadmin-booking" ); ?></i>
                             <br/>
                             <table>
                                 <tr>

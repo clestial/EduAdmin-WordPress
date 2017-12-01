@@ -129,7 +129,7 @@
                                                 <select name="eduadmin-layout-descriptionfield">
                                                     <optgroup
                                                             label="<?php _e( "Course fields", "eduadmin-booking" ); ?>">
-                                                        <option value="CourseDescriptionShort"<?php echo( $selectedDescriptionField === "CourseDescriptionShort" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Short course description", "eduadmin" ); ?></option>
+                                                        <option value="CourseDescriptionShort"<?php echo( $selectedDescriptionField === "CourseDescriptionShort" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Short course description", "eduadmin-booking" ); ?></option>
                                                         <option value="CourseDescription"<?php if ( $selectedDescriptionField === "CourseDescription" ) {
 															echo " selected=\"selected\"";
                                                         } ?>><?php _e( "Course description", "eduadmin-booking" ); ?></option>

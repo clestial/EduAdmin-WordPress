@@ -195,7 +195,7 @@
 						<?php edu_e( "Civic Registration Number" ); ?>
                     </div>
                     <div class="inputHolder">
-                        <input type="text" required name="participantCivReg[]"
+                        <input type="text" data-required="true" name="participantCivReg[]"
                                pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" class="eduadmin-civicRegNo"
                                placeholder="<?php edu_e( "Civic Registration Number" ); ?>"/>
                     </div>

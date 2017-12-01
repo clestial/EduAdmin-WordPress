@@ -27,7 +27,7 @@
 	                    <?php echo __( "Enter the provided Api Key to connect to EduAdmin", "eduadmin-booking" ); ?>
                     </p>
                     <p>
-	                    <?php echo sprintf( __( "You can get these details by contacting %s", "eduadmin-booking" ), sprintf( "<a href=\"http://support.multinet.se\" target=\"_blank\">%s</a>", __( "our support", "eduadmin" ) ) ); ?>
+	                    <?php echo sprintf( __( "You can get these details by contacting %s", "eduadmin-booking" ), sprintf( "<a href=\"http://support.multinet.se\" target=\"_blank\">%s</a>", __( "our support", "eduadmin-booking" ) ) ); ?>
                     </p>
                     <input type="text" readonly class="form-control api_hash" name="eduadmin-api-key"
                            id="eduadmin-api-key"

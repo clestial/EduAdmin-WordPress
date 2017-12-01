@@ -16,6 +16,12 @@ var eduBookingView = {
 				var cloned = tmpl.cloneNode( true );
 				cloned.style.display = 'block';
 				cloned.className = cloned.className.replace( ' template', '' );
+
+                var requiredFields = cloned.querySelectorAll('[data-required]');
+                for (var index = 0; index < requiredFields.length; index++) {
+                    requiredFields[index].setAttribute('required', '');
+                    requiredFields[index].required = true;
+                }
 				holder.appendChild( cloned );
 			}
 			else {

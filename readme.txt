@@ -35,6 +35,12 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
+### [1.0.8]
+- Code fixes to remove notices (if warnings are shown)
+- Login field is now correctly typed if email is selected.
+- Making it possible to hide fields on the default detail templates by using the attribute `hide`
+  - Fields that can be hidden: `description,goal,target,prerequisites,after,quote`
+
 ### [1.0.7]
 - Fixed text domain on three phrases I missed earlier.
 - Fixing validation error for civic reg numbers.
@@ -440,7 +446,8 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.7...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.8...HEAD
+[1.0.7]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.6...v1.0.7
 [1.0.6]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.4...v1.0.5

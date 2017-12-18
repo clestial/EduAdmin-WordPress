@@ -54,7 +54,7 @@
 					}
 				}
 
-				if ( $user ) {
+				if ( isset( $user ) ) {
 					if ( $regularLogin ) {
 						if ( isset( $_REQUEST['eduReturnUrl'] ) && ! empty( $_REQUEST['eduReturnUrl'] ) ) {
 							wp_redirect( esc_url_raw( $_REQUEST['eduReturnUrl'] ) );

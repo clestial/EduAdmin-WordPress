@@ -3,15 +3,19 @@
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
 		$loginLabel         = edu__( "E-mail address" );
+		$fieldType          = "text";
 		switch ( $selectedLoginField ) {
 			case "Email":
 				$loginLabel = edu__( "E-mail address" );
+				$fieldType  = "email";
 				break;
 			case "CivicRegistrationNumber":
 				$loginLabel = edu__( "Civic Registration Number" );
+				$fieldType  = "text";
 				break;
 			case "CustomerNumber":
 				$loginLabel = edu__( "Customer number" );
+				$fieldType  = "text";
 				break;
 		}
 	?>
@@ -19,9 +23,9 @@
     <label>
         <div class="inputLabel"><?php echo $loginLabel; ?></div>
         <div class="inputHolder">
-            <input type="text"
+            <input type="<?php echo $fieldType; ?>"
                    name="eduadminloginEmail"<?php echo( $selectedLoginField == "CivicRegistrationNumber" ? " class=\"eduadmin-civicRegNo\" onblur=\"eduBookingView.ValidateCivicRegNo();\"" : "" ); ?>
-                   required
+                   required autocomplete="off"
                    title="<?php echo esc_attr( sprintf( edu__( "Please enter your %s here" ), $loginLabel ) ); ?>"
                    placeholder="<?php echo esc_attr( $loginLabel ); ?>"
                    value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>

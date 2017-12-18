@@ -76,6 +76,7 @@
 				'template'       => $selectedTemplate,
 				'courseid'       => null,
 				'customtemplate' => null,
+				'hide'           => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-detailview'

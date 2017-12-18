@@ -138,6 +138,12 @@
 		$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
 		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
+
+		$hideSections = array();
+		if ( isset( $attributes['hide'] ) ) {
+			$hideSections = explode( ',', $attributes['hide'] );
+		}
+
 		?>
         <div class="eduadmin">
             <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
@@ -149,7 +155,7 @@
             </div>
             <hr/>
             <div class="textblock">
-				<?php if ( ! empty( $selectedCourse->CourseDescription ) ) { ?>
+	            <?php if ( ! in_array( 'description' ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Course description" ); ?></h3>
 					<?php } ?>
@@ -159,7 +165,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php if ( ! empty( $selectedCourse->CourseGoal ) ) { ?>
+	            <?php if ( ! in_array( 'goal' ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Course goal" ); ?></h3>
 					<?php } ?>
@@ -169,7 +175,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php if ( ! empty( $selectedCourse->TargetGroup ) ) { ?>
+	            <?php if ( ! in_array( 'target' ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Target group" ); ?></h3>
 					<?php } ?>
@@ -179,7 +185,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php if ( ! empty( $selectedCourse->Prerequisites ) ) { ?>
+	            <?php if ( ! in_array( 'prerequisites' ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Prerequisites" ); ?></h3>
 					<?php } ?>
@@ -189,7 +195,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php if ( ! empty( $selectedCourse->CourseAfter ) ) { ?>
+	            <?php if ( ! in_array( 'after' ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "After the course" ); ?></h3>
 					<?php } ?>
@@ -199,7 +205,7 @@
 						?>
                     </div>
 				<?php } ?>
-				<?php if ( ! empty( $selectedCourse->Quote ) ) { ?>
+	            <?php if ( ! in_array( 'quote' ) && ! empty( $selectedCourse->Quote ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Quotes" ); ?></h3>
 					<?php } ?>

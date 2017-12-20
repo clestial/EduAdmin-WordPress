@@ -155,7 +155,7 @@
             </div>
             <hr/>
             <div class="textblock">
-	            <?php if ( ! in_array( 'description' ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
+	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Course description" ); ?></h3>
 					<?php } ?>
@@ -165,7 +165,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'goal' ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
+	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Course goal" ); ?></h3>
 					<?php } ?>
@@ -175,7 +175,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'target' ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
+	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Target group" ); ?></h3>
 					<?php } ?>
@@ -185,7 +185,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'prerequisites' ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
+	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Prerequisites" ); ?></h3>
 					<?php } ?>
@@ -195,7 +195,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'after' ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
+	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "After the course" ); ?></h3>
 					<?php } ?>
@@ -205,7 +205,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'quote' ) && ! empty( $selectedCourse->Quote ) ) { ?>
+	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse->Quote ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php edu_e( "Quotes" ); ?></h3>
 					<?php } ?>
@@ -217,7 +217,7 @@
 				<?php } ?>
             </div>
             <div class="eventInformation">
-				<?php if ( ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
+	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
                     <h3><?php edu_e( "Time" ); ?></h3>
 					<?php
 					echo ( $selectedCourse->Days > 0 ? sprintf( edu_n( '%1$d day', '%1$d days', $selectedCourse->Days ), $selectedCourse->Days ) . ', ' : '' ) . date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
@@ -250,7 +250,7 @@
 						$uniquePrices[ $price->Description ] = $price;
 					}
 
-					if ( ! empty( $prices ) ) {
+					if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
 						?>
                         <h3><?php edu_e( "Price" ); ?></h3>
 						<?php
@@ -266,13 +266,22 @@
             </div>
 			<?php
 				$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
+				$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+				$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
+				$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
+
+				$objectInterestPage     = get_option( 'eduadmin-interestObjectPage' );
+				$allowInterestRegObject = get_option( 'eduadmin-allowInterestRegObject', false );
+
+				$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
+				$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
 			?>
             <div class="event-table eventDays"
                  data-eduwidget="eventlist"
                  data-objectid="<?php echo esc_attr( $selectedCourse->ObjectID ); ?>"
-                 data-spotsleft="<?php echo get_option( 'eduadmin-spotsLeft', 'exactNumbers' ); ?>"
-                 data-spotsettings="<?php echo get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" ); ?>"
-                 data-fewspots="<?php echo get_option( 'eduadmin-alwaysFewSpots', "3" ); ?>"
+                 data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
+                 data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
+                 data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
                  data-showmore="0"
                  data-groupbycity="<?php echo $groupByCity; ?>"
                  data-fetchmonths="<?php echo $fetchMonths; ?>"
@@ -315,7 +324,7 @@
                                 <div class="eventStatus<?php echo $groupByCityClass; ?>">
 									<?php
 										$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
-										echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr ) . "</span>";
+										echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
 									?>
                                 </div>
                                 <div class="eventBook<?php echo $groupByCityClass; ?>">
@@ -329,8 +338,7 @@
 										} else {
 											?>
 											<?php
-											$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
-											$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
+
 											if ( $allowInterestRegEvent && $eventInterestPage != false ) {
 												?>
                                                 <a class="inquiry-link"
@@ -357,8 +365,7 @@
 				?>
             </div>
 			<?php
-				$objectInterestPage     = get_option( 'eduadmin-interestObjectPage' );
-				$allowInterestRegObject = get_option( 'eduadmin-allowInterestRegObject', false );
+
 				if ( $allowInterestRegObject && $objectInterestPage != false ) {
 					?>
                     <br/>

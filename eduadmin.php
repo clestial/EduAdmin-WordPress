@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.8
+	 * Version:	1.0.9
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 3.0
@@ -147,6 +147,7 @@
 				$eduapi   = $this->api;
 				$edutoken = $this->get_token();
 				include_once( 'includes/_options.php' );
+				include_once( 'includes/_ajaxFunctions.php' );
 				include_once( 'includes/_rewrites.php' );
 				include_once( 'includes/_shortcodes.php' );
 

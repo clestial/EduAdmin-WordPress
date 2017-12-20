@@ -10,7 +10,7 @@ edu.apiclient = {
 	AfterUpdate: null,
 	parseDocument: function () {
 		if ( typeof wp_edu !== 'undefined' ) {
-			edu.apiclient.baseUrl = wp_edu.BaseUrlBackend + '/edu.api.backend.php';
+            edu.apiclient.baseUrl = wp_edu.AjaxUrl;
 			edu.apiclient.courseFolder = wp_edu.CourseFolder;
 			edu.apiclient.authJS( wp_edu.ApiKey, function () {
 				edu.apiclient.replaceLoginWidget();
@@ -55,9 +55,10 @@ edu.apiclient = {
 	authJS: function ( apiKey, next ) {
 		if ( edu.apiclient.GetCookie( 'apiToken' ) == null || edu.apiclient.GetCookie( 'apiToken' ) == '' ) {
 			jQuery.ajax( {
-				url: edu.apiclient.baseUrl + '?authenticate',
+                url: edu.apiclient.baseUrl,
 				type: 'POST',
 				data: {
+                    action: 'edu_authenticate',
 					key: apiKey
 				},
 				success: function ( d ) {
@@ -74,9 +75,10 @@ edu.apiclient = {
 	},
 	getCourseListDates: function ( objectIds ) {
 		jQuery.ajax( {
-			url: edu.apiclient.baseUrl + '?module=listview_courselist',
+            url: edu.apiclient.baseUrl,
 			type: 'POST',
 			data: {
+                action: 'edu_listview_courselist',
 				token: edu.apiclient.authToken,
 				objectIds: objectIds,
 				showcoursedays: jQuery( '.eduadmin-courselistoptions' ).data( 'showcoursedays' ),
@@ -98,8 +100,7 @@ edu.apiclient = {
 				fetchmonths: jQuery( '.eduadmin-courselistoptions' ).data( 'fetchmonths' ),
 				showvenue: jQuery( '.eduadmin-courselistoptions' ).data( 'showvenue' ),
 				orderby: jQuery( '.eduadmin-courselistoptions' ).data( 'orderby' ),
-				order: jQuery( '.eduadmin-courselistoptions' ).data( 'order' ),
-				phrases: wp_edu.Phrases
+                order: jQuery('.eduadmin-courselistoptions').data('order')
 			},
 			success: function ( d ) {
 				var o = d;
@@ -121,9 +122,10 @@ edu.apiclient = {
 	},
 	getCourseEventList: function ( target ) {
 		jQuery.ajax( {
-			url: edu.apiclient.baseUrl + '?module=listview_eventlist',
+            url: edu.apiclient.baseUrl,
 			type: 'POST',
 			data: {
+                action: 'edu_api_listview_eventlist',
 				token: edu.apiclient.authToken,
 				baseUrl: wp_edu.BaseUrl,
 				courseFolder: wp_edu.CourseFolder,
@@ -146,8 +148,7 @@ edu.apiclient = {
 				fetchmonths: jQuery( target ).data( 'fetchmonths' ),
 				showvenue: jQuery( target ).data( 'showvenue' ),
 				orderby: jQuery( target ).data( 'orderby' ),
-				order: jQuery( target ).data( 'order' ),
-				phrases: wp_edu.Phrases
+                order: jQuery(target).data('order')
 			},
 			success: function ( d ) {
 				jQuery( target ).html( d );
@@ -157,9 +158,10 @@ edu.apiclient = {
 	},
 	getEventList: function ( target ) {
 		jQuery.ajax( {
-			url: edu.apiclient.baseUrl + '?module=detailinfo_eventlist',
+            url: edu.apiclient.baseUrl,
 			type: 'POST',
 			data: {
+                action: 'edu_api_eventlist',
 				token: edu.apiclient.authToken,
 				objectid: jQuery( target ).data( 'objectid' ),
 				city: jQuery( target ).data( 'city' ),
@@ -174,8 +176,7 @@ edu.apiclient = {
 				numberofevents: jQuery( target ).data( 'numberofevents' ),
 				fetchmonths: jQuery( target ).data( 'fetchmonths' ),
 				showvenue: jQuery( target ).data( 'showvenue' ),
-				eventinquiry: jQuery( target ).data( 'eventinquiry' ),
-				phrases: wp_edu.Phrases
+                eventinquiry: jQuery(target).data('eventinquiry')
 			},
 			success: function ( d ) {
 				jQuery( target ).replaceWith( d );
@@ -202,9 +203,10 @@ edu.apiclient = {
 		}
 
 		jQuery.ajax( {
-			url: edu.apiclient.baseUrl + '?module=login_widget',
+            url: edu.apiclient.baseUrl,
 			type: 'POST',
 			data: {
+                action: 'edu_api_loginwidget',
 				baseUrl: wp_edu.BaseUrl,
 				courseFolder: wp_edu.CourseFolder,
 				logintext: loginText,
@@ -224,9 +226,10 @@ edu.apiclient = {
 	},
 	CheckCouponCode: function ( code, objectId, categoryId, onData ) {
 		jQuery.ajax( {
-			url: edu.apiclient.baseUrl + '?module=check_coupon_code',
+            url: edu.apiclient.baseUrl,
 			type: 'POST',
 			data: {
+                action: 'edu_api_check_coupon_code',
 				token: edu.apiclient.authToken,
 				code: code,
 				objectId: objectId,
@@ -260,7 +263,7 @@ edu.apiclient = {
 		return null;
 	},
 	SetCookie: function ( name, value, expire ) {
-		var temp = edu.apiclient.CookieBase + name + "=" + escape( value ) +
+        var temp = edu.apiclient.CookieBase + name + "=" + encodeURIComponent(value) +
 			(expire !== 0
 					? "; path=/; expires=" + ((new Date( (new Date()).getTime() + expire )).toUTCString()) + ";"
 					: "; path=/;"

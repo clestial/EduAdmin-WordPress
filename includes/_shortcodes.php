@@ -546,6 +546,8 @@
 
 					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : - 1;
 					$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+					$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
+					$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 
 					$baseUrl        = $surl . '/' . $cat;
 					$name           = ( ! empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
@@ -554,8 +556,8 @@
 					                   '" data-spotsleft="' . $spotLeftOption .
 					                   '" data-showmore="' . $showMore .
 					                   '" data-groupbycity="' . $groupByCity . '"' .
-					                   '" data-spotsettings="' . get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" ) . '"' .
-					                   '" data-fewspots="' . get_option( 'eduadmin-alwaysFewSpots', "3" ) . '"' .
+					                   '" data-spotsettings="' . $spotSettings . '"' .
+					                   '" data-fewspots="' . $alwaysFewSpots . '"' .
 					                   ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . $attributes['courseeventlistfiltercity'] . '"' : '' ) .
 					                   ' data-fetchmonths="' . $fetchMonths . '"' .
 					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . $_REQUEST['eid'] . '"' : '' ) .
@@ -566,6 +568,8 @@
 					                   '>';
 					$i              = 0;
 					$hasHiddenDates = false;
+
+					$eventInterestPage = get_option( 'eduadmin-interestEventPage' );
 
 					foreach ( $events as $ev ) {
 						$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
@@ -589,7 +593,7 @@
 							$hasHiddenDates = true;
 						}
 
-						$eventInterestPage = get_option( 'eduadmin-interestEventPage' );
+
 
 						$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $i % 2 == 0 ? " evenRow" : " oddRow" ) . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
 						$retStr   .= '
@@ -603,7 +607,7 @@
 					</div>' : '' ) .
 						             '<div class="eventStatus' . $groupByCityClass . '">
 					' .
-						             getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr )
+						             getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots )
 						             . '
 					</div>
 					<div class="eventBook' . $groupByCityClass . '">

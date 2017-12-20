@@ -55,7 +55,7 @@
 	}
 
 	function getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3 ) {
-		$spotOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+		//$spotOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 		if ( $maxSpots === 0 ) {
 			return edu__( 'Spots left' );
 		}
@@ -68,7 +68,7 @@
 			case "exactNumbers":
 				return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
 			case "onlyText":
-				$fewSpotsLimit = get_option( 'eduadmin-alwaysFewSpots', 5 );
+				$fewSpotsLimit = $alwaysFewSpots; //get_option( 'eduadmin-alwaysFewSpots', 5 );
 				if ( $freeSpots > ( $maxSpots - $fewSpotsLimit ) ) {
 					return edu__( 'Spots left' );
 				} else if ( $freeSpots <= ( $maxSpots - $fewSpotsLimit ) && $freeSpots != 1 ) {
@@ -79,7 +79,7 @@
 					return edu__( 'No spots left' );
 				}
 			case "intervals":
-				$interval = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
+				$interval = $spotSettings; //get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 				if ( empty( $interval ) ) {
 					return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
 				} else {
@@ -101,7 +101,7 @@
 				}
 
 			case "alwaysFewSpots":
-				$minParticipants = get_option( 'eduadmin-alwaysFewSpots' );
+				$minParticipants = $alwaysFewSpots; //get_option( 'eduadmin-alwaysFewSpots' );
 				if ( ( $maxSpots - $freeSpots ) >= $minParticipants ) {
 					return edu__( 'Few spots left' );
 				}

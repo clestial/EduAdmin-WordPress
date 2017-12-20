@@ -276,6 +276,10 @@
 	$currency       = get_option( 'eduadmin-currency', 'SEK' );
 	$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 
+	$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+	$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
+	$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
+
 ?>
     <div class="eventListTable"
          data-eduwidget="listview-eventlist"
@@ -284,9 +288,9 @@
          data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
          data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
          data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"
-         data-spotsleft="<?php echo @get_option( 'eduadmin-spotsLeft', 'exactNumbers' ); ?>"
-         data-spotsettings="<?php echo @get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" ); ?>"
-         data-fewspots="<?php echo @get_option( 'eduadmin-alwaysFewSpots', "3" ); ?>"
+         data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
+         data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
+         data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
          data-showcoursedays="<?php echo @esc_attr( $showCourseDays ); ?>"
          data-showcoursetimes="<?php echo @esc_attr( $showCourseTimes ); ?>"
          data-showweekdays="<?php echo @esc_attr( $showWeekDays ); ?>"
@@ -349,7 +353,7 @@
 						echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
 					}
 					echo '<br />';
-					echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr ) . "</span>";
+		            echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
 				?></div>
             <div class="objectBook">
 				<?php if ( $showReadMoreBtn ) : ?>

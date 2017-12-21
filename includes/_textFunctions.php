@@ -8,13 +8,16 @@
 	 */
 	if ( ! function_exists( 'wp_get_timezone_string' ) ) {
 		function wp_get_timezone_string() {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			// if site timezone string exists, return it
 			if ( $timezone = get_option( 'timezone_string' ) ) {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return $timezone;
 			}
 
 			// get UTC offset, if it isn't set then return UTC
 			if ( 0 === ( $utc_offset = get_option( 'gmt_offset', 0 ) ) ) {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return 'UTC';
 			}
 
@@ -23,6 +26,7 @@
 
 			// attempt to guess the timezone string from the UTC offset
 			if ( $timezone = timezone_name_from_abbr( '', $utc_offset, 0 ) ) {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return $timezone;
 			}
 
@@ -32,55 +36,68 @@
 			foreach ( timezone_abbreviations_list() as $abbr ) {
 				foreach ( $abbr as $city ) {
 					if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset ) {
+						EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 						return $city['timezone_id'];
 					}
 				}
 			}
 
 			// fallback to UTC
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return 'UTC';
 		}
 	}
 
 	function edu_getQueryString( $prepend = "?", $removeParameters = array() ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		array_push( $removeParameters, 'eduadmin-thankyou' );
 		foreach ( $removeParameters as $par ) {
 			unset( $_GET[ $par ] );
 		}
 		if ( ! empty( $_GET ) ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $prepend . http_build_query( $_GET );
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return "";
 	}
 
 	function getSpotsLeft( $freeSpots, $maxSpots, $spotOption = 'exactNumbers', $spotSettings = "1-5\n5-10\n10+", $alwaysFewSpots = 3 ) {
-		//$spotOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( $maxSpots === 0 ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return edu__( 'Spots left' );
 		}
 
 		if ( $freeSpots <= 0 ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return edu__( 'No spots left' );
 		}
 
 		switch ( $spotOption ) {
 			case "exactNumbers":
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 				return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
 			case "onlyText":
 				$fewSpotsLimit = $alwaysFewSpots; //get_option( 'eduadmin-alwaysFewSpots', 5 );
 				if ( $freeSpots > ( $maxSpots - $fewSpotsLimit ) ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return edu__( 'Spots left' );
 				} else if ( $freeSpots <= ( $maxSpots - $fewSpotsLimit ) && $freeSpots != 1 ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return edu__( 'Few spots left' );
 				} else if ( $freeSpots == 1 ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return edu__( 'One spot left' );
 				} else if ( $freeSpots <= 0 ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return edu__( 'No spots left' );
 				}
 			case "intervals":
 				$interval = $spotSettings; //get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 				if ( empty( $interval ) ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
 				} else {
 					$lines = explode( "\n", $interval );
@@ -90,24 +107,29 @@
 							$min   = $range[0];
 							$max   = $range[1];
 							if ( $freeSpots <= $max && $freeSpots >= $min ) {
+								EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 								return sprintf( edu__( '%1$s spots left' ), $line );
 							}
 						} else if ( stripos( $line, '+' ) > - 1 ) {
+							EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 							return sprintf( edu__( '%1$s spots left' ), $line );
 						}
 					}
-
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
 				}
 
 			case "alwaysFewSpots":
 				$minParticipants = $alwaysFewSpots; //get_option( 'eduadmin-alwaysFewSpots' );
 				if ( ( $maxSpots - $freeSpots ) >= $minParticipants ) {
+					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 					return edu__( 'Few spots left' );
 				}
-
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return edu__( 'Spots left' );
 			default:
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 				return '';
 		}
 	}
@@ -137,7 +159,8 @@
 	}
 
 	function GetDisplayDate( $inDate, $short = true ) {
-		$months = array(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$months                     = array(
 			1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
 			2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
 			3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
@@ -152,25 +175,27 @@
 			12 => ! $short ? edu__( 'december' ) : edu__( 'dec' ),
 		);
 
-		$year    = date( 'Y', strtotime( $inDate ) );
-		$nowYear = date( 'Y' );
-
+		$year                       = date( 'Y', strtotime( $inDate ) );
+		$nowYear                    = date( 'Y' );
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return '<span class="eduadmin-dateText">' . date( 'd', strtotime( $inDate ) ) . ' ' . $months[ date( 'n', strtotime( $inDate ) ) ] . ( $nowYear != $year ? ' ' . $year : '' ) . '</span>';
 	}
 
 	function GetLogicalDateGroups( $dates, $short = false, $event = null, $showDays = false ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( count( $dates ) > 3 ) {
 			$short    = true;
 			$showDays = true;
 		}
 
-		$nDates = getRangeFromDays( $dates, $short, $event, $showDays );
-
+		$nDates                     = getRangeFromDays( $dates, $short, $event, $showDays );
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return join( "<span class=\"edu-dateSeparator\"></span>", $nDates );
 	}
 
 // Copied from http://codereview.stackexchange.com/a/83095/27610
 	function getRangeFromDays( $days, $short, $event, $showDays ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		sort( $days );
 		$startDate  = $days[0];
 		$finishDate = $days[ count( $days ) - 1 ];
@@ -183,11 +208,11 @@
 			}
 		}
 		// force the end
-		$result[] = GetStartEndDisplayDate( $startDate, $finishDate, $short, $event, $showDays );
+		$result[]                       = GetStartEndDisplayDate( $startDate, $finishDate, $short, $event, $showDays );
 
 		if ( count( $result ) > 3 ) {
 			$nRes   = array();
-			$ret    =
+			$ret                        =
 				"<span class=\"edu-manyDays\" title=\"" . edu__( "Show schedule" ) . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf( edu__( '%1$d days between %2$s' ), count( $days ), GetStartEndDisplayDate( $days[0], end( $days ), $short, $showDays ) ) .
 				"</span><div class=\"edu-DayPopup\">
 <b>" . edu__( "Schedule" ) . "</b><br />
@@ -195,16 +220,17 @@
 <br />
 <a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . edu__( "Close" ) . "</a>
 </div>";
-			$nRes[] = $ret;
-
+			$nRes[]                     = $ret;
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $nRes;
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $result;
 	}
 
 	function GetStartEndDisplayDate( $startDate, $endDate, $short = false, $event, $showDays = false ) {
-		$days = array(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$days                       = array(
 			1 => ! $short ? edu__( 'monday' ) : edu__( 'mon' ),
 			2 => ! $short ? edu__( 'tuesday' ) : edu__( 'tue' ),
 			3 => ! $short ? edu__( 'wednesday' ) : edu__( 'wed' ),
@@ -305,13 +331,14 @@
 			}
 		}
 
-		$str .= '</span>';
-
+		$str                        .= '</span>';
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
-		$months = array(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$months                     = array(
 			1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
 			2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
 			3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
@@ -372,8 +399,8 @@
 			} else {
 				$str .= ' ';
 				$str .= $months[ date( 'n', strtotime( $startDate ) ) ];
-				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
-				$str .= ' - ';
+				$str                .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
+				$str                .= ' - ';
 				if ( $showWeekDays ) {
 					$str .= $weekDays[ date( 'N', strtotime( $endDate ) ) ] . ' ';
 				}
@@ -387,8 +414,8 @@
 			$str .= $months[ date( 'n', strtotime( $startDate ) ) ];
 			$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 		}
-		$str .= '</span>';
-
+		$str                        .= '</span>';
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
@@ -918,8 +945,9 @@
 
 	if ( ! function_exists( 'makeSlugs' ) ) {
 		function makeSlugs( $string, $maxlen = 0 ) {
-			$newStringTab = array();
-			$string       = strtolower( noDiacritics( $string ) );
+			EDU()->timers[ __METHOD__ ] = microtime( true );
+			$newStringTab               = array();
+			$string                     = strtolower( noDiacritics( $string ) );
 			if ( function_exists( 'str_split' ) ) {
 				$stringTab = str_split( $string );
 			} else {
@@ -946,7 +974,7 @@
 			} else {
 				$newString = '';
 			}
-
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $newString;
 		}
 	}
@@ -963,7 +991,8 @@
 
 	if ( ! function_exists( 'removeDuplicates' ) ) {
 		function removeDuplicates( $sSearch, $sReplace, $sSubject ) {
-			$i = 0;
+			EDU()->timers[ __METHOD__ ] = microtime( true );
+			$i                          = 0;
 			do {
 				$sSubject = str_replace( $sSearch, $sReplace, $sSubject );
 				$pos      = strpos( $sSubject, $sSearch );
@@ -973,7 +1002,7 @@
 					die( 'removeDuplicates() loop error' );
 				}
 			} while ( $pos !== false );
-
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $sSubject;
 		}
 	}

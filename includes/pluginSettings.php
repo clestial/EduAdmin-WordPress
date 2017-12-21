@@ -1,5 +1,6 @@
 <?php
 	function edu_render_plugin_page() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		?>
         <div class="eduadmin wrap">
             <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Plugins", "eduadmin-booking" ) ); ?></h2>
@@ -26,4 +27,5 @@
             </form>
         </div>
 		<?php
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

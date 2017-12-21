@@ -1,5 +1,6 @@
 <?php
 	function edu_render_text_settings_page() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( isset( $_POST['resetTranslation'] ) ) {
 			delete_option( 'eduadmin-phrases' );
 		}
@@ -76,4 +77,5 @@
             </form>
         </div>
 		<?php
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

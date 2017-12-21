@@ -17,6 +17,7 @@
 		}
 
 		public function get_settings() {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			ob_start();
 			$fields = $this->get_form_fields();
 			?>
@@ -28,6 +29,7 @@
 				?>
             </table>
 			<?php
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return ob_get_clean();
 		}
 
@@ -36,6 +38,7 @@
 		}
 
 		private function renderField( $key, $field ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			ob_start();
 			?>
             <tr valign="top">
@@ -62,6 +65,7 @@
                 </td>
             </tr>
 			<?php
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return ob_get_clean();
 		}
 
@@ -70,6 +74,7 @@
 		}
 
 		private function renderCheckBox( $key, $field ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			ob_start();
 			?>
             <label>
@@ -83,10 +88,12 @@
 				<?php echo esc_html( $field['description'] ); ?>
             </label>
 			<?php
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return ob_get_clean();
 		}
 
 		public function get_option( $key, $empty_value = null ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			if ( empty( $this->settings ) ) {
 				$this->init_settings();
 			}
@@ -99,18 +106,20 @@
 			if ( ! is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
 				$this->settings[ $key ] = $empty_value;
 			}
-
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $this->settings[ $key ];
 		}
 
 		public function init_settings() {
-			$this->settings = get_option( $this->get_option_key(), null );
+			EDU()->timers[ __METHOD__ ] = microtime( true );
+			$this->settings             = get_option( $this->get_option_key(), null );
 			add_action( 'eduadmin-plugin-save_' . $this->id, array( $this, 'save_options' ) );
 
 			if ( ! is_array( $this->settings ) ) {
 				$form_fields    = $this->get_form_fields();
 				$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
 			}
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		}
 
 		private function get_option_key() {
@@ -118,6 +127,7 @@
 		}
 
 		private function renderTextBox( $key, $field ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			ob_start();
 			?>
             <input
@@ -130,10 +140,12 @@
             />
             <p class="description"><?php echo esc_html( $field['description'] ); ?></p>
 			<?php
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return ob_get_clean();
 		}
 
 		public function save_options() {
+			EDU()->timers[ __METHOD__ ] = microtime( true );
 			$this->init_settings();
 
 			$post_data = $this->get_post_data();
@@ -146,7 +158,7 @@
 				catch ( Exception $e ) {
 				}
 			}
-
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return update_option( $this->get_option_key(), $this->settings );
 		}
 

@@ -1,6 +1,7 @@
 <?php
 // Render ALL the types
 	function renderQuestion( $question ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		switch ( $question->QuestionTypeID ) {
 			case 1: // Text-fråga
 				renderTextQuestion( $question );
@@ -38,6 +39,7 @@
 				echo "<xmp>" . print_r( $question, true ) . "</xmp>";
 				break;
 		}
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}
 
 // QuestionTypeID 5

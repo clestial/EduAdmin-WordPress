@@ -143,7 +143,6 @@
 		if ( isset( $attributes['hide'] ) ) {
 			$hideSections = explode( ',', $attributes['hide'] );
 		}
-
 		?>
         <div class="eduadmin">
             <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
@@ -224,7 +223,6 @@
 					?>
 				<?php } ?>
 				<?php
-
 					$occIds   = Array();
 					$occIds[] = - 1;
 					foreach ( $events as $ev ) {
@@ -262,7 +260,8 @@
                             <br/>
 							<?php
 						}
-					} ?>
+					}
+				?>
             </div>
 			<?php
 				$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
@@ -379,5 +378,6 @@
         </div>
 		<?php
 	}
+
 	$out = ob_get_clean();
 	return $out;

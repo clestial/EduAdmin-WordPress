@@ -17,8 +17,9 @@
 	}
 
 	function eduadmin_get_list_view( $attributes ) {
-		$selectedTemplate = get_option( 'eduadmin-listTemplate', 'template_A' );
-		$attributes       = shortcode_atts(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$selectedTemplate           = get_option( 'eduadmin-listTemplate', 'template_A' );
+		$attributes                 = shortcode_atts(
 			array(
 				'template'        => $selectedTemplate,
 				'category'        => null,
@@ -40,38 +41,41 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-listview'
 		);
-		$str = include( EDUADMIN_PLUGIN_PATH . "/content/template/listTemplate/" . $attributes['template'] . ".php" );
-
+		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/listTemplate/" . $attributes['template'] . ".php" );
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
 	function eduadmin_get_object_interest( $attributes ) {
-		$attributes = shortcode_atts(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$attributes                 = shortcode_atts(
 			array(
 				'courseid' => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-objectinterest'
 		);
-		$str        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegObject.php" );
-
+		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegObject.php" );
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
 	function eduadmin_get_event_interest( $attributes ) {
-		$attributes = shortcode_atts(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$attributes                 = shortcode_atts(
 			array(),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-eventinterest'
 		);
-		$str        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegEvent.php" );
-
+		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegEvent.php" );
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
 	function eduadmin_get_detail_view( $attributes ) {
-		$selectedTemplate = get_option( 'eduadmin-detailTemplate', 'template_A' );
-		$attributes       = shortcode_atts(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$selectedTemplate           = get_option( 'eduadmin-detailTemplate', 'template_A' );
+		$attributes                 = shortcode_atts(
 			array(
 				'template'       => $selectedTemplate,
 				'courseid'       => null,
@@ -88,15 +92,16 @@
 		EDU()->session->regenerate_id( true );
 
 		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
-			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
-
+			$str                        = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return $str;
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return '';
 	}
 
 	function eduadmin_get_course_public_pricename( $attributes ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		global $wp_query;
 		$attributes = shortcode_atts(
 			array(
@@ -113,16 +118,18 @@
 			if ( isset( $wp_query->query_vars["courseId"] ) ) {
 				$courseId = $wp_query->query_vars["courseId"];
 			} else {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return 'Missing courseId in attributes';
 			}
 		} else {
 			$courseId = $attributes['courseid'];
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/coursePriceNames.php" );
 	}
 
 	function edu_no_index() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		global $wp_query;
 		$detailpage = get_option( 'eduadmin-detailViewPage' );
 		if ( isset( $wp_query->queried_object ) ) {
@@ -130,11 +137,13 @@
 				echo '<meta name="robots" content="noindex" />';
 			}
 		}
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}
 
 	add_action( 'wp_head', 'edu_no_index' );
 
 	function eduadmin_get_booking_view( $attributes ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
@@ -154,11 +163,12 @@
 		} else {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/loginView.php" );
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $str;
 	}
 
 	function eduadmin_get_detailinfo( $attributes ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		global $wp_query;
 		global $eduapi;
 		global $edutoken;
@@ -202,6 +212,7 @@
 			if ( isset( $wp_query->query_vars["courseId"] ) ) {
 				$courseId = $wp_query->query_vars["courseId"];
 			} else {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return 'Missing courseId in attributes';
 			}
 		} else {
@@ -211,6 +222,7 @@
 		$apiKey = get_option( 'eduadmin-api-key' );
 
 		if ( ! $apiKey || empty( $apiKey ) ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 			return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 		} else {
 			$filtering = new XFiltering();
@@ -236,6 +248,7 @@
 			}
 
 			if ( ! $selectedCourse ) {
+				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 				return 'Course with ID ' . $courseId . ' could not be found.';
 			} else {
 				if ( isset( $attributes['coursename'] ) ) {
@@ -633,12 +646,13 @@
 				}
 			}
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return $retStr;
 	}
 
 	function eduadmin_get_login_widget( $attributes ) {
-		$attributes = shortcode_atts(
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$attributes                 = shortcode_atts(
 			array(
 				'logintext'  => edu__( "Log in" ),
 				'logouttext' => edu__( "Log out" ),
@@ -655,7 +669,7 @@
 		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 			$user = EDU()->session['eduadmin-loginUser'];
 		}
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return
 			"<div class=\"eduadminLogin\" data-eduwidget=\"loginwidget\"
 	data-logintext=\"" . esc_attr( $attributes['logintext'] ) . "\"
@@ -665,10 +679,11 @@
 	}
 
 	function eduadmin_get_login_view( $attributes ) {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
-		$attributes = shortcode_atts(
+		$attributes                 = shortcode_atts(
 			array(
 				'logintext'  => edu__( "Log in" ),
 				'logouttext' => edu__( "Log out" ),
@@ -677,16 +692,18 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-loginview'
 		);
-
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/login.php" );
 	}
 
-	add_shortcode( "eduadmin-listview", "eduadmin_get_list_view" );
-	add_shortcode( "eduadmin-detailview", "eduadmin_get_detail_view" );
-	add_shortcode( "eduadmin-bookingview", "eduadmin_get_booking_view" );
-	add_shortcode( 'eduadmin-detailinfo', 'eduadmin_get_detailinfo' );
-	add_shortcode( 'eduadmin-loginwidget', 'eduadmin_get_login_widget' );
-	add_shortcode( 'eduadmin-loginview', 'eduadmin_get_login_view' );
-	add_shortcode( 'eduadmin-objectinterest', 'eduadmin_get_object_interest' );
-	add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
-	add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );
+	if ( is_callable( 'add_shortcode' ) ) {
+		add_shortcode( "eduadmin-listview", "eduadmin_get_list_view" );
+		add_shortcode( "eduadmin-detailview", "eduadmin_get_detail_view" );
+		add_shortcode( "eduadmin-bookingview", "eduadmin_get_booking_view" );
+		add_shortcode( 'eduadmin-detailinfo', 'eduadmin_get_detailinfo' );
+		add_shortcode( 'eduadmin-loginwidget', 'eduadmin_get_login_widget' );
+		add_shortcode( 'eduadmin-loginview', 'eduadmin_get_login_view' );
+		add_shortcode( 'eduadmin-objectinterest', 'eduadmin_get_object_interest' );
+		add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
+		add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );
+	}

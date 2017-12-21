@@ -11,7 +11,7 @@
 		$phrases = get_transient( 'eduadmin-phrases' );
 		if ( ! $phrases ) {
 			$phrases         = get_option( 'eduadmin-phrases' );
-			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . 'includes/defaultPhrases.json' );
+			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . '/includes/defaultPhrases.json' );
 			$originalPhrases = json_decode( $file );
 			if ( ! $phrases ) {
 				$phrases = $originalPhrases;

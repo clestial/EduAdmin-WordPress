@@ -1,8 +1,9 @@
 <?php
 	function edu_render_list_settings_page() {
-		$eduapi   = EDU()->api;
-		$edutoken = EDU()->get_token();
-		$apiKey   = get_option( 'eduadmin-api-key' );
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$eduapi                     = EDU()->api;
+		$edutoken                   = EDU()->get_token();
+		$apiKey                     = get_option( 'eduadmin-api-key' );
 
 		if ( ! $apiKey || empty( $apiKey ) ) {
 			add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
@@ -236,4 +237,5 @@
                 </form>
             </div>
 		<?php }
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

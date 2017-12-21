@@ -1,5 +1,6 @@
 <?php
 	function edu_render_general_settings() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( isset( $_REQUEST['act'] ) && $_REQUEST['act'] == "clearTransients" ) {
 			global $wpdb;
 
@@ -285,4 +286,5 @@
             });
         </script>
 		<?php
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

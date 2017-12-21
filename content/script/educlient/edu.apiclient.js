@@ -55,10 +55,9 @@ edu.apiclient = {
 	authJS: function ( apiKey, next ) {
 		if ( edu.apiclient.GetCookie( 'apiToken' ) == null || edu.apiclient.GetCookie( 'apiToken' ) == '' ) {
 			jQuery.ajax( {
-                url: edu.apiclient.baseUrl,
+                url: edu.apiclient.baseUrl + '/authenticate',
 				type: 'POST',
 				data: {
-                    action: 'edu_authenticate',
 					key: apiKey
 				},
 				success: function ( d ) {
@@ -75,10 +74,9 @@ edu.apiclient = {
 	},
 	getCourseListDates: function ( objectIds ) {
 		jQuery.ajax( {
-            url: edu.apiclient.baseUrl,
+            url: edu.apiclient.baseUrl + '/courselist',
 			type: 'POST',
 			data: {
-                action: 'edu_listview_courselist',
 				token: edu.apiclient.authToken,
 				objectIds: objectIds,
 				showcoursedays: jQuery( '.eduadmin-courselistoptions' ).data( 'showcoursedays' ),
@@ -122,10 +120,9 @@ edu.apiclient = {
 	},
 	getCourseEventList: function ( target ) {
 		jQuery.ajax( {
-            url: edu.apiclient.baseUrl,
+            url: edu.apiclient.baseUrl + '/courselist/events',
 			type: 'POST',
 			data: {
-                action: 'edu_api_listview_eventlist',
 				token: edu.apiclient.authToken,
 				baseUrl: wp_edu.BaseUrl,
 				courseFolder: wp_edu.CourseFolder,
@@ -158,10 +155,9 @@ edu.apiclient = {
 	},
 	getEventList: function ( target ) {
 		jQuery.ajax( {
-            url: edu.apiclient.baseUrl,
+            url: edu.apiclient.baseUrl + '/eventlist',
 			type: 'POST',
 			data: {
-                action: 'edu_api_eventlist',
 				token: edu.apiclient.authToken,
 				objectid: jQuery( target ).data( 'objectid' ),
 				city: jQuery( target ).data( 'city' ),
@@ -203,10 +199,9 @@ edu.apiclient = {
 		}
 
 		jQuery.ajax( {
-            url: edu.apiclient.baseUrl,
+            url: edu.apiclient.baseUrl + '/loginwidget',
 			type: 'POST',
 			data: {
-                action: 'edu_api_loginwidget',
 				baseUrl: wp_edu.BaseUrl,
 				courseFolder: wp_edu.CourseFolder,
 				logintext: loginText,
@@ -226,10 +221,9 @@ edu.apiclient = {
 	},
 	CheckCouponCode: function ( code, objectId, categoryId, onData ) {
 		jQuery.ajax( {
-            url: edu.apiclient.baseUrl,
+            url: edu.apiclient.baseUrl + '/coupon/check',
 			type: 'POST',
 			data: {
-                action: 'edu_api_check_coupon_code',
 				token: edu.apiclient.authToken,
 				code: code,
 				objectId: objectId,

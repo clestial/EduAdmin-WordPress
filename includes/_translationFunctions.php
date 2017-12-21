@@ -1,9 +1,17 @@
 <?php
 	function edu_LoadPhrases() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
+
+		if ( EDU()->phrases && ! empty( EDU()->phrases ) && is_array( EDU()->phrases ) ) {
+			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
+			return EDU()->phrases;
+		}
+
 		$phrases = get_transient( 'eduadmin-phrases' );
 		if ( ! $phrases ) {
 			$phrases         = get_option( 'eduadmin-phrases' );
-			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . 'includes/defaultPhrases.json' );
+			$file            = file_get_contents( EDUADMIN_PLUGIN_PATH . '/includes/defaultPhrases.json' );
 			$originalPhrases = json_decode( $file );
 			if ( ! $phrases ) {
 				$phrases = $originalPhrases;
@@ -31,13 +39,15 @@
 			$nPhrases[ $p ]["NewPhrase"] = __( $p, "eduadmin-booking" );
 		}
 
-		EDU()->session['eduadmin-phrases'] = $nPhrases;
-
 		if ( is_array( $nPhrases ) ) {
-			return $nPhrases;
+			EDU()->phrases = $nPhrases;
+		} else {
+			EDU()->phrases = (array) $nPhrases;
 		}
 
-		return (array) $nPhrases;
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
+		return EDU()->phrases;
 	}
 
 	function edu__( $key ) {

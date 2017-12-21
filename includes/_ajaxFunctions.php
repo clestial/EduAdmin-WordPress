@@ -1,37 +1,9 @@
 <?php
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
-	add_action( 'wp_ajax_edu_authenticate', 'edu_authenticate' );
-	add_action( 'wp_ajax_nopriv_edu_authenticate', 'edu_authenticate' );
-
-	function edu_authenticate() {
-		if ( empty( $_POST['key'] ) ) {
-			return;
-		}
-		$info = DecryptApiKey( $_POST['key'] );
-
-		$token = "";
-
-		if ( ! isset( $_COOKIE['edu-usertoken'] ) ) {
-			$token = EDU()->api->GetAuthToken( $info->UserId, $info->Hash );
-			setcookie( 'edu-usertoken', $token, null, COOKIEPATH, COOKIE_DOMAIN, false, true );
-		} else {
-			$valid = EDU()->api->ValidateAuthToken( $_COOKIE['edu-usertoken'] );
-			if ( ! $valid ) {
-				$token = EDU()->api->GetAuthToken( $info->UserId, $info->Hash );
-				setcookie( 'edu-usertoken', $token, null, COOKIEPATH, COOKIE_DOMAIN, false, true );
-			} else {
-				$token = $_COOKIE['edu-usertoken'];
-			}
-		}
-		echo edu_encrypt( 'edu_js_token_crypto', $token );
-		wp_die();
-	}
-
 	add_action( 'wp_ajax_edu_listview_courselist', 'edu_listview_courselist' );
 	add_action( 'wp_ajax_nopriv_edu_listview_courselist', 'edu_listview_courselist' );
 	function edu_listview_courselist() {
-		header( "Content-type: application/json; charset=UTF-8" );
 		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
 
 		$objectIds = $_POST['objectIds'];
@@ -115,16 +87,11 @@
 			}
 		}
 
-		echo json_encode( $returnValue );
-		wp_die();
+		return rest_ensure_response( $returnValue );
 	}
-
-	add_action( 'wp_ajax_edu_api_listview_eventlist', 'edu_api_listview_eventlist' );
-	add_action( 'wp_ajax_nopriv_edu_api_listview_eventlist', 'edu_api_listview_eventlist' );
 
 	function edu_api_listview_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
-
 		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
 
 		$sorting = new XSorting();
@@ -336,7 +303,7 @@
 		} else if ( "B" == $_POST['template'] ) {
 			echo edu_api_listview_eventlist_template_B( $ede, $eventDates, $_POST );
 		}
-		wp_die();
+		die();
 	}
 
 	function edu_api_listview_eventlist_template_A( $data, $eventDates, $request ) {
@@ -554,8 +521,6 @@
 		return $out;
 	}
 
-	add_action( 'wp_ajax_edu_api_eventlist', 'edu_api_eventlist' );
-	add_action( 'wp_ajax_nopriv_edu_api_eventlist', 'edu_api_eventlist' );
 	function edu_api_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
 		$retStr = '';
@@ -797,11 +762,9 @@
 		$retStr .= '</div></div>';
 
 		echo $retStr;
-		wp_die();
+		die();
 	}
 
-	add_action( 'wp_ajax_edu_api_loginwidget', 'edu_api_loginwidget' );
-	add_action( 'wp_ajax_nopriv_edu_api_loginwidget', 'edu_api_loginwidget' );
 	function edu_api_loginwidget() {
 		header( "Content-type: text/html; charset=UTF-8" );
 		$surl = $_POST['baseUrl'];
@@ -845,14 +808,10 @@
 				"</a>" .
 				"</div>";
 		}
-		wp_die();
+		die();
 	}
 
-	add_action( 'wp_ajax_edu_api_check_coupon_code', 'edu_api_check_coupon_code' );
-	add_action( 'wp_ajax_nopriv_edu_api_check_coupon_code', 'edu_api_check_coupon_code' );
 	function edu_api_check_coupon_code() {
-		header( "Content-type: application/json; charset=UTF-8" );
-
 		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
 
 		$objectID   = $_POST['objectId'];
@@ -860,6 +819,5 @@
 		$code       = $_POST['code'];
 		$vcode      = EDU()->api->CheckCouponCode( $edutoken, $objectID, $categoryID, $code );
 
-		echo json_encode( $vcode );
-		wp_die();
+		return rest_ensure_response( $vcode );
 	}

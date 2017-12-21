@@ -2,9 +2,9 @@
 
 Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
-Requires at least: 3.0
-Tested up to: 4.9
-Stable tag: 1.0.9
+Requires at least: 4.7
+Tested up to: 4.9.1
+Stable tag: 1.0.10
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -33,7 +33,18 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
+### [1.0.10]
+- Changing to REST API instead, hopefully this will increase the speed again.
+
+### [1.0.9]
+- We changed to admin-ajax here (It will be slow)
+
 == Changelog ==
+
+### [1.0.10]
+- Rewriting the AJAX-API a third time. This time we use the REST API.
+- Increased performance overall by rethinking the localization-functions.
+- Added more debugging timers to see if we can catch performance thieves.
 
 ### [1.0.9]
 - Implementing current ajax-methods as WordPress-ajax-methods instead.
@@ -451,7 +462,8 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.9...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.10...HEAD
+[1.0.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.9...v1.0.10
 [1.0.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.8...v1.0.9
 [1.0.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.7...v1.0.8
 [1.0.7]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.6...v1.0.7

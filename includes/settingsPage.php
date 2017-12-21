@@ -1,5 +1,6 @@
 <?php
 	function edu_render_settings_page() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		if ( get_option( 'eduadmin-credentials_have_changed' ) ) {
 			delete_transient( 'eduadmin-token' );
 			delete_transient( 'eduadmin-listCourses' );
@@ -44,4 +45,5 @@
             </form>
         </div>
 		<?php
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

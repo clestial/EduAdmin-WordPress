@@ -1,5 +1,6 @@
 <?php
 	function edu_render_detail_settings_page() {
+		EDU()->timers[ __METHOD__ ] = microtime( true );
 		global $eduapi;
 		global $edutoken;
 		$apiKey = get_option( 'eduadmin-api-key' );
@@ -91,4 +92,5 @@
             </form>
         </div>
 		<?php
+		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 	}

@@ -25,7 +25,6 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_listview_courselist',
 				'args'     => array(
-					'token'           => array( 'required' => true ),
 					'objectIds'       => array( 'required' => true ),
 					'showcoursedays'  => array(),
 					'showcoursetimes' => array(),
@@ -50,7 +49,6 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_api_listview_eventlist',
 				'args'     => array(
-					'token'           => array( 'required' => true ),
 					'showcoursedays'  => array(),
 					'showcoursetimes' => array(),
 					'currency'        => array(),
@@ -74,7 +72,6 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_api_eventlist',
 				'args'     => array(
-					'token'          => array( 'required' => true ),
 					'objectid'       => array( 'required' => true ),
 					'city'           => array(),
 					'groupbycity'    => array(),
@@ -108,7 +105,6 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_api_check_coupon_code',
 				'args'     => array(
-					'token'      => array( 'required' => true ),
 					'code'       => array( 'required' => true ),
 					'objectId'   => array( 'required' => true ),
 					'categoryId' => array( 'required' => true ),

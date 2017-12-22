@@ -1,10 +1,8 @@
 <?php
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
-	add_action( 'wp_ajax_edu_listview_courselist', 'edu_listview_courselist' );
-	add_action( 'wp_ajax_nopriv_edu_listview_courselist', 'edu_listview_courselist' );
 	function edu_listview_courselist() {
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
+		$edutoken = EDU()->get_token();
 
 		$objectIds = $_POST['objectIds'];
 
@@ -92,7 +90,7 @@
 
 	function edu_api_listview_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
+		$edutoken = EDU()->get_token();
 
 		$sorting = new XSorting();
 		$s       = new XSort( 'SubjectName', 'ASC' );
@@ -307,7 +305,7 @@
 	}
 
 	function edu_api_listview_eventlist_template_A( $data, $eventDates, $request ) {
-		$edutoken       = edu_decrypt( "edu_js_token_crypto", $request["token"] );
+		$edutoken       = EDU()->get_token();
 		$spotLeftOption = $request['spotsleft'];
 		$alwaysFewSpots = $request['fewspots'];
 		$spotSettings   = $request['spotsettings'];
@@ -421,7 +419,7 @@
 	}
 
 	function edu_api_listview_eventlist_template_B( $data, $eventDates, $request ) {
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $request["token"] );
+		$edutoken = EDU()->get_token();
 
 		$spotLeftOption = $request['spotsleft'];
 		$alwaysFewSpots = $request['fewspots'];
@@ -525,7 +523,7 @@
 		header( "Content-type: text/html; charset=UTF-8" );
 		$retStr = '';
 
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
+		$edutoken = EDU()->get_token();
 
 		$objectId = $_POST['objectid'];
 
@@ -770,6 +768,10 @@
 		$surl = $_POST['baseUrl'];
 		$cat  = $_POST['courseFolder'];
 
+		$loginText  = $_POST['logintext'];
+		$logoutText = $_POST['logouttext'];
+		$guestText  = $_POST['guesttext'];
+
 		$baseUrl = $surl . '/' . $cat;
 		if ( isset( $_COOKIE['eduadmin_loginUser'] ) ) {
 			$user    = $_COOKIE['eduadmin_loginUser'];
@@ -792,19 +794,19 @@
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLogoutButton\">" .
-				$_POST['logouttext'] .
+				( ! empty( $logoutText ) ? $logoutText : edu__( 'Log out' ) ) .
 				"</a>" .
 				"</div>";
 		} else {
 			echo
 				"<div class=\"eduadminLogin\"><i>" .
-				$_POST['guesttext'] .
+				( ! empty( $guestText ) ? $guestText : edu__( 'Guest' ) ) .
 				"</i> - " .
 				"<a href=\"" . $baseUrl . "/profile/login" . edu_getQueryString( "?", array(
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLoginButton\">" .
-				$_POST['logintext'] .
+				( ! empty( $loginText ) ? $loginText : edu__( 'Log in' ) ) .
 				"</a>" .
 				"</div>";
 		}
@@ -812,7 +814,7 @@
 	}
 
 	function edu_api_check_coupon_code() {
-		$edutoken = edu_decrypt( "edu_js_token_crypto", $_POST["token"] );
+		$edutoken = EDU()->get_token();
 
 		$objectID   = $_POST['objectId'];
 		$categoryID = $_POST['categoryId'];

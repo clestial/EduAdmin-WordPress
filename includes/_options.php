@@ -88,6 +88,7 @@
 			}
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $title;
 	}
 
@@ -198,8 +199,6 @@
 			                    'BaseUrl'        => home_url(),
 			                    'BaseUrlScripts' => plugins_url( 'content/script', dirname( __FILE__ ) ),
 			                    'CourseFolder'   => get_option( 'eduadmin-rewriteBaseUrl' ),
-			                    'Phrases'        => edu_LoadPhrases(),
-			                    'ApiKey'         => get_option( 'eduadmin-api-key' ),
 			                    'AjaxUrl'        => rest_url( 'edu/v1' ),
 		                    ) );
 		wp_enqueue_script( 'eduadmin_apiclient_script', false, array( 'jquery' ) );
@@ -278,9 +277,11 @@
 				);
 			}
 			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 			return $script;
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return '';
 	}
 

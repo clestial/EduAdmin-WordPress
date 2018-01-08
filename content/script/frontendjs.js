@@ -414,7 +414,7 @@ var eduBookingView = {
 			return (sum % 10) === 0;
 		}
 
-		var civicRegNoFields = jQuery( '.participantItem:not(.template) .eduadmin-civicRegNo' );
+        var civicRegNoFields = jQuery(':not(.template) .eduadmin-civicRegNo');
 		for ( var i = 0; i < civicRegNoFields.length; i++ ) {
 			var field = civicRegNoFields[i];
 			if ( !__isValid( field ) ) {

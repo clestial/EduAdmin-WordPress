@@ -47,6 +47,15 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
+### [1.0.13]
+- Hide the course image, if there is no URL available.
+
+### [1.0.12]
+- JS-bugfix, the selector for the civic reg numbers should work on any field that has the correct class (and is not a template)
+
+### [1.0.11]
+- Bugfix with REST API, we don't need to pass the token now, so we can always get a valid token when needed.
+
 ### [1.0.10]
 - Rewriting the AJAX-API a third time. This time we use the REST API.
 - Increased performance overall by rethinking the localization-functions.

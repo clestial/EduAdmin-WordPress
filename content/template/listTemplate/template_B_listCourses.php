@@ -18,19 +18,19 @@
 		$attributes['category'] = $categoryID;
 	}
 
-	if ( isset( $_REQUEST['eduadmin-category'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
 		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
 		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-city'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
 		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
 		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
 		$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
@@ -129,18 +129,18 @@
 		$filtering->AddItem( $f );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-city'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
 		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-category'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
 		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
 		$attributes['category'] = $_REQUEST['eduadmin-category'];
 	}
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
 	}

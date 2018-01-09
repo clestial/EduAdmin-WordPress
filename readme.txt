@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9.1
-Stable tag: 1.0.13
+Stable tag: 1.0.14
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -46,6 +46,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.14]
+- Bugfix: Search not checking if value was empty, which converted some values to `0`, which is bad.
 
 ### [1.0.13]
 - Hide the course image, if there is no URL available.

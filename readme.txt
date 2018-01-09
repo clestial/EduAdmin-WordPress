@@ -477,7 +477,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.10...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.13...HEAD
+[1.0.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.12...v1.0.13
+[1.0.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.11...v1.0.12
+[1.0.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.10...v1.0.11
 [1.0.10]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.9...v1.0.10
 [1.0.9]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.8...v1.0.9
 [1.0.8]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.7...v1.0.8

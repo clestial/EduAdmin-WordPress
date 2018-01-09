@@ -90,5 +90,5 @@ $SLACK_HOOKURL
 
 curl -X POST \
 -H 'Content-type: application/json' \
---data '{ "fromUser": { "username": "TravisCI", "displayName": "Travis CI", "avatarUrlSmall": "https://a.slack-edge.com/0180/img/services/travis_48.png", "avatarUrlMedium": "https://a.slack-edge.com/0180/img/services/travis_48.png" }, "text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:" }'
+--data '{ "fromUser": { "username": "TravisCI", "displayName": "Travis CI", "avatarUrlSmall": "https://a.slack-edge.com/0180/img/services/travis_48.png", "avatarUrlMedium": "https://a.slack-edge.com/0180/img/services/travis_48.png" }, "text": "EduAdmin Booking plugin version '"$VERSION"' deployed to <https://sv.wordpress.org/plugins/eduadmin-booking/|wp.org> :tada:" }' \
 $GITTER_API

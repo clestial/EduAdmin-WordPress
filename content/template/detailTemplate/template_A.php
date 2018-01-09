@@ -147,7 +147,9 @@
         <div class="eduadmin">
             <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
             <div class="title">
-                <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
+	            <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
+                    <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
+	            <?php endif; ?>
                 <h1 class="courseTitle"><?php echo $name; ?>
                     <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
                 </h1>

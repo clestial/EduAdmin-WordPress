@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9.1
-Stable tag: 1.0.14
+Stable tag: 1.0.15
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -33,9 +33,6 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
-### [1.0.12]
-- JS-bugfix, the selector for the civic reg numbers should work on any field that has the correct class (and is not a template)
-
 ### [1.0.11]
 - Bugfix with REST API, we don't need to pass the token now, so we can always get a valid token when needed.
 
@@ -46,6 +43,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.15]
+- Added so that we only display valid discount cards
+- Fixing loginproblems. (Sending new passwords also triggered "Wrong password")
 
 ### [1.0.14]
 - Bugfix: Search not checking if value was empty, which converted some values to `0`, which is bad.
@@ -480,7 +481,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.13...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.15...HEAD
+[1.0.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.14...v1.0.15
+[1.0.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.13...v1.0.14
 [1.0.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.12...v1.0.13
 [1.0.12]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.11...v1.0.12
 [1.0.11]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.10...v1.0.11

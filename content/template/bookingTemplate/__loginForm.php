@@ -1,5 +1,5 @@
 <div class="checkLoginForm">
-    <input type="hidden" name="bookingLoginAction" value="loginEmail"/>
+    <input type="hidden" name="eduformloginaction" value=""/>
     <h3><?php edu_e( "Please login to continue." ); ?></h3>
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
@@ -46,9 +46,9 @@
 		}
 	?>
     <button class="loginButton"
-            onclick="this.form.eduadminpassword.required = true; this.form.bookingLoginAction.value = 'loginEmail';<?php echo $click; ?>"><?php edu_e( "Log in" ); ?></button>
+            onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'loginEmail';<?php echo $click; ?>"><?php edu_e( "Log in" ); ?></button>
     <button class="forgotPasswordButton"
-            onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.bookingLoginAction.value = 'forgot';"><?php edu_e( "Forgot password" ); ?></button>
+            onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php edu_e( "Forgot password" ); ?></button>
 </div>
 <?php if ( isset( EDU()->session['eduadminLoginError'] ) ) { ?>
     <div class="edu-modal warning" style="display: block; clear: both;">

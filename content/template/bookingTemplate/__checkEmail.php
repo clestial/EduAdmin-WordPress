@@ -1,5 +1,5 @@
 <div class="checkEmailForm">
-    <input type="hidden" name="bookingLoginAction" value="checkEmail"/>
+    <input type="hidden" name="eduformloginaction" value="checkEmail"/>
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
 		$loginLabel         = edu__( "E-mail address" );

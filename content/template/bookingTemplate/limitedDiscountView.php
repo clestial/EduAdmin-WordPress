@@ -63,7 +63,20 @@
 			$valid = false;
 			foreach ( $cCardIds as $cid ) {
 				if ( $cid == $card->LimitedDiscountID ) {
+
 					$valid = true;
+
+					if ( $card->CreditLeft <= 0 ) {
+						$valid = false;
+					}
+
+					if ( $card->ValidFrom != null && $card->ValidFrom > date( "Y-m-d H:i:s" ) ) {
+						$valid = false;
+					}
+
+					if ( $card->ValidTo != null && $card->ValidTo < date( "Y-m-d H:i:s" ) ) {
+						$valid = false;
+					}
 				}
 			}
 
@@ -78,20 +91,22 @@
 
 					<?php
 					foreach ( $cCards as $card ) {
-						$enoughCredits = ( $card->CreditLeft >= $cardCosts[ $card->LimitedDiscountID ] );
-						?>
-                        <label class="discountCardItem">
-                            <input type="radio"
-                                   name="edu-limitedDiscountID"
-								<?php if ( ! $enoughCredits ) : ?>
-                                    disabled readonly title="<?php edu_e( "Not enough uses left on this card." ); ?>"
-								<?php endif; ?>
-                                   value="<?php echo $card->LimitedDiscountID; ?>"/>
-							<?php echo $card->PublicName; ?>
-                            <i>(<?php echo sprintf( edu__( "Uses left: %s / %s" ), $card->CreditLeft, $card->CreditStartValue ); ?>
-                                )</i>
-                        </label>
-						<?php
+						if ( $card->CreditLeft > 0 ) {
+							$enoughCredits = ( $card->CreditLeft >= $cardCosts[ $card->LimitedDiscountID ] );
+							?>
+                            <label class="discountCardItem">
+                                <input type="radio"
+                                       name="edu-limitedDiscountID"
+									<?php if ( ! $enoughCredits ) : ?>
+                                        disabled readonly title="<?php edu_e( "Not enough uses left on this card." ); ?>"
+									<?php endif; ?>
+                                       value="<?php echo $card->LimitedDiscountID; ?>"/>
+								<?php echo $card->PublicName; ?>
+                                <i>(<?php echo sprintf( edu__( "Uses left: %s / %s" ), $card->CreditLeft, $card->CreditStartValue ); ?>
+                                    )</i>
+                            </label>
+							<?php
+						}
 					}
 				}
 			?>

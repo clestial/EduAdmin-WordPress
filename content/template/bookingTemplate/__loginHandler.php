@@ -1,6 +1,6 @@
 <?php
-	if ( isset( $_REQUEST['bookingLoginAction'] ) && ! empty( $_REQUEST['bookingLoginAction'] ) ) {
-		if ( $_REQUEST['bookingLoginAction'] === "checkEmail" && ! empty( $_REQUEST['eduadminloginEmail'] ) ) {
+	if ( isset( $_REQUEST['eduformloginaction'] ) && ! empty( $_REQUEST['eduformloginaction'] ) ) {
+		if ( $_REQUEST['eduformloginaction'] === "checkEmail" && ! empty( $_REQUEST['eduadminloginEmail'] ) ) {
 			$ft                        = new XFiltering();
 			$selectedLoginField        = get_option( 'eduadmin-loginField', 'Email' );
 			$allowCustomerRegistration = get_option( "eduadmin-allowCustomerRegistration", true );
@@ -77,7 +77,7 @@
 				EDU()->session['eduadminLoginError'] = edu__( "Could not find any users with that info." );
 			}
 			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
-		} else if ( $_REQUEST['bookingLoginAction'] == "forgot" ) {
+		} else if ( $_REQUEST['eduformloginaction'] == "forgot" ) {
 			$success                                  = sendForgottenPassword( sanitize_text_field( $_POST['eduadminloginEmail'] ) );
 			EDU()->session['eduadmin-forgotPassSent'] = $success;
 		}

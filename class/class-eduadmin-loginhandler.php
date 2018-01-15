@@ -16,9 +16,9 @@
 			$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 			$baseUrl = $surl . '/' . $cat;
 
-			$regularLogin = isset ( $_POST['eduformloginaction'] );
+			$regularLogin = isset ( $_POST['eduformloginaction'] ) && sanitize_text_field( $_POST['eduformloginaction'] ) == "login";
 
-			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) ) {
+			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) && ! empty( $_POST['eduadminpassword'] ) ) {
 				$eduapi   = EDU()->api;
 				$edutoken = EDU()->get_token();
 

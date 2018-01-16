@@ -1,5 +1,6 @@
 <div class="checkLoginForm">
     <input type="hidden" name="eduformloginaction" value=""/>
+    <input type="hidden" name="eduReturnUrl" value="<?php echo @esc_attr( $_SERVER['REQUEST_URI'] ); ?>"/>
     <h3><?php edu_e( "Please login to continue." ); ?></h3>
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );

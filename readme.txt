@@ -44,6 +44,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
+### [Unreleased]
+- Adding missing form-field used by login-code
+
 ### [1.0.15]
 - Added so that we only display valid discount cards
 - Fixing loginproblems. (Sending new passwords also triggered "Wrong password")

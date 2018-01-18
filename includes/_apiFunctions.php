@@ -26,11 +26,10 @@
 	}
 
 	function edu_getTimers() {
-		global $eduapi;
-		if ( $eduapi->timers ) {
-			echo "<!-- EduAdmin Booking API - Timers -->\n";
+		if ( EDU()->timers ) {
+			echo "<!-- EduAdmin Booking (" . EDU()->version . ") API - Timers -->\n";
 			$totalValue = 0;
-			foreach ( $eduapi->timers as $timer => $value ) {
+			foreach ( EDU()->timers as $timer => $value ) {
 				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
 				$totalValue += $value;
 			}

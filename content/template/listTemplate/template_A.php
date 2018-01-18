@@ -74,10 +74,10 @@
         <div class="eduadmin">
 			<?php if ( $searchVisible ) { ?>
                 <form method="POST" class="search-form">
-                    <table style="width: 100%;">
-                        <tr>
-							<?php if ( $allowLocationSearch && ! empty( $addresses ) && $showEvents ) { ?>
-                                <td style="width: 15%;">
+                    <div class="search-row">
+
+		                <?php if ( $allowLocationSearch && ! empty( $addresses ) && $showEvents ) { ?>
+                            <div class="search-item">
                                     <select name="eduadmin-city">
                                         <option value=""><?php edu_e( "Choose city" ); ?></option>
 										<?php
@@ -91,10 +91,10 @@
 											}
 										?>
                                     </select>
-                                </td>
+                            </div>
 							<?php } ?>
 							<?php if ( $allowSubjectSearch && ! empty( $distinctSubjects ) ) { ?>
-                                <td style="width: 15%;">
+                                <div class="search-item">
                                     <select name="eduadmin-subject">
                                         <option value=""><?php edu_e( "Choose subject" ); ?></option>
 										<?php
@@ -103,10 +103,10 @@
 											}
 										?>
                                     </select>
-                                </td>
+                                </div>
 							<?php } ?>
 							<?php if ( $allowCategorySearch && ! empty( $categories ) ) { ?>
-                                <td style="width: 15%;">
+                                <div class="search-item">
                                     <select name="eduadmin-category">
                                         <option value=""><?php edu_e( "Choose category" ); ?></option>
 										<?php
@@ -115,10 +115,10 @@
 											}
 										?>
                                     </select>
-                                </td>
+                                </div>
 							<?php } ?>
 							<?php if ( $allowLevelSearch && ! empty( $levels ) ) { ?>
-                                <td style="width: 15%;">
+                                <div class="search-item">
                                     <select name="eduadmin-level">
                                         <option value=""><?php edu_e( "Choose course level" ); ?></option>
 										<?php
@@ -127,21 +127,21 @@
 											}
 										?>
                                     </select>
-                                </td>
+                                </div>
 							<?php } ?>
-                            <td>
+                        <div class="search-item">
                                 <input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
                                        autosave="edu-course-search_<?php echo session_id(); ?>"
                                        placeholder="<?php edu_e( "Search courses" ); ?>"<?php if ( isset( $_REQUEST['searchCourses'] ) ) {
 	                                echo " value=\"" . sanitize_text_field( $_REQUEST['searchCourses'] ) . "\"";
 								} ?> />
-                            </td>
-                            <td style="width: 10%;">
+                        </div>
+                        <div class="search-item">
                                 <input type="submit" class="searchButton" style="width: 100%;"
                                        value="<?php edu_e( "Search" ); ?>"/>
-                            </td>
-                        </tr>
-                    </table>
+                        </div>
+
+                    </div>
 					<?php
 						if ( isset( $_REQUEST['searchCourses'] ) ) {
 							?>

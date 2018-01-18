@@ -39,10 +39,10 @@
 	}
 
 	function renderCheckField( $attribute, $multiple, $suffix, $data ) {
-		echo "<label><div class=\"inputLabel\">";
+		echo "<label><div class=\"inputLabel noHide\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		echo "<input type=\"checkbox\"" . ( $data != null && $data ? " checked=\"checked\"" : "" ) . " name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" />";
+		echo "<input type=\"checkbox\"" . ( $data != null && $data ? " checked=\"checked\"" : "" ) . " placeholder=\"" . wp_strip_all_tags( $attribute->AttributeDescription ) . "\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" />";
 		echo "</div></label>";
 	}
 
@@ -50,7 +50,7 @@
 		echo "<label><div class=\"inputLabel\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		echo "<input type=\"text\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . ( $data != null ? $data : $attribute->AttributeValue ) . "\" />";
+		echo "<input type=\"text\" placeholder=\"" . wp_strip_all_tags( $attribute->AttributeDescription ) . "\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . ( $data != null ? $data : $attribute->AttributeValue ) . "\" />";
 		echo "</div></label>";
 	}
 
@@ -58,7 +58,7 @@
 		echo "<label><div class=\"inputLabel\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		echo "<input type=\"number\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . ( $data != null ? $data : $attribute->AttributeValue ) . "\" />";
+		echo "<input type=\"number\" placeholder=\"" . wp_strip_all_tags( $attribute->AttributeDescription ) . "\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" value=\"" . ( $data != null ? $data : $attribute->AttributeValue ) . "\" />";
 		echo "</div></label>";
 	}
 
@@ -66,7 +66,7 @@
 		echo "<label><div class=\"inputLabel\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		echo "<input type=\"date\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" />";
+		echo "<input type=\"date\" placeholder=\"" . wp_strip_all_tags( $attribute->AttributeDescription ) . "\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" />";
 		echo "</div></label>";
 	}
 
@@ -74,7 +74,7 @@
 		echo "<label><div class=\"inputLabel\">";
 		echo $attribute->AttributeDescription;
 		echo "</div><div class=\"inputHolder\">";
-		echo "<textarea name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" rows=\"3\" resizable=\"resizable\">" . ( $data != null ? $data : $attribute->AttributeValue ) . "</textarea>";
+		echo "<textarea placeholder=\"" . wp_strip_all_tags( $attribute->AttributeDescription ) . "\" name=\"edu-attr_" . $attribute->AttributeID . ( $suffix != "" ? "-" . $suffix : "" ) . ( $multiple ? "[]" : "" ) . "\" rows=\"3\" resizable=\"resizable\">" . ( $data != null ? $data : $attribute->AttributeValue ) . "</textarea>";
 		echo "</div></label>";
 	}
 

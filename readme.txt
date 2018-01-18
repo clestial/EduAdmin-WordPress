@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9.1
-Stable tag: 1.0.15
+Stable tag: 1.0.16
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -44,8 +44,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Changelog ==
 
-### [Unreleased]
+### [1.0.16]
 - Adding missing form-field used by login-code
+- Bugfix: Wrong function called in _ajaxFunctions when fetching logical date groups
 
 ### [1.0.15]
 - Added so that we only display valid discount cards

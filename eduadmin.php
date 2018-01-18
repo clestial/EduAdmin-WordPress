@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.16
+	 * Version:	1.0.17
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
@@ -80,6 +80,10 @@
 			 * @var array
 			 */
 			public $phrases;
+			/**
+			 * @var string
+			 */
+			public $version;
 
 			/**
 			 * @return EduAdmin
@@ -95,11 +99,37 @@
 			public function __construct() {
 				$this->timers               = array();
 				$this->timers[ __METHOD__ ] = microtime( true );
+				$this->version              = $this->get_version();
 				$this->includes();
 				$this->init_hooks();
 
 				do_action( 'eduadmin_loaded' );
 				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+			}
+
+			public function get_version() {
+				if ( function_exists( 'get_plugin_data' ) ) {
+					$pData = get_plugin_data( __FILE__ );
+
+					return $pData['Version'];
+				} else {
+					$default_headers = array(
+						'Name'        => 'Plugin Name',
+						'PluginURI'   => 'Plugin URI',
+						'Version'     => 'Version',
+						'Description' => 'Description',
+						'Author'      => 'Author',
+						'AuthorURI'   => 'Author URI',
+						'TextDomain'  => 'Text Domain',
+						'DomainPath'  => 'Domain Path',
+						'Network'     => 'Network',
+						// Site Wide Only is deprecated in favor of Network.
+						'_sitewide'   => 'Site Wide Only',
+					);
+					$pData           = get_file_data( __FILE__, $default_headers );
+
+					return $pData['Version'];
+				}
 			}
 
 			/**
@@ -161,7 +191,7 @@
 				include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
 				include_once( 'includes/loApiClient.php' );
 
-				$this->api = new EduAdminClient();
+				$this->api = new EduAdminClient( $this->version );
 				global $eduapi;
 				global $edutoken;
 				$eduapi   = $this->api;

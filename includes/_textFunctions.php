@@ -51,6 +51,7 @@
 	function edu_getQueryString( $prepend = "?", $removeParameters = array() ) {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
 		array_push( $removeParameters, 'eduadmin-thankyou' );
+		array_push( $removeParameters, 'q' );
 		foreach ( $removeParameters as $par ) {
 			unset( $_GET[ $par ] );
 		}

@@ -4,7 +4,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9.1
-Stable tag: 1.0.16
+Stable tag: 1.0.17
 Requires PHP: 5.0.1 (with SoapClient)
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -43,6 +43,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.17]
+- Changing user agent in SoapClient to contain the version number of the plugin
+- More mobile friendly default CSS (Users will need to reset their style settings, if they have modified anything
 
 ### [1.0.16]
 - Adding missing form-field used by login-code
@@ -485,7 +489,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.15...HEAD
+[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.17...HEAD
+[1.0.17]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.16...v1.0.17
+[1.0.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.15...v1.0.16
 [1.0.15]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.14...v1.0.15
 [1.0.14]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.13...v1.0.14
 [1.0.13]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.12...v1.0.13

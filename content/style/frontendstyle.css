@@ -456,10 +456,33 @@
     white-space: nowrap;
 }
 
+.eduadmin .search-row {
+    width: 100%;
+    position: relative;
+}
+
+.eduadmin .search-row .search-item {
+    display: inline-block;
+}
+
 /* Mobil-css för när vi ska fixa till så att den är responsiv */
 @media (max-width: 800px) {
     .eduadmin .objectItem .objectBook {
-        display: none;
+        position: relative;
+        display: block;
+        top: 0;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+    .eduadmin .search-row .search-item {
+        width: 100%;
+        display: block;
+    }
+
+    .eduadmin .search-row .search-item * {
+        width: 100%;
     }
 
     .eduadmin .textblock.leftBlock, .eduadmin .textblock.rightBlock {
@@ -504,6 +527,11 @@
         width: 100%;
     }
 
+    .eduadmin .inputHolder select, .eduadmin .inputHolder input[type="number"] {
+        max-width: unset;
+        width: 100%;
+    }
+
     .eduadmin .eventDays {
         border-top: 1px solid #c9c9c9;
         margin-top: 2em;
@@ -539,6 +567,14 @@
     }
 
     .eduadmin .eventDays .eventItem .eventBook .button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .eduadmin .readMoreButton {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
         width: 100%;
         text-align: center;
     }

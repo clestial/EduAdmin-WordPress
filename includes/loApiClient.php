@@ -24,8 +24,10 @@
 
 		/**
 		 * EduAdminClient constructor
+		 *
+		 * @param $version
 		 */
-		public function __construct() {
+		public function __construct( $version ) {
 			$this->timers                   = array();
 			$this->timers['InitSoapClient'] = microtime( true );
 			$this->__server                 = new SoapClient(
@@ -33,6 +35,7 @@
 				array(
 					'trace'      => 0,
 					'cache_wsdl' => WSDL_CACHE_BOTH,
+					'user_agent' => 'EduAdmin WordPress Plugin (' . $version . ')',
 				)
 			);
 			$this->timers['InitSoapClient'] = microtime( true ) - $this->timers['InitSoapClient'];

@@ -46,13 +46,13 @@
 	function renderNoteQuestion( $question ) {
 		echo "<label><h3 class=\"inputLabel noteQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convertToMoney( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
 		echo "<div class=\"inputHolder\">";
-		echo "<textarea name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_note\" data-type=\"note\" onchange=\"eduBookingView.UpdatePrice();\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " resizable=\"resizable\" class=\"questionNoteField\" rows=\"3\">" . $question->Answers->EventBookingAnswer->DefaultAnswerText . "</textarea>";
+		echo "<textarea placeholder=\"" . wp_strip_all_tags( $question->QuestionText ) . "\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_note\" data-type=\"note\" onchange=\"eduBookingView.UpdatePrice();\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " resizable=\"resizable\" class=\"questionNoteField\" rows=\"3\">" . $question->Answers->EventBookingAnswer->DefaultAnswerText . "</textarea>";
 		echo "</div></label>";
 	}
 
 // QuestionTypeID 2
 	function renderCheckBoxQuestion( $question ) {
-		echo "<h3 class=\"inputLabel checkBoxQuestion\">" . $question->QuestionText . "</h3>";
+		echo "<h3 class=\"inputLabel checkBoxQuestion noHide\">" . $question->QuestionText . "</h3>";
 		if ( is_array( $question->Answers->EventBookingAnswer ) ) {
 			foreach ( $question->Answers->EventBookingAnswer as $q ) {
 				echo "<label>";

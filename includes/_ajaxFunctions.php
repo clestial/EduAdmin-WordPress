@@ -118,6 +118,11 @@
 			$filtering->AddItem( $f );
 		}
 
+		if ( isset( $_POST['subjectid'] ) ) {
+			$f = new XFilter( 'SubjectID', '=', $_POST['subjectid'] );
+			$filtering->AddItem( $f );
+		}
+
 		if ( ! empty( $filterCourses ) ) {
 			$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
 			$filtering->AddItem( $f );
@@ -150,6 +155,26 @@
 				return ( $nameMatch || $descrMatch || $shortDescrMatch );
 			} );
 		}
+
+		$subjects = get_transient( 'eduadmin-subjects' );
+		if ( ! $subjects ) {
+			$sorting = new XSorting();
+			$s       = new XSort( 'SubjectName', 'ASC' );
+			$sorting->AddItem( $s );
+			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
+		}
+
+		$edo = array_filter( $edo, function( $object ) {
+			$subjects = get_transient( 'eduadmin-subjects' );
+			foreach ( $subjects as $subj ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_POST['subjectid'] ) ) {
+					return true;
+				}
+			}
+
+			return false;
+		} );
 
 		$filtering = new XFiltering();
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
@@ -299,7 +324,7 @@
 		if ( "A" == $_POST['template'] ) {
 			edu_api_listview_eventlist_template_A( $ede, $eventDates, $_POST );
 		} else if ( "B" == $_POST['template'] ) {
-			echo edu_api_listview_eventlist_template_B( $ede, $eventDates, $_POST );
+			edu_api_listview_eventlist_template_B( $ede, $eventDates, $_POST );
 		}
 		die();
 	}

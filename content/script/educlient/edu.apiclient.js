@@ -1,4 +1,5 @@
 /** global: wp_edu */
+var wp_edu = wp_edu ? wp_edu : {AjaxUrl: '', CourseFolder: '', BaseUrl: ''};
 /** global: edu */
 var edu = edu ? edu : {};
 
@@ -68,6 +69,7 @@ edu.apiclient = {
                 city: jQuery('.eduadmin-courselistoptions').data('city'),
                 category: jQuery('.eduadmin-courselistoptions').data('category'),
                 subject: jQuery('.eduadmin-courselistoptions').data('subject'),
+                subjectid: jQuery('.eduadmin-courselistoptions').data('subjectid'),
                 courselevel: jQuery('.eduadmin-courselistoptions').data('courselevel'),
                 showcoursetimes: jQuery('.eduadmin-courselistoptions').data('showcoursetimes'),
                 showcourseprices: jQuery('.eduadmin-courselistoptions').data('showcourseprices'),
@@ -114,6 +116,7 @@ edu.apiclient = {
                 city: jQuery(target).data('city'),
                 category: jQuery(target).data('category'),
                 subject: jQuery(target).data('subject'),
+                subjectid: jQuery(target).data('subjectid'),
                 courselevel: jQuery(target).data('courselevel'),
                 showcoursetimes: jQuery(target).data('showcoursetimes'),
                 showcourseprices: jQuery(target).data('showcourseprices'),

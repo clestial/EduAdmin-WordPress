@@ -33,7 +33,7 @@
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
-		$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
+		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
 	if ( ! empty( $filterCourses ) ) {
@@ -86,6 +86,8 @@
 			$subjects = $eduapi->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
+
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
 
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
@@ -142,6 +144,7 @@
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
 	$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
@@ -199,7 +202,7 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
-		$attributes['subject'] = $_REQUEST['eduadmin-subject'];
+		$attributes['subjectid'] = $_REQUEST['eduadmin-subject'];
 
 		$ede = array_filter( $ede, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
@@ -302,6 +305,7 @@
 		?>
     <div style="display: none;" class="eduadmin-courselistoptions"
          data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
+         data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
          data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
          data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"
          data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"

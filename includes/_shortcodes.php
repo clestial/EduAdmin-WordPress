@@ -24,6 +24,7 @@
 				'template'        => $selectedTemplate,
 				'category'        => null,
 				'subject'         => null,
+				'subjectid'       => null,
 				'hidesearch'      => false,
 				'onlyevents'      => false,
 				'onlyempty'       => false,

@@ -28,10 +28,6 @@
 		}
 
 		$edo = $eduapi->GetEducationObjectV2( $edutoken, '', $filtering->ToString(), false );
-		#if(count($filterCourses) == 0)
-		{
-			#set_transient('eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS);
-		}
 	}
 
 	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
@@ -57,6 +53,8 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
+
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
@@ -69,8 +67,6 @@
 		} );
 	}
 
-#$ede = get_transient('eduadmin-listEvents');
-#if(!$ede || count($filterCourses) > 0)
 	{
 		$filtering = new XFiltering();
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
@@ -96,7 +92,7 @@
 		if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 			$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 			$filtering->AddItem( $f );
-			$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
+			$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 		}
 
 		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
@@ -145,10 +141,6 @@
 		}
 
 		$ede = $eduapi->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
-		#if(count($filterCourses) == 0)
-		{
-			#set_transient('eduadmin-listEvents', $ede, HOUR_IN_SECONDS);
-		}
 	}
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
@@ -161,7 +153,7 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
-		$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
+		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 
 		$ede = array_filter( $ede, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
@@ -285,6 +277,7 @@
          data-eduwidget="listview-eventlist"
          data-template="B"
          data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
+         data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
          data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
          data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
          data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"

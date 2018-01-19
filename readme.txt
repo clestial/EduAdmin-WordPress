@@ -8,7 +8,7 @@ Requires at least: 4.7
 
 Tested up to: 4.9.2
 
-Stable tag: 1.0.18
+Stable tag: 1.0.19
 
 Requires PHP: 5.0.1 (with SoapClient)
 
@@ -49,6 +49,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.19]
+- More subject filters to fix.
 
 ### [1.0.18]
 - Bugfix in subject-filter in the ajax method `edu_api_listview_eventlist`, it should check for name, not ID
@@ -499,7 +502,7 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
-[Unreleased]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...HEAD
+[1.0.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...v1.0.19
 [1.0.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.17...v1.0.18
 [1.0.17]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.16...v1.0.17
 [1.0.16]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.15...v1.0.16

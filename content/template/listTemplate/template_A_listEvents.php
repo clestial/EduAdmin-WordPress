@@ -56,6 +56,8 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
+
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
@@ -107,6 +109,7 @@
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
@@ -154,7 +157,7 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
-		$attributes['subject'] = intval( $_REQUEST['eduadmin-subject'] );
+		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 
 		$ede = array_filter( $ede, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
@@ -292,6 +295,7 @@
          data-eduwidget="listview-eventlist"
          data-template="A"
          data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
+         data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
          data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
          data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
          data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"

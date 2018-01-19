@@ -23,13 +23,13 @@ EduAdmin plugin to allow visitors to book courses at your website. Requires EduA
 Plugin that you connect to [EduAdmin](http://www.eduadmin.se) to enable booking on your website.
 Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
 
-[![WordPress plugin][wp-version]](https://wordpress.org/plugins/eduadmin-booking/)
-[![WordPress plugin][wp-dl]](https://wordpress.org/plugins/eduadmin-booking/)
-[![WordPress][wp-tested]](https://wordpress.org/plugins/eduadmin-booking/)
+[<img src="https://img.shields.io/wordpress/plugin/v/eduadmin-booking.svg" alt="Plugin version" />](https://wordpress.org/plugins/eduadmin-booking/)
+[<img src="https://img.shields.io/wordpress/plugin/dt/eduadmin-booking.svg" alt="Downloads" />](https://wordpress.org/plugins/eduadmin-booking/)
+[<img src="https://img.shields.io/wordpress/v/eduadmin-booking.svg" alt="Tested up to" />](https://wordpress.org/plugins/eduadmin-booking/)
 
-[![Gitter chat][gitter]](https://gitter.im/MultinetInteractive/EduAdmin-WordPress)
-[![Build Status][travis]](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
-[![Scrutinizer Code Quality][scrutinizer]](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/?branch=master)
+[<img src="https://badges.gitter.im/MultinetInteractive/EduAdmin-WordPress.png" alt="Gitter" />](https://gitter.im/MultinetInteractive/EduAdmin-WordPress)
+[<img src="https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress.svg?branch=master" alt="Build status" />](https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress)
+[<img src="https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/badges/quality-score.png?b=master" alt="Code quality" />](https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/?branch=master)
 
 == Installation ==
 
@@ -578,9 +578,3 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 [0.9.9.2.25]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.9.2.5...v0.9.9.2.25
 [0.9.9.2.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.7.5...v0.9.9.2.5
 [0.9.7.5]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v0.9.7...v0.9.7.5
-[wp-version]: https://img.shields.io/wordpress/plugin/v/eduadmin-booking.svg "Plugin version"
-[wp-dl]: https://img.shields.io/wordpress/plugin/dt/eduadmin-booking.svg "Downloads"
-[wp-tested]: https://img.shields.io/wordpress/v/eduadmin-booking.svg "Tested up to"
-[gitter]: https://badges.gitter.im/MultinetInteractive/EduAdmin-WordPress.png "Gitter"
-[travis]: https://travis-ci.org/MultinetInteractive/EduAdmin-WordPress.svg?branch=master "Build status"
-[scrutinizer]: https://scrutinizer-ci.com/g/MultinetInteractive/EduAdmin-WordPress/badges/quality-score.png?b=master "Code quality"

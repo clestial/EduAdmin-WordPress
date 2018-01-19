@@ -101,7 +101,7 @@
 
 		if ( ! empty( $_POST['subject'] ) ) {
 			foreach ( $subjects as $subject ) {
-				if ( $subject->SubjectID == $_POST['subject'] ) {
+				if ( $subject->SubjectName == $_POST['subject'] ) {
 					if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
 						$filterCourses[] = $subject->ObjectID;
 					}
@@ -175,8 +175,8 @@
 			$filtering->AddItem( $f );
 		}
 
-		if ( isset( $_POST['subject'] ) ) {
-			$f = new XFilter( 'SubjectID', '=', $_POST['subject'] );
+		if ( isset( $_POST['subjectid'] ) ) {
+			$f = new XFilter( 'SubjectID', '=', $_POST['subjectid'] );
 			$filtering->AddItem( $f );
 		}
 

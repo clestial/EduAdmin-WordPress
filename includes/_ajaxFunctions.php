@@ -156,25 +156,27 @@
 			} );
 		}
 
-		$subjects = get_transient( 'eduadmin-subjects' );
-		if ( ! $subjects ) {
-			$sorting = new XSorting();
-			$s       = new XSort( 'SubjectName', 'ASC' );
-			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
-			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
-		}
-
-		$edo = array_filter( $edo, function( $object ) {
+		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
-			foreach ( $subjects as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_POST['subjectid'] ) ) {
-					return true;
-				}
+			if ( ! $subjects ) {
+				$sorting = new XSorting();
+				$s       = new XSort( 'SubjectName', 'ASC' );
+				$sorting->AddItem( $s );
+				$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+				set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 			}
 
-			return false;
-		} );
+			$edo = array_filter( $edo, function( $object ) {
+				$subjects = get_transient( 'eduadmin-subjects' );
+				foreach ( $subjects as $subj ) {
+					if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_POST['subjectid'] ) ) {
+						return true;
+					}
+				}
+
+				return false;
+			} );
+		}
 
 		$filtering = new XFiltering();
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
@@ -200,7 +202,7 @@
 			$filtering->AddItem( $f );
 		}
 
-		if ( isset( $_POST['subjectid'] ) ) {
+		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
 			$f = new XFilter( 'SubjectID', '=', $_POST['subjectid'] );
 			$filtering->AddItem( $f );
 		}

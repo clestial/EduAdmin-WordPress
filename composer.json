@@ -6,7 +6,7 @@
   "support": {
     "issues": "https://github.com/MultinetInteractive/EduAdmin-WordPress/issues"
   },
-  "license": "GPL-3.0+",
+  "license": "GPL-3.0-or-later",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {

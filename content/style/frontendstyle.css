@@ -28,7 +28,7 @@
 ----------------------------*/
 .eduadmin .readMoreButton,
 .eduadmin .bookButton {
-  padding: 8px 17px;
+  padding: 8px 16px;
   display: inline-block;
   box-sizing: border-box;
   border-radius: 3px;
@@ -103,6 +103,39 @@
   }
 
 }
+
+/* ------------------------
+      Detail View
+----------------------------*/
+.eduadmin .eventItem:first-child { border-top: 1px solid hsl(0, 0%, 95%);}
+.eduadmin .eventItem:last-child { border: none;}
+.eduadmin .eventItem {
+  padding: 16px 0 ;
+  border-bottom: 1px solid hsl(0, 0%, 95%);
+}
+
+
+.eduadmin .eventItem .eventStatus { margin: 0 0 16px 0; }
+.eduadmin .eventItem .eventDate,
+.eduadmin .eventItem .eventCity {
+  margin: 0 0 8px 0;
+}
+
+@media (min-width: 800px) {
+  .eduadmin .eventItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .eduadmin .eventItem .eventStatus,
+  .eduadmin .eventItem .eventDate,
+  .eduadmin .eventItem .eventCity {
+    margin: 0;
+    flex: 1;
+  }
+}
+
 
 /*------------------------
   Template A Specific

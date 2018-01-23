@@ -167,9 +167,9 @@
     display: block;
     width: 19em;
     text-align: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
     float: left;
-    margin-left: 1.0em;
+    margin-right: 1.0em;
     margin-bottom: 1.0em;
     position: relative;
     padding: 1em 1em 4em;

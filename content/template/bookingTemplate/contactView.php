@@ -90,7 +90,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $contact ) && isset( $contact->CustomerContactID ) ) {
@@ -98,7 +98,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -130,7 +130,7 @@
             <input type="checkbox" id="contactIsAlsoParticipant" name="contactIsAlsoParticipant" value="true"
                    onchange="if(eduBookingView.CheckParticipantCount()) { eduBookingView.UpdatePrice(); } else { this.checked = false; return false; }"/>
             <label class="inline-checkbox" for="contactIsAlsoParticipant"></label>
-			<?php edu_e( "Contact is also a participant" ); ?>
+	        <?php edu_e( "I am also participating" ); ?>
         </div>
     </label>
     <div class="edu-modal warning" id="edu-warning-participants-contact">

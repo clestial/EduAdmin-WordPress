@@ -62,7 +62,7 @@
 				$fo->AddItem( $f );
 				$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 				$fo->AddItem( $f );
-				$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+				$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 				$db = array();
 				/*if($contact->PersonID != 0) {
@@ -212,7 +212,7 @@
 				$fo->AddItem( $f );
 				$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 				$fo->AddItem( $f );
-				$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+				$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 				foreach ( $contactAttributes as $attr ) {
 					renderAttribute( $attr, true );

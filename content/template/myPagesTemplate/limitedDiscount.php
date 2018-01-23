@@ -19,7 +19,7 @@
 
 		$ft = new XFilter( 'Disabled', '=', false );
 		$f->AddItem( $ft );
-		$cards    = $eduapi->GetLimitedDiscount( $edutoken, '', $f->ToString() );
+		$cards    = EDU()->api->GetLimitedDiscount( $edutoken, '', $f->ToString() );
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
 	?>
     <table class="myReservationsTable">

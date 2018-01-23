@@ -88,6 +88,8 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
+		$attributes["subjectid"] = intval( $_REQUEST['eduadmin-subject'] );
+
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
@@ -101,7 +103,7 @@
 	}
 
 	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
-		$attributes['courselevel'] = $_REQUEST['eduadmin-level'];
+		$attributes['courselevel'] = intval( $_REQUEST['eduadmin-level'] );
 		$edo                       = array_filter( $edo, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
 			foreach ( $cl as $subj ) {
@@ -137,7 +139,7 @@
 	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
 		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
-		$attributes['category'] = $_REQUEST['eduadmin-category'];
+		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
@@ -161,7 +163,7 @@
 	$f = new XFilter( 'StatusID', '=', '1' );
 	$filtering->AddItem( $f );
 
-	$f = new XFilter( 'LastApplicationDate', '>', date( "Y-m-d H:i:s" ) );
+	$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 	$filtering->AddItem( $f );
 
 	if ( ! empty( $objIds ) ) {
@@ -170,6 +172,7 @@
 	}
 
 	$sorting = new XSorting();
+
 	if ( $customOrderBy != null ) {
 		$orderby   = explode( ' ', $customOrderBy );
 		$sortorder = explode( ' ', $customOrderByOrder );

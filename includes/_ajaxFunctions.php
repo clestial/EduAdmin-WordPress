@@ -376,9 +376,10 @@
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			?>
-            <div class="objectItem">
+            <div class="objectItem <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                     <div class="objectImage"
                          onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
@@ -391,8 +392,6 @@
 							?></a>
                     </div>
                     <div class="objectDescription"><?php
-
-							$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 							echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 							if ( ! empty( $object->City ) ) {
@@ -490,9 +489,10 @@
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 			?>
-            <div class="objectBlock brick">
+            <div class="objectBlock brick <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                     <div class="objectImage"
                          onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
@@ -504,8 +504,6 @@
 						?></a>
                 </div>
                 <div class="objectDescription"><?php
-
-						$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 						if ( ! empty( $object->City ) ) {
@@ -530,7 +528,8 @@
 						if ( $request['showcourseprices'] && isset( $object->Price ) ) {
 							echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
 						}
-						echo '<br />' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots );
+		                echo '<div class="spotsLeft"></div>';
+		                echo '<span class="spotsLeftInfo">' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . '</span>';
 					?></div>
                 <div class="objectBook">
                     <a class="readMoreButton"
@@ -796,13 +795,13 @@
 		$guestText  = $_POST['guesttext'];
 
 		$baseUrl = $surl . '/' . $cat;
-		if ( isset( $_COOKIE['eduadmin_loginUser'] ) ) {
-			$user    = $_COOKIE['eduadmin_loginUser'];
-			$contact = json_decode( $user );
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+			$user    = EDU()->session['eduadmin-loginUser'];
+			$contact = $user->Contact;
 		}
 
-		if ( isset( $_COOKIE['eduadmin_loginUser'] ) &&
-		     ! empty( $_COOKIE['eduadmin_loginUser'] ) &&
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) &&
+		     ! empty( EDU()->session['eduadmin-loginUser'] ) &&
 		     isset( $contact ) &&
 		     isset( $contact->CustomerContactID ) &&
 		     $contact->CustomerContactID != 0

@@ -46,7 +46,7 @@
 
 		$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
 		if( ! $edo ) {
-			$edo = $eduapi->GetObjectPriceName($edutoken, $sorting->ToString(), $filtering->ToString() );
+			$edo = EDU()->api->GetObjectPriceName( $edutoken, $sorting->ToString(), $filtering->ToString() );
 			set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
 		}
 
@@ -54,8 +54,8 @@
 			$edo = array_slice( $edo, 0, $attributes['numberofprices'], true );
 		}
 
-		$currency   = get_option( 'eduadmin-currency', 'SEK' );
-		$incVat     = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$currency = get_option( 'eduadmin-currency', 'SEK' );
+		$incVat   = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 		?>
 		<div class="eventInformation">
 			<h3><?php edu_e( "Prices" ); ?></h3>

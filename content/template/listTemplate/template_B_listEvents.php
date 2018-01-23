@@ -36,8 +36,9 @@
 			break;
 		}
 		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+		$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 		?>
-        <div class="objectBlock brick">
+        <div class="objectBlock brick <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 			<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                 <div class="objectImage"
                      onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>';"
@@ -49,10 +50,7 @@
 					?></a>
             </div>
             <div class="objectDescription"><?php
-
-					$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-					echo /*isset($eventDates[$object->EventID]) ? GetLogicalDateGroups($eventDates[$object->EventID]) :*/
-					GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
+					echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 					if ( ! empty( $object->City ) && $showCity ) {
 						echo " <span class=\"cityInfo\">";
@@ -75,7 +73,7 @@
 					if ( $showEventPrice ) {
 						echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
 					}
-					echo '<br />';
+					echo '<div class="spotsLeft"></div>';
 					echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
 				?></div>
             <div class="objectBook">

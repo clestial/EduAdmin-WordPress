@@ -215,7 +215,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 
@@ -224,7 +224,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -258,7 +258,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $customer ) && isset( $customer->CustomerID ) ) {
@@ -266,7 +266,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -300,7 +300,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		/*if($contact->PersonID != 0) {

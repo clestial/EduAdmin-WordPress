@@ -44,6 +44,7 @@
 		);
 		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/listTemplate/" . $attributes['template'] . ".php" );
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $str;
 	}
 
@@ -58,6 +59,7 @@
 		);
 		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegObject.php" );
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $str;
 	}
 
@@ -70,6 +72,7 @@
 		);
 		$str                        = include( EDUADMIN_PLUGIN_PATH . "/content/template/interestRegTemplate/interestRegEvent.php" );
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $str;
 	}
 
@@ -95,9 +98,11 @@
 		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
 			$str                        = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 			return $str;
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return '';
 	}
 
@@ -106,10 +111,10 @@
 		global $wp_query;
 		$attributes = shortcode_atts(
 			array(
-				'courseid'          => null,
-				'orderby'           => null,
-				'order'             => null,
-				'numberofprices'    => null,
+				'courseid'       => null,
+				'orderby'        => null,
+				'order'          => null,
+				'numberofprices' => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin_coursepublicpricename'
@@ -120,12 +125,14 @@
 				$courseId = $wp_query->query_vars["courseId"];
 			} else {
 				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 				return 'Missing courseId in attributes';
 			}
 		} else {
 			$courseId = $attributes['courseid'];
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/coursePriceNames.php" );
 	}
 
@@ -151,10 +158,10 @@
 		$selectedTemplate = get_option( 'eduadmin-bookingTemplate', 'template_A' );
 		$attributes       = shortcode_atts(
 			array(
-				'template'                  => $selectedTemplate,
-				'courseid'                  => null,
-				'hideinvoiceemailfield'     => null,
-				'showinvoiceinformation'    => null,
+				'template'               => $selectedTemplate,
+				'courseid'               => null,
+				'hideinvoiceemailfield'  => null,
+				'showinvoiceinformation' => null,
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-bookingview'
@@ -165,6 +172,7 @@
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/loginView.php" );
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $str;
 	}
 
@@ -214,6 +222,7 @@
 				$courseId = $wp_query->query_vars["courseId"];
 			} else {
 				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 				return 'Missing courseId in attributes';
 			}
 		} else {
@@ -224,6 +233,7 @@
 
 		if ( ! $apiKey || empty( $apiKey ) ) {
 			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 			return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 		} else {
 			$filtering = new XFiltering();
@@ -235,7 +245,7 @@
 
 			$edo = get_transient( 'eduadmin-object_' . $courseId );
 			if ( ! $edo ) {
-				$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+				$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
 				set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
 			}
 
@@ -250,6 +260,7 @@
 
 			if ( ! $selectedCourse ) {
 				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 				return 'Course with ID ' . $courseId . ' could not be found.';
 			} else {
 				if ( isset( $attributes['coursename'] ) ) {
@@ -295,14 +306,14 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseSubject = $eduapi->GetEducationSubject( $edutoken, '', $ft->ToString() );
+					$courseSubject = EDU()->api->GetEducationSubject( $edutoken, '', $ft->ToString() );
 					$retStr        .= print_r( $courseSubject, true );
 				}
 				if ( isset( $attributes['courselevel'] ) ) {
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseLevel = $eduapi->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
+					$courseLevel = EDU()->api->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
 
 					if ( ! empty( $courseLevel ) ) {
 						$retStr .= $courseLevel[0]->Name;
@@ -315,7 +326,7 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
-					$objAttr = $eduapi->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+					$objAttr = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
 					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
@@ -364,7 +375,7 @@
 					$s = new XSort( 'PeriodStart', 'ASC' );
 					$st->AddItem( $s );
 
-					$events = $eduapi->GetEvent(
+					$events = EDU()->api->GetEvent(
 						$edutoken,
 						$st->ToString(),
 						$ft->ToString()
@@ -390,9 +401,9 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+					$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
-					$prices       = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 					$uniquePrices = array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
@@ -499,7 +510,7 @@
 						$st->AddItem( $s );
 					}
 
-					$events = $eduapi->GetEvent(
+					$events = EDU()->api->GetEvent(
 						$edutoken,
 						$st->ToString(),
 						$ft->ToString()
@@ -520,7 +531,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = $eduapi->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -537,7 +548,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$pricenames = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$pricenames = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 					set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 					if ( ! empty( $pricenames ) ) {
@@ -607,8 +618,6 @@
 							$hasHiddenDates = true;
 						}
 
-
-
 						$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $i % 2 == 0 ? " evenRow" : " oddRow" ) . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
 						$retStr   .= '
 					<div class="eventDate' . $groupByCityClass . '">
@@ -648,6 +657,7 @@
 			}
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return $retStr;
 	}
 
@@ -671,6 +681,7 @@
 			$user = EDU()->session['eduadmin-loginUser'];
 		}
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return
 			"<div class=\"eduadminLogin\" data-eduwidget=\"loginwidget\"
 	data-logintext=\"" . esc_attr( $attributes['logintext'] ) . "\"
@@ -694,6 +705,7 @@
 			'eduadmin-loginview'
 		);
 		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+
 		return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/login.php" );
 	}
 

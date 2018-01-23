@@ -15,7 +15,7 @@
 				global $edutoken;
 
 				$contact->Loginpass = trim( sanitize_text_field( $_POST['newPassword'] ) );
-				$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
+				EDU()->api->SetCustomerContact( $edutoken, array( $contact ) );
 			}
 		}
 	}

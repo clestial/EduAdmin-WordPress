@@ -35,9 +35,10 @@
 				if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 					break;
 				}
-				$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+				$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+				$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 				?>
-                <div class="objectItem">
+                <div class="objectItem <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 					<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                         <div class="objectImage"
                              onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>';"
@@ -50,8 +51,6 @@
 								?></a>
                         </div>
                         <div class="objectDescription"><?php
-
-								$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 								echo /*isset($eventDates[$object->EventID]) ? GetLogicalDateGroups($eventDates[$object->EventID], true, $object, true) :*/
 								GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 

@@ -64,6 +64,7 @@
 	$sort->AddItem( $s );
 
 	$edo = EDU()->api->GetEducationObject( $edutoken, $sort->ToString(), $filtering->ToString() );
+
 	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$edo = array_filter( $edo, function( $object ) {
 			$name       = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
@@ -92,7 +93,7 @@
 		$edo = array_filter( $edo, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
 			foreach ( $subjects as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == santize_text_field( $_REQUEST['eduadmin-subject'] ) ) {
+				if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_REQUEST['eduadmin-subject'] ) ) {
 					return true;
 				}
 			}
@@ -202,7 +203,7 @@
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
-		$attributes['subjectid'] = $_REQUEST['eduadmin-subject'];
+		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 
 		$ede = array_filter( $ede, function( $object ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
@@ -217,7 +218,7 @@
 	}
 
 	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
-		$attributes['courselevel'] = $_REQUEST['eduadmin-level'];
+		$attributes['courselevel'] = intval( $_REQUEST['eduadmin-level'] );
 		$ede                       = array_filter( $ede, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
 			foreach ( $cl as $subj ) {
@@ -283,7 +284,7 @@
 	$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 	if ( stripos( $descrField, "attr_" ) !== false ) {
 		$ft = new XFiltering();
-		$f  = new XFilter( "AttributeID", "=", substr( $descrField, 5 ) );
+		$f  = new XFilter( "AttributeID", "=", intval( substr( $descrField, 5 ) ) );
 		$ft->AddItem( $f );
 		$objectAttributes = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
 	}

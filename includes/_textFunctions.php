@@ -377,7 +377,7 @@
 		if ( date( 'Y-m-d', strtotime( $startDate ) ) != date( 'Y-m-d', strtotime( $endDate ) ) ) {
 			if ( $startYear === $endYear ) {
 				if ( $startMonth === $endMonth ) {
-					$str .= ' - ';
+					$str .= '-';
 					if ( $showWeekDays ) {
 						$str .= $weekDays[ date( 'N', strtotime( $endDate ) ) ] . ' ';
 					}

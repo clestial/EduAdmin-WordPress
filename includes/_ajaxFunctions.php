@@ -483,7 +483,6 @@
 			'order',
 			'orderby',
 		);
-		ob_start();
 
 		$currentEvents = 0;
 
@@ -541,9 +540,6 @@
 			<?php
 			$currentEvents ++;
 		}
-		$out = ob_get_clean();
-
-		return $out;
 	}
 
 	function edu_api_eventlist() {

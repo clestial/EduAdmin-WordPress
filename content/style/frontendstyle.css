@@ -15,26 +15,41 @@
 .eduadmin .objectName a,
 .eduadmin .objectName a:hover,
 .eduadmin a.readMoreButton:hover,
+.eduadmin a.bookButton,
+.eduadmin a.bookButton:hover,
 .eduadmin a.readMoreButton {
   border: none;
   outline: none;
   box-shadow: none;
 }
 
-/* Buttons */
-.eduadmin .readMoreButton {
+/* ------------------------
+      Buttons
+----------------------------*/
+.eduadmin .readMoreButton,
+.eduadmin .bookButton {
   padding: 8px 17px;
   display: inline-block;
   box-sizing: border-box;
   border-radius: 3px;
-
-  border: 1px solid hsl(116, 33%, 55%);
-  background: hsl(120, 33%, 50%);
-
-  color: hsl(0, 0%, 100%);
 }
 
+.eduadmin .readMoreButton {
+  border: 1px solid hsl(116, 33%, 55%);
+  background: hsl(120, 33%, 50%);
+  color: hsl(0, 0%, 100%);
+}
 .eduadmin .readMoreButton:hover {
+  color: hsl(0, 0%, 100%);
+  background: hsl(116, 33%, 55%);
+}
+
+.eduadmin .bookButton {
+  border: 1px solid hsl(116, 33%, 55%);
+  background: hsl(120, 33%, 50%);
+  color: hsl(0, 0%, 100%);
+}
+.eduadmin .bookButton:hover {
   color: hsl(0, 0%, 100%);
   background: hsl(116, 33%, 55%);
 }
@@ -87,6 +102,103 @@
     flex: 1;
   }
 
+}
+
+/*------------------------
+  Template A Specific
+-------------------------*/
+.eduadmin .eventListTable[data-template="A"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.eduadmin .objectItem {
+  padding: 24px 8px;
+  border-bottom: 1px solid hsl(0, 0%, 95%);
+}
+
+
+
+.eduadmin .objectItem:last-child .objectInfoHolder {
+  border-bottom: none;
+}
+
+.eduadmin .objectItem .objectImage {
+ display: none;
+
+ background-size: cover;
+ background-position: center;
+ border-radius: 1px;
+ margin: 0 0 16px 0;
+}
+
+.eduadmin .objectItem .objectName a { color: hsl(0, 0%, 30%); }
+.eduadmin .objectItem .objectName {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.eduadmin .objectItem .objectDescription {
+  color: hsl(0, 0%, 35%);
+}
+
+.eduadmin .objectItem .objectDescription .eduadmin-dateText,
+.eduadmin .objectItem .objectDescription .cityInfo {
+  display: inline-block;
+  margin: 0 0 8px 0;
+}
+
+.eduadmin .objectItem .objectDescription .spotsLeftInfo {
+  display: block;
+  margin: 24px 0 32px 0;
+}
+
+.eduadmin .objectItem .objectBook {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.eduadmin .objectItem .objectBook a.bookButton { order: -1;}
+.eduadmin .objectItem .objectBook a.readMoreButton:hover {color: hsl(0, 0%, 15%);}
+.eduadmin .objectItem .objectBook a.readMoreButton {
+  background: transparent;
+  border-color: transparent;
+  color: hsl(0, 0%, 40%);
+  font-style: italic;
+}
+
+/* Desktop */
+@media (min-width: 800px) {
+  .eduadmin .objectItem {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .eduadmin .objectItem .objectImage {
+    display: block;
+    width: 170px;
+    /* height: 72px; */
+    margin: 0 32px 0 0;
+  }
+
+  .eduadmin .objectItem .objectInfoHolder {
+    flex: 1;
+  }
+
+  .eduadmin .objectItem .objectDescription .spotsLeftInfo {
+    margin: 24px 0 0 0;
+  }
+
+  .eduadmin .objectItem .objectBook {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eduadmin .objectItem .objectBook a.bookButton { order: -1; margin: 0 0 8px 0}
+  .eduadmin .objectItem .objectBook a.readMoreButton:hover {color: hsl(0, 0%, 15%);}
 }
 
 /*------------------------

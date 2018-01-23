@@ -5,6 +5,12 @@
   box-sizing: border-box;
 }
 
+.eduadmin h1, .eduadmin h2 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+
 /* Link and Heading Resets */
 .eduadmin .objectName a,
 .eduadmin .objectName a:hover,
@@ -33,6 +39,55 @@
   background: hsl(116, 33%, 55%);
 }
 
+/* ------------------------
+  Form and Search Control
+----------------------------*/
+.eduadmin .search-form {
+    margin: 0 0 32px 0;
+    max-width: 740px;
+}
+
+.eduadmin .search-form .search-row select {width: 100%}
+.eduadmin .search-form .search-row {
+  display: flex;
+  flex-direction: column;
+}
+.eduadmin .search-form .search-row .search-dropdowns {
+  display: flex;
+  flex-direction: column;
+}
+.eduadmin .search-form .search-item {
+  margin: 0 0 16px 0;
+}
+
+.eduadmin .search-form .search-row .searchButton {
+  height: 100%;
+}
+
+/* Desktop */
+@media (min-width: 800px) {
+  .eduadmin .search-form .search-row .search-dropdowns {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .eduadmin .search-form .search-dropdown:last-child {margin-right: 0;}
+  .eduadmin .search-form .search-dropdown {
+    flex: 1;
+    margin-right: 8px;
+    min-width: 190px;
+  }
+
+  .eduadmin .search-form .search-row .search-box {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .eduadmin .search-form .search-item.search-text {
+    margin-right: 8px;
+    flex: 1;
+  }
+
+}
 
 /*------------------------
   Template B Specific
@@ -63,7 +118,7 @@
   background-size: cover;
   background-position: center;
   margin: 0 0 16px 0;
-  border-radius: 3px;
+  border-radius: 1px;
 }
 
 .eduadmin .objectBlock.brick .objectName a { color: hsl(0, 0%, 30%); }
@@ -95,6 +150,7 @@
   width: 100%;
 }
 
+/* Desktop */
 @media (min-width: 732px) {
   .eduadmin .objectBlock.brick {
     max-width: 350px;
@@ -105,9 +161,3 @@
 /* ------------------------
   Desktop Styles
 ----------------------------*/
-/* @media (min-width: 800px) {
-  .eduadmin .objectBlock.brick {
-    max-width: 350px;
-    margin: 0 16px 16px 0;
-  }
-} */

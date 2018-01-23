@@ -1,0 +1,113 @@
+/* ------------------------
+  Mobile Styles
+----------------------------*/
+.eduadmin div {
+  box-sizing: border-box;
+}
+
+/* Link and Heading Resets */
+.eduadmin .objectName a,
+.eduadmin .objectName a:hover,
+.eduadmin a.readMoreButton:hover,
+.eduadmin a.readMoreButton {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Buttons */
+.eduadmin .readMoreButton {
+  padding: 8px 17px;
+  display: inline-block;
+  box-sizing: border-box;
+  border-radius: 3px;
+
+  border: 1px solid hsl(116, 33%, 55%);
+  background: hsl(120, 33%, 50%);
+
+  color: hsl(0, 0%, 100%);
+}
+
+.eduadmin .readMoreButton:hover {
+  color: hsl(0, 0%, 100%);
+  background: hsl(116, 33%, 55%);
+}
+
+
+/*------------------------
+  Template B Specific
+-------------------------*/
+.eduadmin .eventListTable[data-template="B"] {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.eduadmin .objectBlock.brick {
+  width: 100%;
+  min-height: 300px;
+  margin: 0 0 16px 0;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  padding: 16px;
+  border-radius: 3px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.eduadmin .objectBlock.brick .objectImage {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  margin: 0 0 16px 0;
+  border-radius: 3px;
+}
+
+.eduadmin .objectBlock.brick .objectName a { color: hsl(0, 0%, 30%); }
+.eduadmin .objectBlock.brick .objectName {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.eduadmin .objectBlock.brick .objectDescription {
+  color: hsl(0, 0%, 35%);
+}
+
+.eduadmin .objectBlock.brick .objectDescription .eduadmin-dateText,
+.eduadmin .objectBlock.brick .objectDescription .cityInfo {
+  display: inline-block;
+  margin: 0 0 8px 0;
+}
+
+.eduadmin .objectBlock.brick .objectDescription .spotsLeft {
+  display: none;
+}
+.eduadmin .objectBlock.brick .objectDescription .spotsLeftInfo {
+  display: block;
+  margin: 24px 0 32px 0;
+}
+
+.eduadmin .objectBlock.brick .readMoreButton {
+  width: 100%;
+}
+
+@media (min-width: 732px) {
+  .eduadmin .objectBlock.brick {
+    max-width: 350px;
+    margin: 0 16px 16px 0;
+  }
+}
+
+/* ------------------------
+  Desktop Styles
+----------------------------*/
+/* @media (min-width: 800px) {
+  .eduadmin .objectBlock.brick {
+    max-width: 350px;
+    margin: 0 16px 16px 0;
+  }
+} */

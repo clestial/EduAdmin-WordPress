@@ -336,6 +336,11 @@ h1.courseTitle:hover,
   color: hsl(0, 0%, 20%);
 }
 
+.eduadmin.booking-page form .participantView .addParticipantLink {
+  display: inline-block;
+  margin: 0 0 16px 0;
+}
+
 .eduadmin.booking-page form .submitView {
   display: flex;
   flex-direction: column;
@@ -351,12 +356,16 @@ h1.courseTitle:hover,
 }
 
 .eduadmin.booking-page form .edu-modal.warning {
-  display: none;
+  /* display: none; */
   width: 100%;
-  padding: 8px 0 0 0;
+  padding: 8px 16px;
   color: hsl(5, 80%, 50%);
   text-shadow: 0 1px 1px rgba(0, 0, 0, .08);
   order: -1;
+  background: hsl(6, 100%, 94%);
+  margin: 0 0 16px 0;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
 }
 
 .eduadmin.booking-page form .bookButton {

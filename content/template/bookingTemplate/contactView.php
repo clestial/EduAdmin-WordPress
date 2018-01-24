@@ -9,13 +9,13 @@
 			<?php edu_e( "Contact name" ); ?>
         </div>
         <div class="inputHolder"><input type="text"
-                                        style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+		        <?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
                                         autocomplete="given-name"
                                         id="edu-contactFirstName" name="contactFirstName"
                                         placeholder="<?php edu_e( "Contact first name" ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
-                    type="text" style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+                    type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
                     autocomplete="family-name"
                     name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"

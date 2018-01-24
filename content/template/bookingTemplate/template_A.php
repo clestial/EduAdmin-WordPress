@@ -178,7 +178,7 @@
 			$hideSubEventDateInfo = get_option( 'eduadmin-hideSubEventDateTime', false );
 			?>
 
-            <div class="eduadmin">
+            <div class="eduadmin booking-page">
                 <form action="" method="post">
                     <input type="hidden" name="act" value="bookCourse"/>
 

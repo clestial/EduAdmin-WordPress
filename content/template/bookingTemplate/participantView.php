@@ -9,10 +9,10 @@
                 <div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
                 </div>
-                <div class="inputHolder"><input type="text" readonly style="width: 50%; display: inline;"
+                <div class="inputHolder"><input type="text" readonly
                                                 class="contactFirstName"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" readonly style="width: 50%; display: inline;" class="contactLastName"
+                            type="text" readonly class="contactLastName"
                             placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>
@@ -159,10 +159,10 @@
                 <div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
                 </div>
-                <div class="inputHolder"><input type="text" style="width: 50%; display: inline;"
+                <div class="inputHolder"><input type="text"
                                                 class="participantFirstName" name="participantFirstName[]"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" style="width: 50%; display: inline;" class="participantLastName"
+                            type="text" class="participantLastName"
                             name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>

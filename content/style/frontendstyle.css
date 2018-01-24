@@ -356,7 +356,7 @@ h1.courseTitle:hover,
 }
 
 .eduadmin.booking-page form .edu-modal.warning {
-  /* display: none; */
+  display: none;
   width: 100%;
   padding: 8px 16px;
   color: hsl(5, 80%, 50%);

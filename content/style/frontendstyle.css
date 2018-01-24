@@ -11,6 +11,7 @@
   max-width: 100%;
 }
 
+
 .eduadmin h3 {
   color: hsl(0, 0%, 35%);
   font-weight: 600;
@@ -237,6 +238,159 @@ h1.courseTitle:hover,
   }
 }
 
+/* ------------------------
+      Booking View: Form
+----------------------------*/
+.eduadmin.booking-page form {
+
+}
+.eduadmin.booking-page form .title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 16px 0 0;
+}
+
+.eduadmin.booking-page form .title .courseImage {
+  width: 72px;
+  height: 72px;
+}
+
+.eduadmin.booking-page form .title .dateInfo {
+  width: 100%;
+  padding: 48px 0 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500px;
+}
+.eduadmin.booking-page form .notUserCheck a {margin: 0 0 0 8px; color: hsl(0, 0%, 40%);}
+.eduadmin.booking-page form .notUserCheck {
+  text-align: center;
+  color: hsl(0, 0%, 40%);
+  margin: 0 0 56px;
+  font-size: .95rem;
+}
+
+/* Form Sections */
+.eduadmin.booking-page form h2 {
+  color: hsl(0, 0%, 20%);
+  font-weight: 600;
+  margin: 0 0 24px 0;
+}
+
+.eduadmin.booking-page form .contactView,
+.eduadmin.booking-page form .customerView,
+.eduadmin.booking-page form .participantView,
+.eduadmin.booking-page form .questionPanel {
+  margin: 0 0 48px 0;
+}
+.eduadmin.booking-page form .invoiceView {margin: 48px 0 0 0;}
+
+
+.eduadmin.booking-page form label {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.eduadmin.booking-page form label .inputLabel.noHide { display: inherit; }
+.eduadmin.booking-page form label .inputLabel {
+  display: none;
+  margin: 0 0 8px;
+  color: hsl(0, 0%, 20%);
+}
+.eduadmin.booking-page form label .inputHolder select {width: 100%}
+.eduadmin.booking-page form label .inputHolder {
+  width: 100%;
+}
+
+.eduadmin.booking-page form label .inputHolder .contactFirstName,
+.eduadmin.booking-page form label .inputHolder .first-name { margin-right: 2%}
+
+.eduadmin.booking-page form label .inputHolder .contactLastName,
+.eduadmin.booking-page form label .inputHolder .contactFirstName,
+.eduadmin.booking-page form label .inputHolder .last-name,
+.eduadmin.booking-page form label .inputHolder .first-name {
+  display: inline-block;
+  width: 49%
+}
+
+.eduadmin.booking-page form label .inputHolder.contactIsAlsoParticipant {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.eduadmin.booking-page form .participantView h3 .removeParticipant:hover {cursor: pointer;}
+.eduadmin.booking-page form .participantView h3 .removeParticipant {
+  color: hsl(0, 0%, 40%);
+  font-size: 1rem;
+}
+.eduadmin.booking-page form .participantView h3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: hsl(0, 0%, 20%);
+}
+
+.eduadmin.booking-page form .submitView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.eduadmin.booking-page form .submitView .sumTotal {
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+.eduadmin.booking-page form .submitView .sumTotal span {
+  font-weight: normal;
+  margin: 0 0 0 8px;
+}
+
+.eduadmin.booking-page form .edu-modal.warning {
+  display: none;
+  width: 100%;
+  padding: 8px 0 0 0;
+}
+
+.eduadmin.booking-page form .bookButton {
+  padding: 16px 24px;
+}
+
+@media  (min-width: 800px) {
+
+  .eduadmin.booking-page form .title .dateInfo { padding: 48px 0 56px; }
+  .eduadmin.booking-page form .notUserCheck {
+    text-align: right;
+    margin: 0;
+    position: relative;
+    bottom: -1.9rem;
+  }
+
+  .eduadmin.booking-page form label .inputLabel {
+    display: inherit;
+    margin: 0;
+    flex: 1;
+  }
+  .eduadmin.booking-page form label .inputHolder select {width: 100%}
+  .eduadmin.booking-page form label .inputHolder {
+    width: 100%;
+    max-width: 400px;
+  }
+  .eduadmin.booking-page form .submitView {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .eduadmin.booking-page form .submitView .sumTotal {
+    margin: 0;
+  }
+
+}
 
 /*------------------------
   Template A Specific
@@ -353,6 +507,7 @@ h1.courseTitle:hover,
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
   padding: 16px;
   border-radius: 3px;
+  background: hsl(0, 0%, 100%);
 
   display: flex;
   flex-direction: column;

@@ -11,7 +11,18 @@
   max-width: 100%;
 }
 
+.eduadmin h3 {
+  color: hsl(0, 0%, 35%);
+  font-weight: 600;
+}
+
+.eduadmin ul,
+.eduadmin ol  {padding: 0 0 0 32px;}
+
+
 /* Link and Heading Resets */
+h1.courseTitle,
+h1.courseTitle:hover,
 .eduadmin .objectName a,
 .eduadmin .objectName a:hover,
 .eduadmin a.readMoreButton:hover,
@@ -107,6 +118,31 @@
 /* ------------------------
       Detail View
 ----------------------------*/
+.eduadmin div.title {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+}
+.eduadmin div.title .courseTitle {
+  color: hsl(0, 0%, 30%);
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
+.eduadmin div.title .courseImage {
+  width: 72px;
+  height: 72px;
+  margin: 0 16px 0 0;
+}
+
+.eduadmin .textblock {
+  color: hsl(0, 0%, 35%);
+}
+.eduadmin .eventInformation {
+  margin: 0 0 48px 0;
+  color: hsl(0, 0%, 35%);
+}
+
 .eduadmin .eventItem:first-child { border-top: 1px solid hsl(0, 0%, 95%);}
 .eduadmin .eventItem:last-child { border: none;}
 .eduadmin .eventItem {

@@ -336,7 +336,9 @@
 
 			foreach ( $events as $ev ) {
 				$sortedEvents[ $ev->PeriodStart ] = $ev;
-				$eventCities[ $ev->City ]         = $ev;
+				if ( ! empty( $ev->City ) ) {
+					$eventCities[ $ev->City ] = $ev;
+				}
 			}
 
 			foreach ( $pricenames as $pr ) {
@@ -421,12 +423,12 @@
 									"</div>";
 							}
 						?></div>
-                    <div class="objectBook">
-						<?php if ( $showReadMoreBtn ) : ?>
-                            <a class="readMoreButton"
-                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
-						<?php endif; ?>
-                    </div>
+                </div>
+                <div class="objectBook">
+		            <?php if ( $showReadMoreBtn ) : ?>
+                        <a class="readMoreButton cta-btn"
+                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
+		            <?php endif; ?>
                 </div>
             </div>
 			<?php

@@ -63,7 +63,6 @@
 			$valid = false;
 			foreach ( $cCardIds as $cid ) {
 				if ( $cid == $card->LimitedDiscountID ) {
-
 					$valid = true;
 
 					if ( $card->CreditLeft <= 0 ) {

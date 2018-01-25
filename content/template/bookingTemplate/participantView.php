@@ -10,9 +10,9 @@
 					<?php edu_e( "Participant name" ); ?>
                 </div>
                 <div class="inputHolder"><input type="text" readonly
-                                                class="contactFirstName"
+                                                class="contactFirstName" class="first-name"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" readonly class="contactLastName"
+                            type="text" readonly class="contactLastName last-name"
                             placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>
@@ -160,9 +160,9 @@
 					<?php edu_e( "Participant name" ); ?>
                 </div>
                 <div class="inputHolder"><input type="text"
-                                                class="participantFirstName" name="participantFirstName[]"
+                                                class="participantFirstName first-name" name="participantFirstName[]"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" class="participantLastName"
+                            type="text" class="participantLastName last-name"
                             name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>

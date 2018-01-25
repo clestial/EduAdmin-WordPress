@@ -162,7 +162,7 @@
             </label>
             <a href="<?php echo $baseUrl; ?>/profile/changepassword"><?php edu_e( "Change password" ); ?></a>
         </div>
-        <button class="profileSaveButton"><?php edu_e( "Save" ); ?></button>
+        <button class="profileSaveButton cta-btn"><?php edu_e( "Save" ); ?></button>
     </form>
 	<?php include_once( "login_tab_footer.php" ); ?>
 </div>

@@ -1,9 +1,9 @@
 <?php
 	function edu_LoadPhrases() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 
 		if ( EDU()->phrases && ! empty( EDU()->phrases ) && is_array( EDU()->phrases ) ) {
-			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+			EDU()->StopTimer( $t );
 
 			return EDU()->phrases;
 		}
@@ -45,13 +45,18 @@
 			EDU()->phrases = (array) $nPhrases;
 		}
 
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 
 		return EDU()->phrases;
 	}
 
 	function edu__( $key ) {
-		$phrases = edu_LoadPhrases();
+		if ( isset( EDU()->phrases ) && ! empty( EDU()->phrases ) && is_array( EDU()->phrases ) ) {
+			$phrases = EDU()->phrases;
+		} else {
+			$phrases = edu_LoadPhrases();
+		}
+
 		if ( ! array_key_exists( $key, $phrases ) ) {
 			$phrases[ $key ] = $key;
 			update_option( 'eduadmin-phrases', json_encode( $phrases ) );

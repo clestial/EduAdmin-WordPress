@@ -83,25 +83,25 @@
 							?></div>
                     </div>
                     <div class="objectBook">
-		                <?php if ( $showReadMoreBtn ) : ?>
+	                    <?php
+		                    if ( $showBookBtn ) {
+			                    if ( $spotsLeft > 0 || $object->MaxParticipantNr == 0 ) {
+				                    ?>
+                                    <a class="bookButton cta-btn"
+                                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Book" ); ?></a>
+				                    <?php
+			                    } else {
+				                    ?>
+                                    <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+				                    <?php
+			                    }
+		                    }
+	                    ?>
+	                    <?php if ( $showReadMoreBtn ) : ?>
                             <a class="readMoreButton"
                                href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
                             <br/>
-		                <?php endif; ?>
-		                <?php
-			                if ( $showBookBtn ) {
-				                if ( $spotsLeft > 0 || $object->MaxParticipantNr == 0 ) {
-					                ?>
-                                    <a class="bookButton"
-                                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Book" ); ?></a>
-					                <?php
-				                } else {
-					                ?>
-                                    <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
-					                <?php
-				                }
-			                }
-		                ?>
+	                    <?php endif; ?>
                     </div>
                 </div>
 				<?php

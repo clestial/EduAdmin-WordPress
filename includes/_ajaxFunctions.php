@@ -423,18 +423,18 @@
 
                 </div>
                 <div class="objectBook">
+	                <?php
+		                if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
+			                ?>
+                            <a class="bookButton cta-btn"
+                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
+			                <?php
+		                } else {
+			                ?>
+                            <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+		                <?php } ?>
                     <a class="readMoreButton"
                        href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a><br/>
-		            <?php
-			            if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
-				            ?>
-                            <a class="bookButton"
-                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
-				            <?php
-			            } else {
-				            ?>
-                            <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
-			            <?php } ?>
                 </div>
             </div>
 			<?php
@@ -533,7 +533,7 @@
 		                echo '<span class="spotsLeftInfo">' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . '</span>';
 					?></div>
                 <div class="objectBook">
-                    <a class="readMoreButton"
+                    <a class="readMoreButton cta-btn"
                        href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a>
                 </div>
             </div>
@@ -739,8 +739,8 @@
 					'spotsettings',
 				);
 
-				$retStr .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
-				$retStr .= '
+				$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
+				$retStr   .= '
 				<div class="eventDate' . $groupByCityClass . '">
 					' . ( isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . '
 					' . ( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? '<span class="eventTime">, ' . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . '</span>' : '' ) . '
@@ -759,7 +759,7 @@
 				<div class="eventBook' . $groupByCityClass . '">
 				' .
 				             ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
-					             '<a class="bookButton book-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '" style="text-align: center;">' . edu__( "Book" ) . '</a>'
+					             '<a class="bookButton book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Book" ) . '</a>'
 					             :
 					             ( $showEventInquiry ?
 						             '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Inquiry" ) . '</a> '
@@ -769,7 +769,7 @@
 					             '<i class="fullBooked">' . edu__( "Full" ) . '</i>'
 				             ) . '
 				</div>';
-				$retStr .= '</div><!-- /eventitem -->';
+				$retStr   .= '</div><!-- /eventitem -->';
 				$lastCity = $ev->City;
 				$i ++;
 			}

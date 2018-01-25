@@ -368,7 +368,7 @@
                                 </label>
                             </div>
 						<?php endif; ?>
-                        <input type="submit" class="bookButton"
+                        <input type="submit" class="bookButton cta-btn"
                                onclick="var validated = eduBookingView.CheckValidation(); return validated;"
 							<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
                                 disabled title="<?php esc_attr( edu_e( 'No free spots left on this event' ) ); ?>"

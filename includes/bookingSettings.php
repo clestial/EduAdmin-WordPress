@@ -1,6 +1,6 @@
 <?php
 	function edu_render_booking_settings_page() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		?>
         <div class="eduadmin wrap">
             <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Booking settings", "eduadmin-booking" ) ); ?></h2>
@@ -1147,5 +1147,5 @@
             </form>
         </div>
 		<?php
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}

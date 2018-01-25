@@ -11,12 +11,13 @@
         <div class="inputHolder"><input type="text"
 		        <?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
-                                        autocomplete="given-name"
+                                        autocomplete="given-name" class="first-name"
                                         id="edu-contactFirstName" name="contactFirstName"
                                         placeholder="<?php edu_e( "Contact first name" ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
                     type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
+                    class="last-name"
                     autocomplete="family-name"
                     name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"
                     value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>

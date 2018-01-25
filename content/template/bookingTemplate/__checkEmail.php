@@ -32,6 +32,6 @@
         </div>
     </label>
     <input type="submit"
-           class="bookingLoginButton"<?php echo( $selectedLoginField == "CivicRegistrationNumber" && get_option( 'eduadmin-validateCivicRegNo', false ) === "true" ? " onclick=\"if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__( "Please enter a valid swedish civic registration number." ) . "'); return false; }\"" : "" ); ?>
+           class="bookingLoginButton cta-btn"<?php echo( $selectedLoginField == "CivicRegistrationNumber" && get_option( 'eduadmin-validateCivicRegNo', false ) === "true" ? " onclick=\"if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__( "Please enter a valid swedish civic registration number." ) . "'); return false; }\"" : "" ); ?>
            value="<?php echo esc_attr( edu__( "Continue" ) ); ?>"/>
 </div>

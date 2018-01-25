@@ -19,7 +19,7 @@
 	add_action( 'wp_footer', 'eduadmin_printJavascript' );
 
 	function eduadmin_page_title( $title, $sep = "|" ) {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		global $eduapi;
 		global $edutoken;
 		global $wp;
@@ -87,7 +87,7 @@
 				}
 			}
 		}
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 
 		return $title;
 	}
@@ -97,7 +97,7 @@
 	add_filter( 'aioseop_title', 'eduadmin_page_title', PHP_INT_MAX, 2 );
 
 	function eduadmin_settings_init() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		/* Credential settings */
 		register_setting( 'eduadmin-credentials', 'eduadmin-api-key' );
 		register_setting( 'eduadmin-credentials', 'eduadmin-credentials_have_changed' );
@@ -181,12 +181,12 @@
 		register_setting( 'eduadmin-rewrite', 'eduadmin-spotsSettings' );
 		register_setting( 'eduadmin-rewrite', 'eduadmin-alwaysFewSpots' );
 		register_setting( 'eduadmin-rewrite', 'eduadmin-monthsToFetch' );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_frontend_content() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$styleVersion               = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
+		$t            = EDU()->StartTimer( __METHOD__ );
+		$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
 		wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
 		$customcss = get_option( 'eduadmin-style', '' );
 		wp_enqueue_style( 'eduadmin_frontend_style' );
@@ -206,24 +206,24 @@
 		$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );
 		wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
 		wp_enqueue_script( 'eduadmin_frontend_script', false, array( 'jquery' ) );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_backend_content() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$styleVersion               = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
+		$t            = EDU()->StartTimer( __METHOD__ );
+		$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
 		wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
 		wp_enqueue_style( 'eduadmin_admin_style' );
 
 		$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/adminjs.js' );
 		wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
 		wp_enqueue_script( 'eduadmin_admin_script', false, array( 'jquery' ) );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_backend_menu() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$level                      = 'administrator';
+		$t     = EDU()->StartTimer( __METHOD__ );
+		$level = 'administrator';
 		add_menu_page( 'EduAdmin', 'EduAdmin', $level, 'eduadmin-settings', 'edu_render_general_settings', 'dashicons-welcome-learn-more' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - General', 'eduadmin-booking' ), __( 'General settings', 'eduadmin-booking' ), $level, 'eduadmin-settings', 'edu_render_general_settings' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - List view', 'eduadmin-booking' ), __( 'List settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-view', 'edu_render_list_settings_page' );
@@ -233,23 +233,23 @@
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin-booking' ), __( 'Style settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin-booking' ), __( 'Api Authentication', 'eduadmin-booking' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_shortcode_metabox() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		add_meta_box( 'eduadmin-metabox', __( 'EduAdmin - Shortcodes', 'eduadmin-booking' ), 'eduadmin_create_metabox', null, 'side', 'high' );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_create_metabox() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		include_once( "_metaBox.php" );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}
 
 	function eduadmin_RewriteJavaScript( $script ) {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		global $eduapi;
 		global $edutoken;
 
@@ -276,17 +276,17 @@
 					$script
 				);
 			}
-			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+			EDU()->StopTimer( $t );
 
 			return $script;
 		}
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 
 		return '';
 	}
 
 	function eduadmin_printJavascript() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
+		$t = EDU()->StartTimer( __METHOD__ );
 		if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session['eduadmin-printJS'] ) ) {
 			$str    = "<script type=\"text/javascript\">\n";
 			$script = get_option( 'eduadmin-javascript' );
@@ -295,5 +295,5 @@
 			unset( EDU()->session['eduadmin-printJS'] );
 			echo $str;
 		}
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 	}

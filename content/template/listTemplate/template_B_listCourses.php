@@ -340,7 +340,9 @@
 					$prices[ $pr->Price ] = $pr;
 				}
 				$sortedEvents[ $ev->PeriodStart ] = $ev;
-				$eventCities[ $ev->City ]         = $ev;
+				if ( ! empty( $ev->City ) ) {
+					$eventCities[ $ev->City ] = $ev;
+				}
 			}
 		}
 
@@ -417,7 +419,7 @@
 				?></div>
             <div class="objectBook">
 				<?php if ( $showReadMoreBtn ) : ?>
-                    <a class="readMoreButton"
+                    <a class="readMoreButton cta-btn"
                        href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
 				<?php endif; ?>
             </div>

@@ -78,7 +78,7 @@
 				?></div>
             <div class="objectBook">
 				<?php if ( $showReadMoreBtn ) : ?>
-                    <a class="readMoreButton"
+                    <a class="readMoreButton cta-btn"
                        href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
 				<?php endif; ?>
             </div>

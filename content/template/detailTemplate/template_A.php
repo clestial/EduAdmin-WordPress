@@ -332,9 +332,9 @@
 									<?php
 										if ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ) {
 											?>
-                                            <a class="bookButton book-link"
+                                            <a class="bookButton book-link cta-btn"
                                                href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                               style="text-align: center;"><?php edu_e( "Book" ); ?></a>
+                                            ><?php edu_e( "Book" ); ?></a>
 											<?php
 										} else {
 											?>

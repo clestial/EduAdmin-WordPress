@@ -116,7 +116,7 @@
                         </label>
 					<?php } ?>
 
-                    <input type="submit" class="bookButton" value="<?php edu_e( "Send inquiry" ); ?>"/>
+                    <input type="submit" class="bookButton cta-btn" value="<?php edu_e( "Send inquiry" ); ?>"/>
                 </form>
             </div>
         </div>

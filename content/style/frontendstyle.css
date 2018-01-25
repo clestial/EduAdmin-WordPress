@@ -259,6 +259,10 @@ h1.courseTitle:hover,
   margin: 0 0 24px 0;
 }
 
+.eduadmin .inputHolder input[required] {
+    background-color: #feffcc;
+}
+
 .eduadmin.booking-page form .contactView,
 .eduadmin.booking-page form .customerView,
 .eduadmin.booking-page form .participantView,

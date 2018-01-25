@@ -9,13 +9,14 @@
 			<?php edu_e( "Contact name" ); ?>
         </div>
         <div class="inputHolder"><input type="text"
-                                        style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+		        <?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
-                                        id="edu-contactFirstName" name="contactFirstName"
+                                        id="edu-contactFirstName" name="contactFirstName" class="first-name"
                                         placeholder="<?php edu_e( "Contact first name" ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
-                    type="text" style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+                    type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
+                    class="last-name"
                     name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"
                     value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
         </div>
@@ -124,17 +125,17 @@
         </div>
 
         <div class="invoiceView__wrapper">
-            <?php if( $showInvoiceEmail ) { ?>
+	        <?php if ( $showInvoiceEmail ) { ?>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Invoice e-mail address" ); ?>
+	                    <?php edu_e( "Invoice e-mail address" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
                                value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
                     </div>
                 </label>
-            <?php } ?>
+	        <?php } ?>
             <label>
                 <div class="inputLabel">
 					<?php edu_e( "Invoice reference" ); ?>
@@ -144,21 +145,22 @@
                            value="<?php echo @esc_attr( $customer->CustomerReference ); ?>"/>
                 </div>
             </label>
-            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" :  "" ?>">
+            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" : "" ?>">
                 <div class="inputHolder alsoInvoiceCustomer">
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
-                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
-                            <?php echo $forceShowInvoiceInformation ? "checked" :  "" ?>/>
+                           onchange="eduBookingView.UpdateInvoiceCustomer(this);"
+	                    <?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
-                    <?php edu_e( "Use other information for invoicing" ); ?>
+	                <?php edu_e( "Use other information for invoicing" ); ?>
                 </div>
             </label>
 
-            <div id="invoiceView" class="invoiceView" style="<?php echo ( $forceShowInvoiceInformation ? 'display: block;' : 'display: none;' ); ?>">
+            <div id="invoiceView" class="invoiceView"
+                 style="<?php echo( $forceShowInvoiceInformation ? 'display: block;' : 'display: none;' ); ?>">
                 <h2><?php edu_e( "Invoice information" ); ?></h2>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Customer name" ); ?>
+	                    <?php edu_e( "Customer name" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceName" placeholder="<?php edu_e( "Customer name" ); ?>"
@@ -167,7 +169,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Address 1" ); ?>
+	                    <?php edu_e( "Address 1" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress1" placeholder="<?php edu_e( "Address 1" ); ?>"
@@ -176,7 +178,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Address 2" ); ?>
+	                    <?php edu_e( "Address 2" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress2" placeholder="<?php edu_e( "Address 2" ); ?>"
@@ -185,7 +187,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Postal code" ); ?>
+	                    <?php edu_e( "Postal code" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCode" placeholder="<?php edu_e( "Postal code" ); ?>"
@@ -194,7 +196,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Postal city" ); ?>
+	                    <?php edu_e( "Postal city" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCity" placeholder="<?php edu_e( "Postal city" ); ?>"
@@ -215,7 +217,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 
@@ -224,7 +226,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -258,7 +260,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $customer ) && isset( $customer->CustomerID ) ) {
@@ -266,7 +268,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -300,7 +302,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		/*if($contact->PersonID != 0) {

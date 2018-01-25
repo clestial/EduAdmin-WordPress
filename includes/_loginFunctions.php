@@ -1,9 +1,9 @@
 <?php
 	function sendForgottenPassword( $loginValue ) {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$eduapi                     = EDU()->api;
-		$edutoken                   = EDU()->get_token();
-		$ccId                       = 0;
+		$t        = EDU()->StartTimer( __METHOD__ );
+		$eduapi   = EDU()->api;
+		$edutoken = EDU()->get_token();
+		$ccId     = 0;
 
 		$loginField = get_option( 'eduadmin-loginField', 'Email' );
 
@@ -18,18 +18,20 @@
 		}
 
 		if ( $ccId > 0 && ! empty( current( $cc )->Email ) ) {
-			$sent                       = $eduapi->SendCustomerContactPassword( $edutoken, $ccId, get_bloginfo( 'name' ) );
-			EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+			$sent = $eduapi->SendCustomerContactPassword( $edutoken, $ccId, get_bloginfo( 'name' ) );
+			EDU()->StopTimer( $t );
+
 			return $sent;
 		}
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
+
 		return false;
 	}
 
 	function logoutUser() {
-		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$surl                       = get_home_url();
-		$cat                        = get_option( 'eduadmin-rewriteBaseUrl' );
+		$t    = EDU()->StartTimer( __METHOD__ );
+		$surl = get_home_url();
+		$cat  = get_option( 'eduadmin-rewriteBaseUrl' );
 
 		$baseUrl = $surl . '/' . $cat;
 
@@ -40,7 +42,7 @@
 		unset( $_COOKIE['eduadmin-loginUser'] );
 		setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
 		wp_redirect( $baseUrl . edu_getQueryString() );
-		EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+		EDU()->StopTimer( $t );
 		exit();
 	}
 

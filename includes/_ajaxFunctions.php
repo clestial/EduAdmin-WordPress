@@ -376,9 +376,10 @@
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			?>
-            <div class="objectItem">
+            <div class="objectItem <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                     <div class="objectImage"
                          onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
@@ -391,8 +392,6 @@
 							?></a>
                     </div>
                     <div class="objectDescription"><?php
-
-							$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 							echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 							if ( ! empty( $object->City ) ) {
@@ -421,20 +420,21 @@
 							echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
 
 						?></div>
-                    <div class="objectBook">
-                        <a class="readMoreButton"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a><br/>
-						<?php
-							if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
-								?>
-                                <a class="bookButton"
-                                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
-								<?php
-							} else {
-								?>
-                                <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
-							<?php } ?>
-                    </div>
+
+                </div>
+                <div class="objectBook">
+	                <?php
+		                if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
+			                ?>
+                            <a class="bookButton cta-btn"
+                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
+			                <?php
+		                } else {
+			                ?>
+                            <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+		                <?php } ?>
+                    <a class="readMoreButton"
+                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a><br/>
                 </div>
             </div>
 			<?php
@@ -483,7 +483,6 @@
 			'order',
 			'orderby',
 		);
-		ob_start();
 
 		$currentEvents = 0;
 
@@ -491,9 +490,10 @@
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 			?>
-            <div class="objectBlock brick">
+            <div class="objectBlock brick <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
 				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
                     <div class="objectImage"
                          onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
@@ -505,8 +505,6 @@
 						?></a>
                 </div>
                 <div class="objectDescription"><?php
-
-						$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 						if ( ! empty( $object->City ) ) {
@@ -531,19 +529,17 @@
 						if ( $request['showcourseprices'] && isset( $object->Price ) ) {
 							echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
 						}
-						echo '<br />' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots );
+		                echo '<div class="spotsLeft"></div>';
+		                echo '<span class="spotsLeftInfo">' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . '</span>';
 					?></div>
                 <div class="objectBook">
-                    <a class="readMoreButton"
+                    <a class="readMoreButton cta-btn"
                        href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a>
                 </div>
             </div>
 			<?php
 			$currentEvents ++;
 		}
-		$out = ob_get_clean();
-
-		return $out;
 	}
 
 	function edu_api_eventlist() {
@@ -743,7 +739,7 @@
 					'spotsettings',
 				);
 
-				$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $i % 2 == 0 ? " evenRow" : " oddRow" ) . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
+				$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
 				$retStr   .= '
 				<div class="eventDate' . $groupByCityClass . '">
 					' . ( isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . '
@@ -763,7 +759,7 @@
 				<div class="eventBook' . $groupByCityClass . '">
 				' .
 				             ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
-					             '<a class="book-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '" style="text-align: center;">' . edu__( "Book" ) . '</a>'
+					             '<a class="bookButton book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Book" ) . '</a>'
 					             :
 					             ( $showEventInquiry ?
 						             '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Inquiry" ) . '</a> '
@@ -800,13 +796,13 @@
 		$guestText  = $_POST['guesttext'];
 
 		$baseUrl = $surl . '/' . $cat;
-		if ( isset( $_COOKIE['eduadmin_loginUser'] ) ) {
-			$user    = $_COOKIE['eduadmin_loginUser'];
-			$contact = json_decode( $user );
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+			$user    = EDU()->session['eduadmin-loginUser'];
+			$contact = $user->Contact;
 		}
 
-		if ( isset( $_COOKIE['eduadmin_loginUser'] ) &&
-		     ! empty( $_COOKIE['eduadmin_loginUser'] ) &&
+		if ( isset( EDU()->session['eduadmin-loginUser'] ) &&
+		     ! empty( EDU()->session['eduadmin-loginUser'] ) &&
 		     isset( $contact ) &&
 		     isset( $contact->CustomerContactID ) &&
 		     $contact->CustomerContactID != 0

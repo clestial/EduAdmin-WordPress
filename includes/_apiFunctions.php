@@ -26,24 +26,26 @@
 	}
 
 	function edu_getTimers() {
-		if ( EDU()->timers ) {
-			echo "<!-- EduAdmin Booking (" . EDU()->version . ") API - Timers -->\n";
-			$totalValue = 0;
-			foreach ( EDU()->timers as $timer => $value ) {
-				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
-				$totalValue += $value;
+		if ( isset( $_REQUEST['edu-showtimers'] ) && $_REQUEST['edu-showtimers'] == "1" ) {
+			if ( EDU()->timers ) {
+				echo "<!-- EduAdmin Booking (" . EDU()->version . ") API - Timers -->\n";
+				$totalValue = 0;
+				foreach ( EDU()->timers as $timer => $value ) {
+					echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
+					$totalValue += $value;
+				}
+				echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
+				echo "<!-- /EduAdmin Booking API - Timers -->\n";
 			}
-			echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
-			echo "<!-- /EduAdmin Booking API - Timers -->\n";
-		}
-		if ( EDU()->timers ) {
-			echo "<!-- EduAdmin Booking Class - Timers -->\n";
-			$totalValue = 0;
-			foreach ( EDU()->timers as $timer => $value ) {
-				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
-				$totalValue += $value;
+			if ( EDU()->api->timers ) {
+				echo "<!-- EduAdmin Booking Class - Timers -->\n";
+				$totalValue = 0;
+				foreach ( EDU()->api->timers as $timer => $value ) {
+					echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
+					$totalValue += $value;
+				}
+				echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
+				echo "<!-- /EduAdmin Booking Class - Timers -->\n";
 			}
-			echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
-			echo "<!-- /EduAdmin Booking Class - Timers -->\n";
 		}
 	}

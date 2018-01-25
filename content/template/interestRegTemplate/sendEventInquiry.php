@@ -29,7 +29,7 @@
 		$inquiry->Mobile        = sanitize_text_field( $_POST['edu-mobile'] );
 		$inquiry->Notes         = sanitize_textarea_field( $_POST['edu-notes'] );
 
-		$inquiryId = $eduapi->SetInterestRegEvent( $edutoken, array( $inquiry ) )[0];
+		$inquiryId = EDU()->api->SetInterestRegEvent( $edutoken, array( $inquiry ) )[0];
 
 		die( "<script type=\"text/javascript\">alert('" . edu__( "Thank you for your inquiry! We will be in touch!" ) . "'); location.href = '" . get_page_link( '/' ) . "?edu-thankyouinquiry=" . $inquiryId . "';</script>" );
 	}

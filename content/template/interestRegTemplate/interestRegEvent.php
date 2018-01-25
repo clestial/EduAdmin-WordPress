@@ -18,7 +18,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 
@@ -58,7 +58,7 @@
 		$s  = new XSort( 'PeriodStart', 'ASC' );
 		$st->AddItem( $s );
 
-		$events = $eduapi->GetEvent(
+		$events = EDU()->api->GetEvent(
 			$edutoken,
 			$st->ToString(),
 			$ft->ToString()
@@ -91,7 +91,7 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
 					$ft->AddItem( $f );
-					$addresses = $eduapi->GetLocationAddress( $edutoken, '', $ft->ToString() );
+					$addresses = EDU()->api->GetLocationAddress( $edutoken, '', $ft->ToString() );
 					set_transient( 'eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS );
 				}
 
@@ -162,7 +162,7 @@
                             </div>
                         </label>
 					<?php } ?>
-                    <input type="submit" class="bookButton" value="<?php edu_e( "Send inquiry" ); ?>"/>
+                    <input type="submit" class="bookButton cta-btn" value="<?php edu_e( "Send inquiry" ); ?>"/>
                 </form>
             </div>
         </div>

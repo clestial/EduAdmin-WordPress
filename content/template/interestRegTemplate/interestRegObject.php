@@ -18,7 +18,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 
@@ -116,7 +116,7 @@
                         </label>
 					<?php } ?>
 
-                    <input type="submit" class="bookButton" value="<?php edu_e( "Send inquiry" ); ?>"/>
+                    <input type="submit" class="bookButton cta-btn" value="<?php edu_e( "Send inquiry" ); ?>"/>
                 </form>
             </div>
         </div>

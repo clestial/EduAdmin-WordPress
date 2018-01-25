@@ -9,14 +9,15 @@
 			<?php edu_e( "Contact name" ); ?>
         </div>
         <div class="inputHolder"><input type="text"
-                                        style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+		        <?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
-                                        autocomplete="given-name"
+                                        autocomplete="given-name" class="first-name"
                                         id="edu-contactFirstName" name="contactFirstName"
                                         placeholder="<?php edu_e( "Contact first name" ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
-                    type="text" style="width: 50%; display: inline;"<?php echo( $__block ? " readonly" : "" ); ?>
+                    type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
+                    class="last-name"
                     autocomplete="family-name"
                     name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"
                     value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
@@ -90,7 +91,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $contact ) && isset( $contact->CustomerContactID ) ) {
@@ -98,7 +99,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -130,7 +131,7 @@
             <input type="checkbox" id="contactIsAlsoParticipant" name="contactIsAlsoParticipant" value="true"
                    onchange="if(eduBookingView.CheckParticipantCount()) { eduBookingView.UpdatePrice(); } else { this.checked = false; return false; }"/>
             <label class="inline-checkbox" for="contactIsAlsoParticipant"></label>
-			<?php edu_e( "Contact is also a participant" ); ?>
+	        <?php edu_e( "I am also participating" ); ?>
         </div>
     </label>
     <div class="edu-modal warning" id="edu-warning-participants-contact">

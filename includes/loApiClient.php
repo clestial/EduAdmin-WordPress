@@ -28,9 +28,9 @@
 		 * @param $version
 		 */
 		public function __construct( $version ) {
-			$this->timers                   = array();
-			$this->timers['InitSoapClient'] = microtime( true );
-			$this->__server                 = new SoapClient(
+			$this->timers   = array();
+			$t              = $this->StartTimer( 'InitSoapClient' );
+			$this->__server = new SoapClient(
 				EduAdminClient_ServiceUrl,
 				array(
 					'trace'      => 0,
@@ -38,7 +38,26 @@
 					'user_agent' => 'EduAdmin WordPress Plugin (' . $version . ')',
 				)
 			);
-			$this->timers['InitSoapClient'] = microtime( true ) - $this->timers['InitSoapClient'];
+			$this->StopTimer( $t );
+		}
+
+		/**
+		 * @param string $name Name of the timer
+		 *
+		 * @return string Returns the unique name for the created timer
+		 */
+		public function StartTimer( $name ) {
+			$timer_id                                = count( $this->timers ) + 1;
+			$this->timers[ $name . "_" . $timer_id ] = microtime( true );
+
+			return $name . "_" . $timer_id;
+		}
+
+		/**
+		 * @param string $name The unique name of the timer (Returned from StartTimer)
+		 */
+		public function StopTimer( $name ) {
+			$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
 		}
 
 		/**
@@ -69,8 +88,8 @@
 		 * @return mixed|null
 		 */
 		private function __callServer( $params, $methodName ) {
-			$this->timers[ $methodName . '__callServer' ] = microtime( true );
-			$result                                       = null;
+			$t      = $this->StartTimer( $methodName . '__callServer' );
+			$result = null;
 			try {
 				$result = $this->__server->__soapCall(
 					$methodName,
@@ -85,7 +104,7 @@
 			if ( $this->debug ) {
 				$this->__debug();
 			}
-			$this->timers[ $methodName . '__callServer' ] = microtime( true ) - $this->timers[ $methodName . '__callServer' ];
+			$this->StopTimer( $t );
 			if ( isset( $result->{$methodName . 'Result'} ) ) {
 				return $result->{$methodName . 'Result'};
 			}
@@ -332,24 +351,24 @@
 		 * @return mixed
 		 */
 		private function __getArray( $objName, $res ) {
-			$this->timers[ $objName . '__getArray' ] = microtime( true );
+			$t = $this->StartTimer( $objName . '__getArray' );
 			if ( ! empty( $res->{$objName} ) ) {
 				if ( is_array( $res->{$objName} ) ) {
-					$this->timers[ $objName . '__getArray' ] = microtime( true ) - $this->timers[ $objName . '__getArray' ];
+					$this->StopTimer( $t );
 
 					return $res;
 				} else {
 					$nRes                                    = new stdClass;
 					$nRes->{$objName}                        = array();
 					$nRes->{$objName}[]                      = $res->{$objName};
-					$this->timers[ $objName . '__getArray' ] = microtime( true ) - $this->timers[ $objName . '__getArray' ];
+					$this->StopTimer( $t );
 
 					return $nRes;
 				}
 			} else {
 				if ( ! empty( $res->{"ArrayOf" . $objName} ) ) {
 					if ( is_array( $res->{"ArrayOf" . $objName} ) ) {
-						$this->timers[ $objName . '__getArray' ] = microtime( true ) - $this->timers[ $objName . '__getArray' ];
+						$this->StopTimer( $t );
 						if ( $this->debugTimers ) {
 							echo "<!-- " . $objName . '__getArray' . ": " . round( $this->timers[ $objName . '__getArray' ] * 1000, 2 ) . "ms -->\n";
 						}
@@ -367,7 +386,7 @@
 					} else {
 						$nRes                                    = new stdClass;
 						$nRes->{$objName}                        = $res->{"ArrayOf" . $objName}->{$objName};
-						$this->timers[ $objName . '__getArray' ] = microtime( true ) - $this->timers[ $objName . '__getArray' ];
+						$this->StopTimer( $t );
 						if ( $this->debugTimers ) {
 							echo "<!-- " . $objName . '__getArray' . ": " . round( $this->timers[ $objName . '__getArray' ] * 1000, 2 ) . "ms -->\n";
 						}
@@ -377,7 +396,7 @@
 				}
 				$nRes                                    = new stdClass;
 				$nRes->{$objName}                        = array();
-				$this->timers[ $objName . '__getArray' ] = microtime( true ) - $this->timers[ $objName . '__getArray' ];
+				$this->StopTimer( $t );
 
 				return $nRes;
 			}

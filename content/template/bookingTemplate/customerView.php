@@ -67,11 +67,12 @@
                            value="<?php echo @esc_attr( $customer->Email ); ?>"/>
                 </div>
             </label>
-            <div id="invoiceView" class="invoiceView" style="<?php echo ($forceShowInvoiceInformation ? 'display: block;' : 'display: none;'); ?>">
+            <div id="invoiceView" class="invoiceView"
+                 style="<?php echo( $forceShowInvoiceInformation ? 'display: block;' : 'display: none;' ); ?>">
                 <h2><?php edu_e( "Invoice information" ); ?></h2>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Customer name" ); ?>
+	                    <?php edu_e( "Customer name" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceName" placeholder="<?php edu_e( "Customer name" ); ?>"
@@ -80,7 +81,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Address 1" ); ?>
+	                    <?php edu_e( "Address 1" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress1" placeholder="<?php edu_e( "Address 1" ); ?>"
@@ -89,7 +90,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Address 2" ); ?>
+	                    <?php edu_e( "Address 2" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress2" placeholder="<?php edu_e( "Address 2" ); ?>"
@@ -98,7 +99,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Postal code" ); ?>
+	                    <?php edu_e( "Postal code" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCode" placeholder="<?php edu_e( "Postal code" ); ?>"
@@ -107,7 +108,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Postal city" ); ?>
+	                    <?php edu_e( "Postal city" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCity" placeholder="<?php edu_e( "Postal city" ); ?>"
@@ -115,17 +116,17 @@
                     </div>
                 </label>
             </div>
-            <?php if( $showInvoiceEmail ) { ?>
+			<?php if ( $showInvoiceEmail ) { ?>
                 <label>
                     <div class="inputLabel">
-                        <?php edu_e( "Invoice e-mail address" ); ?>
+	                    <?php edu_e( "Invoice e-mail address" ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceEmail" placeholder="<?php edu_e( "Invoice e-mail address" ); ?>"
                                value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
                     </div>
                 </label>
-            <?php } ?>
+			<?php } ?>
             <label>
                 <div class="inputLabel">
 					<?php edu_e( "Invoice reference" ); ?>
@@ -156,7 +157,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 		$fo->AddItem( $f );
-		$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $customer ) && isset( $customer->CustomerID ) ) {
@@ -164,7 +165,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 				$fo->AddItem( $f );
-				$db = $eduapi->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
 			}
 		}
 
@@ -188,13 +189,13 @@
 			}
 			renderAttribute( $attr, false, "", $data );
 		}
-        if ( ! $noInvoiceFreeEvents || $firstPrice->Price > 0 ) {
+		if ( ! $noInvoiceFreeEvents || $firstPrice->Price > 0 ) {
 			?>
-            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" :  "" ?>">
+            <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" : "" ?>">
                 <div class="inputHolder alsoInvoiceCustomer">
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
-                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
-                            <?php echo $forceShowInvoiceInformation ? "checked" :  "" ?>/>
+                           onchange="eduBookingView.UpdateInvoiceCustomer(this);"
+	                    <?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
 					<?php edu_e( "Use other information for invoicing" ); ?>
                 </div>

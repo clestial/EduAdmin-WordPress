@@ -9,10 +9,10 @@
                 <div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
                 </div>
-                <div class="inputHolder"><input type="text" readonly style="width: 50%; display: inline;"
-                                                class="contactFirstName"
+                <div class="inputHolder"><input type="text" readonly
+                                                class="contactFirstName" class="first-name"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" readonly style="width: 50%; display: inline;" class="contactLastName"
+                            type="text" readonly class="contactLastName last-name"
                             placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>
@@ -62,7 +62,7 @@
 				$fo->AddItem( $f );
 				$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 				$fo->AddItem( $f );
-				$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+				$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 				$db = array();
 				/*if($contact->PersonID != 0) {
@@ -159,10 +159,10 @@
                 <div class="inputLabel">
 					<?php edu_e( "Participant name" ); ?>
                 </div>
-                <div class="inputHolder"><input type="text" style="width: 50%; display: inline;"
-                                                class="participantFirstName" name="participantFirstName[]"
+                <div class="inputHolder"><input type="text"
+                                                class="participantFirstName first-name" name="participantFirstName[]"
                                                 placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
-                            type="text" style="width: 50%; display: inline;" class="participantLastName"
+                            type="text" class="participantLastName last-name"
                             name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
             </label>
             <label>
@@ -212,7 +212,7 @@
 				$fo->AddItem( $f );
 				$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 				$fo->AddItem( $f );
-				$contactAttributes = $eduapi->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+				$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
 
 				foreach ( $contactAttributes as $attr ) {
 					renderAttribute( $attr, true );

@@ -8,7 +8,7 @@ Requires at least: 4.7
 
 Tested up to: 4.9.2
 
-Stable tag: 1.0.20
+Stable tag: 1.0.21
 
 Requires PHP: 5.0.1 (with SoapClient)
 
@@ -39,6 +39,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
+### [1.0.21]
+- LOTS of design changes, please update to a development server to see if anything breaks
+
 ### [1.0.11]
 - Bugfix with REST API, we don't need to pass the token now, so we can always get a valid token when needed.
 
@@ -49,6 +52,10 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.21]
+- Lots of design fixes and changes, to make the plugin more mobile friendly
+- Login widget bug fixed
 
 ### [1.0.20]
 - More subject filters to fix.
@@ -505,6 +512,7 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 #### Added
 - Added inquiry support in course
 
+[1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21
 [1.0.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.19...v1.0.20
 [1.0.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...v1.0.19
 [1.0.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.17...v1.0.18

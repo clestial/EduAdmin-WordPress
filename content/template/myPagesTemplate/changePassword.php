@@ -15,7 +15,7 @@
 				global $edutoken;
 
 				$contact->Loginpass = trim( sanitize_text_field( $_POST['newPassword'] ) );
-				$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
+				EDU()->api->SetCustomerContact( $edutoken, array( $contact ) );
 			}
 		}
 	}
@@ -49,7 +49,7 @@
                 </div>
             </label>
         </div>
-        <button class="profileSaveButton"><?php edu_e( "Save" ); ?></button>
+        <button class="profileSaveButton cta-btn"><?php edu_e( "Save" ); ?></button>
     </form>
 	<?php if ( isset( $msg ) ) { ?>
         <div class="edu-modal warning" style="display: block; clear: both;">

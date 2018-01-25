@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.20
+	 * Version:	1.0.21
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
@@ -97,14 +97,33 @@
 			}
 
 			public function __construct() {
-				$this->timers               = array();
-				$this->timers[ __METHOD__ ] = microtime( true );
-				$this->version              = $this->get_version();
+				$this->timers  = array();
+				$t             = $this->StartTimer( __METHOD__ );
+				$this->version = $this->get_version();
 				$this->includes();
 				$this->init_hooks();
 
 				do_action( 'eduadmin_loaded' );
-				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+				$this->StopTimer( $t );
+			}
+
+			/**
+			 * @param string $name Name of the timer
+			 *
+			 * @return string Returns the unique name for the created timer
+			 */
+			public function StartTimer( $name ) {
+				$timer_id                                = count( $this->timers ) + 1;
+				$this->timers[ $name . "_" . $timer_id ] = microtime( true );
+
+				return $name . "_" . $timer_id;
+			}
+
+			/**
+			 * @param string $name The unique name of the timer (Returned from StartTimer)
+			 */
+			public function StopTimer( $name ) {
+				$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
 			}
 
 			public function get_version() {
@@ -136,18 +155,18 @@
 			 * @return mixed|null|string Returnerar en API-token från Lega Online
 			 */
 			public function get_token() {
-				$this->timers[ __METHOD__ ] = microtime( true );
-				$apiKey                     = get_option( 'eduadmin-api-key' );
+				$t      = $this->StartTimer( __METHOD__ );
+				$apiKey = get_option( 'eduadmin-api-key' );
 				if ( ! $apiKey || empty( $apiKey ) ) {
 					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
-					$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+					$this->StopTimer( $t );
 
 					return '';
 				} else {
 					$key = DecryptApiKey( $apiKey );
 					if ( ! $key ) {
 						add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
-						$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+						$this->StopTimer( $t );
 
 						return '';
 					}
@@ -166,15 +185,15 @@
 							set_transient( 'eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS );
 						}
 					}
-					$this->token                = $edutoken;
-					$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+					$this->token = $edutoken;
+					$this->StopTimer( $t );
 
 					return $this->token;
 				}
 			}
 
 			private function includes() {
-				$this->timers[ __METHOD__ ] = microtime( true );
+				$t = $this->StartTimer( __METHOD__ );
 				include_once( 'libraries/class-recursive-arrayaccess.php' );
 				include_once( 'libraries/class-wp-session.php' );
 				include_once( 'libraries/wp-session.php' );
@@ -209,31 +228,45 @@
 
 				include_once( 'class/controller-eduadmin-api.php' );
 
-				$this->restController       = new EduAdminAPIController( $this );
-				$this->bookingHandler       = new EduAdminBookingHandler( $this );
-				$this->loginHandler         = new EduAdminLoginHandler( $this );
-				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+				$this->restController = new EduAdminAPIController( $this );
+				$this->bookingHandler = new EduAdminBookingHandler( $this );
+				$this->loginHandler   = new EduAdminLoginHandler( $this );
+				$this->StopTimer( $t );
+			}
+
+			public function call_home() {
+				global $wp_version;
+				$usageData   = array(
+					'siteUrl'       => get_site_url(),
+					'siteName'      => get_option( 'blogname' ),
+					'wpVersion'     => $wp_version,
+					'token'         => get_option( 'eduadmin-api-key' ),
+					'pluginVersion' => $this->version,
+				);
+				$callHomeUrl = 'https://ws10.multinet.se/edu-plugin/wp_phone_home.php';
+				wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
 			}
 
 			private function init_hooks() {
-				$this->timers[ __METHOD__ ] = microtime( true );
+				$t = $this->StartTimer( __METHOD__ );
 				register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
 
 				add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
 				add_action( 'init', array( $this, 'init' ) );
 				add_action( 'plugins_loaded', array( $this, 'load_language' ) );
+				add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
 				add_action( 'wp_footer', 'edu_getTimers' );
 
 				register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+				$this->StopTimer( $t );
 			}
 
 			public function init() {
-				$this->timers[ __METHOD__ ] = microtime( true );
-				$this->integrations         = new EDU_IntegrationLoader();
+				$t                  = $this->StartTimer( __METHOD__ );
+				$this->integrations = new EDU_IntegrationLoader();
 				$this->restController->register_routes();
 				edu_LoadPhrases();
-				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+				$this->StopTimer( $t );
 			}
 
 			public static function SetupWarning() {
@@ -259,11 +292,16 @@
 			}
 
 			public function load_language() {
-				$this->timers[ __METHOD__ ] = microtime( true );
-				$locale                     = apply_filters( 'plugin_locale', get_locale(), 'eduadmin-booking' );
+				$t      = $this->StartTimer( __METHOD__ );
+				$locale = apply_filters( 'plugin_locale', get_locale(), 'eduadmin-booking' );
 				load_textdomain( 'eduadmin-booking', WP_LANG_DIR . '/eduadmin/' . 'eduadmin-booking' . '-' . $locale . '.mo' );
 				load_plugin_textdomain( 'eduadmin-booking', false, EDUADMIN_PLUGIN_PATH . '/languages' );
-				$this->timers[ __METHOD__ ] = microtime( true ) - $this->timers[ __METHOD__ ];
+
+				if ( ! wp_next_scheduled( 'eduadmin_call_home' ) ) {
+					wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
+				}
+
+				$this->StopTimer( $t );
 			}
 
 			public function new_theme() {
@@ -272,6 +310,7 @@
 
 			public function deactivate() {
 				eduadmin_deactivate_rewrite();
+				wp_clear_scheduled_hook( 'eduadmin_call_home' );
 			}
 		}
 
@@ -300,7 +339,7 @@
 		add_action(
 			'wp_loaded',
 			function() {
-				EDU()->timers[ __METHOD__ ] = microtime( true );
+				$t = EDU()->StartTimer( __METHOD__ );
 				if ( isset( $_POST['option_page'] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST['option_page'] ) ) {
 					$integrations = EDU()->integrations->integrations;
 					foreach ( $integrations as $integration ) {
@@ -314,6 +353,6 @@
 						<?php
 					} );
 				}
-				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
+				EDU()->StopTimer( $t );
 			} );
 	endif;

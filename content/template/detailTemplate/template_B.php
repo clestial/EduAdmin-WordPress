@@ -16,7 +16,7 @@
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$filtering->AddItem( $f );
 
-		$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+		$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
 
 		$selectedCourse = false;
 		$name           = "";
@@ -68,13 +68,13 @@
 		$s = new XSort( 'PeriodStart', 'ASC' );
 		$st->AddItem( $s );
 
-		$events = $eduapi->GetEvent(
+		$events = EDU()->api->GetEvent(
 			$edutoken,
 			$st->ToString(),
 			$ft->ToString()
 		);
 
-		$incVat      = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat      = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
 
 		$hideSections = array();
@@ -181,7 +181,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = $eduapi->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -200,7 +200,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$prices       = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 					$uniquePrices = Array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
@@ -290,9 +290,9 @@
 								<?php
 									if ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ) {
 										?>
-                                        <a class="book-link"
+                                        <a class="bookButton cta-btn"
                                            href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                           style="text-align: center;"><?php edu_e( "Book" ); ?></a>
+                                        ><?php edu_e( "Book" ); ?></a>
 										<?php
 									} else {
 										?>

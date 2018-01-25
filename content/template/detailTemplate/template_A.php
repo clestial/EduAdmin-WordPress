@@ -14,7 +14,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 
@@ -75,7 +75,7 @@
 		$s = new XSort( 'PeriodStart', 'ASC' );
 		$st->AddItem( $s );
 
-		$events = $eduapi->GetEvent(
+		$events = EDU()->api->GetEvent(
 			$edutoken,
 			$st->ToString(),
 			$ft->ToString()
@@ -96,7 +96,7 @@
 		$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 		$ft->AddItem( $f );
 
-		$eventDays = $eduapi->GetEventDate( $edutoken, '', $ft->ToString() );
+		$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
 
 		$eventDates = array();
 		foreach ( $eventDays as $ed ) {
@@ -108,7 +108,7 @@
 		$ft->AddItem( $f );
 		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 		$ft->AddItem( $f );
-		$pricenames = $eduapi->GetPriceName( $edutoken, '', $ft->ToString() );
+		$pricenames = EDU()->api->GetPriceName( $edutoken, '', $ft->ToString() );
 		set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 		if ( ! empty( $pricenames ) ) {
@@ -129,13 +129,13 @@
 			$ft = new XFiltering();
 			$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 			$ft->AddItem( $f );
-			$courseLevel = $eduapi->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
+			$courseLevel = EDU()->api->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
 			set_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID, $courseLevel, HOUR_IN_SECONDS );
 		}
 
 		$lastCity = "";
 
-		$incVat = $eduapi->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 
 		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
 
@@ -243,7 +243,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$prices       = $eduapi->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
 					$uniquePrices = Array();
 
 					foreach ( $prices as $price ) {
@@ -332,9 +332,9 @@
 									<?php
 										if ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ) {
 											?>
-                                            <a class="book-link"
+                                            <a class="bookButton book-link cta-btn"
                                                href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                               style="text-align: center;"><?php edu_e( "Book" ); ?></a>
+                                            ><?php edu_e( "Book" ); ?></a>
 											<?php
 										} else {
 											?>

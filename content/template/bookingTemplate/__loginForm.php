@@ -46,7 +46,7 @@
 			$click = "if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__( "Please enter a valid swedish civic registration number." ) . "');  return false; }";
 		}
 	?>
-    <button class="loginButton"
+    <button class="loginButton cta-btn"
             onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'loginEmail';<?php echo $click; ?>"><?php edu_e( "Log in" ); ?></button>
     <button class="forgotPasswordButton"
             onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php edu_e( "Forgot password" ); ?></button>

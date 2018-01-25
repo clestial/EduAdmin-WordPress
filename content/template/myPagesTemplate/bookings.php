@@ -22,7 +22,7 @@
 		$sorting = new XSorting();
 		$s       = new XSort( 'Created', 'DESC' );
 		$sorting->AddItem( $s );
-		$bookings = $eduapi->GetEventBooking( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$bookings = EDU()->api->GetEventBooking( $edutoken, $sorting->ToString(), $filtering->ToString() );
 
 		$eclIds = array();
 		foreach ( $bookings as $book ) {
@@ -36,7 +36,7 @@
 		$f = new XFilter( 'Canceled', '=', 'false' );
 		$filtering->AddItem( $f );
 
-		$participants = $eduapi->GetEventParticipantV2( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$participants = EDU()->api->GetEventParticipantV2( $edutoken, $sorting->ToString(), $filtering->ToString() );
 
 		$partPerEvent = array();
 		foreach ( $participants as $p ) {

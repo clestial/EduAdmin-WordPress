@@ -38,30 +38,18 @@ h1.courseTitle:hover,
 /* ------------------------
       Buttons
 ----------------------------*/
-.eduadmin .readMoreButton,
-.eduadmin .bookButton {
+
+/* Call to action*/
+.eduadmin .cta-btn {
   padding: 8px 16px;
   display: inline-block;
   box-sizing: border-box;
   border-radius: 3px;
-}
-
-.eduadmin .readMoreButton {
   border: 1px solid hsl(116, 33%, 55%);
   background: hsl(120, 33%, 50%);
   color: hsl(0, 0%, 100%);
 }
-.eduadmin .readMoreButton:hover {
-  color: hsl(0, 0%, 100%);
-  background: hsl(116, 33%, 55%);
-}
-
-.eduadmin .bookButton {
-  border: 1px solid hsl(116, 33%, 55%);
-  background: hsl(120, 33%, 50%);
-  color: hsl(0, 0%, 100%);
-}
-.eduadmin .bookButton:hover {
+.eduadmin .cta-btn:hover {
   color: hsl(0, 0%, 100%);
   background: hsl(116, 33%, 55%);
 }
@@ -218,16 +206,9 @@ h1.courseTitle:hover,
   margin: 0 0 16px 0;
 }
 .eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
-  border: 1px solid hsl(116, 33%, 55%);
-  background: hsl(120, 33%, 50%);
-  color: hsl(0, 0%, 100%);
-  border-radius: 3px;
+  padding: 16px 24px;
 }
 
-.eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton:hover {
-  color: hsl(0, 0%, 100%);
-  background: hsl(116, 33%, 55%);
-}
 
 @media (min-width: 700px) {
   .eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
@@ -344,7 +325,7 @@ h1.courseTitle:hover,
 .eduadmin.booking-page form .submitView {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 .eduadmin.booking-page form .submitView .sumTotal {
   font-weight: bold;
@@ -460,11 +441,9 @@ h1.courseTitle:hover,
   align-items: baseline;
 }
 
-.eduadmin .objectItem .objectBook a.bookButton { order: -1;}
+/* .eduadmin .objectItem .objectBook a.bookButton { order: -1;} */
 .eduadmin .objectItem .objectBook a.readMoreButton:hover {color: hsl(0, 0%, 15%);}
 .eduadmin .objectItem .objectBook a.readMoreButton {
-  background: transparent;
-  border-color: transparent;
   color: hsl(0, 0%, 40%);
   font-style: italic;
 }
@@ -497,7 +476,7 @@ h1.courseTitle:hover,
     justify-content: center;
   }
 
-  .eduadmin .objectItem .objectBook a.bookButton { order: -1; margin: 0 0 8px 0}
+  .eduadmin .objectItem .objectBook a.bookButton { order: -1; margin: 0 0 16px 0}
   .eduadmin .objectItem .objectBook a.readMoreButton:hover {color: hsl(0, 0%, 15%);}
 }
 
@@ -569,4 +548,14 @@ h1.courseTitle:hover,
     max-width: 350px;
     margin: 0 16px 16px 0;
   }
+}
+
+/*------------------------
+  Template GF Specific
+-------------------------*/
+
+.eduadmin .courseContainer {
+    width: 100%;
+    margin: auto;
+    font-size: 14px;
 }

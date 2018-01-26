@@ -39,13 +39,18 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
-### [1.0.21]
+= 1.0.22 =
+If you are using an older version than 1.0.21, please test this version on a development server before deploying live.
+Since version 1.0.21, there are a lot of design changes in the CSS, that might require you to reset style settings,
+and redo your own customization.
+
+= 1.0.21 =
 - LOTS of design changes, please update to a development server to see if anything breaks
 
-### [1.0.11]
+= 1.0.11 =
 - Bugfix with REST API, we don't need to pass the token now, so we can always get a valid token when needed.
 
-### [1.0.10]
+= 1.0.10 =
 - Changing to REST API instead, hopefully this will increase the speed again.
 
 ### [1.0.9]

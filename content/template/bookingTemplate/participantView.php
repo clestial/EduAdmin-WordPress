@@ -102,7 +102,7 @@
                     <div class="inputHolder">
                         <select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required
                                 onchange="eduBookingView.UpdatePrice();">
-                            <option value=""><?php edu_e( "Choose price" ); ?></option>
+                            <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
 							<?php foreach ( $prices as $price ) { ?>
                                 <option
                                         data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -228,7 +228,7 @@
                         <select name="participantPriceName[]" required
                                 class="edudropdown participantPriceName edu-pricename"
                                 onchange="eduBookingView.UpdatePrice();">
-                            <option value=""><?php edu_e( "Choose price" ); ?></option>
+                            <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
 							<?php foreach ( $prices as $price ) { ?>
                                 <option
                                         data-price="<?php echo esc_attr( $price->Price ); ?>"

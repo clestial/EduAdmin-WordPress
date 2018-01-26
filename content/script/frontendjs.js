@@ -355,7 +355,8 @@ var eduBookingView = {
 				}
 			}
 		}
-
+        var bookBtn = document.getElementById('edu-book-btn');
+        bookBtn.disabled = true;
 		return true;
 	},
 	ValidateCivicRegNo: function () {

@@ -302,7 +302,7 @@
 							<?php edu_e( "Price name" ); ?>
                             <select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename"
                                     onchange="eduBookingView.UpdatePrice();">
-                                <option value=""><?php edu_e( "Choose price" ); ?></option>
+                                <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
 								<?php foreach ( $prices as $price ): ?>
                                     <option
                                             data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -368,7 +368,7 @@
                                 </label>
                             </div>
 						<?php endif; ?>
-                        <input type="submit" class="bookButton cta-btn"
+                        <input type="submit" class="bookButton cta-btn" id="edu-book-btn"
                                onclick="var validated = eduBookingView.CheckValidation(); return validated;"
 							<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
                                 disabled title="<?php esc_attr( edu_e( 'No free spots left on this event' ) ); ?>"

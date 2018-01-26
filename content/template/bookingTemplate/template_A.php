@@ -182,7 +182,7 @@
                 <form action="" method="post">
                     <input type="hidden" name="act" value="bookCourse"/>
 
-                    <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
+                    <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
 
                     <div class="title">
 	                    <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
@@ -194,11 +194,11 @@
 
 						<?php if ( count( $events ) > 1 ): ?>
                             <div class="dateSelectLabel">
-								<?php edu_e( "Select the event you want to book" ); ?>
+	                            <?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?>
                             </div>
 
                             <select name="eid" required class="dateInfo" onchange="eduBookingView.SelectEvent(this);">
-                                <option value=""><?php edu_e( "Select event" ); ?></option>
+                                <option value=""><?php _e( "Select event", 'eduadmin-booking' ); ?></option>
 								<?php foreach ( $events as $ev ): ?>
                                     <option value="<?php echo $ev->EventID; ?>">
 										<?php
@@ -273,7 +273,7 @@
 							$baseUrl = $surl . '/' . $cat;
 							?>
                             <div class="notUserCheck">
-                                <i><?php echo sprintf( edu__( "Not %s? %sLog out%s" ), "<b>" . $userVal . "</b>", "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
+                                <i><?php echo sprintf( __( "Not <b>%s</b>? %sLog out%s", 'eduadmin-booking' ), $userVal, "<a href=\"" . $baseUrl . "/profile/logout\">", "</a>" ); ?></i>
                             </div>
 							<?php
 						}
@@ -299,10 +299,11 @@
 					?>
 					<?php if ( "selectWholeEvent" === get_option( 'eduadmin-selectPricename', 'firstPublic' ) ): ?>
                         <div class="priceView">
-							<?php edu_e( "Price name" ); ?>
+	                        <?php _e( "Price name", 'eduadmin-booking' ); ?>
                             <select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename"
                                     onchange="eduBookingView.UpdatePrice();">
-                                <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
+                                <option data-price="0"
+                                        value=""><?php _e( "Choose price", 'eduadmin-booking' ); ?></option>
 								<?php foreach ( $prices as $price ): ?>
                                     <option
                                             data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -315,7 +316,7 @@
 										<?php } ?>
                                             value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 										<?php echo trim( $price->Description ); ?>
-                                        (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+                                        (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
                                         )
                                     </option>
 								<?php endforeach; ?>
@@ -329,23 +330,23 @@
                         <div class="discountView">
                             <label>
                                 <div class="inputLabel">
-									<?php edu_e( 'Discount code' ); ?>
+	                                <?php _e( 'Discount code', 'eduadmin-booking' ); ?>
                                 </div>
                                 <div class="inputHolder">
                                     <input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;"
-                                           placeholder="<?php esc_attr( edu_e( "Discount code" ) ); ?>"/>
+                                           placeholder="<?php esc_attr( _e( "Discount code", 'eduadmin-booking' ) ); ?>"/>
                                     <button class="validateDiscount"
                                             style="width: 20%;"
                                             data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
                                             data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
                                             onclick="eduBookingView.ValidateDiscountCode(); return false;">
-										<?php edu_e( "Validate" ); ?>
+	                                    <?php _e( "Validate", 'eduadmin-booking' ); ?>
                                     </button>
                                     <input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>
                                 </div>
                             </label>
                             <div class="edu-modal warning" id="edu-warning-discount">
-								<?php edu_e( 'Invalid discount code, please check your code and try again.' ); ?>
+	                            <?php _e( 'Invalid discount code, please check your code and try again.', 'eduadmin-booking' ); ?>
                             </div>
                         </div>
 					<?php endif; ?>
@@ -357,35 +358,36 @@
 					?>
                     <div class="submitView">
                         <div class="sumTotal">
-							<?php edu_e( 'Total sum:' ); ?> <span id="sumValue" class="sumValue"></span>
+	                        <?php _e( 'Total sum:', 'eduadmin-booking' ); ?> <span id="sumValue"
+                                                                                   class="sumValue"></span>
                         </div>
 
 						<?php if ( get_option( 'eduadmin-useBookingTermsCheckbox', false ) && $link = get_option( 'eduadmin-bookingTermsLink', '' ) ): ?>
                             <div class="confirmTermsHolder">
                                 <label>
                                     <input type="checkbox" id="confirmTerms" name="confirmTerms" value="agree"/>
-									<?php echo sprintf( edu__( 'I agree to the %sTerms and Conditions%s' ), '<a href="' . $link . '" target="_blank">', '</a>' ); ?>
+	                                <?php echo sprintf( __( 'I agree to the %sTerms and Conditions%s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ); ?>
                                 </label>
                             </div>
 						<?php endif; ?>
                         <input type="submit" class="bookButton cta-btn" id="edu-book-btn"
                                onclick="var validated = eduBookingView.CheckValidation(); return validated;"
 							<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
-                                disabled title="<?php esc_attr( edu_e( 'No free spots left on this event' ) ); ?>"
+                                disabled title="<?php esc_attr( _e( 'No free spots left on this event', 'eduadmin-booking' ) ); ?>"
 							<?php endif; ?>
-                               value="<?php esc_attr( edu_e( "Book now" ) ); ?>"/>
+                               value="<?php esc_attr( _e( "Book now", 'eduadmin-booking' ) ); ?>"/>
 
                         <div class="edu-modal warning" id="edu-warning-terms">
-							<?php edu_e( 'You must accept Terms and Conditions to continue.' ); ?>
+	                        <?php _e( 'You must accept Terms and Conditions to continue.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-no-participants">
-							<?php edu_e( 'You must add some participants.' ); ?>
+	                        <?php _e( 'You must add some participants.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-missing-participants">
-							<?php edu_e( 'One or more participants is missing a name.' ); ?>
+	                        <?php _e( 'One or more participants is missing a name.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-missing-civicregno">
-							<?php edu_e( 'One or more participants is missing their civic registration number.' ); ?>
+	                        <?php _e( 'One or more participants is missing their civic registration number.', 'eduadmin-booking' ); ?>
                         </div>
 						<?php
 							$errorList = apply_filters( 'edu-booking-error', array() );
@@ -415,7 +417,7 @@
                 var discountPerParticipant = <?php echo round( $participantDiscountPercent / 100, 2 ); ?>;
                 var totalPriceDiscountPercent = <?php echo $discountPercent; ?>;
                 var currency = '<?php echo esc_js( get_option( 'eduadmin-currency', 'SEK' ) ); ?>';
-                var vatText = '<?php echo esc_js( edu__( $incVat ? "inc vat" : "ex vat" ) ); ?>';
+                var vatText = '<?php echo esc_js( ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) ); ?>';
                 var ShouldValidateCivRegNo = <?php echo( get_option( 'eduadmin-validateCivicRegNo', false ) ? "true" : "false" ); ?>;
                 (function () {
                     var title = document.title;

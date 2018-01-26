@@ -5,7 +5,7 @@
 	            <?php if ( $allowLocationSearch && ! empty( $addresses ) && $showEvents ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-city">
-                            <option value=""><?php edu_e( "Choose city" ); ?></option>
+                            <option value=""><?php _e( "Choose city", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        $addedCities = array();
 		                        foreach ( $addresses as $address ) {
@@ -22,7 +22,7 @@
 	            <?php if ( $allowSubjectSearch && ! empty( $distinctSubjects ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-subject">
-                            <option value=""><?php edu_e( "Choose subject" ); ?></option>
+                            <option value=""><?php _e( "Choose subject", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        foreach ( $distinctSubjects as $subj => $val ) {
 			                        echo '<option value="' . intval( $subj ) . '"' . ( isset( $_REQUEST['eduadmin-subject'] ) && $_REQUEST['eduadmin-subject'] == $subj ? " selected=\"selected\"" : "" ) . '>' . $val . '</option>';
@@ -34,7 +34,7 @@
 	            <?php if ( $allowCategorySearch && ! empty( $categories ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-category">
-                            <option value=""><?php edu_e( "Choose category" ); ?></option>
+                            <option value=""><?php _e( "Choose category", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        foreach ( $categories as $subj ) {
 			                        echo '<option value="' . intval( $subj->CategoryID ) . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && intval( $_REQUEST['eduadmin-category'] ) == $subj->CategoryID ? " selected=\"selected\"" : "" ) . '>' . $subj->CategoryName . '</option>';
@@ -46,7 +46,7 @@
 	            <?php if ( $allowLevelSearch && ! empty( $levels ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-level">
-                            <option value=""><?php edu_e( "Choose course level" ); ?></option>
+                            <option value=""><?php _e( "Choose course level", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        foreach ( $levels as $level ) {
 			                        echo '<option value="' . $level->EducationLevelID . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && intval( $_REQUEST['eduadmin-level'] ) == $level->EducationLevelID ? " selected=\"selected\"" : "" ) . '>' . $level->Name . '</option>';
@@ -60,13 +60,13 @@
                 <div class="search-item search-text">
                     <input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
                            autosave="edu-course-search_<?php echo session_id(); ?>"
-                           placeholder="<?php edu_e( "Search courses" ); ?>"<?php if ( isset( $_REQUEST['searchCourses'] ) ) {
+                           placeholder="<?php _e( "Search courses", 'eduadmin-booking' ); ?>"<?php if ( isset( $_REQUEST['searchCourses'] ) ) {
 	                    echo " value=\"" . sanitize_text_field( $_REQUEST['searchCourses'] ) . "\"";
                     } ?> />
                 </div>
                 <div class="search-item search-button">
                     <input type="submit" class="searchButton"
-                           value="<?php edu_e( "Search" ); ?>"/>
+                           value="<?php _e( "Search", 'eduadmin-booking' ); ?>"/>
                 </div>
             </div>
         </div>

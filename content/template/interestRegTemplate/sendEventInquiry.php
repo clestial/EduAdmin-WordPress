@@ -31,5 +31,5 @@
 
 		$inquiryId = EDU()->api->SetInterestRegEvent( $edutoken, array( $inquiry ) )[0];
 
-		die( "<script type=\"text/javascript\">alert('" . edu__( "Thank you for your inquiry! We will be in touch!" ) . "'); location.href = '" . get_page_link( '/' ) . "?edu-thankyouinquiry=" . $inquiryId . "';</script>" );
+		die( "<script type=\"text/javascript\">alert('" . __( "Thank you for your inquiry! We will be in touch!", 'eduadmin-booking' ) . "'); location.href = '" . get_page_link( '/' ) . "?edu-thankyouinquiry=" . $inquiryId . "';</script>" );
 	}

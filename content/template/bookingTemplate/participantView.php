@@ -1,53 +1,55 @@
 <div class="participantView">
-    <h2><?php edu_e( "Participant information" ); ?></h2>
+    <h2><?php _e( "Participant information", 'eduadmin-booking' ); ?></h2>
     <div class="participantHolder" id="edu-participantHolder">
         <div id="contactPersonParticipant" class="participantItem contactPerson" style="display: none;">
             <h3>
-				<?php edu_e( "Participant" ); ?>
+	            <?php _e( "Participant", 'eduadmin-booking' ); ?>
             </h3>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "Participant name" ); ?>
+	                <?php _e( "Participant name", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder"><input type="text" readonly
                                                 class="contactFirstName" class="first-name"
-                                                placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
+                                                placeholder="<?php _e( "Participant first name", 'eduadmin-booking' ); ?>"/><input
                             type="text" readonly class="contactLastName last-name"
-                            placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
+                            placeholder="<?php _e( "Participant surname", 'eduadmin-booking' ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "E-mail address" ); ?>
+	                <?php _e( "E-mail address", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="email" readonly class="contactEmail"
-                           placeholder="<?php edu_e( "E-mail address" ); ?>"/>
+                           placeholder="<?php _e( "E-mail address", 'eduadmin-booking' ); ?>"/>
                 </div>
             </label>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "Phone number" ); ?>
+	                <?php _e( "Phone number", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
-                    <input type="tel" readonly class="contactPhone" placeholder="<?php edu_e( "Phone number" ); ?>"/>
+                    <input type="tel" readonly class="contactPhone"
+                           placeholder="<?php _e( "Phone number", 'eduadmin-booking' ); ?>"/>
                 </div>
             </label>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "Mobile number" ); ?>
+	                <?php _e( "Mobile number", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
-                    <input type="tel" readonly class="contactMobile" placeholder="<?php edu_e( "Mobile number" ); ?>"/>
+                    <input type="tel" readonly class="contactMobile"
+                           placeholder="<?php _e( "Mobile number", 'eduadmin-booking' ); ?>"/>
                 </div>
             </label>
 			<?php if ( $selectedCourse->RequireCivicRegistrationNumber ) { ?>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Civic Registration Number" ); ?>
+	                    <?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" readonly class="contactCivReg"
-                               placeholder="<?php edu_e( "Civic Registration Number" ); ?>"/>
+                               placeholder="<?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>"/>
                     </div>
                 </label>
 			<?php } ?>
@@ -97,12 +99,12 @@
 			<?php if ( get_option( 'eduadmin-selectPricename', 'firstPublic' ) == "selectParticipant" ) { ?>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Price name" ); ?>
+	                    <?php _e( "Price name", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required
                                 onchange="eduBookingView.UpdatePrice();">
-                            <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
+                            <option data-price="0" value=""><?php _e( "Choose price", 'eduadmin-booking' ); ?></option>
 							<?php foreach ( $prices as $price ) { ?>
                                 <option
                                         data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -115,7 +117,7 @@
 									<?php } ?>
                                         value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 									<?php echo trim( $price->Description ); ?>
-                                    (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+                                    (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
                                     )
                                 </option>
 							<?php } ?>
@@ -125,7 +127,7 @@
 			<?php } ?>
 			<?php
 				if ( count( $subEvents ) > 0 ) {
-					echo "<h4>" . edu__( "Sub events" ) . "</h4>\n";
+					echo "<h4>" . __( "Sub events", 'eduadmin-booking' ) . "</h4>\n";
 					foreach ( $subEvents as $subEvent ) {
 						if ( count( $sePrice[ $subEvent->OccasionID ] ) > 0 ) {
 							$s = current( $sePrice[ $subEvent->OccasionID ] )->Price;
@@ -151,53 +153,57 @@
         </div>
         <div class="participantItem template" style="display: none;">
             <h3>
-				<?php edu_e( "Participant" ); ?>
+	            <?php _e( "Participant", 'eduadmin-booking' ); ?>
                 <div class="removeParticipant"
-                     onclick="eduBookingView.RemoveParticipant(this);"><?php edu_e( "Remove" ); ?></div>
+                     onclick="eduBookingView.RemoveParticipant(this);"><?php _e( "Remove", 'eduadmin-booking' ); ?></div>
             </h3>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "Participant name" ); ?>
+	                <?php _e( "Participant name", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder"><input type="text"
                                                 class="participantFirstName first-name" name="participantFirstName[]"
-                                                placeholder="<?php edu_e( "Participant first name" ); ?>"/><input
+                                                placeholder="<?php _e( "Participant first name", 'eduadmin-booking' ); ?>"/><input
                             type="text" class="participantLastName last-name"
-                            name="participantLastName[]" placeholder="<?php edu_e( "Participant surname" ); ?>"/></div>
+                            name="participantLastName[]"
+                            placeholder="<?php _e( "Participant surname", 'eduadmin-booking' ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "E-mail address" ); ?>
+	                <?php _e( "E-mail address", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
-                    <input type="email" name="participantEmail[]" placeholder="<?php edu_e( "E-mail address" ); ?>"/>
-                </div>
-            </label>
-            <label>
-                <div class="inputLabel">
-					<?php edu_e( "Phone number" ); ?>
-                </div>
-                <div class="inputHolder">
-                    <input type="tel" name="participantPhone[]" placeholder="<?php edu_e( "Phone number" ); ?>"/>
+                    <input type="email" name="participantEmail[]"
+                           placeholder="<?php _e( "E-mail address", 'eduadmin-booking' ); ?>"/>
                 </div>
             </label>
             <label>
                 <div class="inputLabel">
-					<?php edu_e( "Mobile number" ); ?>
+	                <?php _e( "Phone number", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
-                    <input type="tel" name="participantMobile[]" placeholder="<?php edu_e( "Mobile number" ); ?>"/>
+                    <input type="tel" name="participantPhone[]"
+                           placeholder="<?php _e( "Phone number", 'eduadmin-booking' ); ?>"/>
+                </div>
+            </label>
+            <label>
+                <div class="inputLabel">
+	                <?php _e( "Mobile number", 'eduadmin-booking' ); ?>
+                </div>
+                <div class="inputHolder">
+                    <input type="tel" name="participantMobile[]"
+                           placeholder="<?php _e( "Mobile number", 'eduadmin-booking' ); ?>"/>
                 </div>
             </label>
 			<?php if ( $selectedCourse->RequireCivicRegistrationNumber ) { ?>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Civic Registration Number" ); ?>
+	                    <?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" data-required="true" name="participantCivReg[]"
                                pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" class="eduadmin-civicRegNo"
-                               placeholder="<?php edu_e( "Civic Registration Number" ); ?>"/>
+                               placeholder="<?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>"/>
                     </div>
                 </label>
 			<?php } ?>
@@ -222,13 +228,13 @@
 			<?php if ( get_option( 'eduadmin-selectPricename', 'firstPublic' ) == "selectParticipant" ) { ?>
                 <label>
                     <div class="inputLabel">
-						<?php edu_e( "Price name" ); ?>
+	                    <?php _e( "Price name", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <select name="participantPriceName[]" required
                                 class="edudropdown participantPriceName edu-pricename"
                                 onchange="eduBookingView.UpdatePrice();">
-                            <option data-price="0" value=""><?php edu_e( "Choose price" ); ?></option>
+                            <option data-price="0" value=""><?php _e( "Choose price", 'eduadmin-booking' ); ?></option>
 							<?php foreach ( $prices as $price ) { ?>
                                 <option
                                         data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -241,7 +247,7 @@
 									<?php } ?>
                                         value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 									<?php echo trim( $price->Description ); ?>
-                                    (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+                                    (<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
                                     )
                                 </option>
 							<?php } ?>
@@ -251,7 +257,7 @@
 			<?php } ?>
 			<?php
 				if ( count( $subEvents ) > 0 ) {
-					echo "<h4>" . edu__( "Sub events" ) . "</h4>\n";
+					echo "<h4>" . __( "Sub events", 'eduadmin-booking' ) . "</h4>\n";
 					foreach ( $subEvents as $subEvent ) {
 						if ( count( $sePrice[ $subEvent->OccasionID ] ) > 0 ) {
 							$s = current( $sePrice[ $subEvent->OccasionID ] )->Price;
@@ -278,9 +284,9 @@
     </div>
     <div>
         <a href="javascript://" class="addParticipantLink"
-           onclick="eduBookingView.AddParticipant(); return false;"><?php edu_e( "Add participant" ); ?></a>
+           onclick="eduBookingView.AddParticipant(); return false;"><?php _e( "Add participant", 'eduadmin-booking' ); ?></a>
     </div>
     <div class="edu-modal warning" id="edu-warning-participants">
-		<?php edu_e( "You cannot add any more participants." ); ?>
+	    <?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
     </div>
 </div>

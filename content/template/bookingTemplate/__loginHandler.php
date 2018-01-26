@@ -74,7 +74,7 @@
 			} else {
 				EDU()->session['needsLogin']         = true;
 				EDU()->session['checkEmail']         = true;
-				EDU()->session['eduadminLoginError'] = edu__( "Could not find any users with that info." );
+				EDU()->session['eduadminLoginError'] = __( "Could not find any users with that info.", 'eduadmin-booking' );
 			}
 			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
 		} else if ( $_REQUEST['eduformloginaction'] == "forgot" ) {

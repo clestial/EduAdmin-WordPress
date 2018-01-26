@@ -397,12 +397,12 @@
 							if ( $showNextEventDate ) {
 								echo "<div class=\"nextEventDate\" data-eduwidget=\"courseitem-date\" data-objectid=\"" . $object->ObjectID . "\">";
 								if ( ! empty( $sortedEvents ) ) {
-									echo sprintf( edu__( 'Next event %1$s' ), date( "Y-m-d", strtotime( current( $sortedEvents )->PeriodStart ) ) ) . " " . current( $sortedEvents )->City;
+									echo sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( current( $sortedEvents )->PeriodStart ) ) ) . " " . current( $sortedEvents )->City;
 									if ( $showEventVenue ) {
 										echo "<span class=\"venueInfo\">, " . current( $sortedEvents )->AddressName . "</span>";
 									}
 								} else {
-									echo "<i>" . edu__( 'No coming events' ) . "</i>";
+									echo "<i>" . __( 'No coming events', 'eduadmin-booking' ) . "</i>";
 								}
 								echo "</div> ";
 							}
@@ -410,13 +410,13 @@
 							if ( $showEventPrice && ! empty( $prices ) ) {
 								ksort( $prices );
 								$cheapest = current( $prices );
-								echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $cheapest->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
+								echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $cheapest->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
 							}
 
 							if ( $object->Days > 0 ) {
 								echo
 									"<div class=\"dayInfo\">" .
-									( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
+									( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
 									( $showCourseTimes ? date( "H:i", strtotime( $object->StartTime ) ) .
 									                     ' - ' .
 									                     date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
@@ -427,7 +427,7 @@
                 <div class="objectBook">
 		            <?php if ( $showReadMoreBtn ) : ?>
                         <a class="readMoreButton cta-btn"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
+                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
 		            <?php endif; ?>
                 </div>
             </div>
@@ -435,7 +435,7 @@
 		}
 	} else {
 		?>
-        <div class="noResults"><?php edu_e( "Your search returned zero results" ); ?></div>
+        <div class="noResults"><?php _e( "Your search returned zero results", 'eduadmin-booking' ); ?></div>
 		<?php
 	}
 ?></div><?php

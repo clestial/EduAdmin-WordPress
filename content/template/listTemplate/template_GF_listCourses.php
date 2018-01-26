@@ -355,7 +355,7 @@ if ( ! empty( $edo ) ) {
 		<?php
 			$count = 4;
 			if ( $showCourseLocations && ! empty( $eventCities ) ) {
-				$days = sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) . ', ';
+				$days = sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) . ', ';
 
 				echo isset( $eventCities[ 'Stockholm' ] ) ?
 					'<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Stockholm' ]->PeriodStart, $eventCities[ 'Stockholm' ]->PeriodEnd, true ) . '</td>' : '<td></td>';
@@ -380,14 +380,14 @@ if ( ! empty( $edo ) ) {
 			}
 		?>
 		<td class="GFObjectBook">
-			<a class="readMoreButton" href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
+			<a class="readMoreButton" href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
 		</td>
 	</tr>
 <?php
 	}
 } else {
 ?>
-	<div class="noResults"><?php edu_e( "Your search returned zero results" ); ?></div>
+	<div class="noResults"><?php _e( "Your search returned zero results", 'eduadmin-booking' ); ?></div>
 <?php
 }
 

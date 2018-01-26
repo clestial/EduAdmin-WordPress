@@ -57,10 +57,10 @@
 		$incVat   = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
 		?>
         <div class="eventInformation">
-            <h3><?php edu_e( "Prices" ); ?></h3>
+            <h3><?php _e( "Prices", 'eduadmin-booking' ); ?></h3>
 			<?php
 				foreach ( $edo as $price ) {
-					echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" );
+					echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
 					echo "<br>";
 				}
 			?>

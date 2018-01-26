@@ -75,10 +75,10 @@
 
 		?>
         <div class="eduadmin">
-            <a href="../../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
+            <a href="../../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
             <div class="title">
                 <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
-                <h1 class="courseTitle"><?php echo $name; ?> - <?php edu_e( "Inquiry" ); ?>
+                <h1 class="courseTitle"><?php echo $name; ?> - <?php _e( "Inquiry", 'eduadmin-booking' ); ?>
                     <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
                 </h1>
             </div>
@@ -105,7 +105,7 @@
 			?>
             <hr/>
             <div class="textblock">
-				<?php edu_e( "Please fill out the form below to send a inquiry to us about this course." ); ?>
+	            <?php _e( "Please fill out the form below to send a inquiry to us about this course.", 'eduadmin-booking' ); ?>
                 <hr/>
                 <form action="" method="POST">
                     <input type="hidden" name="objectid" value="<?php echo $selectedCourse->ObjectID; ?>"/>
@@ -113,56 +113,60 @@
                     <input type="hidden" name="act" value="eventInquiry"/>
                     <input type="hidden" name="email"/>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "Customer name" ); ?> *</div>
+                        <div class="inputLabel"><?php _e( "Customer name", 'eduadmin-booking' ); ?> *</div>
                         <div class="inputHolder">
                             <input type="text" required name="edu-companyName"
-                                   placeholder="<?php edu_e( "Customer name" ); ?>"/>
+                                   placeholder="<?php _e( "Customer name", 'eduadmin-booking' ); ?>"/>
                         </div>
                     </label>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "Contact name" ); ?> *</div>
+                        <div class="inputLabel"><?php _e( "Contact name", 'eduadmin-booking' ); ?> *</div>
                         <div class="inputHolder">
                             <input type="text" required name="edu-contactName"
-                                   placeholder="<?php edu_e( "Contact name" ); ?>"/>
+                                   placeholder="<?php _e( "Contact name", 'eduadmin-booking' ); ?>"/>
                         </div>
                     </label>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "E-mail address" ); ?> *</div>
+                        <div class="inputLabel"><?php _e( "E-mail address", 'eduadmin-booking' ); ?> *</div>
                         <div class="inputHolder">
                             <input type="email" required name="edu-emailAddress"
-                                   placeholder="<?php edu_e( "E-mail address" ); ?>"/>
+                                   placeholder="<?php _e( "E-mail address", 'eduadmin-booking' ); ?>"/>
                         </div>
                     </label>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "Phone number" ); ?></div>
+                        <div class="inputLabel"><?php _e( "Phone number", 'eduadmin-booking' ); ?></div>
                         <div class="inputHolder">
-                            <input type="tel" name="edu-phone" placeholder="<?php edu_e( "Phone number" ); ?>"/>
+                            <input type="tel" name="edu-phone"
+                                   placeholder="<?php _e( "Phone number", 'eduadmin-booking' ); ?>"/>
                         </div>
                     </label>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "Mobile number" ); ?></div>
+                        <div class="inputLabel"><?php _e( "Mobile number", 'eduadmin-booking' ); ?></div>
                         <div class="inputHolder">
-                            <input type="tel" name="edu-mobile" placeholder="<?php edu_e( "Mobile number" ); ?>"/>
+                            <input type="tel" name="edu-mobile"
+                                   placeholder="<?php _e( "Mobile number", 'eduadmin-booking' ); ?>"/>
                         </div>
                     </label>
                     <label>
-                        <div class="inputLabel"><?php edu_e( "Notes" ); ?></div>
+                        <div class="inputLabel"><?php _e( "Notes", 'eduadmin-booking' ); ?></div>
                         <div class="inputHolder">
-                            <textarea name="edu-notes" placeholder="<?php edu_e( "Notes" ); ?>"></textarea>
+                            <textarea name="edu-notes"
+                                      placeholder="<?php _e( "Notes", 'eduadmin-booking' ); ?>"></textarea>
                         </div>
                     </label>
 					<?php if ( get_option( 'eduadmin-singlePersonBooking', false ) ) { ?>
                         <input type="hidden" name="edu-participants" value="1"/>
 					<?php } else { ?>
                         <label>
-                            <div class="inputLabel"><?php edu_e( "Participants" ); ?> *</div>
+                            <div class="inputLabel"><?php _e( "Participants", 'eduadmin-booking' ); ?> *</div>
                             <div class="inputHolder">
                                 <input type="number" min="1" required name="edu-participants"
-                                       placeholder="<?php edu_e( "Participants" ); ?>"/>
+                                       placeholder="<?php _e( "Participants", 'eduadmin-booking' ); ?>"/>
                             </div>
                         </label>
 					<?php } ?>
-                    <input type="submit" class="bookButton cta-btn" value="<?php edu_e( "Send inquiry" ); ?>"/>
+                    <input type="submit" class="bookButton cta-btn"
+                           value="<?php _e( "Send inquiry", 'eduadmin-booking' ); ?>"/>
                 </form>
             </div>
         </div>

@@ -272,7 +272,7 @@
 					$retStr .= $selectedCourse->ImageUrl;
 				}
 				if ( isset( $attributes['coursedays'] ) ) {
-					$retStr .= sprintf( edu_n( '%1$d day', '%1$d days', $selectedCourse->Days ), $selectedCourse->Days );
+					$retStr .= sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days );
 				}
 				if ( isset( $attributes['coursestarttime'] ) ) {
 					$retStr .= $selectedCourse->StartTime;
@@ -410,10 +410,10 @@
 
 					$currency = get_option( 'eduadmin-currency', 'SEK' );
 					if ( 1 == count( $uniquePrices ) ) {
-						$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "\n";
+						$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "\n";
 					} else {
 						foreach ( $uniquePrices as $price ) {
-							$retStr .= sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "<br />\n";
+							$retStr .= sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "<br />\n";
 						}
 					}
 				}
@@ -607,7 +607,7 @@
 						if ( $groupByCity && $lastCity != $ev->City ) {
 							$i = 0;
 							if ( $hasHiddenDates ) {
-								$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+								$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 							}
 							$hasHiddenDates = false;
 							$retStr         .= '<div class="eventSeparator">' . $ev->City . '</div>';
@@ -635,10 +635,10 @@
 					<div class="eventBook' . $groupByCityClass . '">
 					' . ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
 
-								'<a class="book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", array( 'eid' ) ) . '">' . edu__( "Book" ) . '</a>'
+								'<a class="book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", array( 'eid' ) ) . '">' . __( "Book", 'eduadmin-booking' ) . '</a>'
 								:
-								( $eventInterestPage != false ? '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&" ) . '">' . edu__( "Inquiry" ) . '</a>' : '' ) .
-								'<i class="fullBooked">' . edu__( "Full" ) . '</i>'
+								( $eventInterestPage != false ? '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&" ) . '">' . __( "Inquiry", 'eduadmin-booking' ) . '</a>' : '' ) .
+								'<i class="fullBooked">' . __( "Full", 'eduadmin-booking' ) . '</i>'
 						             ) . '
 					</div>';
 						$retStr   .= '</div><!-- /eventitem -->';
@@ -646,10 +646,10 @@
 						$i ++;
 					}
 					if ( empty( $events ) ) {
-						$retStr .= '<div class="noDatesAvailable"><i>' . edu__( "No available dates for the selected course" ) . '</i></div>';
+						$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 					}
 					if ( $hasHiddenDates ) {
-						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 					}
 					$retStr .= '</div></div>';
 				}
@@ -664,9 +664,9 @@
 		$t          = EDU()->StartTimer( __METHOD__ );
 		$attributes = shortcode_atts(
 			array(
-				'logintext'  => edu__( "Log in" ),
-				'logouttext' => edu__( "Log out" ),
-				'guesttext'  => edu__( "Guest" ),
+				'logintext'  => __( "Log in", 'eduadmin-booking' ),
+				'logouttext' => __( "Log out", 'eduadmin-booking' ),
+				'guesttext'  => __( "Guest", 'eduadmin-booking' ),
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-loginwidget'
@@ -696,9 +696,9 @@
 		}
 		$attributes                 = shortcode_atts(
 			array(
-				'logintext'  => edu__( "Log in" ),
-				'logouttext' => edu__( "Log out" ),
-				'guesttext'  => edu__( "Guest" ),
+				'logintext'  => __( "Log in", 'eduadmin-booking' ),
+				'logouttext' => __( "Log out", 'eduadmin-booking' ),
+				'guesttext'  => __( "Guest", 'eduadmin-booking' ),
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-loginview'

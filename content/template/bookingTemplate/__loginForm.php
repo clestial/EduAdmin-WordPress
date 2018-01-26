@@ -1,22 +1,22 @@
 <div class="checkLoginForm">
     <input type="hidden" name="eduformloginaction" value=""/>
     <input type="hidden" name="eduReturnUrl" value="<?php echo @esc_attr( $_SERVER['REQUEST_URI'] ); ?>"/>
-    <h3><?php edu_e( "Please login to continue." ); ?></h3>
+    <h3><?php _e( "Please login to continue.", 'eduadmin-booking' ); ?></h3>
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
-		$loginLabel         = edu__( "E-mail address" );
+		$loginLabel         = __( "E-mail address", 'eduadmin-booking' );
 		$fieldType          = "text";
 		switch ( $selectedLoginField ) {
 			case "Email":
-				$loginLabel = edu__( "E-mail address" );
+				$loginLabel = __( "E-mail address", 'eduadmin-booking' );
 				$fieldType  = "email";
 				break;
 			case "CivicRegistrationNumber":
-				$loginLabel = edu__( "Civic Registration Number" );
+				$loginLabel = __( "Civic Registration Number", 'eduadmin-booking' );
 				$fieldType  = "text";
 				break;
 			case "CustomerNumber":
-				$loginLabel = edu__( "Customer number" );
+				$loginLabel = __( "Customer number", 'eduadmin-booking' );
 				$fieldType  = "text";
 				break;
 		}
@@ -27,29 +27,29 @@
             <input type="<?php echo $fieldType; ?>"
                    name="eduadminloginEmail"<?php echo( $selectedLoginField == "CivicRegistrationNumber" ? " class=\"eduadmin-civicRegNo\" onblur=\"eduBookingView.ValidateCivicRegNo();\"" : "" ); ?>
                    required autocomplete="off"
-                   title="<?php echo esc_attr( sprintf( edu__( "Please enter your %s here" ), $loginLabel ) ); ?>"
+                   title="<?php echo esc_attr( sprintf( __( "Please enter your %s here", 'eduadmin-booking' ), $loginLabel ) ); ?>"
                    placeholder="<?php echo esc_attr( $loginLabel ); ?>"
                    value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>
         </div>
     </label>
     <label>
-        <div class="loginLabel"><?php edu_e( "Password" ); ?></div>
+        <div class="loginLabel"><?php _e( "Password", 'eduadmin-booking' ); ?></div>
         <div class="loginInput">
             <input type="password" autocomplete="off" name="eduadminpassword" required
-                   title="<?php echo esc_attr( edu__( "Please enter your password here" ) ); ?>"
-                   placeholder="<?php echo esc_attr( edu__( "Password" ) ); ?>"/>
+                   title="<?php echo esc_attr( __( "Please enter your password here", 'eduadmin-booking' ) ); ?>"
+                   placeholder="<?php echo esc_attr( __( "Password", 'eduadmin-booking' ) ); ?>"/>
         </div>
     </label>
 	<?php
 		$click = "";
 		if ( $selectedLoginField == "CivicRegistrationNumber" && get_option( 'eduadmin-validateCivicRegNo', false ) === "true" ) {
-			$click = "if(!eduBookingView.ValidateCivicRegNo()) { alert('" . edu__( "Please enter a valid swedish civic registration number." ) . "');  return false; }";
+			$click = "if(!eduBookingView.ValidateCivicRegNo()) { alert('" . __( "Please enter a valid swedish civic registration number.", 'eduadmin-booking' ) . "');  return false; }";
 		}
 	?>
     <button class="loginButton cta-btn"
-            onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'loginEmail';<?php echo $click; ?>"><?php edu_e( "Log in" ); ?></button>
+            onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'loginEmail';<?php echo $click; ?>"><?php _e( "Log in", 'eduadmin-booking' ); ?></button>
     <button class="forgotPasswordButton"
-            onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php edu_e( "Forgot password" ); ?></button>
+            onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php _e( "Forgot password", 'eduadmin-booking' ); ?></button>
 </div>
 <?php if ( isset( EDU()->session['eduadminLoginError'] ) ) { ?>
     <div class="edu-modal warning" style="display: block; clear: both;">
@@ -61,12 +61,12 @@
 	unset( EDU()->session['eduadmin-forgotPassSent'] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-		<?php edu_e( "A new password has been sent by email." ); ?>
+	    <?php _e( "A new password has been sent by email.", 'eduadmin-booking' ); ?>
     </div>
 <?php } else if ( isset( EDU()->session['eduadmin-forgotPassSent'] ) && EDU()->session['eduadmin-forgotPassSent'] == false ) {
 	unset( EDU()->session['eduadmin-forgotPassSent'] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-		<?php edu_e( "Could not send a new password by email." ); ?>
+	    <?php _e( "Could not send a new password by email.", 'eduadmin-booking' ); ?>
     </div>
 <?php } ?>

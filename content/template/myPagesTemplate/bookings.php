@@ -11,7 +11,7 @@
 		$tab = "bookings";
 		include_once( "login_tab_header.php" );
 	?>
-    <h2><?php edu_e( "Reservations" ); ?></h2>
+    <h2><?php _e( "Reservations", 'eduadmin-booking' ); ?></h2>
 	<?php
 		$filtering = new XFiltering();
 		$f         = new XFilter( 'CustomerID', '=', $customer->CustomerID );
@@ -47,17 +47,17 @@
 	?>
     <table class="myReservationsTable">
         <tr>
-            <th align="left"><?php edu_e( "Booked" ); ?></th>
-            <th align="left"><?php edu_e( "Course" ); ?></th>
-            <th align="left"><?php edu_e( "Dates" ); ?></th>
-            <th align="right"><?php edu_e( "Participants" ); ?></th>
-            <th align="right"><?php edu_e( "Price" ); ?></th>
+            <th align="left"><?php _e( "Booked", 'eduadmin-booking' ); ?></th>
+            <th align="left"><?php _e( "Course", 'eduadmin-booking' ); ?></th>
+            <th align="left"><?php _e( "Dates", 'eduadmin-booking' ); ?></th>
+            <th align="right"><?php _e( "Participants", 'eduadmin-booking' ); ?></th>
+            <th align="right"><?php _e( "Price", 'eduadmin-booking' ); ?></th>
         </tr>
 		<?php
 			if ( empty( $bookings ) ) {
 				?>
                 <tr>
-                    <td colspan="5" align="center"><i><?php edu_e( "No courses booked" ); ?></i></td>
+                    <td colspan="5" align="center"><i><?php _e( "No courses booked", 'eduadmin-booking' ); ?></i></td>
                 </tr>
 				<?php
 			} else {
@@ -83,11 +83,11 @@
                                 <table class="edu-event-participantList">
                                     <tr>
                                         <th align="left"
-                                            class="edu-participantList-name"><?php edu_e( "Participant name" ); ?></th>
+                                            class="edu-participantList-name"><?php _e( "Participant name", 'eduadmin-booking' ); ?></th>
                                         <th align="center"
-                                            class="edu-participantList-arrived"><?php edu_e( "Arrived" ); ?></th>
+                                            class="edu-participantList-arrived"><?php _e( "Arrived", 'eduadmin-booking' ); ?></th>
                                         <th align="right"
-                                            class="edu-participantList-grade"><?php edu_e( "Grade" ); ?></th>
+                                            class="edu-participantList-grade"><?php _e( "Grade", 'eduadmin-booking' ); ?></th>
                                     </tr>
 									<?php
 										foreach ( $book->Participants as $participant ) {
@@ -95,7 +95,7 @@
                                             <tr>
                                                 <td align="left"><?php echo $participant->PersonName; ?></td>
                                                 <td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
-                                                <td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . edu__( 'Not graded' ) . '</i>' ); ?></td>
+                                                <td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
                                             </tr>
 											<?php
 										}

@@ -5,11 +5,11 @@
 	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "savePassword" ) {
 		if ( sanitize_text_field( $_POST['currentPassword'] ) == $contact->Loginpass ) {
 			if ( strlen( sanitize_text_field( $_POST['newPassword'] ) ) == 0 ) {
-				$msg = edu__( "You must fill in a password to change it." );
+				$msg = __( "You must fill in a password to change it.", 'eduadmin-booking' );
 			} else if ( sanitize_text_field( $_POST['newPassword'] ) != sanitize_text_field( $_POST['confirmPassword'] ) ) {
-				$msg = edu__( "Given password does not match." );
+				$msg = __( "Given password does not match.", 'eduadmin-booking' );
 			} else if ( sanitize_text_field( $_POST['newPassword'] ) == sanitize_text_field( $_POST['currentPassword'] ) ) {
-				$msg = edu__( "You cannot set your password to be the same as the one before." );
+				$msg = __( "You cannot set your password to be the same as the one before.", 'eduadmin-booking' );
 			} else {
 				global $eduapi;
 				global $edutoken;
@@ -25,31 +25,31 @@
 		$tab = "profile";
 		include_once( "login_tab_header.php" );
 	?>
-    <h2><?php edu_e( "Change password" ); ?></h2>
+    <h2><?php _e( "Change password", 'eduadmin-booking' ); ?></h2>
     <form action="" method="POST">
         <input type="hidden" name="eduaction" value="savePassword"/>
         <div class="eduadminContactInformation">
-            <h3><?php edu_e( "Contact information" ); ?></h3>
+            <h3><?php _e( "Contact information", 'eduadmin-booking' ); ?></h3>
             <label>
-                <div class="inputLabel"><?php edu_e( "Current password" ); ?></div>
+                <div class="inputLabel"><?php _e( "Current password", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="password" name="currentPassword" required
-                                                placeholder="<?php echo esc_attr( edu__( "Current password" ) ); ?>"/>
+                                                placeholder="<?php echo esc_attr( __( "Current password", 'eduadmin-booking' ) ); ?>"/>
                 </div>
             </label>
             <label>
-                <div class="inputLabel"><?php edu_e( "New password" ); ?></div>
+                <div class="inputLabel"><?php _e( "New password", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="password" name="newPassword" required
-                                                placeholder="<?php echo esc_attr( edu__( "New password" ) ); ?>"/>
+                                                placeholder="<?php echo esc_attr( __( "New password", 'eduadmin-booking' ) ); ?>"/>
                 </div>
             </label>
             <label>
-                <div class="inputLabel"><?php edu_e( "Confirm password" ); ?></div>
+                <div class="inputLabel"><?php _e( "Confirm password", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="password" name="confirmPassword" required
-                                                placeholder="<?php echo esc_attr( edu__( "Confirm password" ) ); ?>"/>
+                                                placeholder="<?php echo esc_attr( __( "Confirm password", 'eduadmin-booking' ) ); ?>"/>
                 </div>
             </label>
         </div>
-        <button class="profileSaveButton cta-btn"><?php edu_e( "Save" ); ?></button>
+        <button class="profileSaveButton cta-btn"><?php _e( "Save", 'eduadmin-booking' ); ?></button>
     </form>
 	<?php if ( isset( $msg ) ) { ?>
         <div class="edu-modal warning" style="display: block; clear: both;">

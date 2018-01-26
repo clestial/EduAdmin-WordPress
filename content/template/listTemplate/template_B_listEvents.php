@@ -64,14 +64,14 @@
 					if ( $object->Days > 0 ) {
 						echo
 							"<div class=\"dayInfo\">" .
-							( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
+							( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
 							( $showCourseTimes ? date( "H:i", strtotime( $object->StartTime ) ) .
 							                     ' - ' .
 							                     date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
 							"</div>";
 					}
 					if ( $showEventPrice ) {
-						echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
+						echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $currency ) ) . " " . ( $incVat ? __("inc vat", 'eduadmin-booking') : __("ex vat", 'eduadmin-booking') ) . "</div> ";
 					}
 					echo '<div class="spotsLeft"></div>';
 					echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
@@ -79,7 +79,7 @@
             <div class="objectBook">
 				<?php if ( $showReadMoreBtn ) : ?>
                     <a class="readMoreButton cta-btn"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
+                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
 				<?php endif; ?>
             </div>
         </div>

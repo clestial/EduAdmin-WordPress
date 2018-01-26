@@ -39,6 +39,9 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
+= 1.0.23 =
+All translations will be wiped since we're moving to full WordPress-translation management, for all phrases, not just backend
+
 = 1.0.22 =
 If you are using an older version than 1.0.21, please test this version on a development server before deploying live.
 Since version 1.0.21, there are a lot of design changes in the CSS, that might require you to reset style settings,

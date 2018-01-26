@@ -64,7 +64,7 @@
 						exit();
 					}
 				} else {
-					EDU()->session['eduadminLoginError'] = edu__( "Wrong username or password." );
+					EDU()->session['eduadminLoginError'] = __( 'Wrong username or password.', 'eduadmin-booking' );
 				}
 			}
 		}

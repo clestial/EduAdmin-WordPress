@@ -74,12 +74,12 @@
 		?>
         <div class="eduadmin loginForm">
             <form action="" method="post">
-                <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
+                <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
                 <div class="title">
                     <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
                     <h1 class="courseTitle"><?php echo $name; ?></h1>
 					<?php if ( count( $events ) > 1 ) { ?>
-                        <div class="dateSelectLabel"><?php edu_e( "Select the event you want to book" ); ?></div>
+                        <div class="dateSelectLabel"><?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?></div>
                         <select name="eid" class="dateInfo">
 							<?php
 								foreach ( $events as $ev ) {

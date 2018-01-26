@@ -66,7 +66,7 @@
 								if ( $object->Days > 0 ) {
 									echo
 										"<div class=\"dayInfo\">" .
-										( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) .
+										( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) .
 										                    ( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? ', ' : '' ) : '' ) .
 										( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? date( "H:i", strtotime( $object->StartTime ) ) .
 										                                                                                                                         ' - ' .
@@ -75,7 +75,7 @@
 								}
 
 								if ( $showEventPrice && isset( $object->Price ) ) {
-									echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
+									echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
 								}
 
 		                        echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
@@ -88,18 +88,18 @@
 			                    if ( $spotsLeft > 0 || $object->MaxParticipantNr == 0 ) {
 				                    ?>
                                     <a class="bookButton cta-btn"
-                                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Book" ); ?></a>
+                                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Book", 'eduadmin-booking' ); ?></a>
 				                    <?php
 			                    } else {
 				                    ?>
-                                    <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+                                    <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
 				                    <?php
 			                    }
 		                    }
 	                    ?>
 	                    <?php if ( $showReadMoreBtn ) : ?>
                             <a class="readMoreButton"
-                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Read more" ); ?></a>
+                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
                             <br/>
 	                    <?php endif; ?>
                     </div>

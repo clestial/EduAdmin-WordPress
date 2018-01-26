@@ -81,7 +81,7 @@
 		$returnValue = array();
 		foreach ( $ede as $event ) {
 			if ( ! isset( $returnValue[ $event->ObjectID ] ) ) {
-				$returnValue[ $event->ObjectID ] = sprintf( edu__( 'Next event %1$s' ), date( "Y-m-d", strtotime( $event->PeriodStart ) ) ) . " " . $event->City;
+				$returnValue[ $event->ObjectID ] = sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( $event->PeriodStart ) ) ) . " " . $event->City;
 			}
 		}
 
@@ -406,7 +406,7 @@
 							if ( isset( $object->Days ) && $object->Days > 0 ) {
 								echo
 									"<div class=\"dayInfo\">" .
-									( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) .
+									( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) .
 									                    ( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? ', ' : '' ) : '' ) .
 									( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? date( "H:i", strtotime( $object->StartTime ) ) .
 									                                                                                                                         ' - ' .
@@ -415,7 +415,7 @@
 							}
 
 							if ( $request['showcourseprices'] && isset( $object->Price ) ) {
-								echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
+								echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
 							}
 							echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
 
@@ -427,14 +427,14 @@
 		                if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
 			                ?>
                             <a class="bookButton cta-btn"
-                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Book" ); ?></a>
+                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Book", 'eduadmin-booking' ); ?></a>
 			                <?php
 		                } else {
 			                ?>
-                            <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+                            <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
 		                <?php } ?>
                     <a class="readMoreButton"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a><br/>
+                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a><br/>
                 </div>
             </div>
 			<?php
@@ -519,7 +519,7 @@
 						if ( $object->Days > 0 ) {
 							echo
 								"<div class=\"dayInfo\">" .
-								( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
+								( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
 								( $showCourseTimes ? date( "H:i", strtotime( $object->StartTime ) ) .
 								                     ' - ' .
 								                     date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
@@ -527,14 +527,14 @@
 						}
 
 						if ( $request['showcourseprices'] && isset( $object->Price ) ) {
-							echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
+							echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
 						}
 		                echo '<div class="spotsLeft"></div>';
 		                echo '<span class="spotsLeftInfo">' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . '</span>';
 					?></div>
                 <div class="objectBook">
                     <a class="readMoreButton cta-btn"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php edu_e( "Read more" ); ?></a>
+                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
                 </div>
             </div>
 			<?php
@@ -715,7 +715,7 @@
 				if ( $groupByCity && $lastCity != $ev->City ) {
 					$i = 0;
 					if ( $hasHiddenDates ) {
-						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 					}
 					$hasHiddenDates = false;
 					$retStr         .= '<div class="eventSeparator">' . $ev->City . '</div>';
@@ -759,14 +759,14 @@
 				<div class="eventBook' . $groupByCityClass . '">
 				' .
 				             ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
-					             '<a class="bookButton book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Book" ) . '</a>'
+					             '<a class="bookButton book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . __( "Book", 'eduadmin-booking' ) . '</a>'
 					             :
 					             ( $showEventInquiry ?
-						             '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . edu__( "Inquiry" ) . '</a> '
+						             '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . __( "Inquiry", 'eduadmin-booking' ) . '</a> '
 						             :
 						             ''
 					             ) .
-					             '<i class="fullBooked">' . edu__( "Full" ) . '</i>'
+					             '<i class="fullBooked">' . __( "Full", 'eduadmin-booking' ) . '</i>'
 				             ) . '
 				</div>';
 				$retStr   .= '</div><!-- /eventitem -->';
@@ -775,10 +775,10 @@
 			}
 		}
 		if ( empty( $pricenames ) || empty( $events ) ) {
-			$retStr .= '<div class="noDatesAvailable"><i>' . edu__( "No available dates for the selected course" ) . '</i></div>';
+			$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 		}
 		if ( $hasHiddenDates ) {
-			$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+			$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
 		$retStr .= '</div></div>';
 
@@ -817,19 +817,19 @@
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLogoutButton\">" .
-				( ! empty( $logoutText ) ? $logoutText : edu__( 'Log out' ) ) .
+				( ! empty( $logoutText ) ? $logoutText : __( 'Log out', 'eduadmin-booking' ) ) .
 				"</a>" .
 				"</div>";
 		} else {
 			echo
 				"<div class=\"eduadminLogin\"><i>" .
-				( ! empty( $guestText ) ? $guestText : edu__( 'Guest' ) ) .
+				( ! empty( $guestText ) ? $guestText : __( 'Guest', 'eduadmin-booking' ) ) .
 				"</i> - " .
 				"<a href=\"" . $baseUrl . "/profile/login" . edu_getQueryString( "?", array(
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLoginButton\">" .
-				( ! empty( $loginText ) ? $loginText : edu__( 'Log in' ) ) .
+				( ! empty( $loginText ) ? $loginText : __( 'Log in', 'eduadmin-booking' ) ) .
 				"</a>" .
 				"</div>";
 		}

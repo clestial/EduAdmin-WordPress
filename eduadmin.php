@@ -220,7 +220,6 @@
 				include_once( 'includes/_rewrites.php' );
 				include_once( 'includes/_shortcodes.php' );
 
-				include_once( 'includes/_translationFunctions.php' );
 				include_once( 'includes/_questionFunctions.php' );
 				include_once( 'includes/_attributeFunctions.php' );
 				include_once( 'includes/_textFunctions.php' );
@@ -265,7 +264,6 @@
 				$t                  = $this->StartTimer( __METHOD__ );
 				$this->integrations = new EDU_IntegrationLoader();
 				$this->restController->register_routes();
-				edu_LoadPhrases();
 				$this->StopTimer( $t );
 			}
 

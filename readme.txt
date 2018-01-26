@@ -8,7 +8,7 @@ Requires at least: 4.7
 
 Tested up to: 4.9.2
 
-Stable tag: 1.0.21
+Stable tag: 1.0.22
 
 Requires PHP: 5.0.1 (with SoapClient)
 
@@ -52,6 +52,11 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
+
+### [1.0.22]
+- Disabling the book-button when the form is valid and the booking is under way
+- Fixes some styles to use `px` instead of `rem`
+- Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
 
 ### [1.0.21]
 - Lots of design fixes and changes, to make the plugin more mobile friendly

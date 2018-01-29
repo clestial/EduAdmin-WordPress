@@ -272,6 +272,17 @@
 				$this->StopTimer( $t );
 			}
 
+			public static function OldApiKeyWarning() {
+				?>
+                <div class="notice notice-warning is-dismissable">
+                    <p><?php echo sprintf( __( 'You are using an old API key, please change to the new key: %1$sEduAdmin - Api Authentication%2$s<br />
+If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$s', 'eduadmin-booking' ),
+					                       '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>',
+					                       '<a href="https://support.eduadmin.se/support/tickets/new" target="_blank">', '</a>' ); ?></p>
+                </div>
+				<?php
+			}
+
 			public static function SetupWarning() {
 				?>
                 <div class="notice notice-warning is-dismissable">
@@ -326,6 +337,7 @@
 					if ( $oldKey != null ) {
 						$key = DecryptApiKey( $oldKey );
 						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+						add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
 					} else {
 						EDUAPI()->SetCredentials( '', '' );
 					}

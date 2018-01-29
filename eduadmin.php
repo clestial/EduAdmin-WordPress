@@ -194,6 +194,7 @@
 
 			private function includes() {
 				$t = $this->StartTimer( __METHOD__ );
+				include_once( 'includes/eduadmin-api-client/eduadmin-api-client.php' );
 				include_once( 'libraries/class-recursive-arrayaccess.php' );
 				include_once( 'libraries/class-wp-session.php' );
 				include_once( 'libraries/wp-session.php' );
@@ -209,6 +210,11 @@
 				include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
 				include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
 				include_once( 'includes/loApiClient.php' );
+
+				if ( is_wp_error( $this->get_new_api_token() ) ) {
+					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
+				}
+
 
 				$this->api = new EduAdminClient( $this->version );
 				global $eduapi;
@@ -309,6 +315,31 @@
 			public function deactivate() {
 				eduadmin_deactivate_rewrite();
 				wp_clear_scheduled_hook( 'eduadmin_call_home' );
+			}
+
+			private function get_new_api_token() {
+				$newKey = get_option( 'eduadmin-newapi-key', null );
+				if ( $newKey != null ) {
+					$key = DecryptApiKey( $newKey );
+					EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+				} else {
+					$oldKey = get_option( 'eduadmin-api-key', null );
+					if ( $oldKey != null ) {
+						$key = DecryptApiKey( $oldKey );
+						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+					}
+				}
+
+				$currentToken = get_transient( 'eduadmin-newapi-token' );
+				if ( $currentToken == null || ! $currentToken->IsValid() ) {
+					$token = EDUAPI()->GetToken();
+					if ( empty( $token->Issued ) ) {
+						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again.", 'eduadmin-booking' ) );
+					}
+					set_transient( 'eduadmin-newapi-token', $token, WEEK_IN_SECONDS );
+				}
+
+				return null;
 			}
 		}
 

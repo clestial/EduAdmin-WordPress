@@ -49,11 +49,11 @@
 
 		/**
 		 * @param integer                             $bookingId
-		 * @param EduAdmin_Data_UnnamedParticipants[] ...$unnamed_participants
+		 * @param EduAdmin_Data_UnnamedParticipants[] $unnamed_participants
 		 *
 		 * @return mixed
 		 */
-		public function CreateUnnamedParticipants( $bookingId, EduAdmin_Data_UnnamedParticipants... $unnamed_participants ) {
+		public function CreateUnnamedParticipants( $bookingId, array $unnamed_participants ) {
 			return parent::POST(
 				"/$bookingId/UnnamedParticipants",
 				$unnamed_participants,

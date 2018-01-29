@@ -13,6 +13,7 @@
 			 * @var EduAdminToken API Token
 			 */
 			public $api_token = null;
+
 			/**
 			 * @var array
 			 */
@@ -173,7 +174,6 @@
 					'grant_type' => 'password',
 				), "GetToken", false );
 				$this->api_token = new EduAdminToken( $result );
-				print_r( $this->api_token );
 
 				return $this->api_token;
 			}

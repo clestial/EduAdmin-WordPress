@@ -21,11 +21,11 @@
 
 		/**
 		 * @param integer                  $participantId
-		 * @param EduAdmin_Data_Sessions[] ...$sessions
+		 * @param EduAdmin_Data_Sessions[] $sessions
 		 *
 		 * @return mixed
 		 */
-		public function AddToSessions( $participantId, EduAdmin_Data_Sessions... $sessions ) {
+		public function AddToSessions( $participantId, array $sessions ) {
 			return parent::POST(
 				"/$participantId/AddToSessions",
 				$sessions,
@@ -47,11 +47,11 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_ArrivalStatus[] ...$arrival_status
+		 * @param EduAdmin_Data_ArrivalStatus[] $arrival_status
 		 *
 		 * @return mixed
 		 */
-		public function MarkAsArrived( EduAdmin_Data_ArrivalStatus... $arrival_status ) {
+		public function MarkAsArrived( array $arrival_status ) {
 			return parent::POST( "/Arrived",
 			                     $arrival_status,
 			                     get_called_class() . "|" . __FUNCTION__
@@ -59,11 +59,11 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_ArrivalStatus[] ...$arrival_status
+		 * @param EduAdmin_Data_ArrivalStatus[] $arrival_status
 		 *
 		 * @return mixed
 		 */
-		public function MarkAsNotArrived( EduAdmin_Data_ArrivalStatus... $arrival_status ) {
+		public function MarkAsNotArrived( array $arrival_status ) {
 			return parent::POST( "/NotArrived",
 			                     $arrival_status,
 			                     get_called_class() . "|" . __FUNCTION__

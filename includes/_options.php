@@ -139,7 +139,7 @@
 		register_setting( 'eduadmin-booking', 'eduadmin-blockEditIfLoggedIn' );
 
 		/* Phrase settings */
-		register_setting( 'eduadmin-phrases', 'eduadmin-phrases' );
+		//register_setting( 'eduadmin-phrases', 'eduadmin-phrases' );
 
 		/* Style settings */
 		register_setting( 'eduadmin-style', 'eduadmin-style' );
@@ -231,7 +231,7 @@
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Booking view', 'eduadmin-booking' ), __( 'Booking settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-booking', 'edu_render_booking_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Translation', 'eduadmin-booking' ), __( 'Translation', 'eduadmin-booking' ), $level, 'eduadmin-settings-text', 'edu_render_text_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin-booking' ), __( 'Style settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
+		//add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin-booking' ), __( 'Api Authentication', 'eduadmin-booking' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
 		EDU()->StopTimer( $t );
 	}

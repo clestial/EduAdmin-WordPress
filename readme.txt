@@ -61,6 +61,10 @@ and redo your own customization.
 
 == Changelog ==
 
+### [1.0.23]
+- Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
+- Adding first version of EduAdmin PHP API Client
+
 ### [1.0.22]
 - Disabling the book-button when the form is valid and the booking is under way
 - Fixes some styles to use `px` instead of `rem`

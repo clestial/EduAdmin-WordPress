@@ -1,0 +1,20 @@
+{
+  "name": "multinetinteractive/eduadmin-api-phpclient",
+  "type": "library",
+  "description": "EduAdmin - PHP API Client",
+  "homepage": "http://www.multinet.se/",
+  "support": {
+    "issues": "https://github.com/MultinetInteractive/eduadmin-api-phpclient/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.0.1",
+    "composer/installers": "~1"
+  },
+  "autoload": {
+    "files": ["eduadmin-api-client.php"],
+    "exlude-from-classmap": ["/tests/"]
+  }
+}

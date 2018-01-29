@@ -215,7 +215,6 @@
 					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
 				}
 
-
 				$this->api = new EduAdminClient( $this->version );
 				global $eduapi;
 				global $edutoken;
@@ -327,6 +326,8 @@
 					if ( $oldKey != null ) {
 						$key = DecryptApiKey( $oldKey );
 						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+					} else {
+						EDUAPI()->SetCredentials( '', '' );
 					}
 				}
 

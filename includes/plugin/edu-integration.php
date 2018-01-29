@@ -161,6 +161,7 @@
 					$this->settings[ $key ] = $this->get_field_value( $key, $post_data );
 				}
 				catch ( Exception $e ) {
+					// Ignore problems with saving options.
 				}
 			}
 			EDU()->StopTimer( $t );

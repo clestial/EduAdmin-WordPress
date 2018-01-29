@@ -201,8 +201,6 @@
 				echo "</div>";
 				echo "</label>";
 			}
-		} else {
-			// Not supposed to happen.. But ok.
 		}
 	}
 

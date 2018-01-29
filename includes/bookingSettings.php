@@ -27,8 +27,8 @@
 							$s  = new XSort( 'ParentCustomerGroupID', 'ASC' );
 							$st->AddItem( $s );
 
-							$cg = $eduapi->GetCustomerGroup( $edutoken, $st->ToString(), $ft->ToString() );
-
+							$cg     = $eduapi->GetCustomerGroup( $edutoken, $st->ToString(), $ft->ToString() );
+							$parent = array();
 							foreach ( $cg as $i => $v ) {
 								$parent[ $i ] = $v->ParentCustomerGroupID;
 							}

@@ -397,7 +397,7 @@
 	}
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
-		$t           = EDU()->StartTimer( __METHOD__ );
+		$t        = EDU()->StartTimer( __METHOD__ );
 		$weekDays = array(
 			1 => ! $short ? __( 'monday', 'eduadmin-booking' ) : __( 'mon', 'eduadmin-booking' ),
 			2 => ! $short ? __( 'tuesday', 'eduadmin-booking' ) : __( 'tue', 'eduadmin-booking' ),
@@ -499,7 +499,8 @@
 	if ( ! function_exists( 'my_str_split' ) ) {
 		// Credits go to https://code.google.com/p/php-slugs/
 		function my_str_split( $string ) {
-			$slen = strlen( $string );
+			$sArray = array();
+			$slen   = strlen( $string );
 			for ( $i = 0; $i < $slen; $i ++ ) {
 				$sArray[ $i ] = $string{$i};
 			}

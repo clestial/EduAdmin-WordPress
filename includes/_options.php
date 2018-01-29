@@ -63,8 +63,8 @@
 								$value = $attr->AttributeAlternative;
 								break;
 								/*case 7:
-									$value = $attr->AttributeDate;*/
-								break;
+									$value = $attr->AttributeDate;
+								break;*/
 							default:
 								$value = $attr->AttributeValue;
 								break;

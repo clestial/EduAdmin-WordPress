@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
@@ -18,7 +16,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 

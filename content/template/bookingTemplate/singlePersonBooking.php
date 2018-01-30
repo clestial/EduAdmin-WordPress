@@ -231,7 +231,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 		$db = array();
 
@@ -240,7 +240,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( EDU()->get_token(), '', $fo->ToString() );
 			}
 		}
 
@@ -274,7 +274,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
 		$fo->AddItem( $f );
-		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $customer ) && isset( $customer->CustomerID ) ) {
@@ -282,7 +282,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 				$fo->AddItem( $f );
-				$db = EDU()->api->GetCustomerAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerAttribute( EDU()->get_token(), '', $fo->ToString() );
 			}
 		}
 
@@ -316,14 +316,14 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
 		$fo->AddItem( $f );
-		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		/*if($contact->PersonID != 0) {
 			$fo = new XFiltering();
 			$f = new XFilter('PersonID', '=', $contact->PersonID);
 			$fo->AddItem($f);
-			$db = $eduapi->GetPersonAttribute($edutoken, '', $fo->ToString());
+			$db = EDU()->api->GetPersonAttribute(EDU()->get_token(), '', $fo->ToString());
 		}*/
 
 		foreach ( $contactAttributes as $attr ) {

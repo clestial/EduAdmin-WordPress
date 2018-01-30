@@ -63,7 +63,7 @@
 	$s = new XSort( $sortOrder, 'ASC' );
 	$sort->AddItem( $s );
 
-	$edo = EDU()->api->GetEducationObject( $edutoken, $sort->ToString(), $filtering->ToString() );
+	$edo = EDU()->api->GetEducationObject( EDU()->get_token(), $sort->ToString(), $filtering->ToString() );
 
 	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$edo = array_filter( $edo, function( $object ) {
@@ -84,7 +84,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -191,7 +191,7 @@
 		$sorting->AddItem( $s );
 	}
 
-	$ede = EDU()->api->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
+	$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
@@ -199,7 +199,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -241,7 +241,7 @@
 	$ft->AddItem( $f );
 	$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 	$ft->AddItem( $f );
-	$pricenames = EDU()->api->GetPriceName( $edutoken, '', $ft->ToString() );
+	$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 	set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 	if ( ! empty( $pricenames ) ) {
@@ -286,13 +286,13 @@
 		$ft = new XFiltering();
 		$f  = new XFilter( "AttributeID", "=", intval( substr( $descrField, 5 ) ) );
 		$ft->AddItem( $f );
-		$objectAttributes = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+		$objectAttributes = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 	}
 
 	$showNextEventDate   = get_option( 'eduadmin-showNextEventDate', false );
 	$showCourseLocations = get_option( 'eduadmin-showCourseLocations', false );
 	$showEventPrice      = get_option( 'eduadmin-showEventPrice', false );
-	$incVat              = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+	$incVat              = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
 	$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 	$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );

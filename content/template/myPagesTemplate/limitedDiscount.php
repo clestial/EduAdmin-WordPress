@@ -2,9 +2,6 @@
 	$user     = EDU()->session['eduadmin-loginUser'];
 	$contact  = $user->Contact;
 	$customer = $user->Customer;
-
-	global $eduapi;
-	global $edutoken;
 ?>
 <div class="eduadmin">
 	<?php
@@ -19,7 +16,7 @@
 
 		$ft = new XFilter( 'Disabled', '=', false );
 		$f->AddItem( $ft );
-		$cards    = EDU()->api->GetLimitedDiscount( $edutoken, '', $f->ToString() );
+		$cards    = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
 	?>
     <table class="myReservationsTable">

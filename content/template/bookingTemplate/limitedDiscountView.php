@@ -4,7 +4,7 @@
 		$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$f->AddItem( $ft );
 
-		$cards = EDU()->api->GetLimitedDiscount( $edutoken, '', $f->ToString() );
+		$cards = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
 
 		$cCards   = array();
 		$cCardIds = array();
@@ -38,7 +38,7 @@
 		$ft = new XFilter( 'LimitedDiscountID', 'in', join( ',', $cCardIds ) );
 		$f->AddItem( $ft );
 
-		$objectCards = EDU()->api->GetLimitedDiscountObjectStatus( $edutoken, '', $f->ToString() );
+		$objectCards = EDU()->api->GetLimitedDiscountObjectStatus( EDU()->get_token(), '', $f->ToString() );
 		$cCardIds    = array();
 
 		$cardCosts = array();

@@ -11,7 +11,7 @@
 			$f = new XFilter( 'Disabled', '=', false );
 			$ft->AddItem( $f );
 
-			$matchingContacts            = EDU()->api->GetCustomerContact( $edutoken, '', $ft->ToString(), true );
+			$matchingContacts            = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), true );
 			EDU()->session['needsLogin'] = false;
 			EDU()->session['checkEmail'] = true;
 			if ( ! empty( $matchingContacts ) ) {
@@ -36,7 +36,7 @@
 				$filter->AddItem( $f );
 				$f = new XFilter( 'Disabled', '=', false );
 				$filter->AddItem( $f );
-				$customers = EDU()->api->GetCustomer( $edutoken, '', $filter->ToString(), true );
+				$customers = EDU()->api->GetCustomer( EDU()->get_token(), '', $filter->ToString(), true );
 				if ( count( $customers ) == 1 ) {
 					$customer                            = $customers[0];
 					$user                                = new stdClass;

@@ -29,7 +29,7 @@
 		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
-	$edo = EDU()->api->GetEducationObjectV2( $edutoken, '', $filtering->ToString(), false );
+	$edo = EDU()->api->GetEducationObjectV2( EDU()->get_token(), '', $filtering->ToString(), false );
 
 	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$edo = array_filter( $edo, function( $object ) {
@@ -50,7 +50,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -140,7 +140,7 @@
 		$sorting->AddItem( $s );
 	}
 
-	$ede = EDU()->api->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
+	$ede     = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
@@ -148,7 +148,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -168,7 +168,7 @@
 
 	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
 		$attributes['courselevel'] = intval( $_REQUEST['eduadmin-level'] );
-		$ede                       = array_filter( $ede, function( $object ) {
+		$ede = array_filter( $ede, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
 			foreach ( $cl as $subj ) {
 				if ( $object->ObjectID == $subj->ObjectID && $subj->EducationLevelID == intval( $_REQUEST['eduadmin-level'] ) ) {
@@ -203,7 +203,7 @@
 	$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
 	$ft->AddItem( $f );
 
-	$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+	$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 	$eventDates = array();
 	foreach ( $eventDays as $ed ) {
@@ -220,7 +220,7 @@
 	$s  = new XSort( 'Price', 'ASC' );
 	$st->AddItem( $s );
 
-	$pricenames = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+	$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 	set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 	if ( ! empty( $pricenames ) ) {
@@ -272,7 +272,7 @@
 	$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 	$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
 	$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
-	$incVat          = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+	$incVat          = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
 	$showEventPrice = get_option( 'eduadmin-showEventPrice', false );
 	$currency       = get_option( 'eduadmin-currency', 'SEK' );

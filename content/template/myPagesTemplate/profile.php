@@ -4,8 +4,6 @@
 	$customer = $user->Customer;
 
 	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "saveInfo" ) {
-		global $eduapi;
-		global $edutoken;
 
 		$customer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
 		$customer->Address1     = trim( sanitize_text_field( $_POST['customerAddress'] ) );
@@ -28,8 +26,8 @@
 		$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
 		$contact->Email       = trim( sanitize_email( $_POST['contactEmail'] ) );
 
-		$eduapi->SetCustomerV2( $edutoken, array( $customer ) );
-		$eduapi->SetCustomerContact( $edutoken, array( $contact ) );
+		EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
+		EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 	}
 ?>
 

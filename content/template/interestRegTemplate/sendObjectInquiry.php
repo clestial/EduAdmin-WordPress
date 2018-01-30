@@ -28,7 +28,7 @@
 		$inquiry->Mobile        = sanitize_text_field( $_POST['edu-mobile'] );
 		$inquiry->Notes         = sanitize_textarea_field( $_POST['edu-notes'] );
 
-		$inquiryId = EDU()->api->SetInterestRegObject( $edutoken, array( $inquiry ) )[0];
+		$inquiryId = EDU()->api->SetInterestRegObject( EDU()->get_token(), array( $inquiry ) )[0];
 
 		die( "<script type=\"text/javascript\">alert('" . __( "Thank you for your inquiry! We will be in touch!", 'eduadmin-booking' ) . "'); location.href = '" . get_page_link( '/' ) . "?edu-thankyouinquiry=" . $inquiryId . "';</script>" );
 	}

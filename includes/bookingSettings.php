@@ -9,51 +9,45 @@
 				<?php do_settings_sections( 'eduadmin-booking' ); ?>
                 <div class="block">
 					<?php
-						global $eduapi;
-						global $edutoken;
-						$apiKey = get_option( 'eduadmin-api-key' );
-
-						if ( ! $apiKey || empty( $apiKey ) ) {
+						if ( empty( EDUAPI()->api_token ) ) {
 							add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
 						} else {
 							?>
                             <h3><?php echo __( "Default customer group", "eduadmin-booking" ); ?></h3>
 						<?php
-							$ft = new XFiltering();
-							$f  = new XFilter( 'PublicGroup', '=', 'true' );
-							$ft->AddItem( $f );
+							$cg = EDUAPI()->OData->CustomerGroups->Search(
+								"CustomerGroupId,ParentCustomerGroupId,CustomerGroupName",
+								"PublicGroup",
+								null,
+								"ParentCustomerGroupId"
+							);
 
-							$st = new XSorting();
-							$s  = new XSort( 'ParentCustomerGroupID', 'ASC' );
-							$st->AddItem( $s );
-
-							$cg     = $eduapi->GetCustomerGroup( $edutoken, $st->ToString(), $ft->ToString() );
 							$parent = array();
-							foreach ( $cg as $i => $v ) {
-								$parent[ $i ] = $v->ParentCustomerGroupID;
+							foreach ( $cg["value"] as $i => $v ) {
+								$parent[ $i ] = $v["ParentCustomerGroupId"];
 							}
 
-							array_multisort( $parent, SORT_ASC, $cg );
+							array_multisort( $parent, SORT_ASC, $cg["value"] );
 
 							$levelStack = array();
-							foreach ( $cg as $g ) {
-								$levelStack[ $g->ParentCustomerGroupID ][] = $g;
+							foreach ( $cg["value"] as $g ) {
+								$levelStack[ $g["ParentCustomerGroupId"] ][] = $g;
 							}
 
 							$depth = 0;
 
 							function edu_writeOptions( $g, $array, $depth, $selectedOption ) {
 								echo
-									"<option value=\"" . $g->CustomerGroupID . "\"" . ( $selectedOption == $g->CustomerGroupID ? " selected=\"selected\"" : "" ) . ">" .
+									"<option value=\"" . $g["CustomerGroupId"] . "\"" . ( $selectedOption == $g["CustomerGroupId"] ? " selected=\"selected\"" : "" ) . ">" .
 									str_repeat( '&nbsp;', $depth * 4 ) .
-									$g->CustomerGroupName .
+									$g["CustomerGroupName"] .
 									"</option>\n";
-								if ( array_key_exists( $g->CustomerGroupID, $array ) ) {
-									$depth ++;
-									foreach ( $array[ $g->CustomerGroupID ] as $ng ) {
+								if ( array_key_exists( $g["CustomerGroupId"], $array ) ) {
+									$depth++;
+									foreach ( $array[ $g["CustomerGroupId"] ] as $ng ) {
 										edu_writeOptions( $ng, $array, $depth, $selectedOption );
 									}
-									$depth --;
+									$depth--;
 								}
 							}
 

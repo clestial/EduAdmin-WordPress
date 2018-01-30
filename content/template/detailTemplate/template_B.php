@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
@@ -16,7 +14,7 @@
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$filtering->AddItem( $f );
 
-		$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+		$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 
 		$selectedCourse = false;
 		$name           = "";
@@ -69,12 +67,12 @@
 		$st->AddItem( $s );
 
 		$events = EDU()->api->GetEvent(
-			$edutoken,
+			EDU()->get_token(),
 			$st->ToString(),
 			$ft->ToString()
 		);
 
-		$incVat      = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat      = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
 
 		$hideSections = array();
@@ -181,7 +179,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -200,7 +198,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					$uniquePrices = Array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;

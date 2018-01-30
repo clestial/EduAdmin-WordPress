@@ -11,11 +11,8 @@
 			} else if ( sanitize_text_field( $_POST['newPassword'] ) == sanitize_text_field( $_POST['currentPassword'] ) ) {
 				$msg = __( "You cannot set your password to be the same as the one before.", 'eduadmin-booking' );
 			} else {
-				global $eduapi;
-				global $edutoken;
-
 				$contact->Loginpass = trim( sanitize_text_field( $_POST['newPassword'] ) );
-				EDU()->api->SetCustomerContact( $edutoken, array( $contact ) );
+				EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 			}
 		}
 	}

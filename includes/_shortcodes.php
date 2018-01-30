@@ -179,7 +179,6 @@
 	function eduadmin_get_detailinfo( $attributes ) {
 		$t = EDU()->StartTimer( __METHOD__ );
 		global $wp_query;
-		global $edutoken;
 		$attributes = shortcode_atts(
 			array(
 				'courseid'                  => null,
@@ -244,7 +243,7 @@
 
 			$edo = get_transient( 'eduadmin-object_' . $courseId );
 			if ( ! $edo ) {
-				$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 				set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
 			}
 
@@ -305,7 +304,7 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseSubject = EDU()->api->GetEducationSubject( $edutoken, '', $ft->ToString() );
+					$courseSubject = EDU()->api->GetEducationSubject( EDU()->get_token(), '', $ft->ToString() );
 					$subjectNames  = array();
 					foreach ( $courseSubject as $subj ) {
 						$subjectNames[] = $subj->SubjectName;
@@ -316,7 +315,7 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseLevel = EDU()->api->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
+					$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
 
 					if ( ! empty( $courseLevel ) ) {
 						$retStr .= $courseLevel[0]->Name;
@@ -329,7 +328,7 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
-					$objAttr = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
@@ -379,7 +378,7 @@
 					$st->AddItem( $s );
 
 					$events = EDU()->api->GetEvent(
-						$edutoken,
+						EDU()->get_token(),
 						$st->ToString(),
 						$ft->ToString()
 					);
@@ -404,9 +403,9 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+					$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
-					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					$uniquePrices = array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
@@ -514,7 +513,7 @@
 					}
 
 					$events = EDU()->api->GetEvent(
-						$edutoken,
+						EDU()->get_token(),
 						$st->ToString(),
 						$ft->ToString()
 					);
@@ -534,7 +533,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -551,7 +550,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$pricenames = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 					if ( ! empty( $pricenames ) ) {

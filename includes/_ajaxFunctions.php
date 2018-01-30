@@ -2,8 +2,6 @@
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 	function edu_listview_courselist() {
-		$edutoken = EDU()->get_token();
-
 		$objectIds = $_POST['objectIds'];
 
 		$fetchMonths = $_POST['fetchmonths'];
@@ -37,7 +35,7 @@
 		$s       = new XSort( 'PeriodStart', 'ASC' );
 		$sorting->AddItem( $s );
 
-		$ede = EDU()->api->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 		$occIds = array();
 		$evIds  = array();
@@ -51,7 +49,7 @@
 		$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
 		$ft->AddItem( $f );
 
-		$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 		$eventDates = array();
 		foreach ( $eventDays as $ed ) {
@@ -63,7 +61,7 @@
 		$ft->AddItem( $f );
 		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( $edutoken, '', $ft->ToString() );
+		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 
 		if ( ! empty( $pricenames ) ) {
 			$ede = array_filter( $ede, function( $object ) use ( &$pricenames ) {
@@ -90,12 +88,11 @@
 
 	function edu_api_listview_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
-		$edutoken = EDU()->get_token();
 
 		$sorting = new XSorting();
 		$s       = new XSort( 'SubjectName', 'ASC' );
 		$sorting->AddItem( $s );
-		$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+		$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 
 		$filterCourses = array();
 
@@ -143,7 +140,7 @@
 			$fetchMonths = 6;
 		}
 
-		$edo = EDU()->api->GetEducationObjectV2( $edutoken, '', $filtering->ToString(), false );
+		$edo = EDU()->api->GetEducationObjectV2( EDU()->get_token(), '', $filtering->ToString(), false );
 
 		if ( ! empty( $_POST['search'] ) ) {
 			$edo = array_filter( $edo, function( $object ) use ( &$request ) {
@@ -162,7 +159,7 @@
 				$sorting = new XSorting();
 				$s       = new XSort( 'SubjectName', 'ASC' );
 				$sorting->AddItem( $s );
-				$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+				$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 				set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 			}
 
@@ -248,7 +245,7 @@
 			$sorting->AddItem( $s );
 		}
 
-		$ede = EDU()->api->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 		$ede = array_filter( $ede, function( $object ) use ( &$edo ) {
 			$pn = $edo;
@@ -273,7 +270,7 @@
 		$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
 		$ft->AddItem( $f );
 
-		$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 		$eventDates = array();
 		foreach ( $eventDays as $ed ) {
@@ -285,7 +282,7 @@
 		$ft->AddItem( $f );
 		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( $edutoken, '', $ft->ToString() );
+		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 
 		if ( ! empty( $pricenames ) ) {
 			$ede = array_filter( $ede, function( $object ) use ( &$pricenames ) {
@@ -332,7 +329,6 @@
 	}
 
 	function edu_api_listview_eventlist_template_A( $data, $eventDates, $request ) {
-		$edutoken       = EDU()->get_token();
 		$spotLeftOption = $request['spotsleft'];
 		$alwaysFewSpots = $request['fewspots'];
 		$spotSettings   = $request['spotsettings'];
@@ -344,7 +340,7 @@
 
 		$showVenue = $request['showvenue'];
 
-		$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
 		$surl           = $request['baseUrl'];
 		$cat            = $request['courseFolder'];
@@ -440,14 +436,9 @@
 			<?php
 			$currentEvents++;
 		}
-		//$out = ob_get_clean();
-
-		//return $out;
 	}
 
 	function edu_api_listview_eventlist_template_B( $data, $eventDates, $request ) {
-		$edutoken = EDU()->get_token();
-
 		$spotLeftOption = $request['spotsleft'];
 		$alwaysFewSpots = $request['fewspots'];
 		$spotSettings   = $request['spotsettings'];
@@ -459,7 +450,7 @@
 
 		$showVenue = $request['showvenue'];
 
-		$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
 		$surl           = $request['baseUrl'];
 		$cat            = $request['courseFolder'];
@@ -546,8 +537,6 @@
 		header( "Content-type: text/html; charset=UTF-8" );
 		$retStr = '';
 
-		$edutoken = EDU()->get_token();
-
 		$objectId = $_POST['objectid'];
 
 		$filtering = new XFiltering();
@@ -556,7 +545,7 @@
 		$f = new XFilter( 'ObjectID', '=', $objectId );
 		$filtering->AddItem( $f );
 
-		$edo            = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+		$edo            = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 		$selectedCourse = false;
 		foreach ( $edo as $object ) {
 			$id = $object->ObjectID;
@@ -634,7 +623,7 @@
 		}
 
 		$events = EDU()->api->GetEvent(
-			$edutoken,
+			EDU()->get_token(),
 			$st->ToString(),
 			$ft->ToString()
 		);
@@ -654,7 +643,7 @@
 		$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 		$ft->AddItem( $f );
 
-		$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 		$eventDates = array();
 		foreach ( $eventDays as $ed ) {
@@ -671,7 +660,7 @@
 		$s  = new XSort( 'Price', 'ASC' );
 		$st->AddItem( $s );
 
-		$pricenames = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 
 		if ( ! empty( $pricenames ) ) {
 			$events = array_filter( $events, function( $object ) use ( &$pricenames ) {
@@ -837,12 +826,10 @@
 	}
 
 	function edu_api_check_coupon_code() {
-		$edutoken = EDU()->get_token();
-
 		$objectID   = $_POST['objectId'];
 		$categoryID = $_POST['categoryId'];
 		$code       = $_POST['code'];
-		$vcode      = EDU()->api->CheckCouponCode( $edutoken, $objectID, $categoryID, $code );
+		$vcode      = EDU()->api->CheckCouponCode( EDU()->get_token(), $objectID, $categoryID, $code );
 
 		return rest_ensure_response( $vcode );
 	}

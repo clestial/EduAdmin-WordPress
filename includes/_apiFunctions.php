@@ -47,5 +47,7 @@
 				echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
 				echo "<!-- /EduAdmin Booking Class - Timers -->\n";
 			}
+
+			do_action( 'eduadmin-showtimers' );
 		}
 	}

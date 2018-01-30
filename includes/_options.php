@@ -19,8 +19,6 @@
 
 	function eduadmin_page_title( $title, $sep = "|" ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		global $eduapi;
-		global $edutoken;
 		global $wp;
 
 		if ( $sep == null || empty( $sep ) ) {
@@ -34,7 +32,7 @@
 				$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 				$filtering->AddItem( $f );
 
-				$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 				set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 			}
 
@@ -55,16 +53,16 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
-					$objAttr = $eduapi->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
 							case 5:
 								$value = $attr->AttributeAlternative;
 								break;
-								/*case 7:
-									$value = $attr->AttributeDate;
-								break;*/
+							/*case 7:
+								$value = $attr->AttributeDate;
+							break;*/
 							default:
 								$value = $attr->AttributeValue;
 								break;
@@ -246,15 +244,13 @@
 
 	function eduadmin_RewriteJavaScript( $script ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		global $eduapi;
-		global $edutoken;
 
 		if ( isset( $_REQUEST['edu-thankyou'] ) ) {
 			if ( stripos( $script, "$" ) !== false ) {
 				$ft = new XFiltering();
 				$f  = new XFilter( 'EventCustomerLnkID', '=', intval( $_REQUEST['edu-thankyou'] ) );
 				$ft->AddItem( $f );
-				$bookingInfo = $eduapi->GetEventBooking( $edutoken, '', $ft->ToString() );
+				$bookingInfo = EDU()->api->GetEventBooking( EDU()->get_token(), '', $ft->ToString() );
 
 				$script = str_replace(
 					array(

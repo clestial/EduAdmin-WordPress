@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
@@ -14,7 +12,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 
@@ -69,7 +67,7 @@
 		$st->AddItem( $s );
 
 		$events = EDU()->api->GetEvent(
-			$edutoken,
+			EDU()->get_token(),
 			$st->ToString(),
 			$ft->ToString()
 		);
@@ -92,7 +90,7 @@
 			$discountPercent            = 0.0;
 			$participantDiscountPercent = 0.0;
 			$customerInvoiceEmail       = '';
-			$incVat                     = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+			$incVat                     = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
 			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 				$user     = EDU()->session['eduadmin-loginUser'];
@@ -102,7 +100,7 @@
 					$f  = new XFiltering();
 					$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 					$f->AddItem( $ft );
-					$extraInfo = EDU()->api->GetCustomerExtraInfo( $edutoken, '', $f->ToString() );
+					$extraInfo = EDU()->api->GetCustomerExtraInfo( EDU()->get_token(), '', $f->ToString() );
 					foreach ( $extraInfo as $info ) {
 						if ( $info->Key == "DiscountPercent" && isset( $info->Value ) ) {
 							$discountPercent = (double) $info->Value;
@@ -135,7 +133,7 @@
 			$s  = new XSort( 'Price', 'ASC' );
 			$st->AddItem( $s );
 
-			$prices = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+			$prices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 
 			$uniquePrices = Array();
 			foreach ( $prices as $price ) {
@@ -153,7 +151,7 @@
 			$ft = new XFiltering();
 			$f  = new XFilter( 'ParentEventID', '=', $event->EventID );
 			$ft->AddItem( $f );
-			$subEvents = EDU()->api->GetSubEvent( $edutoken, $st->ToString(), $ft->ToString() );
+			$subEvents = EDU()->api->GetSubEvent( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 			$occIds    = Array();
 			foreach ( $subEvents as $se ) {
 				$occIds[] = $se->OccasionID;
@@ -169,7 +167,7 @@
 			$s  = new XSort( 'Price', 'ASC' );
 			$st->AddItem( $s );
 
-			$subPrices = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+			$subPrices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 			$sePrice   = array();
 			foreach ( $subPrices as $sp ) {
 				$sePrice[ $sp->OccationID ][] = $sp;
@@ -211,7 +209,7 @@
 												$ft = new XFiltering();
 												$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 												$ft->AddItem( $f );
-												$addresses = EDU()->api->GetLocationAddress( $edutoken, '', $ft->ToString() );
+												$addresses = EDU()->api->GetLocationAddress( EDU()->get_token(), '', $ft->ToString() );
 												set_transient( 'eduadmin-location-' . $ev->LocationAddressID, $addresses, DAY_IN_SECONDS );
 											}
 
@@ -235,7 +233,7 @@
 								$ft = new XFiltering();
 								$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
 								$ft->AddItem( $f );
-								$addresses = EDU()->api->GetLocationAddress( $edutoken, '', $ft->ToString() );
+								$addresses = EDU()->api->GetLocationAddress( EDU()->get_token(), '', $ft->ToString() );
 								set_transient( 'eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS );
 							}
 

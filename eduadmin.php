@@ -134,6 +134,13 @@
 				$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
 			}
 
+			/**
+			 * @param stdClass|array|object|null $object
+			 */
+			public function __writeDebug( $object ) {
+				echo "<xmp>" . print_r( $object, true ) . "</xmp>";
+			}
+
 			public function get_version() {
 				if ( function_exists( 'get_plugin_data' ) ) {
 					$pData = get_plugin_data( __FILE__ );
@@ -224,10 +231,7 @@
 				}
 
 				$this->api = new EduAdminClient( $this->version );
-				global $eduapi;
-				global $edutoken;
-				$eduapi   = $this->api;
-				$edutoken = $this->get_token();
+
 				include_once( 'includes/_options.php' );
 				include_once( 'includes/_ajaxFunctions.php' );
 				include_once( 'includes/_rewrites.php' );
@@ -403,12 +407,14 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 
 				$currentToken = get_transient( 'eduadmin-newapi-token' );
 				if ( $currentToken == null || ! $currentToken->IsValid() ) {
-					$token = EDUAPI()->GetToken();
-					if ( empty( $token->Issued ) ) {
+					$currentToken = EDUAPI()->GetToken();
+					if ( empty( $currentToken->Issued ) ) {
 						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again.", 'eduadmin-booking' ) );
 					}
-					set_transient( 'eduadmin-newapi-token', $token, WEEK_IN_SECONDS );
+					set_transient( 'eduadmin-newapi-token', $currentToken, WEEK_IN_SECONDS );
 				}
+
+				EDUAPI()->SetToken( $currentToken );
 
 				return null;
 			}

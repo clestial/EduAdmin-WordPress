@@ -3,8 +3,6 @@
 	$contact  = $user->Contact;
 	$customer = $user->Customer;
 
-	global $eduapi;
-	global $edutoken;
 ?>
 <div class="eduadmin">
 	<?php
@@ -22,7 +20,7 @@
 		$sorting = new XSorting();
 		$s       = new XSort( 'Created', 'DESC' );
 		$sorting->AddItem( $s );
-		$bookings = EDU()->api->GetEventBooking( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$bookings = EDU()->api->GetEventBooking( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 		$eclIds = array();
 		foreach ( $bookings as $book ) {
@@ -36,7 +34,7 @@
 		$f = new XFilter( 'Canceled', '=', 'false' );
 		$filtering->AddItem( $f );
 
-		$participants = EDU()->api->GetEventParticipantV2( $edutoken, $sorting->ToString(), $filtering->ToString() );
+		$participants = EDU()->api->GetEventParticipantV2( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 		$partPerEvent = array();
 		foreach ( $participants as $p ) {

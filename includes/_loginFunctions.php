@@ -1,8 +1,6 @@
 <?php
 	function sendForgottenPassword( $loginValue ) {
 		$t        = EDU()->StartTimer( __METHOD__ );
-		$eduapi   = EDU()->api;
-		$edutoken = EDU()->get_token();
 		$ccId     = 0;
 
 		$loginField = get_option( 'eduadmin-loginField', 'Email' );
@@ -12,13 +10,13 @@
 		$filter->AddItem( $f );
 		$f = new XFilter( 'CanLogin', '=', true );
 		$filter->AddItem( $f );
-		$cc = $eduapi->GetCustomerContact( $edutoken, '', $filter->ToString(), false );
+		$cc = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $filter->ToString(), false );
 		if ( count( $cc ) == 1 ) {
 			$ccId = current( $cc )->CustomerContactID;
 		}
 
 		if ( $ccId > 0 && ! empty( current( $cc )->Email ) ) {
-			$sent = $eduapi->SendCustomerContactPassword( $edutoken, $ccId, get_bloginfo( 'name' ) );
+			$sent = EDU()->api->SendCustomerContactPassword( EDU()->get_token(), $ccId, get_bloginfo( 'name' ) );
 			EDU()->StopTimer( $t );
 
 			return $sent;

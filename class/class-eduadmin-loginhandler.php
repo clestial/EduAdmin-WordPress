@@ -19,9 +19,6 @@
 			$regularLogin = isset( $_POST['eduformloginaction'] ) && sanitize_text_field( $_POST['eduformloginaction'] ) == "login";
 
 			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) && ! empty( $_POST['eduadminpassword'] ) ) {
-				$eduapi   = EDU()->api;
-				$edutoken = EDU()->get_token();
-
 				$loginField = get_option( 'eduadmin-loginField', 'Email' );
 
 				$filter = new XFiltering();
@@ -33,7 +30,7 @@
 				$filter->AddItem( $f );
 				$f = new XFilter( 'Disabled', '=', false );
 				$filter->AddItem( $f );
-				$cc = $eduapi->GetCustomerContact( $edutoken, '', $filter->ToString(), true );
+				$cc = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $filter->ToString(), true );
 				if ( count( $cc ) == 1 ) {
 					$contact = $cc[0];
 					$filter  = new XFiltering();
@@ -41,7 +38,7 @@
 					$filter->AddItem( $f );
 					$f = new XFilter( 'Disabled', '=', false );
 					$filter->AddItem( $f );
-					$customers = $eduapi->GetCustomerV2( $edutoken, '', $filter->ToString(), true );
+					$customers = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $filter->ToString(), true );
 					if ( count( $customers ) == 1 ) {
 						$customer                            = $customers[0];
 						$user                                = new stdClass;

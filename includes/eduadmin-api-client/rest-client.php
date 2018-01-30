@@ -22,8 +22,9 @@
 		 * @return mixed
 		 */
 		private function executeRequest( $curl ) {
-			$r = curl_exec( $curl );
-			$i = curl_getinfo( $curl );
+			$r   = curl_exec( $curl );
+			$i   = curl_getinfo( $curl );
+			$obj = array();
 
 			if ( $r == false || ( json_decode( $r ) && isset( json_decode( $r )->error ) ) || ( $i["http_code"] < 200 || $i["http_code"] > 299 ) ) {
 				curl_close( $curl );

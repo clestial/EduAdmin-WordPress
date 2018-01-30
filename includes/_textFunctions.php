@@ -215,20 +215,7 @@
 
 	function GetDisplayDate( $inDate, $short = true ) {
 		$t      = EDU()->StartTimer( __METHOD__ );
-		$months = array(
-			1  => ! $short ? __( 'january', 'eduadmin-booking' ) : __( 'jan', 'eduadmin-booking' ),
-			2  => ! $short ? __( 'february', 'eduadmin-booking' ) : __( 'feb', 'eduadmin-booking' ),
-			3  => ! $short ? __( 'march', 'eduadmin-booking' ) : __( 'mar', 'eduadmin-booking' ),
-			4  => ! $short ? __( 'april', 'eduadmin-booking' ) : __( 'apr', 'eduadmin-booking' ),
-			5  => ! $short ? __( 'may', 'eduadmin-booking' ) : __( 'may', 'eduadmin-booking' ),
-			6  => ! $short ? __( 'june', 'eduadmin-booking' ) : __( 'jun', 'eduadmin-booking' ),
-			7  => ! $short ? __( 'july', 'eduadmin-booking' ) : __( 'jul', 'eduadmin-booking' ),
-			8  => ! $short ? __( 'august', 'eduadmin-booking' ) : __( 'aug', 'eduadmin-booking' ),
-			9  => ! $short ? __( 'september', 'eduadmin-booking' ) : __( 'sep', 'eduadmin-booking' ),
-			10 => ! $short ? __( 'october', 'eduadmin-booking' ) : __( 'oct', 'eduadmin-booking' ),
-			11 => ! $short ? __( 'november', 'eduadmin-booking' ) : __( 'nov', 'eduadmin-booking' ),
-			12 => ! $short ? __( 'december', 'eduadmin-booking' ) : __( 'dec', 'eduadmin-booking' ),
-		);
+		$months = $short ? EDU()->shortMonths : EDU()->months;
 
 		$year    = date( 'Y', strtotime( $inDate ) );
 		$nowYear = date( 'Y' );
@@ -288,31 +275,9 @@
 	}
 
 	function GetStartEndDisplayDate( $startDate, $endDate, $short = false, $event, $showDays = false ) {
-		$t    = EDU()->StartTimer( __METHOD__ );
-		$days = array(
-			1 => ! $short ? __( 'monday', 'eduadmin-booking' ) : __( 'mon', 'eduadmin-booking' ),
-			2 => ! $short ? __( 'tuesday', 'eduadmin-booking' ) : __( 'tue', 'eduadmin-booking' ),
-			3 => ! $short ? __( 'wednesday', 'eduadmin-booking' ) : __( 'wed', 'eduadmin-booking' ),
-			4 => ! $short ? __( 'thursday', 'eduadmin-booking' ) : __( 'thu', 'eduadmin-booking' ),
-			5 => ! $short ? __( 'friday', 'eduadmin-booking' ) : __( 'fri', 'eduadmin-booking' ),
-			6 => ! $short ? __( 'saturday', 'eduadmin-booking' ) : __( 'sat', 'eduadmin-booking' ),
-			7 => ! $short ? __( 'sunday', 'eduadmin-booking' ) : __( 'sun', 'eduadmin-booking' ),
-		);
-
-		$months = array(
-			1  => ! $short ? __( 'january', 'eduadmin-booking' ) : __( 'jan', 'eduadmin-booking' ),
-			2  => ! $short ? __( 'february', 'eduadmin-booking' ) : __( 'feb', 'eduadmin-booking' ),
-			3  => ! $short ? __( 'march', 'eduadmin-booking' ) : __( 'mar', 'eduadmin-booking' ),
-			4  => ! $short ? __( 'april', 'eduadmin-booking' ) : __( 'apr', 'eduadmin-booking' ),
-			5  => ! $short ? __( 'may', 'eduadmin-booking' ) : __( 'may', 'eduadmin-booking' ),
-			6  => ! $short ? __( 'june', 'eduadmin-booking' ) : __( 'jun', 'eduadmin-booking' ),
-			7  => ! $short ? __( 'july', 'eduadmin-booking' ) : __( 'jul', 'eduadmin-booking' ),
-			8  => ! $short ? __( 'august', 'eduadmin-booking' ) : __( 'aug', 'eduadmin-booking' ),
-			9  => ! $short ? __( 'september', 'eduadmin-booking' ) : __( 'sep', 'eduadmin-booking' ),
-			10 => ! $short ? __( 'october', 'eduadmin-booking' ) : __( 'oct', 'eduadmin-booking' ),
-			11 => ! $short ? __( 'november', 'eduadmin-booking' ) : __( 'nov', 'eduadmin-booking' ),
-			12 => ! $short ? __( 'december', 'eduadmin-booking' ) : __( 'dec', 'eduadmin-booking' ),
-		);
+		$t        = EDU()->StartTimer( __METHOD__ );
+		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
+		$months   = $short ? EDU()->shortMonths : EDU()->months;
 
 		$startYear  = date( 'Y', strtotime( $startDate->StartDate ) );
 		$startMonth = date( 'n', strtotime( $startDate->StartDate ) );
@@ -321,7 +286,7 @@
 		$nowYear    = date( 'Y' );
 		$str        = '<span class="eduadmin-dateText">';
 		if ( $showDays ) {
-			$str .= $days[ date( 'N', strtotime( $startDate->StartDate ) ) ] . " ";
+			$str .= $weekDays[ date( 'N', strtotime( $startDate->StartDate ) ) ] . " ";
 		}
 		$str .= date( 'd', strtotime( $startDate->StartDate ) );
 		if ( date( 'Y-m-d', strtotime( $startDate->StartDate ) ) != date( 'Y-m-d', strtotime( $endDate->EndDate ) ) ) {
@@ -335,7 +300,7 @@
 					}
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 					}
 					$str .= date( 'd', strtotime( $endDate->EndDate ) );
 					$str .= ' ';
@@ -355,7 +320,7 @@
 					$str .= $months[ date( 'n', strtotime( $startDate->StartDate ) ) ];
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 					}
 					$str .= date( 'd', strtotime( $endDate->EndDate ) );
 					$str .= ' ';
@@ -371,7 +336,7 @@
 				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 				$str .= ' - ';
 				if ( $showDays ) {
-					$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+					$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 				}
 				$str .= date( 'd', strtotime( $endDate->EndDate ) );
 				$str .= ' ';
@@ -398,30 +363,8 @@
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
 		$t        = EDU()->StartTimer( __METHOD__ );
-		$weekDays = array(
-			1 => ! $short ? __( 'monday', 'eduadmin-booking' ) : __( 'mon', 'eduadmin-booking' ),
-			2 => ! $short ? __( 'tuesday', 'eduadmin-booking' ) : __( 'tue', 'eduadmin-booking' ),
-			3 => ! $short ? __( 'wednesday', 'eduadmin-booking' ) : __( 'wed', 'eduadmin-booking' ),
-			4 => ! $short ? __( 'thursday', 'eduadmin-booking' ) : __( 'thu', 'eduadmin-booking' ),
-			5 => ! $short ? __( 'friday', 'eduadmin-booking' ) : __( 'fri', 'eduadmin-booking' ),
-			6 => ! $short ? __( 'saturday', 'eduadmin-booking' ) : __( 'sat', 'eduadmin-booking' ),
-			7 => ! $short ? __( 'sunday', 'eduadmin-booking' ) : __( 'sun', 'eduadmin-booking' ),
-		);
-
-		$months = array(
-			1  => ! $short ? __( 'january', 'eduadmin-booking' ) : __( 'jan', 'eduadmin-booking' ),
-			2  => ! $short ? __( 'february', 'eduadmin-booking' ) : __( 'feb', 'eduadmin-booking' ),
-			3  => ! $short ? __( 'march', 'eduadmin-booking' ) : __( 'mar', 'eduadmin-booking' ),
-			4  => ! $short ? __( 'april', 'eduadmin-booking' ) : __( 'apr', 'eduadmin-booking' ),
-			5  => ! $short ? __( 'may', 'eduadmin-booking' ) : __( 'may', 'eduadmin-booking' ),
-			6  => ! $short ? __( 'june', 'eduadmin-booking' ) : __( 'jun', 'eduadmin-booking' ),
-			7  => ! $short ? __( 'july', 'eduadmin-booking' ) : __( 'jul', 'eduadmin-booking' ),
-			8  => ! $short ? __( 'august', 'eduadmin-booking' ) : __( 'aug', 'eduadmin-booking' ),
-			9  => ! $short ? __( 'september', 'eduadmin-booking' ) : __( 'sep', 'eduadmin-booking' ),
-			10 => ! $short ? __( 'october', 'eduadmin-booking' ) : __( 'oct', 'eduadmin-booking' ),
-			11 => ! $short ? __( 'november', 'eduadmin-booking' ) : __( 'nov', 'eduadmin-booking' ),
-			12 => ! $short ? __( 'december', 'eduadmin-booking' ) : __( 'dec', 'eduadmin-booking' ),
-		);
+		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
+		$months   = $short ? EDU()->shortMonths : EDU()->months;
 
 		$startYear  = date( 'Y', strtotime( $startDate ) );
 		$startMonth = date( 'n', strtotime( $startDate ) );

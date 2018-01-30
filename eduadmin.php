@@ -84,6 +84,14 @@
 			 * @var string
 			 */
 			public $version;
+			/** @var array */
+			public $weekDays;
+			/** @var array */
+			public $shortWeekDays;
+			/** @var array */
+			public $months;
+			/** @var array */
+			public $shortMonths;
 
 			/**
 			 * @return EduAdmin
@@ -269,6 +277,56 @@
 				$t                  = $this->StartTimer( __METHOD__ );
 				$this->integrations = new EDU_IntegrationLoader();
 				$this->restController->register_routes();
+				$this->weekDays = array(
+					1 => __( 'monday', 'eduadmin-booking' ),
+					2 => __( 'tuesday', 'eduadmin-booking' ),
+					3 => __( 'wednesday', 'eduadmin-booking' ),
+					4 => __( 'thursday', 'eduadmin-booking' ),
+					5 => __( 'friday', 'eduadmin-booking' ),
+					6 => __( 'saturday', 'eduadmin-booking' ),
+					7 => __( 'sunday', 'eduadmin-booking' ),
+				);
+
+				$this->shortWeekDays = array(
+					1 => __( 'mon', 'eduadmin-booking' ),
+					2 => __( 'tue', 'eduadmin-booking' ),
+					3 => __( 'wed', 'eduadmin-booking' ),
+					4 => __( 'thu', 'eduadmin-booking' ),
+					5 => __( 'fri', 'eduadmin-booking' ),
+					6 => __( 'sat', 'eduadmin-booking' ),
+					7 => __( 'sun', 'eduadmin-booking' ),
+				);
+
+				$this->months = array(
+					1  => __( 'january', 'eduadmin-booking' ),
+					2  => __( 'february', 'eduadmin-booking' ),
+					3  => __( 'march', 'eduadmin-booking' ),
+					4  => __( 'april', 'eduadmin-booking' ),
+					5  => __( 'may', 'eduadmin-booking' ),
+					6  => __( 'june', 'eduadmin-booking' ),
+					7  => __( 'july', 'eduadmin-booking' ),
+					8  => __( 'august', 'eduadmin-booking' ),
+					9  => __( 'september', 'eduadmin-booking' ),
+					10 => __( 'october', 'eduadmin-booking' ),
+					11 => __( 'november', 'eduadmin-booking' ),
+					12 => __( 'december', 'eduadmin-booking' ),
+				);
+
+				$this->shortMonths = array(
+					1  => __( 'jan', 'eduadmin-booking' ),
+					2  => __( 'feb', 'eduadmin-booking' ),
+					3  => __( 'mar', 'eduadmin-booking' ),
+					4  => __( 'apr', 'eduadmin-booking' ),
+					5  => __( 'may', 'eduadmin-booking' ),
+					6  => __( 'jun', 'eduadmin-booking' ),
+					7  => __( 'jul', 'eduadmin-booking' ),
+					8  => __( 'aug', 'eduadmin-booking' ),
+					9  => __( 'sep', 'eduadmin-booking' ),
+					10 => __( 'oct', 'eduadmin-booking' ),
+					11 => __( 'nov', 'eduadmin-booking' ),
+					12 => __( 'dec', 'eduadmin-booking' ),
+				);
+
 				$this->StopTimer( $t );
 			}
 

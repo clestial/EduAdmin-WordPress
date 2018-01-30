@@ -152,7 +152,7 @@
 				} else {
 					$lines = explode( "\n", $interval );
 					foreach ( $lines as $line ) {
-						if ( stripos( $line, '-' ) > - 1 ) {
+						if ( stripos( $line, '-' ) > -1 ) {
 							$range = explode( "-", $line );
 							$min   = $range[0];
 							$max   = $range[1];
@@ -161,7 +161,7 @@
 
 								return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
 							}
-						} else if ( stripos( $line, '+' ) > - 1 ) {
+						} else if ( stripos( $line, '+' ) > -1 ) {
 							EDU()->StopTimer( $t );
 
 							return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
@@ -430,7 +430,7 @@
 			return 0;
 		}
 
-		return ( $aDate < $bDate ? - 1 : 1 );
+		return ( $aDate < $bDate ? -1 : 1 );
 	}
 
 	function KeySort( $key ) {
@@ -444,7 +444,7 @@
 		function my_str_split( $string ) {
 			$sArray = array();
 			$slen   = strlen( $string );
-			for ( $i = 0; $i < $slen; $i ++ ) {
+			for ( $i = 0; $i < $slen; $i++ ) {
 				$sArray[ $i ] = $string{$i};
 			}
 
@@ -1003,7 +1003,7 @@
 				$sSubject = str_replace( $sSearch, $sReplace, $sSubject );
 				$pos      = strpos( $sSubject, $sSearch );
 
-				$i ++;
+				$i++;
 				if ( $i > 100 ) {
 					die( 'removeDuplicates() loop error' );
 				}

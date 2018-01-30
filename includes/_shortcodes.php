@@ -96,7 +96,7 @@
 		EDU()->session->regenerate_id( true );
 
 		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
-			$str                        = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
+			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 			EDU()->StopTimer( $t );
 
 			return $str;
@@ -306,7 +306,11 @@
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
 					$courseSubject = EDU()->api->GetEducationSubject( $edutoken, '', $ft->ToString() );
-					$retStr        .= print_r( $courseSubject, true );
+					$subjectNames  = array();
+					foreach ( $courseSubject as $subj ) {
+						$subjectNames[] = $subj->SubjectName;
+					}
+					$retStr .= join( ", ", $subjectNames );
 				}
 				if ( isset( $attributes['courselevel'] ) ) {
 					$ft = new XFiltering();
@@ -382,7 +386,7 @@
 
 					$occIds = array();
 
-					$occIds[] = - 1;
+					$occIds[] = -1;
 
 					foreach ( $events as $e ) {
 						$occIds[] = $e->OccationID;
@@ -516,10 +520,10 @@
 					);
 
 					$occIds   = array();
-					$occIds[] = - 1;
+					$occIds[] = -1;
 
 					$eventIds   = array();
-					$eventIds[] = - 1;
+					$eventIds[] = -1;
 
 					foreach ( $events as $e ) {
 						$occIds[]   = $e->OccationID;
@@ -568,7 +572,7 @@
 
 					$lastCity = "";
 
-					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : - 1;
+					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 					$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 					$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 					$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
@@ -584,7 +588,7 @@
 					                   '" data-fewspots="' . $alwaysFewSpots . '"' .
 					                   ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . $attributes['courseeventlistfiltercity'] . '"' : '' ) .
 					                   ' data-fetchmonths="' . $fetchMonths . '"' .
-					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . $_REQUEST['eid'] . '"' : '' ) .
+					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ) .
 					                   ' data-order="' . $customOrderBy . '"' .
 					                   ' data-orderby="' . $customOrderByOrder . '"' .
 					                   ' data-showvenue="' . get_option( 'eduadmin-showEventVenueName', false ) . '"' .
@@ -643,7 +647,7 @@
 					</div>';
 						$retStr   .= '</div><!-- /eventitem -->';
 						$lastCity = $ev->City;
-						$i ++;
+						$i++;
 					}
 					if ( empty( $events ) ) {
 						$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
@@ -694,7 +698,7 @@
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
-		$attributes                 = shortcode_atts(
+		$attributes = shortcode_atts(
 			array(
 				'logintext'  => __( "Log in", 'eduadmin-booking' ),
 				'logouttext' => __( "Log out", 'eduadmin-booking' ),

@@ -4,7 +4,6 @@
 	$customer = $user->Customer;
 
 	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "saveInfo" ) {
-
 		$customer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
 		$customer->Address1     = trim( sanitize_text_field( $_POST['customerAddress'] ) );
 		$customer->Address2     = trim( sanitize_text_field( $_POST['customerAddress2'] ) );

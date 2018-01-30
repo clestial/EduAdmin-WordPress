@@ -114,7 +114,7 @@
 			}
 
 			$occIds   = Array();
-			$occIds[] = - 1;
+			$occIds[] = -1;
 			if ( isset( $_REQUEST['eid'] ) ) {
 				foreach ( $events as $ev ) {
 					$occIds[] = $ev->OccationID;
@@ -332,7 +332,7 @@
                                 </div>
                                 <div class="inputHolder">
                                     <input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;"
-                                           placeholder="<?php esc_attr( _e( "Discount code", 'eduadmin-booking' ) ); ?>"/>
+                                           placeholder="<?php esc_attr( __( "Discount code", 'eduadmin-booking' ) ); ?>"/>
                                     <button class="validateDiscount"
                                             style="width: 20%;"
                                             data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
@@ -371,9 +371,9 @@
                         <input type="submit" class="bookButton cta-btn" id="edu-book-btn"
                                onclick="var validated = eduBookingView.CheckValidation(); return validated;"
 							<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
-                                disabled title="<?php esc_attr( _e( 'No free spots left on this event', 'eduadmin-booking' ) ); ?>"
+                                disabled title="<?php esc_attr( __( 'No free spots left on this event', 'eduadmin-booking' ) ); ?>"
 							<?php endif; ?>
-                               value="<?php esc_attr( _e( "Book now", 'eduadmin-booking' ) ); ?>"/>
+                               value="<?php esc_attr( __( "Book now", 'eduadmin-booking' ) ); ?>"/>
 
                         <div class="edu-modal warning" id="edu-warning-terms">
 	                        <?php _e( 'You must accept Terms and Conditions to continue.', 'eduadmin-booking' ); ?>
@@ -421,7 +421,7 @@
                     var title = document.title;
                     title = title.replace('<?php echo esc_js( $originalTitle ); ?>', '<?php echo esc_js( $newTitle ); ?>');
                     document.title = title;
-                    eduBookingView.MaxParticipants = <?php echo( $event->MaxParticipantNr == 0 ? - 1 : ( $event->MaxParticipantNr - $event->TotalParticipantNr ) ); ?>;
+                    eduBookingView.MaxParticipants = <?php echo( $event->MaxParticipantNr == 0 ? -1 : ( $event->MaxParticipantNr - $event->TotalParticipantNr ) ); ?>;
 					<?php echo( get_option( 'eduadmin-singlePersonBooking', false ) ? "eduBookingView.SingleParticipant = true;" : "" ); ?>
                     eduBookingView.AddParticipant();
                     eduBookingView.UpdatePrice();

@@ -329,23 +329,31 @@
 	}
 
 	function edu_api_listview_eventlist_template_A( $data, $eventDates, $request ) {
-		$spotLeftOption = $request['spotsleft'];
-		$alwaysFewSpots = $request['fewspots'];
-		$spotSettings   = $request['spotsettings'];
-		$showImages     = $request['showimages'];
+		$showMoreNumber  = $request['showmore'];
+		$showCity        = $request['showcity'];
+		$showBookBtn     = $request['showbookbtn'];
+		$showReadMoreBtn = $request['showreadmorebtn'];
 
-		$showCourseDays  = $request['showcoursedays'];
-		$showCourseTimes = $request['showcoursetimes'];
-		$showWeekDays    = $request['showweekdays'];
+		$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
+		$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
+		$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
+		$incVat          = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
-		$showVenue = $request['showvenue'];
+		$showEventPrice = get_option( 'eduadmin-showEventPrice', false );
+		$currency       = get_option( 'eduadmin-currency', 'SEK' );
+		$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 
-		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+		$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+		$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
+		$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 
-		$surl           = $request['baseUrl'];
-		$cat            = $request['courseFolder'];
+		$showImages = get_option( 'eduadmin-showCourseImage', true );
+
 		$numberOfEvents = $request['numberofevents'];
-		$baseUrl        = $surl . '/' . $cat;
+
+		$surl    = get_home_url();
+		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
+		$baseUrl = $surl . '/' . $cat;
 
 		$removeItems = array(
 			'eid',
@@ -374,88 +382,37 @@
 			}
 			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			?>
-            <div class="objectItem <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
-				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
-                    <div class="objectImage"
-                         onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
-                         style="background-image: url('<?php echo $object->ImageUrl; ?>');"></div>
-				<?php } ?>
-                <div class="objectInfoHolder">
-                    <div class="objectName">
-                        <a href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php
-								echo htmlentities( $name );
-							?></a>
-                    </div>
-                    <div class="objectDescription"><?php
-							echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
-
-							if ( ! empty( $object->City ) ) {
-								echo " <span class=\"cityInfo\">";
-								echo $object->City;
-								if ( $showVenue && ! empty( $object->AddressName ) ) {
-									echo "<span class=\"venueInfo\">, " . $object->AddressName . "</span>";
-								}
-								echo "</span>";
-							}
-
-							if ( isset( $object->Days ) && $object->Days > 0 ) {
-								echo
-									"<div class=\"dayInfo\">" .
-									( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) .
-									                    ( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? ', ' : '' ) : '' ) .
-									( $showCourseTimes && $object->StartTime != '' && $object->EndTime != '' && ! isset( $eventDates[ $object->EventID ] ) ? date( "H:i", strtotime( $object->StartTime ) ) .
-									                                                                                                                         ' - ' .
-									                                                                                                                         date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
-									"</div>";
-							}
-
-							if ( $request['showcourseprices'] && isset( $object->Price ) ) {
-								echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
-							}
-							echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
-
-						?></div>
-
-                </div>
-                <div class="objectBook">
-	                <?php
-		                if ( $spotsLeft > 0 || 0 == $object->MaxParticipantNr ) {
-			                ?>
-                            <a class="bookButton cta-btn"
-                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Book", 'eduadmin-booking' ); ?></a>
-			                <?php
-		                } else {
-			                ?>
-                            <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
-		                <?php } ?>
-                    <a class="readMoreButton"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a><br/>
-                </div>
-            </div>
-			<?php
+			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockA.php' );
 			$currentEvents++;
 		}
 	}
 
 	function edu_api_listview_eventlist_template_B( $data, $eventDates, $request ) {
-		$spotLeftOption = $request['spotsleft'];
-		$alwaysFewSpots = $request['fewspots'];
-		$spotSettings   = $request['spotsettings'];
-		$showImages     = $request['showimages'];
+		$showMoreNumber  = $request['showmore'];
+		$showCity        = $request['showcity'];
+		$showBookBtn     = $request['showbookbtn'];
+		$showReadMoreBtn = $request['showreadmorebtn'];
 
-		$showCourseDays  = $request['showcoursedays'];
-		$showCourseTimes = $request['showcoursetimes'];
-		$showWeekDays    = $request['showweekdays'];
+		$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
+		$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
+		$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
+		$incVat          = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
-		$showVenue = $request['showvenue'];
+		$showEventPrice = get_option( 'eduadmin-showEventPrice', false );
+		$currency       = get_option( 'eduadmin-currency', 'SEK' );
+		$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 
-		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+		$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
+		$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
+		$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 
-		$surl           = $request['baseUrl'];
-		$cat            = $request['courseFolder'];
+		$showImages = get_option( 'eduadmin-showCourseImage', true );
+
 		$numberOfEvents = $request['numberofevents'];
-		$baseUrl        = $surl . '/' . $cat;
+
+		$surl    = get_home_url();
+		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
+		$baseUrl = $surl . '/' . $cat;
 
 		$removeItems = array(
 			'eid',
@@ -483,52 +440,7 @@
 			}
 			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-			?>
-            <div class="objectBlock brick <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
-				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
-                    <div class="objectImage"
-                         onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>';"
-                         style="background-image: url('<?php echo $object->ImageUrl; ?>');"></div>
-				<?php } ?>
-                <div class="objectName">
-                    <a href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php
-							echo htmlentities( $name );
-						?></a>
-                </div>
-                <div class="objectDescription"><?php
-						echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
-
-						if ( ! empty( $object->City ) ) {
-							echo " <span class=\"cityInfo\">";
-							echo $object->City;
-							if ( $showVenue && ! empty( $object->AddressName ) ) {
-								echo ", " . $object->AddressName;
-							}
-							echo "</span>";
-						}
-
-						if ( $object->Days > 0 ) {
-							echo
-								"<div class=\"dayInfo\">" .
-								( $showCourseDays ? sprintf( _n( '%1$d day', '%1$d days', $object->Days, 'eduadmin-booking' ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
-								( $showCourseTimes ? date( "H:i", strtotime( $object->StartTime ) ) .
-								                     ' - ' .
-								                     date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
-								"</div>";
-						}
-
-						if ( $request['showcourseprices'] && isset( $object->Price ) ) {
-							echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $object->Price, $request['currency'] ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
-						}
-		                echo '<div class="spotsLeft"></div>';
-		                echo '<span class="spotsLeftInfo">' . getSpotsLeft( $spotsLeft, $object->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . '</span>';
-					?></div>
-                <div class="objectBook">
-                    <a class="readMoreButton cta-btn"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&", $removeItems ); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
-                </div>
-            </div>
-			<?php
+			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockB.php' );
 			$currentEvents++;
 		}
 	}

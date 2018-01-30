@@ -543,7 +543,7 @@ h1.courseTitle:hover,
   border-radius: 3px;
   background: hsl(0, 0%, 99.5%);
 
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
 }

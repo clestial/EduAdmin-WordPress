@@ -114,12 +114,12 @@
 		$filtering->AddItem( $f );
 
 		if ( isset( $_POST['category'] ) ) {
-			$f = new XFilter( 'CategoryID', '=', $_POST['category'] );
+			$f = new XFilter( 'CategoryID', '=', sanitize_text_field( $_POST['category'] ) );
 			$filtering->AddItem( $f );
 		}
 
 		if ( isset( $_POST['subjectid'] ) ) {
-			$f = new XFilter( 'SubjectID', '=', $_POST['subjectid'] );
+			$f = new XFilter( 'SubjectID', '=', sanitize_text_field( $_POST['subjectid'] ) );
 			$filtering->AddItem( $f );
 		}
 
@@ -129,12 +129,12 @@
 		}
 
 		if ( isset( $_POST['city'] ) ) {
-			$f = new XFilter( 'LocationID', '=', $_POST['city'] );
+			$f = new XFilter( 'LocationID', '=', sanitize_text_field( $_POST['city'] ) );
 			$filtering->AddItem( $f );
 		}
 
 		if ( isset( $_POST['courselevel'] ) ) {
-			$f = new XFilter( 'EducationLevelID', '=', $_POST['courselevel'] );
+			$f = new XFilter( 'EducationLevelID', '=', sanitize_text_field( $_POST['courselevel'] ) );
 			$filtering->AddItem( $f );
 		}
 
@@ -148,9 +148,9 @@
 		if ( ! empty( $_POST['search'] ) ) {
 			$edo = array_filter( $edo, function( $object ) use ( &$request ) {
 				$name            = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-				$descrMatch      = stripos( $object->CourseDescription, $_POST['search'] ) !== false;
-				$shortDescrMatch = stripos( $object->CourseDescriptionShort, $_POST['search'] ) !== false;
-				$nameMatch       = stripos( $name, $_POST['search'] ) !== false;
+				$descrMatch      = stripos( $object->CourseDescription, sanitize_text_field( $_POST['search'] ) ) !== false;
+				$shortDescrMatch = stripos( $object->CourseDescriptionShort, sanitize_text_field( $_POST['search'] ) ) !== false;
+				$nameMatch       = stripos( $name, sanitize_text_field( $_POST['search'] ) ) !== false;
 
 				return ( $nameMatch || $descrMatch || $shortDescrMatch );
 			} );
@@ -198,17 +198,17 @@
 		}
 
 		if ( isset( $_POST['city'] ) ) {
-			$f = new XFilter( 'LocationID', '=', $_POST['city'] );
+			$f = new XFilter( 'LocationID', '=', sanitize_text_field( $_POST['city'] ) );
 			$filtering->AddItem( $f );
 		}
 
 		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
-			$f = new XFilter( 'SubjectID', '=', $_POST['subjectid'] );
+			$f = new XFilter( 'SubjectID', '=', sanitize_text_field( $_POST['subjectid'] ) );
 			$filtering->AddItem( $f );
 		}
 
 		if ( isset( $_POST['category'] ) ) {
-			$f = new XFilter( 'CategoryID', '=', $_POST['category'] );
+			$f = new XFilter( 'CategoryID', '=', sanitize_text_field( $_POST['category'] ) );
 			$filtering->AddItem( $f );
 		}
 
@@ -438,7 +438,7 @@
                 </div>
             </div>
 			<?php
-			$currentEvents ++;
+			$currentEvents++;
 		}
 		//$out = ob_get_clean();
 
@@ -538,7 +538,7 @@
                 </div>
             </div>
 			<?php
-			$currentEvents ++;
+			$currentEvents++;
 		}
 	}
 
@@ -640,10 +640,10 @@
 		);
 
 		$occIds   = array();
-		$occIds[] = - 1;
+		$occIds[] = -1;
 
 		$eventIds   = array();
-		$eventIds[] = - 1;
+		$eventIds[] = -1;
 
 		foreach ( $events as $e ) {
 			$occIds[]   = $e->OccationID;
@@ -691,7 +691,7 @@
 
 		$lastCity = "";
 
-		$showMore         = isset( $_POST['showmore'] ) && ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : - 1;
+		$showMore         = isset( $_POST['showmore'] ) && ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
 		$spotLeftOption   = $_POST['spotsleft'];
 		$alwaysFewSpots   = $_POST['fewspots'];
 		$showVenue        = $_POST['showvenue'];
@@ -771,7 +771,7 @@
 				</div>';
 				$retStr   .= '</div><!-- /eventitem -->';
 				$lastCity = $ev->City;
-				$i ++;
+				$i++;
 			}
 		}
 		if ( empty( $pricenames ) || empty( $events ) ) {

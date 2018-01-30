@@ -8,7 +8,7 @@ Requires at least: 4.7
 
 Tested up to: 4.9.2
 
-Stable tag: 1.0.22
+Stable tag: 1.0.20
 
 Requires PHP: 5.0.1 (with SoapClient)
 
@@ -39,40 +39,16 @@ Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soa
 
 == Upgrade Notice ==
 
-= 1.0.23 =
-All translations will be wiped since we're moving to full WordPress-translation management, for all phrases, not just backend
-
-= 1.0.22 =
-If you are using an older version than 1.0.21, please test this version on a development server before deploying live.
-Since version 1.0.21, there are a lot of design changes in the CSS, that might require you to reset style settings,
-and redo your own customization.
-
-= 1.0.21 =
-- LOTS of design changes, please update to a development server to see if anything breaks
-
-= 1.0.11 =
+### [1.0.11]
 - Bugfix with REST API, we don't need to pass the token now, so we can always get a valid token when needed.
 
-= 1.0.10 =
+### [1.0.10]
 - Changing to REST API instead, hopefully this will increase the speed again.
 
 ### [1.0.9]
 - We changed to admin-ajax here (It will be slow)
 
 == Changelog ==
-
-### [1.0.23]
-- Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
-- Adding first version of EduAdmin PHP API Client
-
-### [1.0.22]
-- Disabling the book-button when the form is valid and the booking is under way
-- Fixes some styles to use `px` instead of `rem`
-- Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
-
-### [1.0.21]
-- Lots of design fixes and changes, to make the plugin more mobile friendly
-- Login widget bug fixed
 
 ### [1.0.20]
 - More subject filters to fix.
@@ -529,7 +505,6 @@ and redo your own customization.
 #### Added
 - Added inquiry support in course
 
-[1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21
 [1.0.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.19...v1.0.20
 [1.0.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...v1.0.19
 [1.0.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.17...v1.0.18

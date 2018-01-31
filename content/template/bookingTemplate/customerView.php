@@ -208,8 +208,9 @@
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
 	                    <?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
-                    <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
-	                <?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
+                    <label class="inline-checkbox" for="alsoInvoiceCustomer">
+		                <?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
+                    </label>
                 </div>
             </label>
 		<?php } ?>

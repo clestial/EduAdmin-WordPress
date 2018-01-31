@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.22
+	 * Version:	1.0.23
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
@@ -399,7 +399,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 					if ( $oldKey != null ) {
 						$key = DecryptApiKey( $oldKey );
 						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
-						add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
+						//add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
 					} else {
 						EDUAPI()->SetCredentials( '', '' );
 					}
@@ -409,7 +409,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 				if ( $currentToken == null || ! $currentToken->IsValid() ) {
 					$currentToken = EDUAPI()->GetToken();
 					if ( empty( $currentToken->Issued ) ) {
-						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again.", 'eduadmin-booking' ) );
+						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again. Or contact MultiNet support to get a new key.", 'eduadmin-booking' ) );
 					}
 					set_transient( 'eduadmin-newapi-token', $currentToken, WEEK_IN_SECONDS );
 				}

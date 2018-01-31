@@ -371,9 +371,9 @@
                         <input type="submit" class="bookButton cta-btn" id="edu-book-btn"
                                onclick="var validated = eduBookingView.CheckValidation(); return validated;"
 							<?php if ( $event->MaxParticipantNr > 0 && $event->TotalParticipantNr >= $event->MaxParticipantNr ) : ?>
-                                disabled title="<?php esc_attr( __( 'No free spots left on this event', 'eduadmin-booking' ) ); ?>"
+                                disabled title="<?php esc_attr_e( 'No free spots left on this event', 'eduadmin-booking' ); ?>"
 							<?php endif; ?>
-                               value="<?php esc_attr( __( "Book now", 'eduadmin-booking' ) ); ?>"/>
+                               value="<?php esc_attr_e( "Book now", 'eduadmin-booking' ); ?>"/>
 
                         <div class="edu-modal warning" id="edu-warning-terms">
 	                        <?php _e( 'You must accept Terms and Conditions to continue.', 'eduadmin-booking' ); ?>

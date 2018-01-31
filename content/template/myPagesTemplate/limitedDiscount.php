@@ -2,16 +2,13 @@
 	$user     = EDU()->session['eduadmin-loginUser'];
 	$contact  = $user->Contact;
 	$customer = $user->Customer;
-
-	global $eduapi;
-	global $edutoken;
 ?>
 <div class="eduadmin">
 	<?php
 		$tab = "limitedDiscount";
 		include_once( "login_tab_header.php" );
 	?>
-    <h2><?php edu_e( "Discount Cards" ); ?></h2>
+    <h2><?php _e( "Discount Cards", 'eduadmin-booking' ); ?></h2>
 	<?php
 		$f  = new XFiltering();
 		$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
@@ -19,23 +16,23 @@
 
 		$ft = new XFilter( 'Disabled', '=', false );
 		$f->AddItem( $ft );
-		$cards    = EDU()->api->GetLimitedDiscount( $edutoken, '', $f->ToString() );
+		$cards    = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
 	?>
     <table class="myReservationsTable">
         <tr>
-            <th align="left"><?php edu_e( "Card name" ); ?></th>
-            <th align="left"><?php edu_e( "Valid" ); ?></th>
-            <th align="right"><?php edu_e( "Credits" ); ?></th>
-            <th align="right"><?php edu_e( "Discount" ); ?></th>
-            <th align="right"><?php edu_e( "Price" ); ?></th>
+            <th align="left"><?php _e( "Card name", 'eduadmin-booking' ); ?></th>
+            <th align="left"><?php _e( "Valid", 'eduadmin-booking' ); ?></th>
+            <th align="right"><?php _e( "Credits", 'eduadmin-booking' ); ?></th>
+            <th align="right"><?php _e( "Discount", 'eduadmin-booking' ); ?></th>
+            <th align="right"><?php _e( "Price", 'eduadmin-booking' ); ?></th>
         </tr>
 		<?php
 			if ( empty( $cards ) ) {
 				?>
                 <tr>
                     <td colspan="4" align="center">
-                        <i><?php edu_e( "You don't have any discount cards registered." ); ?></i>
+                        <i><?php _e( "You don't have any discount cards registered.", 'eduadmin-booking' ); ?></i>
                     </td>
                 </tr>
 				<?php

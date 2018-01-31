@@ -11,7 +11,7 @@
 			$f = new XFilter( 'Disabled', '=', false );
 			$ft->AddItem( $f );
 
-			$matchingContacts            = EDU()->api->GetCustomerContact( $edutoken, '', $ft->ToString(), true );
+			$matchingContacts            = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), true );
 			EDU()->session['needsLogin'] = false;
 			EDU()->session['checkEmail'] = true;
 			if ( ! empty( $matchingContacts ) ) {
@@ -36,7 +36,7 @@
 				$filter->AddItem( $f );
 				$f = new XFilter( 'Disabled', '=', false );
 				$filter->AddItem( $f );
-				$customers = EDU()->api->GetCustomer( $edutoken, '', $filter->ToString(), true );
+				$customers = EDU()->api->GetCustomer( EDU()->get_token(), '', $filter->ToString(), true );
 				if ( count( $customers ) == 1 ) {
 					$customer                            = $customers[0];
 					$user                                = new stdClass;
@@ -74,7 +74,7 @@
 			} else {
 				EDU()->session['needsLogin']         = true;
 				EDU()->session['checkEmail']         = true;
-				EDU()->session['eduadminLoginError'] = edu__( "Could not find any users with that info." );
+				EDU()->session['eduadminLoginError'] = __( "Could not find any users with that info.", 'eduadmin-booking' );
 			}
 			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
 		} else if ( $_REQUEST['eduformloginaction'] == "forgot" ) {

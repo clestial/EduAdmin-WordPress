@@ -1,6 +1,4 @@
 <?php
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 	ob_start();
 
@@ -45,7 +43,7 @@
 
 		$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
 		if ( ! $edo ) {
-			$edo = EDU()->api->GetObjectPriceName( $edutoken, $sorting->ToString(), $filtering->ToString() );
+			$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 			set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
 		}
 
@@ -54,13 +52,13 @@
 		}
 
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
-		$incVat   = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat   = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 		?>
         <div class="eventInformation">
-            <h3><?php edu_e( "Prices" ); ?></h3>
+            <h3><?php _e( "Prices", 'eduadmin-booking' ); ?></h3>
 			<?php
 				foreach ( $edo as $price ) {
-					echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" );
+					echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
 					echo "<br>";
 				}
 			?>

@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {

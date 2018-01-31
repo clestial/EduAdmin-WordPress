@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
@@ -14,7 +12,7 @@
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
 
-			$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 		}
 
@@ -56,7 +54,7 @@
 		$st->AddItem( $s );
 
 		$events = EDU()->api->GetEvent(
-			$edutoken,
+			EDU()->get_token(),
 			$st->ToString(),
 			$ft->ToString()
 		);
@@ -74,12 +72,12 @@
 		?>
         <div class="eduadmin loginForm">
             <form action="" method="post">
-                <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
+                <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
                 <div class="title">
                     <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
                     <h1 class="courseTitle"><?php echo $name; ?></h1>
 					<?php if ( count( $events ) > 1 ) { ?>
-                        <div class="dateSelectLabel"><?php edu_e( "Select the event you want to book" ); ?></div>
+                        <div class="dateSelectLabel"><?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?></div>
                         <select name="eid" class="dateInfo">
 							<?php
 								foreach ( $events as $ev ) {
@@ -93,7 +91,7 @@
 												$ft = new XFiltering();
 												$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 												$ft->AddItem( $f );
-												$addresses = EDU()->api->GetLocationAddress( $edutoken, '', $ft->ToString() );
+												$addresses = EDU()->api->GetLocationAddress( EDU()->get_token(), '', $ft->ToString() );
 												set_transient( 'eduadmin-location-' . $ev->LocationAddressID, $addresses, DAY_IN_SECONDS );
 											}
 
@@ -117,7 +115,7 @@
 							$ft = new XFiltering();
 							$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
 							$ft->AddItem( $f );
-							$addresses = EDU()->api->GetLocationAddress( $edutoken, '', $ft->ToString() );
+							$addresses = EDU()->api->GetLocationAddress( EDU()->get_token(), '', $ft->ToString() );
 							set_transient( 'eduadmin-location-' . $event->LocationAddressID, $addresses, HOUR_IN_SECONDS );
 						}
 

@@ -96,7 +96,7 @@
 		EDU()->session->regenerate_id( true );
 
 		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
-			$str                        = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
+			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 			EDU()->StopTimer( $t );
 
 			return $str;
@@ -179,7 +179,6 @@
 	function eduadmin_get_detailinfo( $attributes ) {
 		$t = EDU()->StartTimer( __METHOD__ );
 		global $wp_query;
-		global $edutoken;
 		$attributes = shortcode_atts(
 			array(
 				'courseid'                  => null,
@@ -244,7 +243,7 @@
 
 			$edo = get_transient( 'eduadmin-object_' . $courseId );
 			if ( ! $edo ) {
-				$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 				set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
 			}
 
@@ -272,7 +271,7 @@
 					$retStr .= $selectedCourse->ImageUrl;
 				}
 				if ( isset( $attributes['coursedays'] ) ) {
-					$retStr .= sprintf( edu_n( '%1$d day', '%1$d days', $selectedCourse->Days ), $selectedCourse->Days );
+					$retStr .= sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days );
 				}
 				if ( isset( $attributes['coursestarttime'] ) ) {
 					$retStr .= $selectedCourse->StartTime;
@@ -305,14 +304,18 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseSubject = EDU()->api->GetEducationSubject( $edutoken, '', $ft->ToString() );
-					$retStr        .= print_r( $courseSubject, true );
+					$courseSubject = EDU()->api->GetEducationSubject( EDU()->get_token(), '', $ft->ToString() );
+					$subjectNames  = array();
+					foreach ( $courseSubject as $subj ) {
+						$subjectNames[] = $subj->SubjectName;
+					}
+					$retStr .= join( ", ", $subjectNames );
 				}
 				if ( isset( $attributes['courselevel'] ) ) {
 					$ft = new XFiltering();
 					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 					$ft->AddItem( $f );
-					$courseLevel = EDU()->api->GetEducationLevelObject( $edutoken, '', $ft->ToString() );
+					$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
 
 					if ( ! empty( $courseLevel ) ) {
 						$retStr .= $courseLevel[0]->Name;
@@ -325,7 +328,7 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
-					$objAttr = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
@@ -375,14 +378,14 @@
 					$st->AddItem( $s );
 
 					$events = EDU()->api->GetEvent(
-						$edutoken,
+						EDU()->get_token(),
 						$st->ToString(),
 						$ft->ToString()
 					);
 
 					$occIds = array();
 
-					$occIds[] = - 1;
+					$occIds[] = -1;
 
 					foreach ( $events as $e ) {
 						$occIds[] = $e->OccationID;
@@ -400,9 +403,9 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$incVat = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+					$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 
-					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					$uniquePrices = array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
@@ -410,10 +413,10 @@
 
 					$currency = get_option( 'eduadmin-currency', 'SEK' );
 					if ( 1 == count( $uniquePrices ) ) {
-						$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "\n";
+						$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "\n";
 					} else {
 						foreach ( $uniquePrices as $price ) {
-							$retStr .= sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "<br />\n";
+							$retStr .= sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "<br />\n";
 						}
 					}
 				}
@@ -510,16 +513,16 @@
 					}
 
 					$events = EDU()->api->GetEvent(
-						$edutoken,
+						EDU()->get_token(),
 						$st->ToString(),
 						$ft->ToString()
 					);
 
 					$occIds   = array();
-					$occIds[] = - 1;
+					$occIds[] = -1;
 
 					$eventIds   = array();
-					$eventIds[] = - 1;
+					$eventIds[] = -1;
 
 					foreach ( $events as $e ) {
 						$occIds[]   = $e->OccationID;
@@ -530,7 +533,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -547,7 +550,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$pricenames = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 					if ( ! empty( $pricenames ) ) {
@@ -568,7 +571,7 @@
 
 					$lastCity = "";
 
-					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : - 1;
+					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 					$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 					$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 					$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
@@ -584,7 +587,7 @@
 					                   '" data-fewspots="' . $alwaysFewSpots . '"' .
 					                   ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . $attributes['courseeventlistfiltercity'] . '"' : '' ) .
 					                   ' data-fetchmonths="' . $fetchMonths . '"' .
-					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . $_REQUEST['eid'] . '"' : '' ) .
+					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ) .
 					                   ' data-order="' . $customOrderBy . '"' .
 					                   ' data-orderby="' . $customOrderByOrder . '"' .
 					                   ' data-showvenue="' . get_option( 'eduadmin-showEventVenueName', false ) . '"' .
@@ -607,7 +610,7 @@
 						if ( $groupByCity && $lastCity != $ev->City ) {
 							$i = 0;
 							if ( $hasHiddenDates ) {
-								$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+								$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 							}
 							$hasHiddenDates = false;
 							$retStr         .= '<div class="eventSeparator">' . $ev->City . '</div>';
@@ -635,21 +638,21 @@
 					<div class="eventBook' . $groupByCityClass . '">
 					' . ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
 
-								'<a class="book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", array( 'eid' ) ) . '">' . edu__( "Book" ) . '</a>'
+								'<a class="book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", array( 'eid' ) ) . '">' . __( "Book", 'eduadmin-booking' ) . '</a>'
 								:
-								( $eventInterestPage != false ? '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&" ) . '">' . edu__( "Inquiry" ) . '</a>' : '' ) .
-								'<i class="fullBooked">' . edu__( "Full" ) . '</i>'
+								( $eventInterestPage != false ? '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&" ) . '">' . __( "Inquiry", 'eduadmin-booking' ) . '</a>' : '' ) .
+								'<i class="fullBooked">' . __( "Full", 'eduadmin-booking' ) . '</i>'
 						             ) . '
 					</div>';
 						$retStr   .= '</div><!-- /eventitem -->';
 						$lastCity = $ev->City;
-						$i ++;
+						$i++;
 					}
 					if ( empty( $events ) ) {
-						$retStr .= '<div class="noDatesAvailable"><i>' . edu__( "No available dates for the selected course" ) . '</i></div>';
+						$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 					}
 					if ( $hasHiddenDates ) {
-						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . edu__( "Show all events" ) . "</a></div>";
+						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 					}
 					$retStr .= '</div></div>';
 				}
@@ -664,9 +667,9 @@
 		$t          = EDU()->StartTimer( __METHOD__ );
 		$attributes = shortcode_atts(
 			array(
-				'logintext'  => edu__( "Log in" ),
-				'logouttext' => edu__( "Log out" ),
-				'guesttext'  => edu__( "Guest" ),
+				'logintext'  => __( "Log in", 'eduadmin-booking' ),
+				'logouttext' => __( "Log out", 'eduadmin-booking' ),
+				'guesttext'  => __( "Guest", 'eduadmin-booking' ),
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-loginwidget'
@@ -694,11 +697,11 @@
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
-		$attributes                 = shortcode_atts(
+		$attributes = shortcode_atts(
 			array(
-				'logintext'  => edu__( "Log in" ),
-				'logouttext' => edu__( "Log out" ),
-				'guesttext'  => edu__( "Guest" ),
+				'logintext'  => __( "Log in", 'eduadmin-booking' ),
+				'logouttext' => __( "Log out", 'eduadmin-booking' ),
+				'guesttext'  => __( "Guest", 'eduadmin-booking' ),
 			),
 			normalize_empty_atts( $attributes ),
 			'eduadmin-loginview'

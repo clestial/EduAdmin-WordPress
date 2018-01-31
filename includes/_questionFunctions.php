@@ -131,9 +131,9 @@
 		echo $question->QuestionText;
 		echo "</div>";
 		echo "<div class=\"inputHolder\">";
-		echo "<input type=\"number\" class=\"questionText\" onchange=\"eduBookingView.UpdatePrice();\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\" min=\"0\" data-type=\"number\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_number\" placeholder=\"" . edu__( "Quantity" ) . "\" />";
+		echo "<input type=\"number\" class=\"questionText\" onchange=\"eduBookingView.UpdatePrice();\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\" min=\"0\" data-type=\"number\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_number\" placeholder=\"" . __( "Quantity", 'eduadmin-booking' ) . "\" />";
 		if ( $question->Answers->EventBookingAnswer->Price > 0 ) {
-			echo " <i class=\"priceLabel\">(" . sprintf( edu__( '%1$s / pcs' ), convertToMoney( $question->Answers->EventBookingAnswer->Price ) ) . ")</i>";
+			echo " <i class=\"priceLabel\">(" . sprintf( __( '%1$s / pcs', 'eduadmin-booking' ), convertToMoney( $question->Answers->EventBookingAnswer->Price ) ) . ")</i>";
 		}
 		echo "</div>";
 		echo "</label>";
@@ -201,8 +201,6 @@
 				echo "</div>";
 				echo "</label>";
 			}
-		} else {
-			// Not supposed to happen.. But ok.
 		}
 	}
 

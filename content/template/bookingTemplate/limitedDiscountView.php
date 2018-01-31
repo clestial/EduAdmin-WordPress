@@ -4,7 +4,7 @@
 		$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
 		$f->AddItem( $ft );
 
-		$cards = EDU()->api->GetLimitedDiscount( $edutoken, '', $f->ToString() );
+		$cards = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
 
 		$cCards   = array();
 		$cCardIds = array();
@@ -38,7 +38,7 @@
 		$ft = new XFilter( 'LimitedDiscountID', 'in', join( ',', $cCardIds ) );
 		$f->AddItem( $ft );
 
-		$objectCards = EDU()->api->GetLimitedDiscountObjectStatus( $edutoken, '', $f->ToString() );
+		$objectCards = EDU()->api->GetLimitedDiscountObjectStatus( EDU()->get_token(), '', $f->ToString() );
 		$cCardIds    = array();
 
 		$cardCosts = array();
@@ -86,7 +86,7 @@
 			<?php
 				if ( 0 !== count( $cCards ) ) {
 					?>
-                    <h2><?php edu_e( "Discount cards" ); ?></h2>
+                    <h2><?php _e( "Discount cards", 'eduadmin-booking' ); ?></h2>
 
 					<?php
 					foreach ( $cCards as $card ) {
@@ -97,11 +97,11 @@
                                 <input type="radio"
                                        name="edu-limitedDiscountID"
 									<?php if ( ! $enoughCredits ) : ?>
-                                        disabled readonly title="<?php edu_e( "Not enough uses left on this card." ); ?>"
+                                        disabled readonly title="<?php _e( "Not enough uses left on this card.", 'eduadmin-booking' ); ?>"
 									<?php endif; ?>
                                        value="<?php echo $card->LimitedDiscountID; ?>"/>
 								<?php echo $card->PublicName; ?>
-                                <i>(<?php echo sprintf( edu__( "Uses left: %s / %s" ), $card->CreditLeft, $card->CreditStartValue ); ?>
+                                <i>(<?php echo sprintf( __( "Uses left: %s / %s", 'eduadmin-booking' ), $card->CreditLeft, $card->CreditStartValue ); ?>
                                     )</i>
                             </label>
 							<?php

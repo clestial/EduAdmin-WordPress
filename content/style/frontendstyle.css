@@ -328,6 +328,10 @@ h1.courseTitle:hover,
   width: 49%
 }
 
+.eduadmin.booking-page form label .inputHolder.alsoInvoiceCustomer {
+  display: flex;
+}
+
 .eduadmin.booking-page form label .inputHolder.contactIsAlsoParticipant {
   display: flex;
   align-items: center;
@@ -543,7 +547,7 @@ h1.courseTitle:hover,
   border-radius: 3px;
   background: hsl(0, 0%, 99.5%);
 
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
 }

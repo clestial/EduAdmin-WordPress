@@ -1,9 +1,6 @@
 <?php
 	function edu_render_detail_settings_page() {
 		$t = EDU()->StartTimer( __METHOD__ );
-		global $eduapi;
-		global $edutoken;
-		$apiKey = get_option( 'eduadmin-api-key' );
 		?>
         <div class="eduadmin wrap">
             <h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Detail settings", "eduadmin-booking" ) ); ?></h2>
@@ -47,7 +44,7 @@
 						$filter->AddItem( $f );
 						$f = new XFilter( 'AttributeOwnerTypeID', '=', '1' );
 						$filter->AddItem( $f );
-						$attributes = $eduapi->GetAttribute( $edutoken, '', $filter->ToString() );
+						$attributes = EDU()->api->GetAttribute( EDU()->get_token(), '', $filter->ToString() );
 					?>
                     <i><?php _e( "Select which field in EduAdmin that should be shown in the page title", "eduadmin-booking" ); ?></i><br/>
                     <select name="eduadmin-pageTitleField">

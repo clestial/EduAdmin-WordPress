@@ -110,66 +110,66 @@
 		if ( $maxSpots === 0 ) {
 			EDU()->StopTimer( $t );
 
-			return edu__( 'Spots left' );
+			return __( 'Spots left', 'eduadmin-booking' );
 		}
 
 		if ( $freeSpots <= 0 ) {
 			EDU()->StopTimer( $t );
 
-			return edu__( 'No spots left' );
+			return __( 'No spots left', 'eduadmin-booking' );
 		}
 
 		switch ( $spotOption ) {
 			case "exactNumbers":
 				EDU()->StopTimer( $t );
 
-				return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
+				return sprintf( _n( '%1$s spot left', '%1$s spots left', $freeSpots, 'eduadmin-booking' ), $freeSpots );
 			case "onlyText":
 				$fewSpotsLimit = $alwaysFewSpots; //get_option( 'eduadmin-alwaysFewSpots', 5 );
 				if ( $freeSpots > ( $maxSpots - $fewSpotsLimit ) ) {
 					EDU()->StopTimer( $t );
 
-					return edu__( 'Spots left' );
+					return __( 'Spots left', 'eduadmin-booking' );
 				} else if ( $freeSpots <= ( $maxSpots - $fewSpotsLimit ) && $freeSpots != 1 ) {
 					EDU()->StopTimer( $t );
 
-					return edu__( 'Few spots left' );
+					return __( 'Few spots left', 'eduadmin-booking' );
 				} else if ( $freeSpots == 1 ) {
 					EDU()->StopTimer( $t );
 
-					return edu__( 'One spot left' );
+					return __( 'One spot left', 'eduadmin-booking' );
 				} else if ( $freeSpots <= 0 ) {
 					EDU()->StopTimer( $t );
 
-					return edu__( 'No spots left' );
+					return __( 'No spots left', 'eduadmin-booking' );
 				}
 			case "intervals":
 				$interval = $spotSettings; //get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 				if ( empty( $interval ) ) {
 					EDU()->StopTimer( $t );
 
-					return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
+					return sprintf( _n( '%1$s spot left', '%1$s spots left', $freeSpots, 'eduadmin-booking' ), $freeSpots );
 				} else {
 					$lines = explode( "\n", $interval );
 					foreach ( $lines as $line ) {
-						if ( stripos( $line, '-' ) > - 1 ) {
+						if ( stripos( $line, '-' ) > -1 ) {
 							$range = explode( "-", $line );
 							$min   = $range[0];
 							$max   = $range[1];
 							if ( $freeSpots <= $max && $freeSpots >= $min ) {
 								EDU()->StopTimer( $t );
 
-								return sprintf( edu__( '%1$s spots left' ), $line );
+								return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
 							}
-						} else if ( stripos( $line, '+' ) > - 1 ) {
+						} else if ( stripos( $line, '+' ) > -1 ) {
 							EDU()->StopTimer( $t );
 
-							return sprintf( edu__( '%1$s spots left' ), $line );
+							return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
 						}
 					}
 					EDU()->StopTimer( $t );
 
-					return sprintf( edu_n( '%1$s spot left', '%1$s spots left', $freeSpots ), $freeSpots );
+					return sprintf( _n( '%1$s spot left', '%1$s spots left', $freeSpots, 'eduadmin-booking' ), $freeSpots );
 				}
 
 			case "alwaysFewSpots":
@@ -177,11 +177,11 @@
 				if ( ( $maxSpots - $freeSpots ) >= $minParticipants ) {
 					EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 
-					return edu__( 'Few spots left' );
+					return __( 'Few spots left', 'eduadmin-booking' );
 				}
 				EDU()->StopTimer( $t );
 
-				return edu__( 'Spots left' );
+				return __( 'Spots left', 'eduadmin-booking' );
 			default:
 				EDU()->StopTimer( $t );
 
@@ -215,20 +215,7 @@
 
 	function GetDisplayDate( $inDate, $short = true ) {
 		$t      = EDU()->StartTimer( __METHOD__ );
-		$months = array(
-			1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
-			2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
-			3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
-			4  => ! $short ? edu__( 'april' ) : edu__( 'apr' ),
-			5  => ! $short ? edu__( 'may' ) : edu__( 'may_short' ),
-			6  => ! $short ? edu__( 'june' ) : edu__( 'jun' ),
-			7  => ! $short ? edu__( 'july' ) : edu__( 'jul' ),
-			8  => ! $short ? edu__( 'august' ) : edu__( 'aug' ),
-			9  => ! $short ? edu__( 'september' ) : edu__( 'sep' ),
-			10 => ! $short ? edu__( 'october' ) : edu__( 'oct' ),
-			11 => ! $short ? edu__( 'november' ) : edu__( 'nov' ),
-			12 => ! $short ? edu__( 'december' ) : edu__( 'dec' ),
-		);
+		$months = $short ? EDU()->shortMonths : EDU()->months;
 
 		$year    = date( 'Y', strtotime( $inDate ) );
 		$nowYear = date( 'Y' );
@@ -270,12 +257,12 @@
 		if ( count( $result ) > 3 ) {
 			$nRes   = array();
 			$ret    =
-				"<span class=\"edu-manyDays\" title=\"" . edu__( "Show schedule" ) . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf( edu__( '%1$d days between %2$s' ), count( $days ), GetStartEndDisplayDate( $days[0], end( $days ), $short, $showDays ) ) .
+				"<span class=\"edu-manyDays\" title=\"" . __( "Show schedule", 'eduadmin-booking' ) . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf( __( '%1$d days between %2$s', 'eduadmin-booking' ), count( $days ), GetStartEndDisplayDate( $days[0], end( $days ), $short, $showDays ) ) .
 				"</span><div class=\"edu-DayPopup\">
-<b>" . edu__( "Schedule" ) . "</b><br />
+<b>" . __( "Schedule", 'eduadmin-booking' ) . "</b><br />
 " . join( "<br />\n", $result ) . "
 <br />
-<a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . edu__( "Close" ) . "</a>
+<a href=\"javascript://\" onclick=\"edu_closeDatePopup(event, this);\">" . __( "Close", 'eduadmin-booking' ) . "</a>
 </div>";
 			$nRes[] = $ret;
 			EDU()->StopTimer( $t );
@@ -288,31 +275,9 @@
 	}
 
 	function GetStartEndDisplayDate( $startDate, $endDate, $short = false, $event, $showDays = false ) {
-		$t    = EDU()->StartTimer( __METHOD__ );
-		$days = array(
-			1 => ! $short ? edu__( 'monday' ) : edu__( 'mon' ),
-			2 => ! $short ? edu__( 'tuesday' ) : edu__( 'tue' ),
-			3 => ! $short ? edu__( 'wednesday' ) : edu__( 'wed' ),
-			4 => ! $short ? edu__( 'thursday' ) : edu__( 'thu' ),
-			5 => ! $short ? edu__( 'friday' ) : edu__( 'fri' ),
-			6 => ! $short ? edu__( 'saturday' ) : edu__( 'sat' ),
-			7 => ! $short ? edu__( 'sunday' ) : edu__( 'sun' ),
-		);
-
-		$months = array(
-			1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
-			2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
-			3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
-			4  => ! $short ? edu__( 'april' ) : edu__( 'apr' ),
-			5  => ! $short ? edu__( 'may' ) : edu__( 'may_short' ),
-			6  => ! $short ? edu__( 'june' ) : edu__( 'jun' ),
-			7  => ! $short ? edu__( 'july' ) : edu__( 'jul' ),
-			8  => ! $short ? edu__( 'august' ) : edu__( 'aug' ),
-			9  => ! $short ? edu__( 'september' ) : edu__( 'sep' ),
-			10 => ! $short ? edu__( 'october' ) : edu__( 'oct' ),
-			11 => ! $short ? edu__( 'november' ) : edu__( 'nov' ),
-			12 => ! $short ? edu__( 'december' ) : edu__( 'dec' ),
-		);
+		$t        = EDU()->StartTimer( __METHOD__ );
+		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
+		$months   = $short ? EDU()->shortMonths : EDU()->months;
 
 		$startYear  = date( 'Y', strtotime( $startDate->StartDate ) );
 		$startMonth = date( 'n', strtotime( $startDate->StartDate ) );
@@ -321,7 +286,7 @@
 		$nowYear    = date( 'Y' );
 		$str        = '<span class="eduadmin-dateText">';
 		if ( $showDays ) {
-			$str .= $days[ date( 'N', strtotime( $startDate->StartDate ) ) ] . " ";
+			$str .= $weekDays[ date( 'N', strtotime( $startDate->StartDate ) ) ] . " ";
 		}
 		$str .= date( 'd', strtotime( $startDate->StartDate ) );
 		if ( date( 'Y-m-d', strtotime( $startDate->StartDate ) ) != date( 'Y-m-d', strtotime( $endDate->EndDate ) ) ) {
@@ -335,7 +300,7 @@
 					}
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 					}
 					$str .= date( 'd', strtotime( $endDate->EndDate ) );
 					$str .= ' ';
@@ -355,7 +320,7 @@
 					$str .= $months[ date( 'n', strtotime( $startDate->StartDate ) ) ];
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 					}
 					$str .= date( 'd', strtotime( $endDate->EndDate ) );
 					$str .= ' ';
@@ -371,7 +336,7 @@
 				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 				$str .= ' - ';
 				if ( $showDays ) {
-					$str .= $days[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
+					$str .= $weekDays[ date( 'N', strtotime( $endDate->EndDate ) ) ] . " ";
 				}
 				$str .= date( 'd', strtotime( $endDate->EndDate ) );
 				$str .= ' ';
@@ -397,31 +362,9 @@
 	}
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
-		$t           = EDU()->StartTimer( __METHOD__ );
-		$months      = array(
-			1  => ! $short ? edu__( 'january' ) : edu__( 'jan' ),
-			2  => ! $short ? edu__( 'february' ) : edu__( 'feb' ),
-			3  => ! $short ? edu__( 'march' ) : edu__( 'mar' ),
-			4  => ! $short ? edu__( 'april' ) : edu__( 'apr' ),
-			5  => ! $short ? edu__( 'may' ) : edu__( 'may_short' ),
-			6  => ! $short ? edu__( 'june' ) : edu__( 'jun' ),
-			7  => ! $short ? edu__( 'july' ) : edu__( 'jul' ),
-			8  => ! $short ? edu__( 'august' ) : edu__( 'aug' ),
-			9  => ! $short ? edu__( 'september' ) : edu__( 'sep' ),
-			10 => ! $short ? edu__( 'october' ) : edu__( 'oct' ),
-			11 => ! $short ? edu__( 'november' ) : edu__( 'nov' ),
-			12 => ! $short ? edu__( 'december' ) : edu__( 'dec' ),
-		);
-
-		$weekDays = array(
-			1 => ! $short ? edu__( 'monday' ) : edu__( 'mon' ),
-			2 => ! $short ? edu__( 'tuesday' ) : edu__( 'tue' ),
-			3 => ! $short ? edu__( 'wednesday' ) : edu__( 'wed' ),
-			4 => ! $short ? edu__( 'thursday' ) : edu__( 'thu' ),
-			5 => ! $short ? edu__( 'friday' ) : edu__( 'fri' ),
-			6 => ! $short ? edu__( 'saturday' ) : edu__( 'sat' ),
-			7 => ! $short ? edu__( 'sunday' ) : edu__( 'sun' ),
-		);
+		$t        = EDU()->StartTimer( __METHOD__ );
+		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
+		$months   = $short ? EDU()->shortMonths : EDU()->months;
 
 		$startYear  = date( 'Y', strtotime( $startDate ) );
 		$startMonth = date( 'n', strtotime( $startDate ) );
@@ -487,7 +430,7 @@
 			return 0;
 		}
 
-		return ( $aDate < $bDate ? - 1 : 1 );
+		return ( $aDate < $bDate ? -1 : 1 );
 	}
 
 	function KeySort( $key ) {
@@ -499,8 +442,9 @@
 	if ( ! function_exists( 'my_str_split' ) ) {
 		// Credits go to https://code.google.com/p/php-slugs/
 		function my_str_split( $string ) {
-			$slen = strlen( $string );
-			for ( $i = 0; $i < $slen; $i ++ ) {
+			$sArray = array();
+			$slen   = strlen( $string );
+			for ( $i = 0; $i < $slen; $i++ ) {
 				$sArray[ $i ] = $string{$i};
 			}
 
@@ -1059,7 +1003,7 @@
 				$sSubject = str_replace( $sSearch, $sReplace, $sSubject );
 				$pos      = strpos( $sSubject, $sSearch );
 
-				$i ++;
+				$i++;
 				if ( $i > 100 ) {
 					die( 'removeDuplicates() loop error' );
 				}

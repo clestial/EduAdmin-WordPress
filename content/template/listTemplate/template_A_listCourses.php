@@ -63,7 +63,7 @@
 	$s = new XSort( $sortOrder, 'ASC' );
 	$sort->AddItem( $s );
 
-	$edo = EDU()->api->GetEducationObject( $edutoken, $sort->ToString(), $filtering->ToString() );
+	$edo = EDU()->api->GetEducationObject( EDU()->get_token(), $sort->ToString(), $filtering->ToString() );
 
 	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$edo = array_filter( $edo, function( $object ) {
@@ -84,7 +84,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -191,7 +191,7 @@
 		$sorting->AddItem( $s );
 	}
 
-	$ede = EDU()->api->GetEvent( $edutoken, $sorting->ToString(), $filtering->ToString() );
+	$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
@@ -199,7 +199,7 @@
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
-			$subjects = EDU()->api->GetEducationSubject( $edutoken, $sorting->ToString(), '' );
+			$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
 			set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 		}
 
@@ -241,7 +241,7 @@
 	$ft->AddItem( $f );
 	$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 	$ft->AddItem( $f );
-	$pricenames = EDU()->api->GetPriceName( $edutoken, '', $ft->ToString() );
+	$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 	set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
 	if ( ! empty( $pricenames ) ) {
@@ -286,12 +286,12 @@
 		$ft = new XFiltering();
 		$f  = new XFilter( "AttributeID", "=", intval( substr( $descrField, 5 ) ) );
 		$ft->AddItem( $f );
-		$objectAttributes = EDU()->api->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+		$objectAttributes = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 	}
 	if ( ! empty( $edo ) ) {
 		$showNextEventDate   = get_option( 'eduadmin-showNextEventDate', false );
 		$showCourseLocations = get_option( 'eduadmin-showCourseLocations', false );
-		$incVat              = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat              = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 		$showEventPrice      = get_option( 'eduadmin-showEventPrice', false );
 
 		$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
@@ -360,82 +360,11 @@
 			if ( $showEventsWithoutEventsOnly && ! empty( $sortedEvents ) ) {
 				continue;
 			}
-			?>
-            <div class="objectItem" data-objectid="<?php echo $object->ObjectID; ?>">
-				<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
-                    <div class="objectImage"
-                         onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>';"
-                         style="background-image: url('<?php echo $object->ImageUrl; ?>');"></div>
-				<?php } ?>
-                <div class="objectInfoHolder">
-                    <div class="objectName">
-                        <a href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php
-								echo htmlentities( getUTF8( $name ) );
-							?></a>
-                    </div>
-                    <div class="objectDescription"><?php
-
-							if ( stripos( $descrField, "attr_" ) !== false && ! empty( $objectAttributes ) ) {
-								$objectDescription = array_filter( $objectAttributes, function( $oa ) use ( &$object ) {
-									return $oa->ObjectID == $object->ObjectID;
-								} );
-
-								$descr = htmlspecialchars_decode( current( $objectDescription )->AttributeValue );
-							} else {
-								$descr = $object->{$descrField};
-							}
-
-							if ( $showDescr ) {
-								echo "<div class=\"courseDescription\">" . $descr . "</div>";
-							}
-
-							if ( $showCourseLocations && ! empty( $eventCities ) && $showCity ) {
-								$cities = join( ", ", array_keys( $eventCities ) );
-								echo "<div class=\"locationInfo\">" . $cities . "</div> ";
-							}
-
-							if ( $showNextEventDate ) {
-								echo "<div class=\"nextEventDate\" data-eduwidget=\"courseitem-date\" data-objectid=\"" . $object->ObjectID . "\">";
-								if ( ! empty( $sortedEvents ) ) {
-									echo sprintf( edu__( 'Next event %1$s' ), date( "Y-m-d", strtotime( current( $sortedEvents )->PeriodStart ) ) ) . " " . current( $sortedEvents )->City;
-									if ( $showEventVenue ) {
-										echo "<span class=\"venueInfo\">, " . current( $sortedEvents )->AddressName . "</span>";
-									}
-								} else {
-									echo "<i>" . edu__( 'No coming events' ) . "</i>";
-								}
-								echo "</div> ";
-							}
-
-							if ( $showEventPrice && ! empty( $prices ) ) {
-								ksort( $prices );
-								$cheapest = current( $prices );
-								echo "<div class=\"priceInfo\">" . sprintf( edu__( 'From %1$s' ), convertToMoney( $cheapest->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ) . "</div> ";
-							}
-
-							if ( $object->Days > 0 ) {
-								echo
-									"<div class=\"dayInfo\">" .
-									( $showCourseDays ? sprintf( edu_n( '%1$d day', '%1$d days', $object->Days ), $object->Days ) . ( $showCourseTimes ? ', ' : '' ) : '' ) .
-									( $showCourseTimes ? date( "H:i", strtotime( $object->StartTime ) ) .
-									                     ' - ' .
-									                     date( "H:i", strtotime( $object->EndTime ) ) : '' ) .
-									"</div>";
-							}
-						?></div>
-                </div>
-                <div class="objectBook">
-		            <?php if ( $showReadMoreBtn ) : ?>
-                        <a class="readMoreButton cta-btn"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php edu_e( "Read more" ); ?></a>
-		            <?php endif; ?>
-                </div>
-            </div>
-			<?php
+			include( 'blocks/course_blockA.php' );
 		}
 	} else {
 		?>
-        <div class="noResults"><?php edu_e( "Your search returned zero results" ); ?></div>
+        <div class="noResults"><?php _e( "Your search returned zero results", 'eduadmin-booking' ); ?></div>
 		<?php
 	}
 ?></div><?php

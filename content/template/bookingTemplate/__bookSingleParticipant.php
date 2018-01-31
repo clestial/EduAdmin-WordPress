@@ -174,7 +174,7 @@
 		if ( isset( $_POST['contactCivReg'] ) ) {
 			$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 		}
-		if ( isset( $_POST['contactPass'] ) && ! empty ( $_POST['contactPass'] ) ) {
+		if ( isset( $_POST['contactPass'] ) && ! empty( $_POST['contactPass'] ) ) {
 			$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 		}
 		$contact->CanLogin    = 'true';
@@ -215,8 +215,7 @@
 		$contact->ContactName = str_replace( ";", " ", $contact->ContactName );
 	}
 
-	if ( $contact->CustomerContactID == 0 ) {
-	} else {
+	if ( $contact->CustomerContactID != 0 ) {
 		$so = new XSorting();
 		$s  = new XSort( 'SortIndex', 'ASC' );
 		$so->AddItem( $s );

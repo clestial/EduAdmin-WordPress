@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.22
+	 * Version:	1.0.23
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
@@ -84,6 +84,14 @@
 			 * @var string
 			 */
 			public $version;
+			/** @var array */
+			public $weekDays;
+			/** @var array */
+			public $shortWeekDays;
+			/** @var array */
+			public $months;
+			/** @var array */
+			public $shortMonths;
 
 			/**
 			 * @return EduAdmin
@@ -124,6 +132,13 @@
 			 */
 			public function StopTimer( $name ) {
 				$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
+			}
+
+			/**
+			 * @param stdClass|array|object|null $object
+			 */
+			public function __writeDebug( $object ) {
+				echo "<xmp>" . print_r( $object, true ) . "</xmp>";
 			}
 
 			public function get_version() {
@@ -194,6 +209,7 @@
 
 			private function includes() {
 				$t = $this->StartTimer( __METHOD__ );
+				include_once( 'includes/eduadmin-api-client/eduadmin-api-client.php' );
 				include_once( 'libraries/class-recursive-arrayaccess.php' );
 				include_once( 'libraries/class-wp-session.php' );
 				include_once( 'libraries/wp-session.php' );
@@ -210,17 +226,17 @@
 				include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
 				include_once( 'includes/loApiClient.php' );
 
+				if ( is_wp_error( $this->get_new_api_token() ) ) {
+					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
+				}
+
 				$this->api = new EduAdminClient( $this->version );
-				global $eduapi;
-				global $edutoken;
-				$eduapi   = $this->api;
-				$edutoken = $this->get_token();
+
 				include_once( 'includes/_options.php' );
 				include_once( 'includes/_ajaxFunctions.php' );
 				include_once( 'includes/_rewrites.php' );
 				include_once( 'includes/_shortcodes.php' );
 
-				include_once( 'includes/_translationFunctions.php' );
 				include_once( 'includes/_questionFunctions.php' );
 				include_once( 'includes/_attributeFunctions.php' );
 				include_once( 'includes/_textFunctions.php' );
@@ -265,8 +281,68 @@
 				$t                  = $this->StartTimer( __METHOD__ );
 				$this->integrations = new EDU_IntegrationLoader();
 				$this->restController->register_routes();
-				edu_LoadPhrases();
+				$this->weekDays = array(
+					1 => __( 'monday', 'eduadmin-booking' ),
+					2 => __( 'tuesday', 'eduadmin-booking' ),
+					3 => __( 'wednesday', 'eduadmin-booking' ),
+					4 => __( 'thursday', 'eduadmin-booking' ),
+					5 => __( 'friday', 'eduadmin-booking' ),
+					6 => __( 'saturday', 'eduadmin-booking' ),
+					7 => __( 'sunday', 'eduadmin-booking' ),
+				);
+
+				$this->shortWeekDays = array(
+					1 => __( 'mon', 'eduadmin-booking' ),
+					2 => __( 'tue', 'eduadmin-booking' ),
+					3 => __( 'wed', 'eduadmin-booking' ),
+					4 => __( 'thu', 'eduadmin-booking' ),
+					5 => __( 'fri', 'eduadmin-booking' ),
+					6 => __( 'sat', 'eduadmin-booking' ),
+					7 => __( 'sun', 'eduadmin-booking' ),
+				);
+
+				$this->months = array(
+					1  => __( 'january', 'eduadmin-booking' ),
+					2  => __( 'february', 'eduadmin-booking' ),
+					3  => __( 'march', 'eduadmin-booking' ),
+					4  => __( 'april', 'eduadmin-booking' ),
+					5  => __( 'may', 'eduadmin-booking' ),
+					6  => __( 'june', 'eduadmin-booking' ),
+					7  => __( 'july', 'eduadmin-booking' ),
+					8  => __( 'august', 'eduadmin-booking' ),
+					9  => __( 'september', 'eduadmin-booking' ),
+					10 => __( 'october', 'eduadmin-booking' ),
+					11 => __( 'november', 'eduadmin-booking' ),
+					12 => __( 'december', 'eduadmin-booking' ),
+				);
+
+				$this->shortMonths = array(
+					1  => __( 'jan', 'eduadmin-booking' ),
+					2  => __( 'feb', 'eduadmin-booking' ),
+					3  => __( 'mar', 'eduadmin-booking' ),
+					4  => __( 'apr', 'eduadmin-booking' ),
+					5  => __( 'may', 'eduadmin-booking' ),
+					6  => __( 'jun', 'eduadmin-booking' ),
+					7  => __( 'jul', 'eduadmin-booking' ),
+					8  => __( 'aug', 'eduadmin-booking' ),
+					9  => __( 'sep', 'eduadmin-booking' ),
+					10 => __( 'oct', 'eduadmin-booking' ),
+					11 => __( 'nov', 'eduadmin-booking' ),
+					12 => __( 'dec', 'eduadmin-booking' ),
+				);
+
 				$this->StopTimer( $t );
+			}
+
+			public static function OldApiKeyWarning() {
+				?>
+                <div class="notice notice-warning is-dismissable">
+                    <p><?php echo sprintf( __( 'You are using an old API key, please change to the new key: %1$sEduAdmin - Api Authentication%2$s<br />
+If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$s', 'eduadmin-booking' ),
+					                       '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>',
+					                       '<a href="https://support.eduadmin.se/support/tickets/new" target="_blank">', '</a>' ); ?></p>
+                </div>
+				<?php
 			}
 
 			public static function SetupWarning() {
@@ -311,6 +387,36 @@
 			public function deactivate() {
 				eduadmin_deactivate_rewrite();
 				wp_clear_scheduled_hook( 'eduadmin_call_home' );
+			}
+
+			private function get_new_api_token() {
+				$newKey = get_option( 'eduadmin-newapi-key', null );
+				if ( $newKey != null ) {
+					$key = DecryptApiKey( $newKey );
+					EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+				} else {
+					$oldKey = get_option( 'eduadmin-api-key', null );
+					if ( $oldKey != null ) {
+						$key = DecryptApiKey( $oldKey );
+						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
+						//add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
+					} else {
+						EDUAPI()->SetCredentials( '', '' );
+					}
+				}
+
+				$currentToken = get_transient( 'eduadmin-newapi-token' );
+				if ( $currentToken == null || ! $currentToken->IsValid() ) {
+					$currentToken = EDUAPI()->GetToken();
+					if ( empty( $currentToken->Issued ) ) {
+						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again. Or contact MultiNet support to get a new key.", 'eduadmin-booking' ) );
+					}
+					set_transient( 'eduadmin-newapi-token', $currentToken, WEEK_IN_SECONDS );
+				}
+
+				EDUAPI()->SetToken( $currentToken );
+
+				return null;
 			}
 		}
 

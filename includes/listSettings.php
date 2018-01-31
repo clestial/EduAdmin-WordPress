@@ -1,8 +1,6 @@
 <?php
 	function edu_render_list_settings_page() {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
-		$eduapi                     = EDU()->api;
-		$edutoken                   = EDU()->get_token();
 		$apiKey                     = get_option( 'eduadmin-api-key' );
 
 		if ( ! $apiKey || empty( $apiKey ) ) {
@@ -125,7 +123,7 @@
 													$filter->AddItem( $f );
 													$f = new XFilter( 'AttributeOwnerTypeID', '=', '1' );
 													$filter->AddItem( $f );
-													$attributes = $eduapi->GetAttribute( $edutoken, '', $filter->ToString() );
+													$attributes = EDU()->api->GetAttribute( EDU()->get_token(), '', $filter->ToString() );
 												?>
                                                 <select name="eduadmin-layout-descriptionfield">
                                                     <optgroup

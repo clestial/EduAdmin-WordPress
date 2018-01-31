@@ -1,8 +1,6 @@
 <?php
 	ob_start();
 	global $wp_query;
-	global $eduapi;
-	global $edutoken;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
@@ -16,7 +14,7 @@
 		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$filtering->AddItem( $f );
 
-		$edo = EDU()->api->GetEducationObject( $edutoken, '', $filtering->ToString() );
+		$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 
 		$selectedCourse = false;
 		$name           = "";
@@ -69,12 +67,12 @@
 		$st->AddItem( $s );
 
 		$events = EDU()->api->GetEvent(
-			$edutoken,
+			EDU()->get_token(),
 			$st->ToString(),
 			$ft->ToString()
 		);
 
-		$incVat      = EDU()->api->GetAccountSetting( $edutoken, 'PriceIncVat' ) == "yes";
+		$incVat      = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
 		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
 
 		$hideSections = array();
@@ -84,7 +82,7 @@
 
 		?>
         <div class="eduadmin">
-            <a href="../" class="backLink"><?php edu_e( "« Go back" ); ?></a>
+            <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
             <div class="title">
 	            <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
                     <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
@@ -95,7 +93,7 @@
             <div class="textblock leftBlock">
 	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
-                        <h3><?php edu_e( "Course description" ); ?></h3>
+                        <h3><?php _e( "Course description", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
@@ -105,7 +103,7 @@
 				<?php } ?>
 	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
-                        <h3><?php edu_e( "Course goal" ); ?></h3>
+                        <h3><?php _e( "Course goal", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
@@ -115,7 +113,7 @@
 				<?php } ?>
 	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
-                        <h3><?php edu_e( "Target group" ); ?></h3>
+                        <h3><?php _e( "Target group", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
@@ -125,7 +123,7 @@
 				<?php } ?>
 	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
 				<?php if ( $showHeaders ) { ?>
-                    <h3><?php edu_e( "Prerequisites" ); ?></h3>
+                    <h3><?php _e( "Prerequisites", 'eduadmin-booking' ); ?></h3>
 				<?php } ?>
                 <div>
 					<?php
@@ -137,7 +135,7 @@
 				<?php } ?>
 	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
-                        <h3><?php edu_e( "After the course" ); ?></h3>
+                        <h3><?php _e( "After the course", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
@@ -147,7 +145,7 @@
 				<?php } ?>
 	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse->Quote ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
-                        <h3><?php edu_e( "Quotes" ); ?></h3>
+                        <h3><?php _e( "Quotes", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
@@ -158,10 +156,10 @@
             </div>
             <div class="eventInformation">
 	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
-                    <h3><?php edu_e( "Time" ); ?></h3>
+                    <h3><?php _e( "Time", 'eduadmin-booking' ); ?></h3>
 					<?php
-					echo ( $selectedCourse->Days > 0 ? sprintf( edu_n( '%1$d day', '%1$d days', $selectedCourse->Days ), $selectedCourse->Days ) . ', ' : '' ) .
-					     date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
+		            echo ( $selectedCourse->Days > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days ) . ', ' : '' ) .
+		                 date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
 					?>
 				<?php } ?>
 				<?php
@@ -181,7 +179,7 @@
 					$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
 					$ft->AddItem( $f );
 
-					$eventDays = EDU()->api->GetEventDate( $edutoken, '', $ft->ToString() );
+					$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
 
 					$eventDates = array();
 					foreach ( $eventDays as $ed ) {
@@ -200,7 +198,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$prices       = EDU()->api->GetPriceName( $edutoken, $st->ToString(), $ft->ToString() );
+					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					$uniquePrices = Array();
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
@@ -208,17 +206,17 @@
 
 					if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
 						?>
-                        <h3><?php edu_e( "Price" ); ?></h3>
+                        <h3><?php _e( "Price", 'eduadmin-booking' ); ?></h3>
 						<?php
 						$currency = get_option( 'eduadmin-currency', 'SEK' );
 						if ( count( $uniquePrices ) == 1 ) {
 							?>
-							<?php echo sprintf( '%1$s %2$s', current( $uniquePrices )->Description, convertToMoney( current( $uniquePrices )->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+							<?php echo sprintf( '%1$s %2$s', current( $uniquePrices )->Description, convertToMoney( current( $uniquePrices )->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
 							<?php
 						} else {
 							foreach ( $uniquePrices as $up ) {
 								?>
-								<?php echo sprintf( '%1$s %2$s', $up->Description, convertToMoney( $up->Price, $currency ) ) . " " . edu__( $incVat ? "inc vat" : "ex vat" ); ?>
+								<?php echo sprintf( '%1$s %2$s', $up->Description, convertToMoney( $up->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
                                 <br/>
 								<?php
 							}
@@ -292,7 +290,7 @@
 										?>
                                         <a class="bookButton cta-btn"
                                            href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                        ><?php edu_e( "Book" ); ?></a>
+                                        ><?php _e( "Book", 'eduadmin-booking' ); ?></a>
 										<?php
 									} else {
 										?>
@@ -300,11 +298,11 @@
 										if ( $allowInterestRegEvent && $eventInterestPage != false ) {
 											?>
                                             <a class="inquiry-link"
-                                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/interest/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php edu_e( "Inquiry" ); ?></a>
+                                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/interest/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
 											<?php
 										}
 										?>
-                                        <i class="fullBooked"><?php edu_e( "Full" ); ?></i>
+                                        <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
 									<?php } ?>
                             </div>
                         </div>
@@ -315,7 +313,7 @@
 					if ( empty( $events ) ) {
 						?>
                         <div class="noDatesAvailable">
-                            <i><?php edu_e( "No available dates for the selected course" ); ?></i>
+                            <i><?php _e( "No available dates for the selected course", 'eduadmin-booking' ); ?></i>
                         </div>
 						<?php
 					}
@@ -327,7 +325,7 @@
                     <br/>
                     <div class="inquiry">
                         <a class="inquiry-link"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php edu_e( "Send inquiry about this course" ); ?></a>
+                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
                     </div>
 					<?php
 				}

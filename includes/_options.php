@@ -8,7 +8,6 @@
 
 	include_once( "detailSettings.php" );
 	include_once( "bookingSettings.php" );
-	include_once( "textSettings.php" );
 	include_once( "styleSettings.php" );
 
 	add_action( 'admin_init', 'eduadmin_settings_init' );
@@ -20,8 +19,6 @@
 
 	function eduadmin_page_title( $title, $sep = "|" ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		global $eduapi;
-		global $edutoken;
 		global $wp;
 
 		if ( $sep == null || empty( $sep ) ) {
@@ -35,7 +32,7 @@
 				$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 				$filtering->AddItem( $f );
 
-				$edo = $eduapi->GetEducationObject( $edutoken, '', $filtering->ToString() );
+				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
 				set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
 			}
 
@@ -56,16 +53,16 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
-					$objAttr = $eduapi->GetObjectAttribute( $edutoken, '', $ft->ToString() );
+					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
 							case 5:
 								$value = $attr->AttributeAlternative;
 								break;
-								/*case 7:
-									$value = $attr->AttributeDate;*/
-								break;
+							/*case 7:
+								$value = $attr->AttributeDate;
+							break;*/
 							default:
 								$value = $attr->AttributeValue;
 								break;
@@ -100,6 +97,7 @@
 		$t = EDU()->StartTimer( __METHOD__ );
 		/* Credential settings */
 		register_setting( 'eduadmin-credentials', 'eduadmin-api-key' );
+		register_setting( 'eduadmin-credentials', 'eduadmin-newapi-key' );
 		register_setting( 'eduadmin-credentials', 'eduadmin-credentials_have_changed' );
 
 		/* Rewrite settings */
@@ -137,9 +135,6 @@
 		register_setting( 'eduadmin-booking', 'eduadmin-validateCivicRegNo' );
 		register_setting( 'eduadmin-booking', 'eduadmin-useLimitedDiscount' );
 		register_setting( 'eduadmin-booking', 'eduadmin-blockEditIfLoggedIn' );
-
-		/* Phrase settings */
-		register_setting( 'eduadmin-phrases', 'eduadmin-phrases' );
 
 		/* Style settings */
 		register_setting( 'eduadmin-style', 'eduadmin-style' );
@@ -229,7 +224,6 @@
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - List view', 'eduadmin-booking' ), __( 'List settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-view', 'edu_render_list_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Detail view', 'eduadmin-booking' ), __( 'Detail settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-detail', 'edu_render_detail_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Booking view', 'eduadmin-booking' ), __( 'Booking settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-booking', 'edu_render_booking_settings_page' );
-		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Translation', 'eduadmin-booking' ), __( 'Translation', 'eduadmin-booking' ), $level, 'eduadmin-settings-text', 'edu_render_text_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin-booking' ), __( 'Style settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
 		add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin-booking' ), __( 'Api Authentication', 'eduadmin-booking' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
@@ -250,15 +244,13 @@
 
 	function eduadmin_RewriteJavaScript( $script ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		global $eduapi;
-		global $edutoken;
 
 		if ( isset( $_REQUEST['edu-thankyou'] ) ) {
 			if ( stripos( $script, "$" ) !== false ) {
 				$ft = new XFiltering();
 				$f  = new XFilter( 'EventCustomerLnkID', '=', intval( $_REQUEST['edu-thankyou'] ) );
 				$ft->AddItem( $f );
-				$bookingInfo = $eduapi->GetEventBooking( $edutoken, '', $ft->ToString() );
+				$bookingInfo = EDU()->api->GetEventBooking( EDU()->get_token(), '', $ft->ToString() );
 
 				$script = str_replace(
 					array(

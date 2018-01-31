@@ -3,54 +3,57 @@
 	$__block             = ( $blockEditIfLoggedIn && $contact->CustomerContactID != 0 );
 ?>
 <div class="contactView">
-    <h2><?php edu_e( "Contact information" ); ?></h2>
+    <h2><?php _e( "Contact information", 'eduadmin-booking' ); ?></h2>
     <label>
         <div class="inputLabel">
-			<?php edu_e( "Contact name" ); ?>
+	        <?php _e( "Contact name", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder"><input type="text"
 		        <?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
                                         autocomplete="given-name" class="first-name"
                                         id="edu-contactFirstName" name="contactFirstName"
-                                        placeholder="<?php edu_e( "Contact first name" ); ?>"
+                                        placeholder="<?php _e( "Contact first name", 'eduadmin-booking' ); ?>"
                                         value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
                     type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
                     class="last-name"
                     autocomplete="family-name"
-                    name="contactLastName" placeholder="<?php edu_e( "Contact surname" ); ?>"
+                    name="contactLastName" placeholder="<?php _e( "Contact surname", 'eduadmin-booking' ); ?>"
                     value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
         </div>
     </label>
     <label>
         <div class="inputLabel">
-			<?php edu_e( "E-mail address" ); ?>
+	        <?php _e( "E-mail address", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="email" id="edu-contactEmail" required
                    name="contactEmail"<?php echo( $__block ? " readonly" : "" ); ?> autocomplete="email"
-                   onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "E-mail address" ); ?>"
+                   onchange="eduBookingView.ContactAsParticipant();"
+                   placeholder="<?php _e( "E-mail address", 'eduadmin-booking' ); ?>"
                    value="<?php echo @esc_attr( $contact->Email ); ?>"/>
         </div>
     </label>
     <label>
         <div class="inputLabel">
-			<?php edu_e( "Phone number" ); ?>
+	        <?php _e( "Phone number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactPhone" name="contactPhone" autocomplete="tel"
-                   onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "Phone number" ); ?>"
+                   onchange="eduBookingView.ContactAsParticipant();"
+                   placeholder="<?php _e( "Phone number", 'eduadmin-booking' ); ?>"
                    value="<?php echo @esc_attr( $contact->Phone ); ?>"/>
         </div>
     </label>
     <label>
         <div class="inputLabel">
-			<?php edu_e( "Mobile number" ); ?>
+	        <?php _e( "Mobile number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactMobile" name="contactMobile" autocomplete="tel"
-                   onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php edu_e( "Mobile number" ); ?>"
+                   onchange="eduBookingView.ContactAsParticipant();"
+                   placeholder="<?php _e( "Mobile number", 'eduadmin-booking' ); ?>"
                    value="<?php echo @esc_attr( $contact->Mobile ); ?>"/>
         </div>
     </label>
@@ -58,13 +61,13 @@
 	<?php if ( $selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber' ) { ?>
         <label>
             <div class="inputLabel">
-				<?php edu_e( "Civic Registration Number" ); ?>
+	            <?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo"
                        pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" required name="contactCivReg"
                        onchange="eduBookingView.ContactAsParticipant();"
-                       placeholder="<?php edu_e( "Civic Registration Number" ); ?>"
+                       placeholder="<?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>"
                        value="<?php echo @esc_attr( $contact->CivicRegistrationNumber ); ?>"/>
             </div>
         </label>
@@ -72,11 +75,11 @@
 	<?php if ( get_option( 'eduadmin-useLogin', false ) && empty( $contact->Loginpass ) ) { ?>
         <label>
             <div class="inputLabel">
-				<?php edu_e( "Please enter a password" ); ?>
+	            <?php _e( "Please enter a password", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="password" required name="contactPass" autocomplete="new-password"
-                       placeholder="<?php edu_e( "Please enter a password" ); ?>"/>
+                       placeholder="<?php _e( "Please enter a password", 'eduadmin-booking' ); ?>"/>
             </div>
         </label>
 	<?php } ?>
@@ -91,7 +94,7 @@
 		$fo->AddItem( $f );
 		$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
 		$fo->AddItem( $f );
-		$contactAttributes = EDU()->api->GetAttribute( $edutoken, $so->ToString(), $fo->ToString() );
+		$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 		$db = array();
 		if ( isset( $contact ) && isset( $contact->CustomerContactID ) ) {
@@ -99,7 +102,7 @@
 				$fo = new XFiltering();
 				$f  = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 				$fo->AddItem( $f );
-				$db = EDU()->api->GetCustomerContactAttribute( $edutoken, '', $fo->ToString() );
+				$db = EDU()->api->GetCustomerContactAttribute( EDU()->get_token(), '', $fo->ToString() );
 			}
 		}
 
@@ -131,10 +134,10 @@
             <input type="checkbox" id="contactIsAlsoParticipant" name="contactIsAlsoParticipant" value="true"
                    onchange="if(eduBookingView.CheckParticipantCount()) { eduBookingView.UpdatePrice(); } else { this.checked = false; return false; }"/>
             <label class="inline-checkbox" for="contactIsAlsoParticipant"></label>
-	        <?php edu_e( "I am also participating" ); ?>
+	        <?php _e( "I am also participating", 'eduadmin-booking' ); ?>
         </div>
     </label>
     <div class="edu-modal warning" id="edu-warning-participants-contact">
-		<?php edu_e( "You cannot add any more participants." ); ?>
+	    <?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
     </div>
 </div>

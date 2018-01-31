@@ -8,7 +8,7 @@ Requires at least: 4.7
 
 Tested up to: 4.9.2
 
-Stable tag: 1.0.23
+Stable tag: 1.0.24
 
 Requires PHP: 5.0.1 (with SoapClient)
 
@@ -52,6 +52,9 @@ and redo your own customization.
 
 == Changelog ==
 
+### 1.0.24
+- Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
+
 ### [1.0.23]
 - Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
 - Adding first version of EduAdmin PHP API Client
@@ -67,10 +70,6 @@ and redo your own customization.
 - Lots of design fixes and changes, to make the plugin more mobile friendly
 - Login widget bug fixed
 
-### [1.0.20]
-- More subject filters to fix.
-
 [1.0.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.22...v1.0.23
 [1.0.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.21...v1.0.22
 [1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21
-[1.0.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.19...v1.0.20

@@ -9,10 +9,10 @@
 	                        <?php
 		                        $addedCities = array();
 		                        foreach ( $addresses as $address ) {
-			                        $city = trim( $address->City );
-			                        if ( ! in_array( $address->LocationID, $addedCities ) && ! empty( $city ) ) {
-				                        echo '<option value="' . $address->LocationID . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && intval( $_REQUEST['eduadmin-city'] ) == $address->LocationID ? " selected=\"selected\"" : "" ) . '>' . trim( $address->City ) . '</option>';
-				                        $addedCities[] = $address->LocationID;
+			                        $city = trim( $address["City"] );
+			                        if ( ! in_array( $address["LocationId"], $addedCities ) && ! empty( $city ) ) {
+				                        echo '<option value="' . $address["LocationId"] . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && intval( $_REQUEST['eduadmin-city'] ) == $address["LocationId"] ? " selected=\"selected\"" : "" ) . '>' . trim( $address["City"] ) . '</option>';
+				                        $addedCities[] = $address["LocationId"];
 			                        }
 		                        }
 	                        ?>
@@ -37,7 +37,7 @@
                             <option value=""><?php _e( "Choose category", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        foreach ( $categories as $subj ) {
-			                        echo '<option value="' . intval( $subj->CategoryID ) . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && intval( $_REQUEST['eduadmin-category'] ) == $subj->CategoryID ? " selected=\"selected\"" : "" ) . '>' . $subj->CategoryName . '</option>';
+			                        echo '<option value="' . intval( $subj["CategoryId"] ) . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && intval( $_REQUEST['eduadmin-category'] ) == $subj["CategoryId"] ? " selected=\"selected\"" : "" ) . '>' . $subj["CategoryName"] . '</option>';
 		                        }
 	                        ?>
                         </select>
@@ -49,7 +49,7 @@
                             <option value=""><?php _e( "Choose course level", 'eduadmin-booking' ); ?></option>
 	                        <?php
 		                        foreach ( $levels as $level ) {
-			                        echo '<option value="' . $level->EducationLevelID . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && intval( $_REQUEST['eduadmin-level'] ) == $level->EducationLevelID ? " selected=\"selected\"" : "" ) . '>' . $level->Name . '</option>';
+			                        echo '<option value="' . $level["CourseLevelId"] . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && intval( $_REQUEST['eduadmin-level'] ) == $level["CourseLevelId"] ? " selected=\"selected\"" : "" ) . '>' . $level["Name"] . '</option>';
 		                        }
 	                        ?>
                         </select>

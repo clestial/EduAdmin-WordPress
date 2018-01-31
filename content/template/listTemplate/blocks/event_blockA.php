@@ -11,8 +11,7 @@
 				?></a>
         </div>
         <div class="objectDescription"><?php
-				echo /*isset($eventDates[$object->EventID]) ? GetLogicalDateGroups($eventDates[$object->EventID], true, $object, true) :*/
-				GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
+		        echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
 				if ( ! empty( $object->City ) && $showCity ) {
 					echo " <span class=\"cityInfo\">";

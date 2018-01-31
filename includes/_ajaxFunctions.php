@@ -587,8 +587,9 @@
 			} );
 		}
 
-		$surl = $_POST['baseUrl'];
-		$cat  = $_POST['courseFolder'];
+		$surl    = get_home_url();
+		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
+		$baseUrl = $surl . '/' . $cat;
 
 		$lastCity = "";
 
@@ -598,7 +599,6 @@
 		$showVenue        = $_POST['showvenue'];
 		$spotSettings     = $_POST['spotsettings'];
 		$showEventInquiry = isset( $_POST['eventinquiry'] ) && $_POST['eventinquiry'] == "true";
-		$baseUrl          = $surl . '/' . $cat;
 		$name             = ( ! empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
 		$retStr           .= '<div class="eduadmin"><div class="event-table eventDays">';
 		$i                = 0;
@@ -689,14 +689,14 @@
 
 	function edu_api_loginwidget() {
 		header( "Content-type: text/html; charset=UTF-8" );
-		$surl = $_POST['baseUrl'];
-		$cat  = $_POST['courseFolder'];
+		$surl    = get_home_url();
+		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
+		$baseUrl = $surl . '/' . $cat;
 
 		$loginText  = $_POST['logintext'];
 		$logoutText = $_POST['logouttext'];
 		$guestText  = $_POST['guesttext'];
 
-		$baseUrl = $surl . '/' . $cat;
 		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 			$user    = EDU()->session['eduadmin-loginUser'];
 			$contact = $user->Contact;

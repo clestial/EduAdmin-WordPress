@@ -362,6 +362,9 @@
 	}
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
+		if ( ! isset( $startDate ) && ! isset( $endDate ) ) {
+			return "";
+		}
 		$t        = EDU()->StartTimer( __METHOD__ );
 		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
 		$months   = $short ? EDU()->shortMonths : EDU()->months;

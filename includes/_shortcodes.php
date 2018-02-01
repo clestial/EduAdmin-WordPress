@@ -595,6 +595,7 @@
 					                   '>';
 					$i              = 0;
 					$hasHiddenDates = false;
+					$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 
 					$eventInterestPage = get_option( 'eduadmin-interestEventPage' );
 
@@ -620,31 +621,9 @@
 							$hasHiddenDates = true;
 						}
 
-						$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
-						$retStr   .= '
-					<div class="eventDate' . $groupByCityClass . '">
-						' . ( isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . '
-						' . ( ! isset( $eventDates[ $ev->EventID ] ) ? '<span class="eventTime">, ' . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . '</span>' : '' ) . '
-					</div>
-					' . ( ! $groupByCity ?
-								'<div class="eventCity">
-						' . $ev->City . '
-					</div>' : '' ) .
-						             '<div class="eventStatus' . $groupByCityClass . '">
-					' .
-						             getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots )
-						             . '
-					</div>
-					<div class="eventBook' . $groupByCityClass . '">
-					' . ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
-
-								'<a class="book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", array( 'eid' ) ) . '">' . __( "Book", 'eduadmin-booking' ) . '</a>'
-								:
-								( $eventInterestPage != false ? '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&" ) . '">' . __( "Inquiry", 'eduadmin-booking' ) . '</a>' : '' ) .
-								'<i class="fullBooked">' . __( "Full", 'eduadmin-booking' ) . '</i>'
-						             ) . '
-					</div>';
-						$retStr   .= '</div><!-- /eventitem -->';
+						ob_start();
+						include( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php' );
+						$retStr   .= ob_get_clean();
 						$lastCity = $ev->City;
 						$i++;
 					}

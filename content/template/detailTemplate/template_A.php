@@ -80,10 +80,10 @@
 		);
 
 		$occIds   = array();
-		$occIds[] = - 1;
+		$occIds[] = -1;
 
 		$eventIds   = array();
-		$eventIds[] = - 1;
+		$eventIds[] = -1;
 
 		foreach ( $events as $e ) {
 			$occIds[]   = $e->OccationID;
@@ -224,7 +224,7 @@
 				<?php } ?>
 				<?php
 					$occIds   = Array();
-					$occIds[] = - 1;
+					$occIds[] = -1;
 					foreach ( $events as $ev ) {
 						$occIds[] = $ev->OccationID;
 					}
@@ -263,108 +263,9 @@
 					}
 				?>
             </div>
+
 			<?php
-				$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
-				$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
-				$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
-				$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
-
-				$objectInterestPage     = get_option( 'eduadmin-interestObjectPage' );
-				$allowInterestRegObject = get_option( 'eduadmin-allowInterestRegObject', false );
-
-				$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
-				$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
-			?>
-            <div class="event-table eventDays"
-                 data-eduwidget="eventlist"
-                 data-objectid="<?php echo esc_attr( $selectedCourse->ObjectID ); ?>"
-                 data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
-                 data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
-                 data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
-                 data-showmore="0"
-                 data-groupbycity="<?php echo $groupByCity; ?>"
-                 data-fetchmonths="<?php echo $fetchMonths; ?>"
-				<?php echo( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ); ?>
-                 data-showvenue="<?php echo @esc_attr( $showEventVenue ); ?>"
-                 data-eventinquiry="<?php echo @esc_attr( get_option( 'eduadmin-allowInterestRegEvent', false ) ); ?>"
-            >
-				<?php
-					$i = 0;
-					if ( ! empty( $prices ) ) {
-						foreach ( $events as $ev ) {
-							if ( $groupByCity && $lastCity != $ev->City ) {
-								$i = 0;
-								echo '<div class="eventSeparator">';
-								echo $ev->City;
-
-								echo '</div>';
-							}
-							if ( isset( $_REQUEST['eid'] ) ) {
-								if ( $ev->EventID != $_REQUEST['eid'] ) {
-									continue;
-								}
-							}
-							?>
-                            <div class="eventItem">
-                                <div class="eventDate<?php echo $groupByCityClass; ?>">
-									<?php echo isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ); ?>
-									<?php echo( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
-                                </div>
-								<?php if ( ! $groupByCity ) { ?>
-                                    <div class="eventCity">
-										<?php
-											echo $ev->City;
-											if ( $showEventVenue && ! empty( $ev->AddressName ) ) {
-												echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
-											}
-										?>
-                                    </div>
-								<?php } ?>
-                                <div class="eventStatus<?php echo $groupByCityClass; ?>">
-									<?php
-										$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
-										echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
-									?>
-                                </div>
-                                <div class="eventBook<?php echo $groupByCityClass; ?>">
-									<?php
-										if ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ) {
-											?>
-                                            <a class="bookButton book-link cta-btn"
-                                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                            ><?php _e( "Book", 'eduadmin-booking' ); ?></a>
-											<?php
-										} else {
-											?>
-											<?php
-
-											if ( $allowInterestRegEvent && $eventInterestPage != false ) {
-												?>
-                                                <a class="inquiry-link"
-                                                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/interest/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
-												<?php
-											}
-											?>
-                                            <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
-										<?php } ?>
-                                </div>
-                            </div>
-							<?php
-							$lastCity = $ev->City;
-							$i ++;
-						}
-					}
-					if ( empty( $prices ) || empty( $events ) ) {
-						?>
-                        <div class="noDatesAvailable">
-                            <i><?php _e( "No available dates for the selected course", 'eduadmin-booking' ); ?></i>
-                        </div>
-						<?php
-					}
-				?>
-            </div>
-			<?php
-
+				include( 'blocks/event-list.php' );
 				if ( $allowInterestRegObject && $objectInterestPage != false ) {
 					?>
                     <br/>

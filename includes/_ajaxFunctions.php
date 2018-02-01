@@ -447,7 +447,6 @@
 
 	function edu_api_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
-		$retStr = '';
 
 		$objectId = $_POST['objectid'];
 
@@ -596,13 +595,13 @@
 		$showMore         = isset( $_POST['showmore'] ) && ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
 		$spotLeftOption   = $_POST['spotsleft'];
 		$alwaysFewSpots   = $_POST['fewspots'];
-		$showVenue        = $_POST['showvenue'];
+		$showEventVenue   = $_POST['showvenue'];
 		$spotSettings     = $_POST['spotsettings'];
 		$showEventInquiry = isset( $_POST['eventinquiry'] ) && $_POST['eventinquiry'] == "true";
 		$name             = ( ! empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
-		$retStr           .= '<div class="eduadmin"><div class="event-table eventDays">';
-		$i                = 0;
-		$hasHiddenDates   = false;
+		echo '<div class="eduadmin"><div class="event-table eventDays">';
+		$i              = 0;
+		$hasHiddenDates = false;
 		if ( ! empty( $pricenames ) ) {
 			foreach ( $events as $ev ) {
 				$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
@@ -616,10 +615,10 @@
 				if ( $groupByCity && $lastCity != $ev->City ) {
 					$i = 0;
 					if ( $hasHiddenDates ) {
-						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+						echo "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 					}
 					$hasHiddenDates = false;
-					$retStr         .= '<div class="eventSeparator">' . $ev->City . '</div>';
+					echo '<div class="eventSeparator">' . $ev->City . '</div>';
 				}
 
 				if ( $showMore > 0 && $i >= $showMore ) {
@@ -640,50 +639,19 @@
 					'spotsettings',
 				);
 
-				$retStr   .= '<div data-groupid="eduev' . ( $groupByCity ? "-" . $ev->City : "" ) . '" class="eventItem' . ( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ) . '">';
-				$retStr   .= '
-				<div class="eventDate' . $groupByCityClass . '">
-					' . ( isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . '
-					' . ( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? '<span class="eventTime">, ' . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . '</span>' : '' ) . '
-				</div>
-				' . ( ! $groupByCity ?
-						'<div class="eventCity">
-					' . $ev->City .
-						( $showVenue && ! empty( $ev->AddressName ) ? '<span class="venueInfo">, ' . $ev->AddressName . '</span>' : '' ) .
-						'
-				</div>' : '' ) .
-				             '<div class="eventStatus' . $groupByCityClass . '">
-				<span class="spotsLeftInfo">' .
-				             getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots )
-				             . '</span>
-				</div>
-				<div class="eventBook' . $groupByCityClass . '">
-				' .
-				             ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ?
-					             '<a class="bookButton book-link cta-btn" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . __( "Book", 'eduadmin-booking' ) . '</a>'
-					             :
-					             ( $showEventInquiry ?
-						             '<a class="inquiry-link" href="' . $baseUrl . '/' . makeSlugs( $name ) . '__' . $objectId . '/book/interest/?eid=' . $ev->EventID . edu_getQueryString( "&", $removeItems ) . '">' . __( "Inquiry", 'eduadmin-booking' ) . '</a> '
-						             :
-						             ''
-					             ) .
-					             '<i class="fullBooked">' . __( "Full", 'eduadmin-booking' ) . '</i>'
-				             ) . '
-				</div>';
-				$retStr   .= '</div><!-- /eventitem -->';
+				include( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php' );
 				$lastCity = $ev->City;
 				$i++;
 			}
 		}
 		if ( empty( $pricenames ) || empty( $events ) ) {
-			$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
+			echo '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 		}
 		if ( $hasHiddenDates ) {
-			$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+			echo "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
-		$retStr .= '</div></div>';
+		echo '</div></div>';
 
-		echo $retStr;
 		die();
 	}
 

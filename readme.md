@@ -43,6 +43,9 @@ and redo your own customization.
 
 == Changelog ==
 
+### 1.0.25
+- Bugfix: Missing styles
+
 ### 1.0.24
 - Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
 
@@ -57,10 +60,5 @@ and redo your own customization.
 - Fixes some styles to use `px` instead of `rem`
 - Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
 
-### [1.0.21]
-- Lots of design fixes and changes, to make the plugin more mobile friendly
-- Login widget bug fixed
-
 [1.0.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.22...v1.0.23
 [1.0.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.21...v1.0.22
-[1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21

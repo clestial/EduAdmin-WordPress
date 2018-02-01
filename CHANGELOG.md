@@ -1,3 +1,7 @@
+### [1.0.21]
+- Lots of design fixes and changes, to make the plugin more mobile friendly
+- Login widget bug fixed
+
 ### [1.0.20]
 - More subject filters to fix.
 
@@ -453,6 +457,7 @@
 #### Added
 - Added inquiry support in course
 
+[1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21
 [1.0.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.19...v1.0.20
 [1.0.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...v1.0.19
 [1.0.18]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.17...v1.0.18

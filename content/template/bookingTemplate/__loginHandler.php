@@ -76,7 +76,7 @@
 				EDU()->session['checkEmail']         = true;
 				EDU()->session['eduadminLoginError'] = __( "Could not find any users with that info.", 'eduadmin-booking' );
 			}
-			die( "<script type=\"text/javascript\">location.href = location.href;</script>" );
+			die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
 		} else if ( $_REQUEST['eduformloginaction'] == "forgot" ) {
 			$success                                  = sendForgottenPassword( sanitize_text_field( $_POST['eduadminloginEmail'] ) );
 			EDU()->session['eduadmin-forgotPassSent'] = $success;

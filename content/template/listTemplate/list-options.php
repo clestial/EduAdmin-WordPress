@@ -30,10 +30,10 @@
 
 	$addresses = get_transient( 'eduadmin-locations' );
 	if ( ! $addresses ) {
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicLocation', '=', 'true' );
-		$ft->AddItem( $f );
-		$addresses = EDU()->api->GetLocation( EDU()->get_token(), '', $ft->ToString() );
+		$addresses = EDUAPI()->OData->Locations->Search(
+			"LocationId,City",
+			"PublicLocation"
+		)["value"];
 		set_transient( 'eduadmin-locations', $addresses, DAY_IN_SECONDS );
 	}
 
@@ -41,16 +41,17 @@
 
 	$categories = get_transient( 'eduadmin-categories' );
 	if ( ! $categories ) {
-		$ft = new XFiltering();
-		$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$ft->AddItem( $f );
-		$categories = EDU()->api->GetCategory( EDU()->get_token(), '', $ft->ToString() );
+		$categories = EDUAPI()->OData->Categories->Search(
+			"CategoryId,CategoryName",
+			"ShowOnWeb"
+		)["value"];
+
 		set_transient( 'eduadmin-categories', $categories, DAY_IN_SECONDS );
 	}
 
 	$levels = get_transient( 'eduadmin-levels' );
 	if ( ! $levels ) {
-		$levels = EDU()->api->GetEducationLevel( EDU()->get_token(), '', '' );
+		$levels = EDUAPI()->OData->CourseLevels->Search()["value"];
 		set_transient( 'eduadmin-levels', $levels, DAY_IN_SECONDS );
 	}
 

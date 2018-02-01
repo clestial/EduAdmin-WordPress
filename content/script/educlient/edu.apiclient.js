@@ -70,7 +70,8 @@ edu.apiclient = {
                 search: jQuery('.eduadmin-courselistoptions').data('search'),
                 template: jQuery('.eduadmin-courselistoptions').data('template'),
                 orderby: jQuery('.eduadmin-courselistoptions').data('orderby'),
-                order: jQuery('.eduadmin-courselistoptions').data('order')
+                order: jQuery('.eduadmin-courselistoptions').data('order'),
+                numberofevents: jQuery('.eduadmin-courselistoptions').data('numberofevents')
             },
             success: function (d) {
                 var o = d;
@@ -104,6 +105,7 @@ edu.apiclient = {
                 template: jQuery(target).data('template'),
                 orderby: jQuery(target).data('orderby'),
                 order: jQuery(target).data('order'),
+                numberofevents: jQuery(target).data('numberofevents'),
                 showmore: jQuery(target).data('showmore'),
                 showcity: jQuery(target).data('showcity'),
                 showbookbtn: jQuery(target).data('showbookbtn'),
@@ -123,8 +125,6 @@ edu.apiclient = {
                 objectid: jQuery(target).data('objectid'),
                 city: jQuery(target).data('city'),
                 groupbycity: jQuery(target).data('groupbycity'),
-                baseUrl: wp_edu.BaseUrl,
-                courseFolder: wp_edu.CourseFolder,
                 showmore: jQuery(target).data('showmore'),
                 spotsleft: jQuery(target).data('spotsleft'),
                 fewspots: jQuery(target).data('fewspots'),
@@ -161,8 +161,6 @@ edu.apiclient = {
             url: edu.apiclient.baseUrl + '/loginwidget',
             type: 'POST',
             data: {
-                baseUrl: wp_edu.BaseUrl,
-                courseFolder: wp_edu.CourseFolder,
                 logintext: loginText,
                 logouttext: logoutText,
                 guesttext: guestText

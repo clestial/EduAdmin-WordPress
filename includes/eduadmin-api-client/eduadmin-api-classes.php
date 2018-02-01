@@ -63,6 +63,8 @@
 		public $CustomerGroups = null;
 		/** @var EduAdmin_OData_Customers|null */
 		public $Customers = null;
+		/** @var EduAdmin_OData_CustomFields|null */
+		public $CustomFields = null;
 		/** @var EduAdmin_OData_Events|null */
 		public $Events = null;
 		/** @var EduAdmin_OData_Grades|null */
@@ -85,6 +87,8 @@
 		public $Regions = null;
 		/** @var EduAdmin_OData_Reports|null */
 		public $Reports = null;
+		/** @var EduAdmin_OData_Subjects|null */
+		public $Subjects = null;
 	}
 
 	/**
@@ -113,6 +117,32 @@
 		public $ProgrammeBooking = null;
 		/** @var EduAdmin_REST_Report|null */
 		public $Report = null;
+	}
+
+	/**
+	 * Class EduAdmin_Data_Voucher
+	 */
+	class EduAdmin_Data_Voucher {
+		/** @var integer|null $VoucherId */
+		public $VoucherId = null;
+		/** @var string|null $Description */
+		public $Description = null;
+		/** @var string|null $ValidFrom */
+		public $ValidFrom = null;
+		/** @var string|null $ValidTo */
+		public $ValidTo = null;
+		/** @var integer|null $PersonId */
+		public $PersonId = null;
+		/** @var integer|null $Price */
+		public $Price = null;
+		/** @var integer|null $DiscountPercent */
+		public $DiscountPercent = null;
+		/** @var integer|null $CreditsStartValue */
+		public $CreditsStartValue = null;
+		/** @var integer|null $CreditsLeft */
+		public $CreditsLeft = null;
+		/** @var string|null $Created */
+		public $Created = null;
 	}
 
 	/**

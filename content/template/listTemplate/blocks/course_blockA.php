@@ -35,7 +35,7 @@
 					echo "<div class=\"nextEventDate\" data-eduwidget=\"courseitem-date\" data-objectid=\"" . $object->ObjectID . "\">";
 					if ( ! empty( $sortedEvents ) ) {
 						echo sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( current( $sortedEvents )->PeriodStart ) ) ) . " " . current( $sortedEvents )->City;
-						if ( $showEventVenue ) {
+						if ( $showEventVenue && ! empty( current( $sortedEvents )->AddressName ) ) {
 							echo "<span class=\"venueInfo\">, " . current( $sortedEvents )->AddressName . "</span>";
 						}
 					} else {

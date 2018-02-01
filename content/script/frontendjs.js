@@ -457,7 +457,7 @@ function edu_closeDatePopup(e, obj) {
 var eduDetailView = {
     ShowAllEvents: function (filter, me) {
         me.parentNode.parentNode.removeChild(me.parentNode);
-        jQuery('.showMoreHidden[data-groupid="' + filter + '"]').slideDown();
+        jQuery('.showMoreHidden[data-groupid="' + filter + '"]').slideDown().css('display', 'flex');
     }
 };
 

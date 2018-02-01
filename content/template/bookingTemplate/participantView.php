@@ -283,8 +283,8 @@
         </div>
     </div>
     <div>
-        <a href="javascript://" class="addParticipantLink"
-           onclick="eduBookingView.AddParticipant(); return false;"><?php _e( "Add participant", 'eduadmin-booking' ); ?></a>
+        <a href="javascript://" class="addParticipantLink neutral-btn"
+           onclick="eduBookingView.AddParticipant(); return false;">+ <?php _e( "Add participant", 'eduadmin-booking' ); ?></a>
     </div>
     <div class="edu-modal warning" id="edu-warning-participants">
 	    <?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>

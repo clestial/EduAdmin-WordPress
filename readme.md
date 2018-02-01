@@ -1,27 +1,18 @@
 === EduAdmin Booking ===
-
 Contributors: mnchga
-
 Tags: booking, participants, courses, events, eduadmin, lega online
-
 Requires at least: 4.7
-
 Tested up to: 4.9.2
-
-Stable tag: 1.0.24
-
-Requires PHP: 5.0.1 (with SoapClient)
-
+Stable tag: 1.0.25
+Requires PHP: 5.2
 License: GPL3
-
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 EduAdmin plugin to allow visitors to book courses at your website. Requires EduAdmin-account.
 
 == Description ==
 
 Plugin that you connect to [EduAdmin](http://www.eduadmin.se) to enable booking on your website.
-Requires at least PHP 5.0.1 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
+Requires at least PHP 5.2 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
 
 [<img src="https://img.shields.io/wordpress/plugin/v/eduadmin-booking.svg" alt="Plugin version" />](https://wordpress.org/plugins/eduadmin-booking/)
 [<img src="https://img.shields.io/wordpress/plugin/dt/eduadmin-booking.svg" alt="Downloads" />](https://wordpress.org/plugins/eduadmin-booking/)
@@ -52,6 +43,9 @@ and redo your own customization.
 
 == Changelog ==
 
+### 1.0.25
+- Bugfix: Missing styles
+
 ### 1.0.24
 - Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
 
@@ -66,10 +60,5 @@ and redo your own customization.
 - Fixes some styles to use `px` instead of `rem`
 - Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
 
-### [1.0.21]
-- Lots of design fixes and changes, to make the plugin more mobile friendly
-- Login widget bug fixed
-
 [1.0.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.22...v1.0.23
 [1.0.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.21...v1.0.22
-[1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21

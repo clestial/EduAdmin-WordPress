@@ -59,13 +59,15 @@ h1.courseTitle:hover,
     display: inline-block;
     box-sizing: border-box;
     border-radius: 3px;
+  color: hsl(0, 0%, 44%);
+  font-weight: 400;
     border: 1px solid hsl(0, 0%, 67%);
     background: transparent;
     box-shadow: unset;
 }
 
 .eduadmin .neutral-btn:hover {
-    background: hsla(0, 0%, 98%, 0.88);
+  background: hsla(0, 0%, 95%, 0.88);
     box-shadow: unset;
 }
 

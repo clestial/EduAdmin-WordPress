@@ -71,7 +71,9 @@
 		include_once( "__loginHandler.php" );
 		?>
         <div class="eduadmin loginForm">
-            <form action="" method="post">
+            <form action="<?php if ( isset( $_REQUEST['eid'] ) ) {
+		        echo "?eid=" . sanitize_text_field( $_REQUEST['eid'] );
+	        } ?>" method="post">
                 <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
                 <div class="title">
 	                <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>

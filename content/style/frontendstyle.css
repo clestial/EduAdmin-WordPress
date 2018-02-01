@@ -693,3 +693,8 @@ h1.courseTitle:hover,
 .eduadmin .eventItem.showMoreHidden {
     display: none;
 }
+
+.eduadmin .event-table.eventDays .eventSeparator {
+  font-size: 1.4rem;
+  font-weight: 500;
+}

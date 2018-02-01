@@ -12,5 +12,7 @@ filter:
     dependency_paths:
         - wordpress/
         - includes/
+        - libraries/
     excluded_paths:
         - 'tests/*'
+        - scripts/

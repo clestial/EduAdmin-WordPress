@@ -612,19 +612,6 @@
 					}
 				}
 
-				if ( $groupByCity && $lastCity != $ev->City ) {
-					$i = 0;
-					if ( $hasHiddenDates ) {
-						echo "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
-					}
-					$hasHiddenDates = false;
-					echo '<div class="eventSeparator">' . $ev->City . '</div>';
-				}
-
-				if ( $showMore > 0 && $i >= $showMore ) {
-					$hasHiddenDates = true;
-				}
-
 				$removeItems = array(
 					'eid',
 					'phrases',
@@ -648,7 +635,7 @@
 			echo '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 		}
 		if ( $hasHiddenDates ) {
-			echo "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
 		echo '</div></div>';
 

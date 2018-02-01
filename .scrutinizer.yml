@@ -13,6 +13,7 @@ filter:
         - wordpress/
         - includes/loApiClient.php
         - includes/loApiClasses.php
+        - includes/eduadmin-api-client/
         - libraries/
     excluded_paths:
         - 'tests/*'

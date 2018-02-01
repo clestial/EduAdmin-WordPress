@@ -48,7 +48,7 @@
 	?>
     <button class="loginButton cta-btn"
             onclick="this.form.eduadminpassword.required = true; this.form.eduformloginaction.value = 'loginEmail';<?php echo $click; ?>"><?php _e( "Log in", 'eduadmin-booking' ); ?></button>
-    <button class="forgotPasswordButton"
+    <button class="forgotPasswordButton neutral-btn"
             onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php _e( "Forgot password", 'eduadmin-booking' ); ?></button>
 </div>
 <?php if ( isset( EDU()->session['eduadminLoginError'] ) ) { ?>

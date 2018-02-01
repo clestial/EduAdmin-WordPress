@@ -12,9 +12,9 @@
 		/**
 		 * @var string API Password
 		 */
-		static $api_pass = null;
-		static $root_url = 'https://api.eduadmin.se';
-		protected $api_url = '';
+		static    $api_pass = null;
+		static    $root_url = 'https://api.eduadmin.se';
+		protected $api_url  = '';
 
 		/**
 		 * @param resource $curl
@@ -47,7 +47,7 @@
 
 		/**
 		 * @param      $endpoint   string Where are we going with this request?
-		 * @param      $params     object|array Contains all parameters that we want to pass to the API
+		 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 		 * @param      $methodName string Which method called us?
 		 * @param bool $is_json    Decides if this is a post with JSON
 		 *
@@ -59,7 +59,7 @@
 
 		/**
 		 * @param      $endpoint   string Where are we going with this request?
-		 * @param      $params     object|array Contains all parameters that we want to pass to the API
+		 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 		 * @param      $methodName string Which method called us?
 		 * @param bool $is_json    Decides if this is a post with JSON
 		 *
@@ -71,7 +71,7 @@
 
 		/**
 		 * @param      $endpoint   string Where are we going with this request?
-		 * @param      $params     object|array Contains all parameters that we want to pass to the API
+		 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 		 * @param      $methodName string Which method called us?
 		 * @param bool $is_json    Decides if this is a post with JSON
 		 *
@@ -83,7 +83,7 @@
 
 		/**
 		 * @param      $endpoint   string Where are we going with this request?
-		 * @param      $params     object|array Contains all parameters that we want to pass to the API
+		 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 		 * @param      $methodName string Which method called us?
 		 * @param bool $is_json    Decides if this is a post with JSON
 		 *
@@ -94,11 +94,11 @@
 		}
 
 		/**
-		 * @param string       $type
-		 * @param string       $endpoint
-		 * @param array|object $params
-		 * @param string       $methodName
-		 * @param bool         $is_json
+		 * @param string              $type
+		 * @param string              $endpoint
+		 * @param string|array|object $params
+		 * @param string              $methodName
+		 * @param bool                $is_json
 		 *
 		 * @return mixed
 		 */

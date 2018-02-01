@@ -19,22 +19,22 @@
 		 */
 		public function Search( $select = null, $filter = null, $expand = null, $orderby = null, $top = null, $skip = null, $count = true ) {
 			$params = array();
-			if ( isset( $select ) ) {
+			if ( isset( $select ) && ! empty( $select ) ) {
 				$params['$select'] = $select;
 			}
-			if ( isset( $filter ) ) {
+			if ( isset( $filter ) && ! empty( $filter ) ) {
 				$params['$filter'] = $filter;
 			}
-			if ( isset( $expand ) ) {
+			if ( isset( $expand ) && ! empty( $expand ) ) {
 				$params['$expand'] = $expand;
 			}
-			if ( isset( $orderby ) ) {
+			if ( isset( $orderby ) && ! empty( $orderby ) ) {
 				$params['$orderby'] = $orderby;
 			}
-			if ( isset( $top ) ) {
+			if ( isset( $top ) && ! empty( $top ) ) {
 				$params['$top'] = $top;
 			}
-			if ( isset( $skip ) ) {
+			if ( isset( $skip ) && ! empty( $skip ) ) {
 				$params['$skip'] = $skip;
 			}
 			$params['$count'] = $count ? 'true' : false;
@@ -51,10 +51,10 @@
 		 */
 		public function GetItem( $id, $select = null, $expand = null ) {
 			$params = array();
-			if ( isset( $select ) ) {
+			if ( isset( $select ) && ! empty( $select ) ) {
 				$params['$select'] = $select;
 			}
-			if ( isset( $expand ) ) {
+			if ( isset( $expand ) && ! empty( $expand ) ) {
 				$params['$expand'] = $expand;
 			}
 

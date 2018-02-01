@@ -152,7 +152,10 @@
 				$this->REST->ProgrammeBooking     = new EduAdmin_REST_ProgrammeBooking();
 				$this->REST->Report               = new EduAdmin_REST_Report();
 
-				add_action( 'eduadmin-showtimers', array( $this, 'RenderTimers' ) );
+				// If we're inside a WordPress-plugin
+				if ( function_exists( 'add_action' ) ) {
+					add_action( 'eduadmin-showtimers', array( $this, 'RenderTimers' ) );
+				}
 			}
 
 			public function RenderTimers() {

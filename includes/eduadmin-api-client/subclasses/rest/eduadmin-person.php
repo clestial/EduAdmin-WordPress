@@ -56,10 +56,9 @@
 		 */
 		public function LoginById( $personId, $password ) {
 			return parent::POST( "/$personId/Login",
-			                     array(
-				                     'password' => $password,
-			                     ),
-			                     get_called_class() . "|" . __FUNCTION__
+			                     array( '' => $password ),
+			                     get_called_class() . "|" . __FUNCTION__,
+			                     false
 			);
 		}
 

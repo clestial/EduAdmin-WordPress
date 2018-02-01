@@ -27,8 +27,7 @@
 				$con = $matchingContacts[0];
 				if ( $con->CanLogin == 1 ) {
 					EDU()->session['needsLogin'] = true;
-
-					return;
+					die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
 				}
 				EDU()->session['needsLogin'] = false;
 				$filter                      = new XFiltering();

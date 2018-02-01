@@ -11,7 +11,8 @@ build:
 filter:
     dependency_paths:
         - wordpress/
-        - includes/
+        - includes/loApiClient.php
+        - includes/loApiClasses.php
         - libraries/
     excluded_paths:
         - 'tests/*'

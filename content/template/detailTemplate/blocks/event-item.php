@@ -1,3 +1,17 @@
+<?php
+	if ( $groupByCity && $lastCity != $ev->City ) {
+		$i = 0;
+		if ( $hasHiddenDates ) {
+			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+		}
+		$hasHiddenDates = false;
+		echo '<div class="eventSeparator">' . $ev->City . '</div>';
+	}
+
+	if ( $showMore > 0 && $i >= $showMore ) {
+		$hasHiddenDates = true;
+	}
+?>
 <div data-groupid="eduev<?php echo( $groupByCity ? "-" . $ev->City : "" ); ?>"
      class="eventItem<?php echo( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ); ?>">
     <div class="eventDate<?php echo $groupByCityClass; ?>">

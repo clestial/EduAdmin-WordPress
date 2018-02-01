@@ -695,6 +695,7 @@ h1.courseTitle:hover,
 }
 
 .eduadmin .event-table.eventDays .eventSeparator {
+    margin-top: 1rem;
   font-size: 1.4rem;
   font-weight: 500;
 }

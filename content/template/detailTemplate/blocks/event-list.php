@@ -9,6 +9,7 @@
 
 	$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
 	$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
+	$showMore              = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 ?>
 <div class="event-table eventDays"
      data-eduwidget="eventlist"
@@ -16,7 +17,7 @@
      data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
      data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
      data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
-     data-showmore="0"
+     data-showmore="<?php echo @esc_attr( $showMore ); ?>"
      data-groupbycity="<?php echo $groupByCity; ?>"
      data-fetchmonths="<?php echo $fetchMonths; ?>"
 	<?php echo( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ); ?>
@@ -27,13 +28,6 @@
 		$i = 0;
 		if ( ! empty( $prices ) ) {
 			foreach ( $events as $ev ) {
-				if ( $groupByCity && $lastCity != $ev->City ) {
-					$i = 0;
-					echo '<div class="eventSeparator">';
-					echo $ev->City;
-
-					echo '</div>';
-				}
 				if ( isset( $_REQUEST['eid'] ) ) {
 					if ( $ev->EventID != $_REQUEST['eid'] ) {
 						continue;
@@ -50,6 +44,9 @@
                 <i><?php _e( "No available dates for the selected course", 'eduadmin-booking' ); ?></i>
             </div>
 			<?php
+		}
+		if ( $hasHiddenDates ) {
+			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
 	?>
 </div>

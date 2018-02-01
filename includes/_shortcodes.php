@@ -84,6 +84,7 @@
 				'template'       => $selectedTemplate,
 				'courseid'       => null,
 				'customtemplate' => null,
+				'showmore'       => null,
 				'hide'           => null,
 			),
 			normalize_empty_atts( $attributes ),
@@ -608,19 +609,6 @@
 							}
 						}
 
-						if ( $groupByCity && $lastCity != $ev->City ) {
-							$i = 0;
-							if ( $hasHiddenDates ) {
-								$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev-" . $lastCity . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
-							}
-							$hasHiddenDates = false;
-							$retStr         .= '<div class="eventSeparator">' . $ev->City . '</div>';
-						}
-
-						if ( $showMore > 0 && $i >= $showMore ) {
-							$hasHiddenDates = true;
-						}
-
 						ob_start();
 						include( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php' );
 						$retStr   .= ob_get_clean();
@@ -631,7 +619,7 @@
 						$retStr .= '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 					}
 					if ( $hasHiddenDates ) {
-						$retStr .= "<div class=\"eventShowMore\"><a href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+						$retStr .= "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 					}
 					$retStr .= '</div></div>';
 				}

@@ -198,6 +198,10 @@ h1.courseTitle:hover,
   font-weight: 500;
 }
 
+.eduadmin.loginForm form .title select.dateInfo {
+    padding: unset;
+}
+
 .eduadmin.loginForm form .title .checkEmailForm {
   width: 100%;
   display: flex;
@@ -247,6 +251,10 @@ h1.courseTitle:hover,
     text-align: left;
   }
 
+    .eduadmin.loginForm form .title select.dateInfo {
+        padding: unset;
+    }
+
   .eduadmin.loginForm form .title .checkEmailForm label {
     margin: 0
   }
@@ -284,6 +292,11 @@ h1.courseTitle:hover,
   font-size: 1.2rem;
   font-weight: 500;
 }
+
+.eduadmin.booking-page form .title select.dateInfo {
+    padding: unset;
+}
+
 .eduadmin.booking-page form .notUserCheck a {margin: 0 0 0 8px; color: hsl(0, 0%, 40%);}
 .eduadmin.booking-page form .notUserCheck {
   text-align: center;
@@ -404,6 +417,10 @@ h1.courseTitle:hover,
 @media  (min-width: 800px) {
 
   .eduadmin.booking-page form .title .dateInfo { padding: 48px 0 56px; }
+
+    .eduadmin.booking-page form .title select.dateInfo {
+        padding: unset;
+    }
   .eduadmin.booking-page form .notUserCheck {
     text-align: right;
     margin: 0;

@@ -3,7 +3,7 @@
 	global $wp_query;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
-	if ( ! $apiKey || empty( $apiKey ) ) {
+	if ( !$apiKey || empty( $apiKey ) ) {
 		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
 		if ( isset( $_REQUEST['act'] ) && sanitize_text_field( $_REQUEST['act'] ) == 'eventInquiry' ) {
@@ -11,7 +11,7 @@
 		}
 
 		$edo = get_transient( 'eduadmin-listCourses' );
-		if ( ! $edo ) {
+		if ( !$edo ) {
 			$filtering = new XFiltering();
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
@@ -23,14 +23,14 @@
 		$selectedCourse = false;
 		$name           = "";
 		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
 			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
 		}
-		if ( ! $selectedCourse ) {
+		if ( !$selectedCourse ) {
 			?>
             <script>history.go(-1);</script>
 			<?php
@@ -77,7 +77,7 @@
             <div class="title">
                 <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
                 <h1 class="courseTitle"><?php echo $name; ?> - <?php _e( "Inquiry", 'eduadmin-booking' ); ?>
-                    <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
+                    <small><?php echo( !empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
                 </h1>
             </div>
 			<?php
@@ -85,7 +85,7 @@
 				echo date( "H:i", strtotime( $event->PeriodStart ) ); ?>
             - <?php echo date( "H:i", strtotime( $event->PeriodEnd ) );
 				$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );
-				if ( ! $addresses ) {
+		        if ( !$addresses ) {
 					$ft = new XFiltering();
 					$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
 					$ft->AddItem( $f );

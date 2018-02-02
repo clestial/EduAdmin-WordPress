@@ -27,7 +27,7 @@
 
 		if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
 			$edo = get_transient( 'eduadmin-listCourses' );
-			if ( ! $edo ) {
+			if ( !$edo ) {
 				$filtering = new XFiltering();
 				$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 				$filtering->AddItem( $f );
@@ -54,7 +54,7 @@
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
 					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
-					if ( ! empty( $objAttr ) ) {
+					if ( !empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
 							case 5:
@@ -67,7 +67,7 @@
 								$value = $attr->AttributeValue;
 								break;
 						}
-						if ( ! empty( $value ) && stristr( $title, $value ) === false ) {
+						if ( !empty( $value ) && stristr( $title, $value ) === false ) {
 							$title = $value . " " . $sep . " " . $title;
 						} else {
 							$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
@@ -76,7 +76,7 @@
 						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
 					}
 				} else {
-					if ( ! empty( $selectedCourse->{$titleField} ) && stristr( $title, $selectedCourse->{$titleField} ) === false ) {
+					if ( !empty( $selectedCourse->{$titleField} ) && stristr( $title, $selectedCourse->{$titleField} ) === false ) {
 						$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
 					} else {
 						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;

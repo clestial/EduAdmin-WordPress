@@ -6,7 +6,7 @@
 <?php
 
 	foreach ( $edo as $object ) {
-		$name   = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+		$name   = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 		$events = array_filter( $ede, function( $ev ) use ( &$object ) {
 			return $ev->ObjectID == $object->ObjectID;
 		} );
@@ -20,7 +20,7 @@
 					$prices[ $pr->Price ] = $pr;
 				}
 				$sortedEvents[ $ev->PeriodStart ] = $ev;
-				if ( ! empty( $ev->City ) ) {
+				if ( !empty( $ev->City ) ) {
 					$eventCities[ $ev->City ] = $ev;
 				}
 			}
@@ -33,7 +33,7 @@
 			continue;
 		}
 
-		if ( $showEventsWithoutEventsOnly && ! empty( $sortedEvents ) ) {
+		if ( $showEventsWithoutEventsOnly && !empty( $sortedEvents ) ) {
 			continue;
 		}
 		include( 'blocks/course_blockB.php' );

@@ -8,7 +8,7 @@
 	 * Plugin URI:	http://www.eduadmin.se
 	 * Description:	EduAdmin plugin to allow visitors to book courses at your website
 	 * Tags:	booking, participants, courses, events, eduadmin, lega online
-	 * Version:	1.0.25
+	 * Version:	2.0
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
@@ -37,7 +37,7 @@
 		along with this program. If not, see <http://www.gnu.org/licenses/>.
 	 */
 
-	if ( ! class_exists( 'EduAdmin' ) ) :
+	if ( !class_exists( 'EduAdmin' ) ) :
 
 		final class EduAdmin {
 			/**
@@ -172,14 +172,14 @@
 			public function get_token() {
 				$t      = $this->StartTimer( __METHOD__ );
 				$apiKey = get_option( 'eduadmin-api-key' );
-				if ( ! $apiKey || empty( $apiKey ) ) {
+				if ( !$apiKey || empty( $apiKey ) ) {
 					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
 					$this->StopTimer( $t );
 
 					return '';
 				} else {
 					$key = DecryptApiKey( $apiKey );
-					if ( ! $key ) {
+					if ( !$key ) {
 						add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
 						$this->StopTimer( $t );
 
@@ -187,13 +187,13 @@
 					}
 
 					$edutoken = get_transient( 'eduadmin-token' );
-					if ( ! $edutoken ) {
+					if ( !$edutoken ) {
 						$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
 						set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
 					} else {
 						if ( false === get_transient( 'eduadmin-validatedToken_' . $edutoken ) ) {
 							$valid = $this->api->ValidateAuthToken( $edutoken );
-							if ( ! $valid ) {
+							if ( !$valid ) {
 								$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
 								set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
 							}
@@ -359,7 +359,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 			public function get_ip_adress() {
 				$ipCheck = array( 'HTTP_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
 				foreach ( $ipCheck as $header ) {
-					if ( isset( $_SERVER[ $header ] ) && ! empty( $_SERVER[ $header ] ) ) {
+					if ( isset( $_SERVER[ $header ] ) && !empty( $_SERVER[ $header ] ) ) {
 						return $_SERVER[ $header ];
 					}
 				}
@@ -373,7 +373,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 				load_textdomain( 'eduadmin-booking', WP_LANG_DIR . '/eduadmin/' . 'eduadmin-booking' . '-' . $locale . '.mo' );
 				load_plugin_textdomain( 'eduadmin-booking', false, EDUADMIN_PLUGIN_PATH . '/languages' );
 
-				if ( ! wp_next_scheduled( 'eduadmin_call_home' ) ) {
+				if ( !wp_next_scheduled( 'eduadmin_call_home' ) ) {
 					wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
 				}
 
@@ -406,7 +406,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 				}
 
 				$currentToken = get_transient( 'eduadmin-newapi-token' );
-				if ( $currentToken == null || ! $currentToken->IsValid() ) {
+				if ( $currentToken == null || !$currentToken->IsValid() ) {
 					$currentToken = EDUAPI()->GetToken();
 					if ( empty( $currentToken->Issued ) ) {
 						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again. Or contact MultiNet support to get a new key.", 'eduadmin-booking' ) );
@@ -461,4 +461,15 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 				}
 				EDU()->StopTimer( $t );
 			} );
+
+		add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin.php',
+			function( $currentPluginMetadata, $newPluginMetadata ) {
+				if ( isset( $newPluginMetadata->upgrade_notice ) && strlen( trim( $newPluginMetadata->upgrade_notice ) ) > 0 ) {
+					echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . __( 'Important Upgrade Notice', 'eduadmin-booking' ) . ':</strong> ';
+					echo esc_html( $newPluginMetadata->upgrade_notice ), '</p>';
+				}
+			},
+			        10,
+			        2
+		);
 	endif;

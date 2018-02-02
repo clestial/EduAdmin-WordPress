@@ -6,7 +6,7 @@
 	 *
 	 * @return string valid PHP timezone string
 	 */
-	if ( ! function_exists( 'wp_get_timezone_string' ) ) {
+	if ( !function_exists( 'wp_get_timezone_string' ) ) {
 		function wp_get_timezone_string() {
 			$t = EDU()->StartTimer( __METHOD__ );
 			// if site timezone string exists, return it
@@ -95,7 +95,7 @@
 		foreach ( $removeParameters as $par ) {
 			unset( $_GET[ $par ] );
 		}
-		if ( ! empty( $_GET ) ) {
+		if ( !empty( $_GET ) ) {
 			EDU()->StopTimer( $t );
 
 			return $prepend . http_build_query( $_GET );
@@ -362,7 +362,7 @@
 	}
 
 	function GetOldStartEndDisplayDate( $startDate, $endDate, $short = false, $showWeekDays = false ) {
-		if ( ! isset( $startDate ) && ! isset( $endDate ) ) {
+		if ( !isset( $startDate ) && !isset( $endDate ) ) {
 			return "";
 		}
 		$t        = EDU()->StartTimer( __METHOD__ );
@@ -442,7 +442,7 @@
 		};
 	}
 
-	if ( ! function_exists( 'my_str_split' ) ) {
+	if ( !function_exists( 'my_str_split' ) ) {
 		// Credits go to https://code.google.com/p/php-slugs/
 		function my_str_split( $string ) {
 			$sArray = array();
@@ -455,7 +455,7 @@
 		}
 	}
 
-	if ( ! function_exists( 'noDiacritics' ) ) {
+	if ( !function_exists( 'noDiacritics' ) ) {
 		function noDiacritics( $string ) {
 			//cyrylic transcription
 			$cyrylicFrom = array(
@@ -951,7 +951,7 @@
 		}
 	}
 
-	if ( ! function_exists( 'makeSlugs' ) ) {
+	if ( !function_exists( 'makeSlugs' ) ) {
 		function makeSlugs( $string, $maxlen = 0 ) {
 			$t            = EDU()->StartTimer( __METHOD__ );
 			$newStringTab = array();
@@ -972,7 +972,7 @@
 				}
 			}
 
-			if ( ! empty( $newStringTab ) ) {
+			if ( !empty( $newStringTab ) ) {
 				$newString = implode( $newStringTab );
 				if ( $maxlen > 0 ) {
 					$newString = substr( $newString, 0, $maxlen );
@@ -988,7 +988,7 @@
 		}
 	}
 
-	if ( ! function_exists( 'checkSlug' ) ) {
+	if ( !function_exists( 'checkSlug' ) ) {
 		function checkSlug( $sSlug ) {
 			if ( preg_match( "/^[a-zA-Z0-9]+[a-zA-Z0-9\_\-]*$/", $sSlug ) ) {
 				return true;
@@ -998,7 +998,7 @@
 		}
 	}
 
-	if ( ! function_exists( 'removeDuplicates' ) ) {
+	if ( !function_exists( 'removeDuplicates' ) ) {
 		function removeDuplicates( $sSearch, $sReplace, $sSubject ) {
 			$t = EDU()->StartTimer( __METHOD__ );
 			$i = 0;

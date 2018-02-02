@@ -1,5 +1,5 @@
 <div class="objectBlock brick <?php echo edu_get_percent_from_values( $spotsLeft, $object->MaxParticipantNr ); ?>">
-	<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
+	<?php if ( $showImages && !empty( $object->ImageUrl ) ) { ?>
         <div class="objectImage"
              onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/?eid=<?php echo $object->EventID; ?><?php echo edu_getQueryString( "&" ); ?>';"
              style="background-image: url('<?php echo $object->ImageUrl; ?>');"></div>
@@ -12,10 +12,10 @@
     <div class="objectDescription"><?php
 			echo GetOldStartEndDisplayDate( $object->PeriodStart, $object->PeriodEnd, true, $showWeekDays );
 
-			if ( ! empty( $object->City ) && $showCity ) {
+		    if ( !empty( $object->City ) && $showCity ) {
 				echo " <span class=\"cityInfo\">";
 				echo $object->City;
-				if ( $showEventVenue && ! empty( $object->AddressName ) ) {
+			    if ( $showEventVenue && !empty( $object->AddressName ) ) {
 					echo "<span class=\"venueInfo\">, " . $object->AddressName . "</span>";
 				}
 				echo "</span>";

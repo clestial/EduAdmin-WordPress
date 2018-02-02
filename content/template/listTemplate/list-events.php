@@ -13,17 +13,17 @@
 		$attributes['category'] = $categoryID;
 	}
 
-	if ( ! empty( $filterCourses ) ) {
+	if ( !empty( $filterCourses ) ) {
 		$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
 		$filtering->AddItem( $f );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-city'] ) && !empty( $_REQUEST['eduadmin-city'] ) ) {
 		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-category'] ) && !empty( $_REQUEST['eduadmin-category'] ) ) {
 		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
 		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
@@ -31,9 +31,9 @@
 
 	$edo = EDU()->api->GetEducationObjectV2( EDU()->get_token(), '', $filtering->ToString(), false );
 
-	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
+	if ( isset( $_REQUEST['searchCourses'] ) && !empty( $_REQUEST['searchCourses'] ) ) {
 		$edo = array_filter( $edo, function( $object ) {
-			$name       = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name       = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 			$descr      = strip_tags( $object->{$descrField} );
 
@@ -44,9 +44,9 @@
 		} );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && !empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
-		if ( ! $subjects ) {
+		if ( !$subjects ) {
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
@@ -78,23 +78,23 @@
 	}
 
 	$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-	if ( ! is_numeric( $fetchMonths ) ) {
+	if ( !is_numeric( $fetchMonths ) ) {
 		$fetchMonths = 6;
 	}
 
-	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-city'] ) && !empty( $_REQUEST['eduadmin-city'] ) ) {
 		$f = new XFilter( 'LocationID', '=', intval( $_REQUEST['eduadmin-city'] ) );
 		$filtering->AddItem( $f );
 		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-category'] ) && !empty( $_REQUEST['eduadmin-category'] ) ) {
 		$f = new XFilter( 'CategoryID', '=', intval( $_REQUEST['eduadmin-category'] ) );
 		$filtering->AddItem( $f );
 		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && !empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$f = new XFilter( 'SubjectID', '=', intval( $_REQUEST['eduadmin-subject'] ) );
 		$filtering->AddItem( $f );
 		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
@@ -110,7 +110,7 @@
 	$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 	$filtering->AddItem( $f );
 
-	if ( ! empty( $filterCourses ) ) {
+	if ( !empty( $filterCourses ) ) {
 		$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
 		$filtering->AddItem( $f );
 	}
@@ -142,9 +142,9 @@
 
 	$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && !empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
-		if ( ! $subjects ) {
+		if ( !$subjects ) {
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );
@@ -166,7 +166,7 @@
 		} );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-level'] ) && !empty( $_REQUEST['eduadmin-level'] ) ) {
 		$attributes['courselevel'] = intval( $_REQUEST['eduadmin-level'] );
 		$ede                       = array_filter( $ede, function( $object ) {
 			$cl = get_transient( 'eduadmin-courseLevels' );
@@ -223,7 +223,7 @@
 	$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 	set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
-	if ( ! empty( $pricenames ) ) {
+	if ( !empty( $pricenames ) ) {
 		$ede = array_filter( $ede, function( $object ) {
 			$pn = get_transient( 'eduadmin-publicpricenames' );
 			foreach ( $pn as $subj ) {
@@ -259,9 +259,9 @@
 		}
 	}
 
-	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
+	if ( isset( $_REQUEST['searchCourses'] ) && !empty( $_REQUEST['searchCourses'] ) ) {
 		$ede = array_filter( $ede, function( $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 
 			$nameMatch = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 

@@ -1,5 +1,5 @@
 <?php
-	if ( ! defined( 'ABSPATH' ) ) {
+	if ( !defined( 'ABSPATH' ) ) {
 		exit;
 	}
 
@@ -101,12 +101,12 @@
 				$this->init_settings();
 			}
 
-			if ( ! isset( $this->settings[ $key ] ) ) {
+			if ( !isset( $this->settings[ $key ] ) ) {
 				$form_fields            = $this->get_form_fields();
 				$this->settings[ $key ] = isset( $form_fields[ $key ] ) ? $form_fields[ $key ]['default'] : '';
 			}
 
-			if ( ! is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
+			if ( !is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
 				$this->settings[ $key ] = $empty_value;
 			}
 			EDU()->StopTimer( $t );
@@ -119,7 +119,7 @@
 			$this->settings = get_option( $this->get_option_key(), null );
 			add_action( 'eduadmin-plugin-save_' . $this->id, array( $this, 'save_options' ) );
 
-			if ( ! is_array( $this->settings ) ) {
+			if ( !is_array( $this->settings ) ) {
 				$form_fields    = $this->get_form_fields();
 				$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
 			}
@@ -170,7 +170,7 @@
 		}
 
 		private function get_post_data() {
-			if ( ! empty( $this->data ) && is_array( $this->data ) ) {
+			if ( !empty( $this->data ) && is_array( $this->data ) ) {
 				return $this->data;
 			}
 

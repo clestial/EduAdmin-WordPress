@@ -21,8 +21,8 @@
 				}
 			}
 
-			if ( ! empty( $groupedQuestions ) ) {
-				$lastQuestionId = - 1;
+			if ( !empty( $groupedQuestions ) ) {
+				$lastQuestionId = -1;
 				foreach ( $groupedQuestions as $question ) {
 					if ( $lastQuestionId != $question->QuestionID ) {
 						renderQuestion( $question );

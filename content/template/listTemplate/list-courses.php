@@ -78,7 +78,7 @@
 
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$subjects = get_transient( 'eduadmin-subjects' );
-		if ( ! $subjects ) {
+		if ( !$subjects ) {
 			$sorting = new XSorting();
 			$s       = new XSort( 'SubjectName', 'ASC' );
 			$sorting->AddItem( $s );

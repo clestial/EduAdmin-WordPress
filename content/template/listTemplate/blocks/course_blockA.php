@@ -1,5 +1,5 @@
 <div class="objectItem" data-objectid="<?php echo $object->ObjectID; ?>">
-	<?php if ( $showImages && ! empty( $object->ImageUrl ) ) { ?>
+	<?php if ( $showImages && !empty( $object->ImageUrl ) ) { ?>
         <div class="objectImage"
              onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>';"
              style="background-image: url('<?php echo $object->ImageUrl; ?>');"></div>
@@ -12,7 +12,7 @@
         </div>
         <div class="objectDescription"><?php
 
-				if ( stripos( $descrField, "attr_" ) !== false && ! empty( $objectAttributes ) ) {
+		        if ( stripos( $descrField, "attr_" ) !== false && !empty( $objectAttributes ) ) {
 					$objectDescription = array_filter( $objectAttributes, function( $oa ) use ( &$object ) {
 						return $oa->ObjectID == $object->ObjectID;
 					} );
@@ -26,16 +26,16 @@
 					echo "<div class=\"courseDescription\">" . $descr . "</div>";
 				}
 
-				if ( $showCourseLocations && ! empty( $eventCities ) && $showCity ) {
+		        if ( $showCourseLocations && !empty( $eventCities ) && $showCity ) {
 					$cities = join( ", ", array_keys( $eventCities ) );
 					echo "<div class=\"locationInfo\">" . $cities . "</div> ";
 				}
 
 				if ( $showNextEventDate ) {
 					echo "<div class=\"nextEventDate\" data-eduwidget=\"courseitem-date\" data-objectid=\"" . $object->ObjectID . "\">";
-					if ( ! empty( $sortedEvents ) ) {
+					if ( !empty( $sortedEvents ) ) {
 						echo sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( current( $sortedEvents )->PeriodStart ) ) ) . " " . current( $sortedEvents )->City;
-						if ( $showEventVenue && ! empty( current( $sortedEvents )->AddressName ) ) {
+						if ( $showEventVenue && !empty( current( $sortedEvents )->AddressName ) ) {
 							echo "<span class=\"venueInfo\">, " . current( $sortedEvents )->AddressName . "</span>";
 						}
 					} else {
@@ -44,7 +44,7 @@
 					echo "</div> ";
 				}
 
-				if ( $showEventPrice && ! empty( $prices ) ) {
+		        if ( $showEventPrice && !empty( $prices ) ) {
 					ksort( $prices );
 					$cheapest = current( $prices );
 					echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $cheapest->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";

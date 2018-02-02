@@ -48,7 +48,7 @@
 
 				do_action( 'eduadmin-checkpaymentplugins', $ebi );
 
-				if ( ! $ebi->NoRedirect ) {
+				if ( !$ebi->NoRedirect ) {
 					wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . "?edu-thankyou=" . $eventCustomerLnkID );
 					exit();
 				}

@@ -11,7 +11,7 @@
         </div>
     </label>
 	<?php
-		if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
+		if ( !$noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
 			?>
             <label>
                 <div class="inputLabel">
@@ -201,7 +201,7 @@
 			}
 			renderAttribute( $attr, false, "", $data );
 		}
-		if ( ! $noInvoiceFreeEvents || $firstPrice->Price > 0 ) {
+		if ( !$noInvoiceFreeEvents || $firstPrice->Price > 0 ) {
 			?>
             <label style="<?php echo $forceShowInvoiceInformation ? "display: none;" : "" ?>">
                 <div class="inputHolder alsoInvoiceCustomer">
@@ -209,7 +209,7 @@
                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
 	                    <?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer">
-		                <?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
+	                    <?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
                     </label>
                 </div>
             </label>

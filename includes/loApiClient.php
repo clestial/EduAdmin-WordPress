@@ -118,17 +118,17 @@
 			$responseHeaders = $this->__server->__getLastResponseHeaders();
 			$response        = $this->__server->__getLastResponse();
 
-			if ( ! empty( $requestHeaders ) ) {
+			if ( !empty( $requestHeaders ) ) {
 				echo '<code>' . nl2br( htmlspecialchars( $requestHeaders, true ) ) . '</code>' . '<br/>';
 			}
-			if ( ! empty( $request ) ) {
+			if ( !empty( $request ) ) {
 				echo highlight_string( $request, true ) . '<br/>';
 			}
 
-			if ( ! empty( $responseHeaders ) ) {
+			if ( !empty( $responseHeaders ) ) {
 				echo '<code>' . nl2br( htmlspecialchars( $responseHeaders, true ) ) . '</code>' . '<br/>';
 			}
-			if ( ! empty( $response ) ) {
+			if ( !empty( $response ) ) {
 				echo highlight_string( $response, true ) . '<br/>';
 			}
 		}
@@ -352,21 +352,21 @@
 		 */
 		private function __getArray( $objName, $res ) {
 			$t = $this->StartTimer( $objName . '__getArray' );
-			if ( ! empty( $res->{$objName} ) ) {
+			if ( !empty( $res->{$objName} ) ) {
 				if ( is_array( $res->{$objName} ) ) {
 					$this->StopTimer( $t );
 
 					return $res;
 				} else {
-					$nRes                                    = new stdClass;
-					$nRes->{$objName}                        = array();
-					$nRes->{$objName}[]                      = $res->{$objName};
+					$nRes               = new stdClass;
+					$nRes->{$objName}   = array();
+					$nRes->{$objName}[] = $res->{$objName};
 					$this->StopTimer( $t );
 
 					return $nRes;
 				}
 			} else {
-				if ( ! empty( $res->{"ArrayOf" . $objName} ) ) {
+				if ( !empty( $res->{"ArrayOf" . $objName} ) ) {
 					if ( is_array( $res->{"ArrayOf" . $objName} ) ) {
 						$this->StopTimer( $t );
 						if ( $this->debugTimers ) {
@@ -384,8 +384,8 @@
 
 						return $res;
 					} else {
-						$nRes                                    = new stdClass;
-						$nRes->{$objName}                        = $res->{"ArrayOf" . $objName}->{$objName};
+						$nRes             = new stdClass;
+						$nRes->{$objName} = $res->{"ArrayOf" . $objName}->{$objName};
 						$this->StopTimer( $t );
 						if ( $this->debugTimers ) {
 							echo "<!-- " . $objName . '__getArray' . ": " . round( $this->timers[ $objName . '__getArray' ] * 1000, 2 ) . "ms -->\n";
@@ -394,8 +394,8 @@
 						return $nRes;
 					}
 				}
-				$nRes                                    = new stdClass;
-				$nRes->{$objName}                        = array();
+				$nRes             = new stdClass;
+				$nRes->{$objName} = array();
 				$this->StopTimer( $t );
 
 				return $nRes;

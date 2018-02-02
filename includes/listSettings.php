@@ -3,7 +3,7 @@
 		EDU()->timers[ __METHOD__ ] = microtime( true );
 		$apiKey                     = get_option( 'eduadmin-api-key' );
 
-		if ( ! $apiKey || empty( $apiKey ) ) {
+		if ( !$apiKey || empty( $apiKey ) ) {
 			add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
 
 			return;
@@ -148,7 +148,7 @@
 															echo " selected=\"selected\"";
                                                         } ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                                                     </optgroup>
-													<?php if ( ! empty( $attributes ) ) { ?>
+	                                                <?php if ( !empty( $attributes ) ) { ?>
                                                         <optgroup
                                                                 label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
 															<?php foreach ( $attributes as $attr ) { ?>

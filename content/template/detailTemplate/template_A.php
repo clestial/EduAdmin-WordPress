@@ -3,11 +3,11 @@
 	global $wp_query;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
-	if ( ! $apiKey || empty( $apiKey ) ) {
+	if ( !$apiKey || empty( $apiKey ) ) {
 		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
 		$edo = get_transient( 'eduadmin-listCourses' );
-		if ( ! $edo ) {
+		if ( !$edo ) {
 			$filtering = new XFiltering();
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
@@ -23,14 +23,14 @@
 		$selectedCourse = false;
 		$name           = "";
 		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
 			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
 		}
-		if ( ! $selectedCourse ) {
+		if ( !$selectedCourse ) {
 			?>
             <script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
 			<?php
@@ -38,7 +38,7 @@
 		}
 
 		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-		if ( ! is_numeric( $fetchMonths ) ) {
+		if ( !is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
@@ -109,7 +109,7 @@
 		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 		set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
-		if ( ! empty( $pricenames ) ) {
+		if ( !empty( $pricenames ) ) {
 			$events = array_filter( $events, function( $object ) {
 				$pn = get_transient( 'eduadmin-publicpricenames' );
 				foreach ( $pn as $subj ) {
@@ -123,7 +123,7 @@
 		}
 
 		$courseLevel = get_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID );
-		if ( ! $courseLevel ) {
+		if ( !$courseLevel ) {
 			$ft = new XFiltering();
 			$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
 			$ft->AddItem( $f );
@@ -145,16 +145,16 @@
         <div class="eduadmin">
             <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
             <div class="title">
-	            <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
+	            <?php if ( !empty( $selectedCourse->ImageUrl ) ) : ?>
                     <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
 	            <?php endif; ?>
                 <h1 class="courseTitle"><?php echo $name; ?>
-                    <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
+                    <small><?php echo( !empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
                 </h1>
             </div>
             <hr/>
             <div class="textblock">
-	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
+	            <?php if ( !in_array( 'description', $hideSections ) && !empty( $selectedCourse->CourseDescription ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Course description", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -164,7 +164,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
+	            <?php if ( !in_array( 'goal', $hideSections ) && !empty( $selectedCourse->CourseGoal ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Course goal", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -174,7 +174,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
+	            <?php if ( !in_array( 'target', $hideSections ) && !empty( $selectedCourse->TargetGroup ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Target group", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -184,7 +184,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
+	            <?php if ( !in_array( 'prerequisites', $hideSections ) && !empty( $selectedCourse->Prerequisites ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Prerequisites", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -194,7 +194,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
+	            <?php if ( !in_array( 'after', $hideSections ) && !empty( $selectedCourse->CourseAfter ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "After the course", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -204,7 +204,7 @@
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse->Quote ) ) { ?>
+	            <?php if ( !in_array( 'quote', $hideSections ) && !empty( $selectedCourse->Quote ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Quotes", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
@@ -216,7 +216,7 @@
 				<?php } ?>
             </div>
             <div class="eventInformation">
-	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
+	            <?php if ( !in_array( 'time', $hideSections ) && !empty( $selectedCourse->StartTime ) && !empty( $selectedCourse->EndTime ) ) { ?>
                     <h3><?php _e( "Time", 'eduadmin-booking' ); ?></h3>
 					<?php
 		            echo ( $selectedCourse->Days > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days ) . ', ' : '' ) . date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
@@ -248,7 +248,7 @@
 						$uniquePrices[ $price->Description ] = $price;
 					}
 
-					if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
+					if ( !in_array( 'price', $hideSections ) && !empty( $prices ) ) {
 						?>
                         <h3><?php _e( "Price", 'eduadmin-booking' ); ?></h3>
 						<?php

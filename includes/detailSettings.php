@@ -72,7 +72,7 @@
 								echo " selected=\"selected\"";
                             } ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                         </optgroup>
-						<?php if ( ! empty( $attributes ) ) { ?>
+	                    <?php if ( !empty( $attributes ) ) { ?>
                             <optgroup label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
 								<?php foreach ( $attributes as $attr ) { ?>
                                     <option value="attr_<?php echo $attr->AttributeID; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr->AttributeID ? " selected=\"selected\"" : "" ); ?>><?php echo $attr->AttributeDescription; ?></option>

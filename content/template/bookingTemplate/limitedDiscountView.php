@@ -21,10 +21,10 @@
 				$addCard = true;
 			}
 
-			if ( ! empty( $card->CategoryID ) && $card->CategoryID != $selectedCourse->CategoryID ) {
+			if ( !empty( $card->CategoryID ) && $card->CategoryID != $selectedCourse->CategoryID ) {
 				$addCard = false;
 			}
-			if ( ! empty( $card->CustomerContactID ) && $card->CustomerContactID != $contact->CustomerContactID ) {
+			if ( !empty( $card->CustomerContactID ) && $card->CustomerContactID != $contact->CustomerContactID ) {
 				$addCard = false;
 			}
 
@@ -49,7 +49,7 @@
 				$addCard = true;
 			}
 
-			if ( $addCard && ! in_array( $oCard->LimitedDiscountID, $cCardIds ) ) {
+			if ( $addCard && !in_array( $oCard->LimitedDiscountID, $cCardIds ) ) {
 				$cCardIds[]                             = $oCard->LimitedDiscountID;
 				$cardCosts[ $oCard->LimitedDiscountID ] = $oCard->CreditCount;
 			}
@@ -96,7 +96,7 @@
                             <label class="discountCardItem">
                                 <input type="radio"
                                        name="edu-limitedDiscountID"
-									<?php if ( ! $enoughCredits ) : ?>
+	                                <?php if ( !$enoughCredits ) : ?>
                                         disabled readonly title="<?php _e( "Not enough uses left on this card.", 'eduadmin-booking' ); ?>"
 									<?php endif; ?>
                                        value="<?php echo $card->LimitedDiscountID; ?>"/>

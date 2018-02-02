@@ -3,9 +3,9 @@
 	include( "list-courses.php" );
 ?>
     <div class="course-holder tmpl_A"><?php
-	if ( ! empty( $edo ) ) {
+	if ( !empty( $edo ) ) {
 		foreach ( $edo as $object ) {
-			$name   = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name   = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$events = array_filter( $ede, function( $ev ) use ( &$object ) {
 				return $ev->ObjectID == $object->ObjectID;
 			} );
@@ -16,7 +16,7 @@
 
 			foreach ( $events as $ev ) {
 				$sortedEvents[ $ev->PeriodStart ] = $ev;
-				if ( ! empty( $ev->City ) ) {
+				if ( !empty( $ev->City ) ) {
 					$eventCities[ $ev->City ] = $ev;
 				}
 			}
@@ -37,7 +37,7 @@
 				continue;
 			}
 
-			if ( $showEventsWithoutEventsOnly && ! empty( $sortedEvents ) ) {
+			if ( $showEventsWithoutEventsOnly && !empty( $sortedEvents ) ) {
 				continue;
 			}
 			include( 'blocks/course_blockA.php' );

@@ -9,7 +9,7 @@
 
 	$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
 	$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
-	$showMore              = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
+	$showMore              = isset( $attributes['showmore'] ) && !empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 ?>
 <div class="event-table eventDays"
      data-eduwidget="eventlist"
@@ -26,7 +26,7 @@
 >
 	<?php
 		$i = 0;
-		if ( ! empty( $prices ) ) {
+		if ( !empty( $prices ) ) {
 			foreach ( $events as $ev ) {
 				if ( isset( $_REQUEST['eid'] ) ) {
 					if ( $ev->EventID != $_REQUEST['eid'] ) {

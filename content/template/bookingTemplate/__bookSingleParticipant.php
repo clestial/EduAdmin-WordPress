@@ -27,7 +27,7 @@
 
 	$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
-	if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
+	if ( !isset( $_POST['alsoInvoiceCustomer'] ) ) {
 		$customer->InvoiceName     = $first . " " . $last;
 		$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
 		$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
@@ -41,7 +41,7 @@
 		$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['invoicePostalCity'] ) );
 	}
 
-	if ( ! empty( $customerInvoiceEmailAddress ) ) {
+	if ( !empty( $customerInvoiceEmailAddress ) ) {
 		$customer->InvoiceEmail = $customerInvoiceEmailAddress;
 	}
 
@@ -166,7 +166,7 @@
 
 	$contact->CustomerID = $customer->CustomerID;
 
-	if ( ! empty( $_POST['contactFirstName'] ) ) {
+	if ( !empty( $_POST['contactFirstName'] ) ) {
 		$contact->ContactName = trim( sanitize_text_field( $_POST['contactFirstName'] ) ) . ";" . trim( sanitize_text_field( $_POST['contactLastName'] ) );
 		$contact->Phone       = trim( sanitize_text_field( $_POST['contactPhone'] ) );
 		$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
@@ -174,7 +174,7 @@
 		if ( isset( $_POST['contactCivReg'] ) ) {
 			$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 		}
-		if ( isset( $_POST['contactPass'] ) && ! empty( $_POST['contactPass'] ) ) {
+		if ( isset( $_POST['contactPass'] ) && !empty( $_POST['contactPass'] ) ) {
 			$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 		}
 		$contact->CanLogin    = 'true';
@@ -259,7 +259,7 @@
 
 	$persons     = array();
 	$personEmail = array();
-	if ( ! empty( $contact->Email ) && ! in_array( $contact->Email, $personEmail ) ) {
+	if ( !empty( $contact->Email ) && !in_array( $contact->Email, $personEmail ) ) {
 		$personEmail[] = $contact->Email;
 	}
 
@@ -302,7 +302,7 @@
 		$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
 		$ft->AddItem( $f );
 		$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
-		if ( ! empty( $matchingPersons ) ) {
+		if ( !empty( $matchingPersons ) ) {
 			$person = $matchingPersons[0];
 		}
 
@@ -359,7 +359,7 @@
 		$pArr[] = $person;
 	}
 
-	if ( ! empty( $pArr ) ) {
+	if ( !empty( $pArr ) ) {
 		$bi                    = new BookingInfoSubEvent();
 		$bi->EventID           = $eventId;
 		$bi->CustomerID        = $customer->CustomerID;
@@ -381,7 +381,7 @@
 			$bi->CouponID = intval( $_POST['edu-discountCodeID'] );
 		}
 
-		$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( sanitize_text_field( $_POST['invoiceReference'] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
+		$bi->CustomerReference = ( !empty( $_POST['invoiceReference'] ) ? trim( sanitize_text_field( $_POST['invoiceReference'] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
 		$eventCustomerLnkID    = EDU()->api->CreateSubEventBooking(
 			EDU()->get_token(),
 			$bi
@@ -416,7 +416,7 @@
 		}
 
 		// Spara alla frågor till eventcustomeranswerv2
-		if ( ! empty( $answers ) ) {
+		if ( !empty( $answers ) ) {
 			$sanswers = array();
 			foreach ( $answers as $answer ) {
 				$sanswers[] = $answer;
@@ -430,7 +430,7 @@
 		if ( empty( $senderEmail ) ) {
 			$senderEmail = "no-reply@legaonline.se";
 		}
-		if ( ! empty( $personEmail ) ) {
+		if ( !empty( $personEmail ) ) {
 			EDU()->api->SendConfirmationEmail( EDU()->get_token(), $eventCustomerLnkID, $senderEmail, $personEmail );
 		}
 

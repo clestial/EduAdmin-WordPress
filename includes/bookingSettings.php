@@ -938,6 +938,46 @@
                                                 <td><b>$participants$</b></td>
                                                 <td><?php _e( "Inserts the number participants", "eduadmin-booking" ); ?></td>
                                             </tr>
+                                            <tr>
+                                                <td><b>$startdate$</b></td>
+                                                <td><?php _e( "Inserts the start date of the event", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$enddate$</b></td>
+                                                <td><?php _e( "Inserts the end date of the event", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$eventid$</b></td>
+                                                <td><?php _e( "Inserts the event unique identifier", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$eventdescription$</b></td>
+                                                <td><?php _e( "Inserts the event description", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$customerid$</b></td>
+                                                <td><?php _e( "Inserts the generated customer id", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$customercontactid$</b></td>
+                                                <td><?php _e( "Inserts the generated contact id", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$created$</b></td>
+                                                <td><?php _e( "Inserts the date the booking was created", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$paid$</b></td>
+                                                <td><?php _e( "Inserts the payment status", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$objectid$</b></td>
+                                                <td><?php _e( "Inserts the unique identifier for the course", "eduadmin-booking" ); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>$notes$</b></td>
+                                                <td><?php _e( "Inserts the booking notes", "eduadmin-booking" ); ?></td>
+                                            </tr>
                                         </table>
                                     </td>
                                 </tr>

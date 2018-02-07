@@ -258,12 +258,32 @@
 						'$productname$',
 						'$totalsum$',
 						'$participants$',
+						'$startdate$',
+						'$enddate$',
+			            '$eventid$',
+			            '$eventdescription$',
+			            '$customerid$',
+			            '$customercontactid$',
+			            '$created$',
+			            '$paid$',
+			            '$objectid$',
+			            '$notes$'
 					),
 					array(
 						esc_js( $bookingInfo[0]->EventCustomerLnkID ), // $bookingno$
 						esc_js( $bookingInfo[0]->ObjectName ), // $productname$
 						esc_js( $bookingInfo[0]->TotalPrice ), // $totalsum$
-						esc_js( $bookingInfo[0]->ParticipantNr ) // $participants$
+						esc_js( $bookingInfo[0]->ParticipantNr ), // $participants$
+						esc_js( $bookingInfo[0]->PeriodStart ), // $startdate$
+						esc_js( $bookingInfo[0]->PeriodEnd ), // $enddate$
+						esc_js( $bookingInfo[0]->EventID ), // $eventid$
+						esc_js( $bookingInfo[0]->EventDescription ), // $eventdescription$
+						esc_js( $bookingInfo[0]->CustomerID ), // $customerid$
+						esc_js( $bookingInfo[0]->CustomerContactID ), // $customercontactid$
+						esc_js( $bookingInfo[0]->Created ), // $created$
+						esc_js( $bookingInfo[0]->Paid ), // $paid$
+						esc_js( $bookingInfo[0]->ObjectID ), // $objectid$
+						esc_js( $bookingInfo[0]->Notes ), // $notes$
 					),
 					$script
 				);

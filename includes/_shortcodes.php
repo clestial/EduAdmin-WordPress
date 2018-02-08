@@ -410,6 +410,54 @@
 					foreach ( $prices as $price ) {
 						$uniquePrices[ $price->Description ] = $price;
 					}
+					
+					if ( count( $uniquePrices ) == 0 ) {
+						$filtering = new XFiltering();
+						$f         = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+						$filtering->AddItem( $f );
+
+						$f = new XFilter( 'PublicPriceName', '=', "True" );
+						$filtering->AddItem( $f );
+
+						$sorting       = new XSorting();
+						$customOrder   = null;
+						$customOrderBy = null;
+						if ( !empty( $attributes['order'] ) ) {
+							$customOrder = $attributes['order'];
+						}
+
+						if ( !empty( $attributes['orderby'] ) ) {
+							$customOrderBy = $attributes['orderby'];
+						}
+
+						if ( $customOrderBy != null ) {
+							$orderby   = explode( ' ', $customOrderBy );
+							$sortorder = explode( ' ', $customOrder );
+							foreach ( $orderby as $od => $v ) {
+								if ( isset( $sortorder[ $od ] ) ) {
+									$or = $sortorder[ $od ];
+								} else {
+									$or = "ASC";
+								}
+
+								$s = new XSort( $v, $or );
+								$sorting->AddItem( $s );
+							}
+						} else {
+							$s = new XSort( 'PriceNameID', $customOrder != null ? $customOrder : 'ASC' );
+							$sorting->AddItem( $s );
+						}
+
+						$edo = get_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse->ObjectID );
+						if ( !$edo ) {
+							$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
+							set_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse->ObjectID, $edo, 10 );
+						}
+
+						foreach ( $edo as $price ) {
+							$uniquePrices[ $price->Description ] = $price;
+						}
+					}
 
 					$currency = get_option( 'eduadmin-currency', 'SEK' );
 					if ( 1 == count( $uniquePrices ) ) {

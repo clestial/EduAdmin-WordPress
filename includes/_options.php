@@ -27,7 +27,7 @@
 
 		if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
 			$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"] );
-			if ( !$edo ) {
+			if ( ! $edo ) {
 				$edo = EDUAPI()->OData->CourseTemplates->GetItem(
 					intval( $wp->query_vars["courseId"] ),
 					null,
@@ -53,13 +53,13 @@
 						}
 					}
 
-					if ( !empty( $value ) && stristr( $title, $value ) === false ) {
+					if ( ! empty( $value ) && stristr( $title, $value ) === false ) {
 						$title = $value . " " . $sep . " " . $title;
 					} else {
 						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
 					}
 				} else {
-					if ( !empty( $selectedCourse[ $titleField ] ) && stristr( $title, $selectedCourse[ $titleField ] ) === false ) {
+					if ( ! empty( $selectedCourse[ $titleField ] ) && stristr( $title, $selectedCourse[ $titleField ] ) === false ) {
 						$title = $selectedCourse[ $titleField ] . " " . $sep . " " . $title;
 					} else {
 						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;

@@ -11,11 +11,12 @@
 			continue;
 		}
 
-		if ( $showEventsWithoutEventsOnly && !empty( $object["Events"] ) ) {
+		if ( $showEventsWithoutEventsOnly && ! empty( $object["Events"] ) ) {
 			continue;
 		}
 		include( 'blocks/course_blockB.php' );
 	}
 ?></div><?php
 	$out = ob_get_clean();
+
 	return $out;

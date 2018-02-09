@@ -3,11 +3,11 @@
 	global $wp_query;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
-	if ( !$apiKey || empty( $apiKey ) ) {
+	if ( ! $apiKey || empty( $apiKey ) ) {
 		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
 		$edo = get_transient( 'eduadmin-listCourses' );
-		if ( !$edo ) {
+		if ( ! $edo ) {
 			$filtering = new XFiltering();
 			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
 			$filtering->AddItem( $f );
@@ -19,14 +19,14 @@
 		$selectedCourse = false;
 		$name           = "";
 		foreach ( $edo as $object ) {
-			$name = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
 			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
 		}
-		if ( !$selectedCourse ) {
+		if ( ! $selectedCourse ) {
 			?>
             <script>history.go(-1);</script>
 			<?php
@@ -39,7 +39,7 @@
 			$ft->AddItem( $f );
 		}
 		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-		if ( !is_numeric( $fetchMonths ) ) {
+		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
@@ -183,7 +183,7 @@
                     <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
 
                     <div class="title">
-	                    <?php if ( !empty( $selectedCourse->ImageUrl ) ) : ?>
+	                    <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
                             <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
 	                    <?php endif; ?>
                         <h1 class="courseTitle">
@@ -205,7 +205,7 @@
                                         - <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
 											$addresses = get_transient( 'eduadmin-location-' . $ev->LocationAddressID );
 
-		                                    if ( !$addresses ) {
+		                                    if ( ! $addresses ) {
 												$ft = new XFiltering();
 												$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 												$ft->AddItem( $f );
@@ -229,7 +229,7 @@
 
 							echo "<span class=\"eventTime\">" . date( "H:i", strtotime( $event->PeriodStart ) ); ?> - <?php echo date( "H:i", strtotime( $event->PeriodEnd ) ) . "</span>";
 							$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );
-							if ( !$addresses ) {
+							if ( ! $addresses ) {
 								$ft = new XFiltering();
 								$f  = new XFilter( 'LocationAddressID', '=', $event->LocationAddressID );
 								$ft->AddItem( $f );
@@ -339,7 +339,7 @@
                                             data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
                                             data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
                                             onclick="eduBookingView.ValidateDiscountCode(); return false;">
-		                                <?php _e( "Validate", 'eduadmin-booking' ); ?>
+	                                    <?php _e( "Validate", 'eduadmin-booking' ); ?>
                                     </button>
                                     <input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>
                                 </div>
@@ -433,4 +433,5 @@
 	}
 	do_action( 'eduadmin-bookingform-loaded', EDU()->session['eduadmin-loginUser'] );
 	$out = ob_get_clean();
+
 	return $out;

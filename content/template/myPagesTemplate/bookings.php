@@ -100,7 +100,7 @@
                                             <tr>
                                                 <td align="left"><?php echo $participant->PersonName; ?></td>
                                                 <td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
-                                                <td align="right"><?php echo( !empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
+                                                <td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
                                             </tr>
 											<?php
 										}

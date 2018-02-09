@@ -9,7 +9,7 @@
 		}
 	}
 
-	if ( !empty( $_REQUEST['email'] ) ) {
+	if ( ! empty( $_REQUEST['email'] ) ) {
 		exit( 500 );
 	}
 

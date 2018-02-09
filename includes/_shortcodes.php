@@ -1,6 +1,6 @@
 <?php
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
-	if ( !function_exists( 'normalize_empty_atts' ) ) {
+	if ( ! function_exists( 'normalize_empty_atts' ) ) {
 		function normalize_empty_atts( $atts ) {
 			if ( empty( $atts ) ) {
 				return $atts;
@@ -96,7 +96,7 @@
 
 		EDU()->session->regenerate_id( true );
 
-		if ( !isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
+		if ( ! isset( $attributes['customtemplate'] ) || 1 != $attributes['customtemplate'] ) {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/detailTemplate/" . $attributes['template'] . ".php" );
 			EDU()->StopTimer( $t );
 
@@ -142,7 +142,7 @@
 		global $wp_query;
 		$detailpage = get_option( 'eduadmin-detailViewPage' );
 		if ( isset( $wp_query->queried_object ) ) {
-			if ( $detailpage !== false && $detailpage == $wp_query->queried_object->ID && !isset( $wp_query->query['courseId'] ) ) {
+			if ( $detailpage !== false && $detailpage == $wp_query->queried_object->ID && ! isset( $wp_query->query['courseId'] ) ) {
 				echo '<meta name="robots" content="noindex" />';
 			}
 		}
@@ -153,7 +153,7 @@
 
 	function eduadmin_get_booking_view( $attributes ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		if ( !defined( 'DONOTCACHEPAGE' ) ) {
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
 		$selectedTemplate = get_option( 'eduadmin-bookingTemplate', 'template_A' );
@@ -230,13 +230,13 @@
 
 		$apiKey = get_option( 'eduadmin-api-key' );
 
-		if ( !$apiKey || empty( $apiKey ) ) {
+		if ( ! $apiKey || empty( $apiKey ) ) {
 			EDU()->StopTimer( $t );
 
 			return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 		} else {
 			$edo = get_transient( 'eduadmin-object_' . $courseId );
-			if ( !$edo ) {
+			if ( ! $edo ) {
 				$edo = EDUAPI()->OData->CourseTemplates->GetItem(
 					$courseId,
 					null,
@@ -250,7 +250,7 @@
 				$selectedCourse = $edo;
 			}
 
-			if ( !$selectedCourse ) {
+			if ( ! $selectedCourse ) {
 				EDU()->StopTimer( $t );
 
 				return 'Course with ID ' . $courseId . ' could not be found.';
@@ -307,7 +307,7 @@
 					$ft->AddItem( $f );
 					$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
 
-					if ( !empty( $courseLevel ) ) {
+					if ( ! empty( $courseLevel ) ) {
 						$retStr .= $courseLevel[0]->Name;
 					}
 				}
@@ -325,7 +325,7 @@
 					}
 
 					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
-					if ( !empty( $objAttr ) ) {
+					if ( ! empty( $objAttr ) ) {
 						$attr = $objAttr[0];
 						switch ( $attr->AttributeTypeID ) {
 							case 5:
@@ -341,7 +341,7 @@
 
 				if ( isset( $attributes['courseprice'] ) ) {
 					$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-					if ( !is_numeric( $fetchMonths ) ) {
+					if ( ! is_numeric( $fetchMonths ) ) {
 						$fetchMonths = 6;
 					}
 
@@ -359,7 +359,7 @@
 					$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 					$ft->AddItem( $f );
 
-					if ( !empty( $attributes['courseeventlistfiltercity'] ) ) {
+					if ( ! empty( $attributes['courseeventlistfiltercity'] ) ) {
 						$f = new XFilter( 'City', '=', $attributes['courseeventlistfiltercity'] );
 						$ft->AddItem( $f );
 					}
@@ -418,11 +418,11 @@
 						$sorting       = new XSorting();
 						$customOrder   = null;
 						$customOrderBy = null;
-						if ( !empty( $attributes['order'] ) ) {
+						if ( ! empty( $attributes['order'] ) ) {
 							$customOrder = $attributes['order'];
 						}
 
-						if ( !empty( $attributes['orderby'] ) ) {
+						if ( ! empty( $attributes['orderby'] ) ) {
 							$customOrderBy = $attributes['orderby'];
 						}
 
@@ -445,7 +445,7 @@
 						}
 
 						$edo = get_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse["CourseTemplateId"] );
-						if ( !$edo ) {
+						if ( ! $edo ) {
 							$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 							set_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse["CourseTemplateId"], $edo, 10 );
 						}
@@ -480,7 +480,7 @@
 					$surl    = get_home_url();
 					$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
+					$name    = ( ! empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
 					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse["CourseTemplateId"] . '/book/' . edu_getQueryString();
 				}
 
@@ -488,13 +488,13 @@
 					$surl    = get_home_url();
 					$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
+					$name    = ( ! empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
 					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse["CourseTemplateId"] . '/interest/' . edu_getQueryString();
 				}
 
 				if ( isset( $attributes['courseeventlist'] ) ) {
 					$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-					if ( !is_numeric( $fetchMonths ) ) {
+					if ( ! is_numeric( $fetchMonths ) ) {
 						$fetchMonths = 6;
 					}
 
@@ -514,7 +514,7 @@
 					$f = new XFilter( 'CustomerID', '=', '0' );
 					$ft->AddItem( $f );
 
-					if ( !empty( $attributes['courseeventlistfiltercity'] ) ) {
+					if ( ! empty( $attributes['courseeventlistfiltercity'] ) ) {
 						$f = new XFilter( 'City', '=', $attributes['courseeventlistfiltercity'] );
 						$ft->AddItem( $f );
 					}
@@ -530,11 +530,11 @@
 
 					$customOrderBy      = null;
 					$customOrderByOrder = null;
-					if ( !empty( $attributes['orderby'] ) ) {
+					if ( ! empty( $attributes['orderby'] ) ) {
 						$customOrderBy = $attributes['orderby'];
 					}
 
-					if ( !empty( $attributes['order'] ) ) {
+					if ( ! empty( $attributes['order'] ) ) {
 						$customOrderByOrder = $attributes['order'];
 					}
 
@@ -597,7 +597,7 @@
 					$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
 
-					if ( !empty( $pricenames ) ) {
+					if ( ! empty( $pricenames ) ) {
 						$events = array_filter( $events, function( $object ) {
 							$pn = get_transient( 'eduadmin-publicpricenames' );
 							foreach ( $pn as $subj ) {
@@ -615,13 +615,13 @@
 
 					$lastCity = "";
 
-					$showMore       = isset( $attributes['showmore'] ) && !empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
+					$showMore       = isset( $attributes['showmore'] ) && ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 					$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 					$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 					$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
+					$name    = ( ! empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
 					$retStr  .= '<div class="eduadmin"><div class="event-table eventDays" data-eduwidget="eventlist" ' .
 					            'data-objectid="' . $selectedCourse["CourseTemplateId"] .
 					                   '" data-spotsleft="' . $spotLeftOption .
@@ -629,7 +629,7 @@
 					                   '" data-groupbycity="' . $groupByCity . '"' .
 					                   '" data-spotsettings="' . $spotSettings . '"' .
 					                   '" data-fewspots="' . $alwaysFewSpots . '"' .
-					            ( !empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . $attributes['courseeventlistfiltercity'] . '"' : '' ) .
+					            ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . $attributes['courseeventlistfiltercity'] . '"' : '' ) .
 					            ' data-fetchmonths="' . $fetchMonths . '"' .
 					                   ( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ) .
 					                   ' data-order="' . $customOrderBy . '"' .
@@ -704,7 +704,7 @@
 
 	function eduadmin_get_login_view( $attributes ) {
 		$t = EDU()->StartTimer( __METHOD__ );
-		if ( !defined( 'DONOTCACHEPAGE' ) ) {
+		if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
 		$attributes = shortcode_atts(

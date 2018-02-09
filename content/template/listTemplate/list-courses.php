@@ -4,7 +4,7 @@
 	$baseUrl = $surl . '/' . $cat;
 
 	$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-	if ( !is_numeric( $fetchMonths ) ) {
+	if ( ! is_numeric( $fetchMonths ) ) {
 		$fetchMonths = 6;
 	}
 
@@ -43,22 +43,22 @@
 		$attributes['category'] = $categoryID;
 	}
 
-	if ( isset( $_REQUEST['eduadmin-category'] ) && !empty( $_REQUEST['eduadmin-category'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
 		$filters[]              = "CategoryId eq " . intval( sanitize_text_field( $_REQUEST['eduadmin-category'] ) );
 		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-city'] ) && !empty( $_REQUEST['eduadmin-city'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
 		$filters[]          = 'Events/any(e:e/LocationId eq ' . intval( $_REQUEST['eduadmin-city'] ) . ')';
 		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-subject'] ) && !empty( $_REQUEST['eduadmin-subject'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
 		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
-	if ( isset( $_REQUEST['eduadmin-level'] ) && !empty( $_REQUEST['eduadmin-level'] ) ) {
+	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
 		$filters[] = 'EducationLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 	}
 
@@ -97,9 +97,9 @@
 	);
 	$courses = $edo["value"];
 
-	if ( isset( $_REQUEST['searchCourses'] ) && !empty( $_REQUEST['searchCourses'] ) ) {
+	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$courses = array_filter( $courses, function( $object ) {
-			$name       = ( !empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
+			$name       = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
 			$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 			$descr      = strip_tags( $object[ $descrField ] );
 

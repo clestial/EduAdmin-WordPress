@@ -2,7 +2,7 @@
 	$apiKey = get_option( 'eduadmin-api-key' );
 	ob_start();
 
-	if ( !$apiKey || empty( $apiKey ) ) {
+	if ( ! $apiKey || empty( $apiKey ) ) {
 		return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
 		$filtering = new XFiltering();
@@ -15,11 +15,11 @@
 		$sorting       = new XSorting();
 		$customOrder   = null;
 		$customOrderBy = null;
-		if ( !empty( $attributes['order'] ) ) {
+		if ( ! empty( $attributes['order'] ) ) {
 			$customOrder = $attributes['order'];
 		}
 
-		if ( !empty( $attributes['orderby'] ) ) {
+		if ( ! empty( $attributes['orderby'] ) ) {
 			$customOrderBy = $attributes['orderby'];
 		}
 
@@ -42,12 +42,12 @@
 		}
 
 		$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
-		if ( !$edo ) {
+		if ( ! $edo ) {
 			$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
 			set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
 		}
 
-		if ( !empty( $attributes['numberofprices'] ) ) {
+		if ( ! empty( $attributes['numberofprices'] ) ) {
 			$edo = array_slice( $edo, 0, $attributes['numberofprices'], true );
 		}
 
@@ -66,4 +66,5 @@
         </div>
 		<?php
 	}
+
 	return ob_get_clean();

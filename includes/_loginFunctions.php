@@ -14,7 +14,7 @@
 			$ccId = current( $cc["value"] )["PersonId"];
 		}
 
-		if ( $ccId > 0 && !empty( current( $cc["value"] )["Email"] ) ) {
+		if ( $ccId > 0 && ! empty( current( $cc["value"] )["Email"] ) ) {
 			$sent = EDUAPI()->REST->Person->SendResetPasswordEmailById( $ccId );
 			EDU()->StopTimer( $t );
 			EDU()->__writeDebug( $sent );
@@ -49,11 +49,11 @@
 		function() {
 			$apiKey = get_option( 'eduadmin-api-key' );
 
-			if ( !$apiKey || empty( $apiKey ) ) {
+			if ( ! $apiKey || empty( $apiKey ) ) {
 				add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
 			} else {
 				$key = DecryptApiKey( $apiKey );
-				if ( !$key ) {
+				if ( ! $key ) {
 					add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
 
 					return;

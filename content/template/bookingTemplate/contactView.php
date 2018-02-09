@@ -72,7 +72,7 @@
             </div>
         </label>
 	<?php } ?>
-	<?php if ( get_option( 'eduadmin-useLogin', false ) && !$contact->CanLogin ) { ?>
+	<?php if ( get_option( 'eduadmin-useLogin', false ) && ! $contact->CanLogin ) { ?>
         <label>
             <div class="inputLabel">
 	            <?php _e( "Please enter a password", 'eduadmin-booking' ); ?>

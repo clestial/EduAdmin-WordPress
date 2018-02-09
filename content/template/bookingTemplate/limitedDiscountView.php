@@ -17,7 +17,7 @@
                             <label class="discountCardItem">
                                 <input type="radio"
                                        name="edu-limitedDiscountID"
-	                                <?php if ( !$enoughCredits ) : ?>
+	                                <?php if ( ! $enoughCredits ) : ?>
                                         disabled readonly title="<?php _e( "Not enough uses left on this card.", 'eduadmin-booking' ); ?>"
 									<?php endif; ?>
                                        value="<?php echo $card["VoucherId"]; ?>"/>

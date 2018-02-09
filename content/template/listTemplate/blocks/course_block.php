@@ -1,5 +1,5 @@
 <?php
-	$name   = ( !empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
+	$name   = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
 	$events = $object["Events"];
 
 	$prices       = array();
@@ -8,7 +8,7 @@
 
 	foreach ( $events as $ev ) {
 		$sortedEvents[ $ev["StartDate"] ] = $ev;
-		if ( !empty( $ev["City"] ) ) {
+		if ( ! empty( $ev["City"] ) ) {
 			$eventCities[ $ev["City"] ] = $ev;
 		}
 		foreach ( $ev["PriceNames"] as $pr ) {

@@ -3,14 +3,14 @@
 	include( "list-courses.php" );
 ?>
     <div class="course-holder tmpl_A"><?php
-	if ( !empty( $courses ) ) {
+	if ( ! empty( $courses ) ) {
 		foreach ( $courses as $object ) {
 			include( 'blocks/course_block.php' );
 			if ( $showEventsWithEventsOnly && empty( $object["Events"] ) ) {
 				continue;
 			}
 
-			if ( $showEventsWithoutEventsOnly && !empty( $object["Events"] ) ) {
+			if ( $showEventsWithoutEventsOnly && ! empty( $object["Events"] ) ) {
 				continue;
 			}
 			include( 'blocks/course_blockA.php' );
@@ -22,4 +22,5 @@
 	}
 ?></div><?php
 	$out = ob_get_clean();
+
 	return $out;

@@ -86,7 +86,7 @@
     </div>
 </div>
 <?php
-	if ( !$noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
+	if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 ) ) {
 		?>
         <div class="customerView">
             <label>

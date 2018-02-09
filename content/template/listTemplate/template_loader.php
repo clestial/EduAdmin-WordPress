@@ -5,10 +5,10 @@
 
 	$filterCourses = array();
 
-	if ( !empty( $attributes['subject'] ) ) {
+	if ( ! empty( $attributes['subject'] ) ) {
 		foreach ( $eds as $subject ) {
 			if ( $subject->SubjectName == $attributes['subject'] ) {
-				if ( !in_array( $subject->ObjectID, $filterCourses ) ) {
+				if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
 					$filterCourses[] = $subject->ObjectID;
 				}
 			}
@@ -16,7 +16,7 @@
 	}
 
 	$categoryID = null;
-	if ( !empty( $attributes['category'] ) ) {
+	if ( ! empty( $attributes['category'] ) ) {
 		$categoryID = $attributes['category'];
 	}
 
@@ -24,16 +24,16 @@
 
 	$customOrderBy      = null;
 	$customOrderByOrder = null;
-	if ( !empty( $attributes['orderby'] ) ) {
+	if ( ! empty( $attributes['orderby'] ) ) {
 		$customOrderBy = $attributes['orderby'];
 	}
 
-	if ( !empty( $attributes['order'] ) ) {
+	if ( ! empty( $attributes['order'] ) ) {
 		$customOrderByOrder = $attributes['order'];
 	}
 
 	$customMode = null;
-	if ( !empty( $attributes['mode'] ) ) {
+	if ( ! empty( $attributes['mode'] ) ) {
 		$customMode = $attributes['mode'];
 	}
 
@@ -49,7 +49,7 @@
 		if ( $showEvents ) {
 			$str = include( $attributes["template"] . "_listEvents.php" );
 			echo $str;
-		} else if ( !$showEvents ) {
+		} else if ( ! $showEvents ) {
 			$str = include( $attributes["template"] . "_listCourses.php" );
 			echo $str;
 		}

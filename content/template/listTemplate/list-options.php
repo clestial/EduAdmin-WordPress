@@ -13,7 +13,7 @@
 	$searchVisible = $showSearch == true || ( $attributes['hidesearch'] == false || $attributes['hidesearch'] == null );
 
 	$subjects = get_transient( 'eduadmin-subjects' );
-	if ( !$subjects ) {
+	if ( ! $subjects ) {
 		$subjects = EDUAPI()->OData->Subjects->Search(
 			null,
 			null,
@@ -25,13 +25,13 @@
 
 	$distinctSubjects = array();
 	foreach ( $subjects as $subj ) {
-		if ( !key_exists( $subj["SubjectId"], $distinctSubjects ) ) {
+		if ( ! key_exists( $subj["SubjectId"], $distinctSubjects ) ) {
 			$distinctSubjects[ $subj["SubjectId"] ] = $subj["SubjectName"];
 		}
 	}
 
 	$addresses = get_transient( 'eduadmin-locations' );
-	if ( !$addresses ) {
+	if ( ! $addresses ) {
 		$addresses = EDUAPI()->OData->Locations->Search(
 			"LocationId,City",
 			"PublicLocation"
@@ -42,7 +42,7 @@
 	$showEvents = get_option( 'eduadmin-showEventsInList', false );
 
 	$categories = get_transient( 'eduadmin-categories' );
-	if ( !$categories ) {
+	if ( ! $categories ) {
 		$categories = EDUAPI()->OData->Categories->Search(
 			"CategoryId,CategoryName",
 			"ShowOnWeb"
@@ -52,7 +52,7 @@
 	}
 
 	$levels = get_transient( 'eduadmin-levels' );
-	if ( !$levels ) {
+	if ( ! $levels ) {
 		$levels = EDUAPI()->OData->CourseLevels->Search()["value"];
 		set_transient( 'eduadmin-levels', $levels, DAY_IN_SECONDS );
 	}

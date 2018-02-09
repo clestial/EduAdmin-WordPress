@@ -2,7 +2,7 @@
     <form method="POST" class="search-form">
         <div class="search-row">
             <div class="search-dropdowns">
-	            <?php if ( $allowLocationSearch && !empty( $addresses ) && $showEvents ) { ?>
+	            <?php if ( $allowLocationSearch && ! empty( $addresses ) && $showEvents ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-city">
                             <option value=""><?php _e( "Choose city", 'eduadmin-booking' ); ?></option>
@@ -10,7 +10,7 @@
 		                        $addedCities = array();
 		                        foreach ( $addresses as $address ) {
 			                        $city = trim( $address["City"] );
-			                        if ( !in_array( $address["LocationId"], $addedCities ) && !empty( $city ) ) {
+			                        if ( ! in_array( $address["LocationId"], $addedCities ) && ! empty( $city ) ) {
 				                        echo '<option value="' . $address["LocationId"] . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && intval( $_REQUEST['eduadmin-city'] ) == $address["LocationId"] ? " selected=\"selected\"" : "" ) . '>' . trim( $address["City"] ) . '</option>';
 				                        $addedCities[] = $address["LocationId"];
 			                        }
@@ -19,7 +19,7 @@
                         </select>
                     </div>
 	            <?php } ?>
-	            <?php if ( $allowSubjectSearch && !empty( $distinctSubjects ) ) { ?>
+	            <?php if ( $allowSubjectSearch && ! empty( $distinctSubjects ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-subject">
                             <option value=""><?php _e( "Choose subject", 'eduadmin-booking' ); ?></option>
@@ -31,7 +31,7 @@
                         </select>
                     </div>
 	            <?php } ?>
-	            <?php if ( $allowCategorySearch && !empty( $categories ) ) { ?>
+	            <?php if ( $allowCategorySearch && ! empty( $categories ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-category">
                             <option value=""><?php _e( "Choose category", 'eduadmin-booking' ); ?></option>
@@ -43,7 +43,7 @@
                         </select>
                     </div>
 	            <?php } ?>
-	            <?php if ( $allowLevelSearch && !empty( $levels ) ) { ?>
+	            <?php if ( $allowLevelSearch && ! empty( $levels ) ) { ?>
                     <div class="search-item search-dropdown">
                         <select name="eduadmin-level">
                             <option value=""><?php _e( "Choose course level", 'eduadmin-booking' ); ?></option>

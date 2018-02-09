@@ -18,7 +18,7 @@
 
 			$regularLogin = isset( $_POST['eduformloginaction'] ) && 'login' === sanitize_text_field( $_POST['eduformloginaction'] );
 
-			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) && !empty( $_POST['eduadminpassword'] ) ) {
+			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) && ! empty( $_POST['eduadminpassword'] ) ) {
 				$loginField = get_option( 'eduadmin-loginField', 'Email' );
 
 				$possiblePersons = EDUAPI()->OData->Persons->Search(
@@ -63,7 +63,7 @@
 
 				if ( isset( $user ) ) {
 					if ( $regularLogin ) {
-						if ( isset( $_REQUEST['eduReturnUrl'] ) && !empty( $_REQUEST['eduReturnUrl'] ) ) {
+						if ( isset( $_REQUEST['eduReturnUrl'] ) && ! empty( $_REQUEST['eduReturnUrl'] ) ) {
 							wp_redirect( esc_url_raw( $_REQUEST['eduReturnUrl'] ) );
 						} else {
 							wp_redirect( $baseUrl . "/profile/myprofile/" . edu_getQueryString() );

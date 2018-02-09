@@ -5,7 +5,7 @@
 		$objectIds = $_POST['objectIds'];
 
 		$fetchMonths = $_POST['fetchmonths'];
-		if ( !is_numeric( $fetchMonths ) ) {
+		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
@@ -51,7 +51,7 @@
 
 		$returnValue = array();
 		foreach ( $courses as $event ) {
-			if ( !isset( $returnValue[ $event["CourseTemplateId"] ] ) && count( $event["Events"] ) > 0 ) {
+			if ( ! isset( $returnValue[ $event["CourseTemplateId"] ] ) && count( $event["Events"] ) > 0 ) {
 				$returnValue[ $event["CourseTemplateId"] ] = sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( $event["Events"][0]["StartDate"] ) ) ) . " " . $event["Events"][0]["City"];
 			}
 		}
@@ -69,10 +69,10 @@
 
 		$filterCourses = array();
 
-		if ( !empty( $_POST['subject'] ) ) {
+		if ( ! empty( $_POST['subject'] ) ) {
 			foreach ( $subjects as $subject ) {
 				if ( $subject->SubjectName == $_POST['subject'] ) {
-					if ( !in_array( $subject->ObjectID, $filterCourses ) ) {
+					if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
 						$filterCourses[] = $subject->ObjectID;
 					}
 				}
@@ -93,7 +93,7 @@
 			$filtering->AddItem( $f );
 		}
 
-		if ( !empty( $filterCourses ) ) {
+		if ( ! empty( $filterCourses ) ) {
 			$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
 			$filtering->AddItem( $f );
 		}
@@ -109,15 +109,15 @@
 		}
 
 		$fetchMonths = $_POST['fetchmonths'];
-		if ( !is_numeric( $fetchMonths ) ) {
+		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
 		$edo = EDU()->api->GetEducationObjectV2( EDU()->get_token(), '', $filtering->ToString(), false );
 
-		if ( !empty( $_POST['search'] ) ) {
+		if ( ! empty( $_POST['search'] ) ) {
 			$edo = array_filter( $edo, function( $object ) use ( &$request ) {
-				$name            = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+				$name            = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 				$descrMatch      = stripos( $object->CourseDescription, sanitize_text_field( $_POST['search'] ) ) !== false;
 				$shortDescrMatch = stripos( $object->CourseDescriptionShort, sanitize_text_field( $_POST['search'] ) ) !== false;
 				$nameMatch       = stripos( $name, sanitize_text_field( $_POST['search'] ) ) !== false;
@@ -126,9 +126,9 @@
 			} );
 		}
 
-		if ( isset( $_POST['subjectid'] ) && !empty( $_POST['subjectid'] ) ) {
+		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
 			$subjects = get_transient( 'eduadmin-subjects' );
-			if ( !$subjects ) {
+			if ( ! $subjects ) {
 				$sorting = new XSorting();
 				$s       = new XSort( 'SubjectName', 'ASC' );
 				$sorting->AddItem( $s );
@@ -162,7 +162,7 @@
 		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 		$filtering->AddItem( $f );
 
-		if ( !empty( $filterCourses ) ) {
+		if ( ! empty( $filterCourses ) ) {
 			$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
 			$filtering->AddItem( $f );
 		}
@@ -172,7 +172,7 @@
 			$filtering->AddItem( $f );
 		}
 
-		if ( isset( $_POST['subjectid'] ) && !empty( $_POST['subjectid'] ) ) {
+		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
 			$f = new XFilter( 'SubjectID', '=', sanitize_text_field( $_POST['subjectid'] ) );
 			$filtering->AddItem( $f );
 		}
@@ -192,11 +192,11 @@
 
 		$customOrderBy      = null;
 		$customOrderByOrder = null;
-		if ( !empty( $request['orderby'] ) ) {
+		if ( ! empty( $request['orderby'] ) ) {
 			$customOrderBy = $request['orderby'];
 		}
 
-		if ( !empty( $request['order'] ) ) {
+		if ( ! empty( $request['order'] ) ) {
 			$customOrderByOrder = $request['order'];
 		}
 
@@ -257,7 +257,7 @@
 		$ft->AddItem( $f );
 		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
 
-		if ( !empty( $pricenames ) ) {
+		if ( ! empty( $pricenames ) ) {
 			$ede = array_filter( $ede, function( $object ) use ( &$pricenames ) {
 				$pn = $pricenames;
 				foreach ( $pn as $subj ) {
@@ -354,7 +354,7 @@
 				break;
 			}
 			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-			$name      = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockA.php' );
 			$currentEvents++;
 		}
@@ -411,7 +411,7 @@
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name      = ( !empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
 			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockB.php' );
 			$currentEvents++;
@@ -440,7 +440,7 @@
 		}
 
 		$fetchMonths = $_POST['fetchmonths'];
-		if ( !is_numeric( $fetchMonths ) ) {
+		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
@@ -464,7 +464,7 @@
 		$f = new XFilter( 'ParentEventID', '=', '0' );
 		$ft->AddItem( $f );
 
-		if ( !empty( $_POST['city'] ) ) {
+		if ( ! empty( $_POST['city'] ) ) {
 			$f = new XFilter( 'City', '=', $_POST['city'] );
 			$ft->AddItem( $f );
 		}
@@ -480,11 +480,11 @@
 
 		$customOrderBy      = null;
 		$customOrderByOrder = null;
-		if ( !empty( $_POST['orderby'] ) ) {
+		if ( ! empty( $_POST['orderby'] ) ) {
 			$customOrderBy = $_POST['orderby'];
 		}
 
-		if ( !empty( $_POST['order'] ) ) {
+		if ( ! empty( $_POST['order'] ) ) {
 			$customOrderByOrder = $_POST['order'];
 		}
 
@@ -546,7 +546,7 @@
 
 		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 
-		if ( !empty( $pricenames ) ) {
+		if ( ! empty( $pricenames ) ) {
 			$events = array_filter( $events, function( $object ) use ( &$pricenames ) {
 				$pn = $pricenames;
 				foreach ( $pn as $subj ) {
@@ -565,17 +565,17 @@
 
 		$lastCity = "";
 
-		$showMore         = isset( $_POST['showmore'] ) && !empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
+		$showMore         = isset( $_POST['showmore'] ) && ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
 		$spotLeftOption   = $_POST['spotsleft'];
 		$alwaysFewSpots   = $_POST['fewspots'];
 		$showEventVenue   = $_POST['showvenue'];
 		$spotSettings     = $_POST['spotsettings'];
 		$showEventInquiry = isset( $_POST['eventinquiry'] ) && $_POST['eventinquiry'] == "true";
-		$name             = ( !empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
+		$name             = ( ! empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
 		echo '<div class="eduadmin"><div class="event-table eventDays">';
 		$i              = 0;
 		$hasHiddenDates = false;
-		if ( !empty( $pricenames ) ) {
+		if ( ! empty( $pricenames ) ) {
 			foreach ( $events as $ev ) {
 				$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
 
@@ -631,7 +631,7 @@
 		}
 
 		if ( isset( EDU()->session['eduadmin-loginUser'] ) &&
-		     !empty( EDU()->session['eduadmin-loginUser'] ) &&
+		     ! empty( EDU()->session['eduadmin-loginUser'] ) &&
 		     isset( $contact ) &&
 		     isset( $contact->PersonId ) &&
 		     $contact->PersonId != 0
@@ -646,19 +646,19 @@
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLogoutButton\">" .
-				( !empty( $logoutText ) ? $logoutText : __( 'Log out', 'eduadmin-booking' ) ) .
+				( ! empty( $logoutText ) ? $logoutText : __( 'Log out', 'eduadmin-booking' ) ) .
 				"</a>" .
 				"</div>";
 		} else {
 			echo
 				"<div class=\"eduadminLogin\"><i>" .
-				( !empty( $guestText ) ? $guestText : __( 'Guest', 'eduadmin-booking' ) ) .
+				( ! empty( $guestText ) ? $guestText : __( 'Guest', 'eduadmin-booking' ) ) .
 				"</i> - " .
 				"<a href=\"" . $baseUrl . "/profile/login" . edu_getQueryString( "?", array(
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminLoginButton\">" .
-				( !empty( $loginText ) ? $loginText : __( 'Log in', 'eduadmin-booking' ) ) .
+				( ! empty( $loginText ) ? $loginText : __( 'Log in', 'eduadmin-booking' ) ) .
 				"</a>" .
 				"</div>";
 		}

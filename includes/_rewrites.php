@@ -36,7 +36,7 @@
 
 		$courseFolder = get_option( 'eduadmin-rewriteBaseUrl' );
 		$courseFolder = trim( $courseFolder );
-		if ( $courseFolder != false && !empty( $courseFolder ) ) {
+		if ( $courseFolder != false && ! empty( $courseFolder ) ) {
 			//if($loginView != false)
 			{
 				add_rewrite_rule( $courseFolder . '/profile/login/?', 'index.php?page_id=' . $loginView . '&edu-login=1', 'top' );

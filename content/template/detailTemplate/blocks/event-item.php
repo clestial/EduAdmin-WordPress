@@ -16,13 +16,13 @@
      class="eventItem<?php echo( $showMore > 0 && $i >= $showMore ? " showMoreHidden" : "" ); ?>">
     <div class="eventDate<?php echo $groupByCityClass; ?>">
 		<?php echo isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ); ?>
-		<?php echo( !isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
+		<?php echo( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
     </div>
-	<?php if ( !$groupByCity ) { ?>
+	<?php if ( ! $groupByCity ) { ?>
         <div class="eventCity">
 			<?php
 				echo $ev->City;
-				if ( $showEventVenue && !empty( $ev->AddressName ) ) {
+				if ( $showEventVenue && ! empty( $ev->AddressName ) ) {
 					echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
 				}
 			?>

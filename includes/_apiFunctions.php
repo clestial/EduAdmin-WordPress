@@ -13,13 +13,13 @@
 		return false;
 	}
 
-	if ( !function_exists( 'edu_encrypt' ) ) {
+	if ( ! function_exists( 'edu_encrypt' ) ) {
 		function edu_encrypt( $key, $toEncrypt ) {
 			return base64_encode( openssl_encrypt( $toEncrypt, "AES-128-ECB", md5( $key ), OPENSSL_RAW_DATA, "" ) );
 		}
 	}
 
-	if ( !function_exists( 'edu_decrypt' ) ) {
+	if ( ! function_exists( 'edu_decrypt' ) ) {
 		function edu_decrypt( $key, $toDecrypt ) {
 			return rtrim( openssl_decrypt( base64_decode( $toDecrypt ), "AES-128-ECB", md5( $key ), OPENSSL_RAW_DATA, "" ) );
 		}

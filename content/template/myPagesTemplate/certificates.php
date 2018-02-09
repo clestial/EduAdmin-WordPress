@@ -20,7 +20,7 @@
             <th align="left"><?php _e( "Valid", 'eduadmin-booking' ); ?></th>
         </tr>
 		<?php
-			if ( !empty( $certificates ) ) {
+			if ( ! empty( $certificates ) ) {
 				foreach ( $certificates as $certificate ) {
 					?>
                     <tr>

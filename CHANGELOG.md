@@ -1,3 +1,9 @@
+### 1.0.25
+- Bugfix: Missing styles
+
+### 1.0.24
+- Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
+
 ### [1.0.23]
 - Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
 - Adding first version of EduAdmin PHP API Client

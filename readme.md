@@ -2,8 +2,8 @@
 Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
-Tested up to: 4.9.2
-Stable tag: 1.0.25
+Tested up to: 4.9
+Stable tag: 1.0.28
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -30,6 +30,9 @@ Requires at least PHP 5.2 (with [SoapClient](http://php.net/manual/en/book.soap.
 
 == Upgrade Notice ==
 
+= 2.0 =
+We have replaced everything with a new API-client, so some things may be broken. If you experience any bugs (not new feature-requests), please contact the MultiNet Support.
+
 = 1.0.23 =
 All translations will be wiped since we're moving to full WordPress-translation management, for all phrases, not just backend
 
@@ -43,22 +46,20 @@ and redo your own customization.
 
 == Changelog ==
 
-### 1.0.25
-- Bugfix: Missing styles
+### 2.0 ###
+- Adding page for certificates
+- Bumping major version, since we're using a brand new API
+- Removing default styles, it will now be emptied when you reset it. (To make sure that you don't have double CSS)
 
-### 1.0.24
-- Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
+### 1.0.28
+- If no events are available, load public pricenames from course template
 
-### [1.0.23]
-- Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
-- Adding first version of EduAdmin PHP API Client
-- Redoing how template blocks are rendered (now using a single template, instead of 3 separate to update)
-- Removed lots of the changelog to a separate file found at https://github.com/MultinetInteractive/EduAdmin-WordPress/blob/master/CHANGELOG.md
+### 1.0.27
+- Adding more fields to output when a booking is completed
 
-### [1.0.22]
-- Disabling the book-button when the form is valid and the booking is under way
-- Fixes some styles to use `px` instead of `rem`
-- Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
-
-[1.0.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.22...v1.0.23
-[1.0.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.21...v1.0.22
+### 1.0.26
+- Some more styles to some buttons
+- Making it easier to edit some templates
+- If there are no dates provided to the date-function, render an empty string instead of 01 January, 1970
+- Adding support for `showmore` in `[eduadmin-detailinfo]` as attribute
+- Bugfix: Don't load already loaded classes

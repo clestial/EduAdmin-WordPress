@@ -19,7 +19,7 @@
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="customerVatNo" placeholder="<?php _e( "Org.No.", 'eduadmin-booking' ); ?>"
-                           value="<?php echo @esc_attr( $customer->InvoiceOrgnr ); ?>"/>
+                           value="<?php echo @esc_attr( $customer->OrganisationNumber ); ?>"/>
                 </div>
             </label>
             <label>
@@ -29,7 +29,7 @@
                 <div class="inputHolder">
                     <input type="text" name="customerAddress1"
                            placeholder="<?php _e( "Address 1", 'eduadmin-booking' ); ?>"
-                           value="<?php echo @esc_attr( $customer->Address1 ); ?>"/>
+                           value="<?php echo @esc_attr( $customer->Address ); ?>"/>
                 </div>
             </label>
             <label>
@@ -82,7 +82,7 @@
                     <div class="inputHolder">
                         <input type="text" name="invoiceName"
                                placeholder="<?php _e( "Customer name", 'eduadmin-booking' ); ?>"
-                               value="<?php echo @esc_attr( $customer->InvoiceName ); ?>"/>
+                               value="<?php echo @esc_attr( $customer->BillingInfo->CustomerName ); ?>"/>
                     </div>
                 </label>
                 <label>
@@ -92,7 +92,7 @@
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress1"
                                placeholder="<?php _e( "Address 1", 'eduadmin-booking' ); ?>"
-                               value="<?php echo @esc_attr( $customer->InvoiceAddress1 ); ?>"/>
+                               value="<?php echo @esc_attr( $customer->BillingInfo->Address ); ?>"/>
                     </div>
                 </label>
                 <label>
@@ -102,7 +102,7 @@
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress2"
                                placeholder="<?php _e( "Address 2", 'eduadmin-booking' ); ?>"
-                               value="<?php echo @esc_attr( $customer->InvoiceAddress2 ); ?>"/>
+                               value="<?php echo @esc_attr( $customer->BillingInfo->Address2 ); ?>"/>
                     </div>
                 </label>
                 <label>
@@ -112,7 +112,7 @@
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCode"
                                placeholder="<?php _e( "Postal code", 'eduadmin-booking' ); ?>"
-                               value="<?php echo @esc_attr( $customer->InvoiceZip ); ?>"/>
+                               value="<?php echo @esc_attr( $customer->BillingInfo->Zip ); ?>"/>
                     </div>
                 </label>
                 <label>
@@ -122,7 +122,7 @@
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCity"
                                placeholder="<?php _e( "Postal city", 'eduadmin-booking' ); ?>"
-                               value="<?php echo @esc_attr( $customer->InvoiceCity ); ?>"/>
+                               value="<?php echo @esc_attr( $customer->BillingInfo->City ); ?>"/>
                     </div>
                 </label>
             </div>

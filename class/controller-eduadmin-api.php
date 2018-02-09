@@ -81,9 +81,8 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_api_check_coupon_code',
 				'args'     => array(
-					'code'       => array( 'required' => true ),
-					'objectId'   => array( 'required' => true ),
-					'categoryId' => array( 'required' => true ),
+					'code'    => array( 'required' => true ),
+					'eventId' => array( 'required' => true ),
 				),
 			) );
 		}

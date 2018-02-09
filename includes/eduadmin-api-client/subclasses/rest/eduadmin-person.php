@@ -25,12 +25,13 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_Person $person
+		 * @param integer                              $personId
+		 * @param EduAdmin_Data_Person|stdClass|object $person
 		 *
 		 * @return mixed
 		 */
-		public function Update( EduAdmin_Data_Person $person ) {
-			return parent::PATCH( "",
+		public function Update( $personId, $person ) {
+			return parent::PATCH( "/$personId",
 			                      $person,
 			                      get_called_class() . "|" . __FUNCTION__
 			);

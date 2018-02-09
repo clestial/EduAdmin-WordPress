@@ -1,6 +1,6 @@
 <?php
 	$blockEditIfLoggedIn = get_option( 'eduadmin-blockEditIfLoggedIn', true );
-	$__block             = ( $blockEditIfLoggedIn && $contact->CustomerContactID != 0 );
+	$__block             = ( $blockEditIfLoggedIn && $contact->PersonId != 0 );
 ?>
 <div class="contactView">
     <h2><?php _e( "Contact information", 'eduadmin-booking' ); ?></h2>
@@ -14,13 +14,13 @@
                                         autocomplete="given-name" class="first-name"
                                         id="edu-contactFirstName" name="contactFirstName"
                                         placeholder="<?php _e( "Contact first name", 'eduadmin-booking' ); ?>"
-                                        value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
+                                        value="<?php echo @esc_attr( $contact->FirstName ); ?>"/><input
                     type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
                     class="last-name"
                     autocomplete="family-name"
                     name="contactLastName" placeholder="<?php _e( "Contact surname", 'eduadmin-booking' ); ?>"
-                    value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
+                    value="<?php echo @esc_attr( $contact->LastName ); ?>"/>
         </div>
     </label>
     <label>
@@ -72,7 +72,7 @@
             </div>
         </label>
 	<?php } ?>
-	<?php if ( get_option( 'eduadmin-useLogin', false ) && empty( $contact->Loginpass ) ) { ?>
+	<?php if ( get_option( 'eduadmin-useLogin', false ) && !$contact->CanLogin ) { ?>
         <label>
             <div class="inputLabel">
 	            <?php _e( "Please enter a password", 'eduadmin-booking' ); ?>

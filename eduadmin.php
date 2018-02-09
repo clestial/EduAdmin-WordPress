@@ -12,7 +12,7 @@
 	 * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
 	 * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
 	 * Requires at least: 4.7
-	 * Tested up to: 4.9.2
+	 * Tested up to: 4.9
 	 * Author:	Chris Gårdenberg, MultiNet Interactive AB
 	 * Author URI:	http://www.multinet.se
 	 * License:	GPL3
@@ -138,7 +138,10 @@
 			 * @param stdClass|array|object|null $object
 			 */
 			public function __writeDebug( $object ) {
-				echo "<xmp>" . print_r( $object, true ) . "</xmp>";
+				ob_start();
+				var_dump( $object );
+
+				echo "<xmp>" . ob_get_clean() . "</xmp>";
 			}
 
 			public function get_version() {
@@ -210,9 +213,14 @@
 			private function includes() {
 				$t = $this->StartTimer( __METHOD__ );
 				include_once( 'includes/eduadmin-api-client/eduadmin-api-client.php' );
-				include_once( 'libraries/class-recursive-arrayaccess.php' );
-				include_once( 'libraries/class-wp-session.php' );
-				include_once( 'libraries/wp-session.php' );
+				if ( !class_exists( 'Recursive_ArrayAccess' ) ) {
+					include_once( 'libraries/class-recursive-arrayaccess.php' );
+				}
+
+				if ( !class_exists( 'WP_Session' ) ) {
+					include_once( 'libraries/class-wp-session.php' );
+					include_once( 'libraries/wp-session.php' );
+				}
 
 				$this->session = WP_Session::get_instance();
 
@@ -399,7 +407,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 					if ( $oldKey != null ) {
 						$key = DecryptApiKey( $oldKey );
 						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
-						//add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
+						add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
 					} else {
 						EDUAPI()->SetCredentials( '', '' );
 					}

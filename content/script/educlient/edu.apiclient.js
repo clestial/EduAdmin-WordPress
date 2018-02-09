@@ -176,14 +176,13 @@ edu.apiclient = {
             edu.apiclient.AfterUpdate.call(null);
         }
     },
-    CheckCouponCode: function (code, objectId, categoryId, onData) {
+    CheckCouponCode: function (code, eventId, onData) {
         jQuery.ajax({
             url: edu.apiclient.baseUrl + '/coupon/check',
             type: 'POST',
             data: {
                 code: code,
-                objectId: objectId,
-                categoryId: categoryId
+                eventId: eventId
             },
             success: function (d) {
                 if (onData && typeof onData == 'function') {

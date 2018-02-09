@@ -96,9 +96,9 @@
 				$user     = EDU()->session['eduadmin-loginUser'];
 				$contact  = $user->Contact;
 				$customer = $user->Customer;
-				if ( isset( $customer->CustomerID ) ) {
+				if ( isset( $customer->CustomerId ) ) {
 					$f  = new XFiltering();
-					$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+					$ft = new XFilter( 'CustomerID', '=', $customer->CustomerId );
 					$f->AddItem( $ft );
 					$extraInfo = EDU()->api->GetCustomerExtraInfo( EDU()->get_token(), '', $f->ToString() );
 					foreach ( $extraInfo as $info ) {
@@ -250,8 +250,8 @@
 					<?php
 						if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 							$userVal = '';
-							if ( isset( $contact->CustomerContactID ) && $contact->CustomerContactID > 0 ) {
-								$userVal = $contact->ContactName;
+							if ( isset( $contact->PersonId ) && $contact->PersonId > 0 ) {
+								$userVal = trim( $contact->FirstName . " " . $contact->LastName );
 							} else {
 								$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
 								switch ( $selectedLoginField ) {
@@ -331,14 +331,15 @@
 	                                <?php _e( 'Discount code', 'eduadmin-booking' ); ?>
                                 </div>
                                 <div class="inputHolder">
-                                    <input type="text" name="edu-discountCode" id="edu-discountCode" style="width: 78%;"
+                                    <input type="text" name="edu-discountCode" id="edu-discountCode"
+                                           class="discount-box"
                                            placeholder="<?php esc_attr( __( "Discount code", 'eduadmin-booking' ) ); ?>"/>
-                                    <button class="validateDiscount"
-                                            style="width: 20%;"
+                                    <button class="validateDiscount neutral-btn"
+
                                             data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
                                             data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
                                             onclick="eduBookingView.ValidateDiscountCode(); return false;">
-	                                    <?php _e( "Validate", 'eduadmin-booking' ); ?>
+		                                <?php _e( "Validate", 'eduadmin-booking' ); ?>
                                     </button>
                                     <input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>
                                 </div>

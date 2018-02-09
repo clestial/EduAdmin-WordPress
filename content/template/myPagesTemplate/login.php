@@ -4,7 +4,7 @@
 	$q      = $wp_query->query;
 	$apiKey = get_option( 'eduadmin-api-key' );
 
-	if ( isset( EDU()->session['eduadmin-loginUser'] ) && isset( EDU()->session['eduadmin-loginUser']->Contact ) && isset( EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID ) && EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID != 0 ) {
+	if ( isset( EDU()->session['eduadmin-loginUser'] ) && isset( EDU()->session['eduadmin-loginUser']->Contact ) && isset( EDU()->session['eduadmin-loginUser']->Contact->PersonId ) && EDU()->session['eduadmin-loginUser']->Contact->PersonId != 0 ) {
 		if ( isset( $q['edu-login'] ) || isset( $q['edu-profile'] ) ) {
 			include_once( "profile.php" );
 		} else if ( isset( $q['edu-bookings'] ) ) {

@@ -39,12 +39,11 @@
                     <h3><?php _e( "Page title", "eduadmin-booking" ); ?></h3>
 					<?php
 						$selectedDescriptionField = get_option( 'eduadmin-pageTitleField', 'PublicName' );
-						$filter                   = new XFiltering();
-						$f                        = new XFilter( 'AttributeTypeID', 'IN', '2, 8, 6' );
-						$filter->AddItem( $f );
-						$f = new XFilter( 'AttributeOwnerTypeID', '=', '1' );
-						$filter->AddItem( $f );
-						$attributes = EDU()->api->GetAttribute( EDU()->get_token(), '', $filter->ToString() );
+						$attributes               = EDUAPI()->OData->CustomFields->Search(
+							null,
+							"ShowOnWeb and CustomFieldOwner eq 'Product' and CustomFieldSubOwner eq 'CourseTemplate'" .
+							" and (CustomFieldType eq 'Text' or CustomFieldType eq 'Html' or CustomFieldType eq 'Textarea')"
+						);
 					?>
                     <i><?php _e( "Select which field in EduAdmin that should be shown in the page title", "eduadmin-booking" ); ?></i><br/>
                     <select name="eduadmin-pageTitleField">
@@ -72,10 +71,10 @@
 								echo " selected=\"selected\"";
                             } ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                         </optgroup>
-	                    <?php if ( !empty( $attributes ) ) { ?>
+	                    <?php if ( !empty( $attributes["value"] ) ) { ?>
                             <optgroup label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
-								<?php foreach ( $attributes as $attr ) { ?>
-                                    <option value="attr_<?php echo $attr->AttributeID; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr->AttributeID ? " selected=\"selected\"" : "" ); ?>><?php echo $attr->AttributeDescription; ?></option>
+	                            <?php foreach ( $attributes["value"] as $attr ) { ?>
+                                    <option value="attr_<?php echo $attr["CustomFieldId"]; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr["CustomFieldId"] ? " selected=\"selected\"" : "" ); ?>><?php echo $attr["CustomFieldName"]; ?></option>
 								<?php } ?>
                             </optgroup>
 						<?php } ?>

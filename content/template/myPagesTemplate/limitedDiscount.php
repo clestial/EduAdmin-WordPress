@@ -10,14 +10,7 @@
 	?>
     <h2><?php _e( "Discount Cards", 'eduadmin-booking' ); ?></h2>
 	<?php
-		$f  = new XFiltering();
-		$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-		$f->AddItem( $ft );
-
-		$ft = new XFilter( 'Disabled', '=', false );
-		$f->AddItem( $ft );
-		$cards    = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
-		$currency = get_option( 'eduadmin-currency', 'SEK' );
+		$cards = EDUAPI()->OData->Customers->GetItem( $customer->CustomerId, "", "Vouchers" )["Vouchers"];
 	?>
     <table class="myReservationsTable">
         <tr>
@@ -40,11 +33,11 @@
 				foreach ( $cards as $card ) {
 					?>
                     <tr>
-                        <td><?php echo $card->PublicName; ?></td>
-                        <td><?php echo GetOldStartEndDisplayDate( $card->ValidFrom, $card->ValidTo, false ); ?></td>
-                        <td align="right"><?php echo $card->CreditLeft . ' / ' . $card->CreditStartValue; ?></td>
-                        <td align="right"><?php echo $card->DiscountPercent; ?> %</td>
-                        <td align="right"><?php echo convertToMoney( $card->Price, $currency ); ?></td>
+                        <td><?php echo $card["Description"]; ?></td>
+                        <td><?php echo GetOldStartEndDisplayDate( $card["ValidFrom"], $card["ValidTo"], false ); ?></td>
+                        <td align="right"><?php echo $card["CreditsLeft"] . ' / ' . $card["CreditsStartValue"]; ?></td>
+                        <td align="right"><?php echo $card["DiscountPercent"]; ?> %</td>
+                        <td align="right"><?php echo convertToMoney( $card["Price"], $currency ); ?></td>
                     </tr>
 				<?php }
 			} ?>

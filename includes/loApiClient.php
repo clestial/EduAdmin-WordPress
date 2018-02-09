@@ -594,8 +594,8 @@
 		}
 
 		/**
-		 * @param string   $authToken
-		 * @param stdClass $setting
+		 * @param string          $authToken
+		 * @param stdClass|string $setting
 		 *
 		 * @return string
 		 */

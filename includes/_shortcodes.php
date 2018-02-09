@@ -167,7 +167,7 @@
 			normalize_empty_atts( $attributes ),
 			'eduadmin-bookingview'
 		);
-		if ( get_option( 'eduadmin-useLogin', false ) == false || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID ) && EDU()->session['eduadmin-loginUser']->Contact->CustomerContactID != 0 ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
+		if ( get_option( 'eduadmin-useLogin', false ) == false || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->PersonId ) && EDU()->session['eduadmin-loginUser']->Contact->PersonId != 0 ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/" . $attributes['template'] . ".php" );
 		} else {
 			$str = include_once( EDUADMIN_PLUGIN_PATH . "/content/template/bookingTemplate/loginView.php" );
@@ -235,26 +235,19 @@
 
 			return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 		} else {
-			$filtering = new XFiltering();
-			$f         = new XFilter( 'ObjectID', '=', $courseId );
-			$filtering->AddItem( $f );
-
-			$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-			$filtering->AddItem( $f );
-
 			$edo = get_transient( 'eduadmin-object_' . $courseId );
 			if ( !$edo ) {
-				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
+				$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+					$courseId,
+					null,
+					"Subjects,Events,CustomFields"
+				);
 				set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
 			}
 
 			$selectedCourse = false;
-			foreach ( $edo as $object ) {
-				$id = $object->ObjectID;
-				if ( $id == $courseId ) {
-					$selectedCourse = $object;
-					break;
-				}
+			if ( $edo ) {
+				$selectedCourse = $edo;
 			}
 
 			if ( !$selectedCourse ) {
@@ -263,58 +256,54 @@
 				return 'Course with ID ' . $courseId . ' could not be found.';
 			} else {
 				if ( isset( $attributes['coursename'] ) ) {
-					$retStr .= $selectedCourse->ObjectName;
+					$retStr .= $selectedCourse["InternalCourseName"];
 				}
 				if ( isset( $attributes['coursepublicname'] ) ) {
-					$retStr .= $selectedCourse->PublicName;
+					$retStr .= $selectedCourse["CourseName"];
 				}
 				if ( isset( $attributes['courseimage'] ) ) {
-					$retStr .= $selectedCourse->ImageUrl;
+					$retStr .= $selectedCourse["ImageUrl"];
 				}
 				if ( isset( $attributes['coursedays'] ) ) {
-					$retStr .= sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days );
+					$retStr .= sprintf( _n( '%1$d day', '%1$d days', $selectedCourse["Days"], 'eduadmin-booking' ), $selectedCourse["Days"] );
 				}
 				if ( isset( $attributes['coursestarttime'] ) ) {
-					$retStr .= $selectedCourse->StartTime;
+					$retStr .= $selectedCourse["StartTime"];
 				}
 				if ( isset( $attributes['courseendtime'] ) ) {
-					$retStr .= $selectedCourse->EndTime;
+					$retStr .= $selectedCourse["EndTime"];
 				}
 				if ( isset( $attributes['coursedescriptionshort'] ) ) {
-					$retStr .= $selectedCourse->CourseDescriptionShort;
+					$retStr .= $selectedCourse["CourseDescriptionShort"];
 				}
 				if ( isset( $attributes['coursedescription'] ) ) {
-					$retStr .= $selectedCourse->CourseDescription;
+					$retStr .= $selectedCourse["CourseDescription"];
 				}
 				if ( isset( $attributes['coursegoal'] ) ) {
-					$retStr .= $selectedCourse->CourseGoal;
+					$retStr .= $selectedCourse["CourseGoal"];
 				}
 				if ( isset( $attributes['coursetarget'] ) ) {
-					$retStr .= $selectedCourse->TargetGroup;
+					$retStr .= $selectedCourse["TargetGroup"];
 				}
 				if ( isset( $attributes['courseprerequisites'] ) ) {
-					$retStr .= $selectedCourse->Prerequisites;
+					$retStr .= $selectedCourse["Prerequisites"];
 				}
 				if ( isset( $attributes['courseafter'] ) ) {
-					$retStr .= $selectedCourse->CourseAfter;
+					$retStr .= $selectedCourse["CourseAfter"];
 				}
 				if ( isset( $attributes['coursequote'] ) ) {
-					$retStr .= $selectedCourse->Quote;
+					$retStr .= $selectedCourse["Quote"];
 				}
 				if ( isset( $attributes['coursesubject'] ) ) {
-					$ft = new XFiltering();
-					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-					$ft->AddItem( $f );
-					$courseSubject = EDU()->api->GetEducationSubject( EDU()->get_token(), '', $ft->ToString() );
-					$subjectNames  = array();
-					foreach ( $courseSubject as $subj ) {
-						$subjectNames[] = $subj->SubjectName;
+					$subjectNames = array();
+					foreach ( $selectedCourse["Subjects"] as $subj ) {
+						$subjectNames[] = $subj["SubjectName"];
 					}
 					$retStr .= join( ", ", $subjectNames );
 				}
 				if ( isset( $attributes['courselevel'] ) ) {
 					$ft = new XFiltering();
-					$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+					$f  = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
 					$ft->AddItem( $f );
 					$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
 
@@ -325,10 +314,16 @@
 				if ( isset( $attributes['courseattributeid'] ) ) {
 					$attrid = $attributes['courseattributeid'];
 					$ft     = new XFiltering();
-					$f      = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+					$f      = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
 					$ft->AddItem( $f );
 					$f = new XFilter( 'AttributeID', '=', $attrid );
 					$ft->AddItem( $f );
+
+					foreach ( $selectedCourse["CustomFields"] as $cf ) {
+						if ( $cf["CustomFieldId"] == $attrid ) {
+						}
+					}
+
 					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 					if ( !empty( $objAttr ) ) {
 						$attr = $objAttr[0];
@@ -359,7 +354,7 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'StatusID', '=', '1' );
 					$ft->AddItem( $f );
-					$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+					$f = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
 					$ft->AddItem( $f );
 					$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 					$ft->AddItem( $f );
@@ -395,7 +390,7 @@
 					$ft = new XFiltering();
 					$f  = new XFilter( 'PublicPriceName', '=', 'true' );
 					$ft->AddItem( $f );
-					$f = new XFilter( 'ObjectID', 'IN', $selectedCourse->ObjectID );
+					$f = new XFilter( 'ObjectID', 'IN', $selectedCourse["CourseTemplateId"] );
 					$ft->AddItem( $f );
 					$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
 					$ft->AddItem( $f );
@@ -412,6 +407,54 @@
 						$uniquePrices[ $price->Description ] = $price;
 					}
 
+					if ( count( $uniquePrices ) == 0 ) {
+						$filtering = new XFiltering();
+						$f         = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
+						$filtering->AddItem( $f );
+
+						$f = new XFilter( 'PublicPriceName', '=', "True" );
+						$filtering->AddItem( $f );
+
+						$sorting       = new XSorting();
+						$customOrder   = null;
+						$customOrderBy = null;
+						if ( !empty( $attributes['order'] ) ) {
+							$customOrder = $attributes['order'];
+						}
+
+						if ( !empty( $attributes['orderby'] ) ) {
+							$customOrderBy = $attributes['orderby'];
+						}
+
+						if ( $customOrderBy != null ) {
+							$orderby   = explode( ' ', $customOrderBy );
+							$sortorder = explode( ' ', $customOrder );
+							foreach ( $orderby as $od => $v ) {
+								if ( isset( $sortorder[ $od ] ) ) {
+									$or = $sortorder[ $od ];
+								} else {
+									$or = "ASC";
+								}
+
+								$s = new XSort( $v, $or );
+								$sorting->AddItem( $s );
+							}
+						} else {
+							$s = new XSort( 'PriceNameID', $customOrder != null ? $customOrder : 'ASC' );
+							$sorting->AddItem( $s );
+						}
+
+						$edo = get_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse["CourseTemplateId"] );
+						if ( !$edo ) {
+							$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
+							set_transient( 'eduadmin-objectpublicpricename_' . $selectedCourse["CourseTemplateId"], $edo, 10 );
+						}
+
+						foreach ( $edo as $price ) {
+							$uniquePrices[ $price->Description ] = $price;
+						}
+					}
+
 					$currency = get_option( 'eduadmin-currency', 'SEK' );
 					if ( 1 == count( $uniquePrices ) ) {
 						$retStr .= convertToMoney( current( $uniquePrices )->Price, $currency ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "\n";
@@ -423,7 +466,7 @@
 				}
 
 				if ( isset( $attributes['pagetitlejs'] ) ) {
-					$newTitle = $selectedCourse->PublicName;
+					$newTitle = $selectedCourse["CourseName"];
 					$retStr   .= "
 				<script type=\"text/javascript\">
 				(function() {
@@ -437,16 +480,16 @@
 					$surl    = get_home_url();
 					$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
-					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/book/' . edu_getQueryString();
+					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
+					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse["CourseTemplateId"] . '/book/' . edu_getQueryString();
 				}
 
 				if ( isset( $attributes['courseinquiryurl'] ) ) {
 					$surl    = get_home_url();
 					$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
-					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse->ObjectID . '/interest/' . edu_getQueryString();
+					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
+					$retStr  .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse["CourseTemplateId"] . '/interest/' . edu_getQueryString();
 				}
 
 				if ( isset( $attributes['courseeventlist'] ) ) {
@@ -464,7 +507,7 @@
 					$ft->AddItem( $f );
 					$f = new XFilter( 'StatusID', '=', '1' );
 					$ft->AddItem( $f );
-					$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+					$f = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
 					$ft->AddItem( $f );
 					$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 					$ft->AddItem( $f );
@@ -578,9 +621,9 @@
 					$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 
 					$baseUrl = $surl . '/' . $cat;
-					$name    = ( !empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
+					$name    = ( !empty( $selectedCourse["CourseName"] ) ? $selectedCourse["CourseName"] : $selectedCourse["InternalCourseName"] );
 					$retStr  .= '<div class="eduadmin"><div class="event-table eventDays" data-eduwidget="eventlist" ' .
-					                   'data-objectid="' . $selectedCourse->ObjectID .
+					            'data-objectid="' . $selectedCourse["CourseTemplateId"] .
 					                   '" data-spotsleft="' . $spotLeftOption .
 					                   '" data-showmore="' . $showMore .
 					                   '" data-groupbycity="' . $groupByCity . '"' .

@@ -1,11 +1,12 @@
 <?php
-	$user     = EDU()->session['eduadmin-loginUser'];
-	$contact  = $user->Contact;
-	$customer = $user->Customer;
+	$user            = EDU()->session['eduadmin-loginUser'];
+	$contact         = $user->Contact;
+	$customer        = $user->Customer;
+	$invoiceCustomer = $user->Customer->BillingInfo[0];
 
 	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "saveInfo" ) {
 		$customer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
-		$customer->Address1     = trim( sanitize_text_field( $_POST['customerAddress'] ) );
+		$customer->Address      = trim( sanitize_text_field( $_POST['customerAddress'] ) );
 		$customer->Address2     = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
 		$customer->Zip          = trim( sanitize_text_field( $_POST['customerZip'] ) );
 		$customer->City         = trim( sanitize_text_field( $_POST['customerCity'] ) );
@@ -50,7 +51,7 @@
                 <div class="inputLabel"><?php _e( "Address", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerAddress"
                                                 placeholder="<?php echo esc_attr( __( "Address", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->Address1 ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $customer->Address ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Address 2", 'eduadmin-booking' ); ?></div>
@@ -89,44 +90,46 @@
                 <div class="inputLabel"><?php _e( "Customer name", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceName"
                                                 placeholder="<?php echo esc_attr( __( "Customer name", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceName ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->CustomerName ); ?>"/>
+                </div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Address", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceAddress"
                                                 placeholder="<?php echo esc_attr( __( "Address", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceAddress1 ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->Address ); ?>"/></div>
             </label>
 
             <label>
                 <div class="inputLabel"><?php _e( "Postal code", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceZip"
                                                 placeholder="<?php echo esc_attr( __( "Postal code", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceZip ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->Zip ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Postal city", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceCity"
                                                 placeholder="<?php echo esc_attr( __( "Postal city", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceCity ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->City ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Org.No.", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceOrgNr"
                                                 placeholder="<?php echo esc_attr( __( "Org.No.", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceOrgnr ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->OrganisationNumber ); ?>"/>
+                </div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Invoice e-mail address", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerInvoiceEmail"
                                                 placeholder="<?php echo esc_attr( __( "Invoice e-mail address", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->InvoiceEmail ); ?>"/></div>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->Email ); ?>"/></div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Invoice reference", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerReference"
                                                 placeholder="<?php echo esc_attr( __( "Invoice reference", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $customer->CustomerReference ); ?>"/>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->Reference ); ?>"/>
                 </div>
             </label>
         </div>
@@ -136,7 +139,8 @@
                 <div class="inputLabel"><?php _e( "Contact name", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="contactName" readonly required
                                                 placeholder="<?php echo esc_attr( __( "Contact name", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo esc_attr( $contact->ContactName ); ?>"/></div>
+                                                value="<?php echo esc_attr( $contact->FirstName . " " . $contact->LastName ); ?>"/>
+                </div>
             </label>
             <label>
                 <div class="inputLabel"><?php _e( "Phone", 'eduadmin-booking' ); ?></div>

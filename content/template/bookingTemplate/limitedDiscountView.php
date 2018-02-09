@@ -1,86 +1,7 @@
 <?php
-	if ( isset( $customer->CustomerID ) && isset( $contact->CustomerContactID ) ) {
-		$f  = new XFiltering();
-		$ft = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-		$f->AddItem( $ft );
-
-		$cards = EDU()->api->GetLimitedDiscount( EDU()->get_token(), '', $f->ToString() );
-
-		$cCards   = array();
-		$cCardIds = array();
-		foreach ( $cards as $card ) {
-			$addCard = false;
-			if ( empty( $card->CustomerContactID ) || empty( $card->CategoryID ) ) {
-				$addCard = true;
-			}
-
-			if ( $card->CustomerContactID == $contact->CustomerContactID ) {
-				$addCard = true;
-			}
-			if ( $card->CategoryID == $selectedCourse->CategoryID ) {
-				$addCard = true;
-			}
-
-			if ( !empty( $card->CategoryID ) && $card->CategoryID != $selectedCourse->CategoryID ) {
-				$addCard = false;
-			}
-			if ( !empty( $card->CustomerContactID ) && $card->CustomerContactID != $contact->CustomerContactID ) {
-				$addCard = false;
-			}
-
-			if ( $addCard ) {
-				$cCards[]   = $card;
-				$cCardIds[] = $card->LimitedDiscountID;
-			}
-		}
-
-		$f  = new XFiltering();
-		$ft = new XFilter( 'LimitedDiscountID', 'in', join( ',', $cCardIds ) );
-		$f->AddItem( $ft );
-
-		$objectCards = EDU()->api->GetLimitedDiscountObjectStatus( EDU()->get_token(), '', $f->ToString() );
-		$cCardIds    = array();
-
-		$cardCosts = array();
-
-		foreach ( $objectCards as $oCard ) {
-			$addCard = false;
-			if ( $oCard->ObjectID == $selectedCourse->ObjectID ) {
-				$addCard = true;
-			}
-
-			if ( $addCard && !in_array( $oCard->LimitedDiscountID, $cCardIds ) ) {
-				$cCardIds[]                             = $oCard->LimitedDiscountID;
-				$cardCosts[ $oCard->LimitedDiscountID ] = $oCard->CreditCount;
-			}
-		}
-
-		if ( count( $objectCards ) > 0 && count( $cCardIds ) == 0 ) {
-			$cCards = array();
-		}
-
-		array_filter( $cCards, function( $card ) use ( &$cCardIds ) {
-			$valid = false;
-			foreach ( $cCardIds as $cid ) {
-				if ( $cid == $card->LimitedDiscountID ) {
-					$valid = true;
-
-					if ( $card->CreditLeft <= 0 ) {
-						$valid = false;
-					}
-
-					if ( $card->ValidFrom != null && $card->ValidFrom > date( "Y-m-d H:i:s" ) ) {
-						$valid = false;
-					}
-
-					if ( $card->ValidTo != null && $card->ValidTo < date( "Y-m-d H:i:s" ) ) {
-						$valid = false;
-					}
-				}
-			}
-
-			return $valid;
-		} );
+	if ( isset( $customer->CustomerId ) && isset( $contact->PersonId ) && $eventid > 0 ) {
+		$cCards = EDUAPI()->REST->Customer->GetValidVouchers( $customer->CustomerId, $eventid, $contact->PersonId );
+		unset( $cCards['@curl'] );
 		?>
         <div class="discountCardView">
 			<?php
@@ -90,8 +11,8 @@
 
 					<?php
 					foreach ( $cCards as $card ) {
-						if ( $card->CreditLeft > 0 ) {
-							$enoughCredits = ( $card->CreditLeft >= $cardCosts[ $card->LimitedDiscountID ] );
+						if ( $card["ValidForNumberOfParticipants"] > 0 ) {
+							$enoughCredits = true;
 							?>
                             <label class="discountCardItem">
                                 <input type="radio"
@@ -99,9 +20,9 @@
 	                                <?php if ( !$enoughCredits ) : ?>
                                         disabled readonly title="<?php _e( "Not enough uses left on this card.", 'eduadmin-booking' ); ?>"
 									<?php endif; ?>
-                                       value="<?php echo $card->LimitedDiscountID; ?>"/>
-								<?php echo $card->PublicName; ?>
-                                <i>(<?php echo sprintf( __( "Uses left: %s / %s", 'eduadmin-booking' ), $card->CreditLeft, $card->CreditStartValue ); ?>
+                                       value="<?php echo $card["VoucherId"]; ?>"/>
+	                            <?php echo $card["Description"]; ?>&nbsp;
+                                <i>(<?php echo sprintf( _n( "Valid for %s participant", "Valid for %s participants", $card["ValidForNumberOfParticipants"], 'eduadmin-booking' ), $card["ValidForNumberOfParticipants"] ); ?>
                                     )</i>
                             </label>
 							<?php

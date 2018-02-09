@@ -1,6 +1,6 @@
 <?php
 	if ( isset( $_REQUEST['eduformloginaction'] ) && !empty( $_REQUEST['eduformloginaction'] ) ) {
-		if ( $_REQUEST['eduformloginaction'] === "checkEmail" && !empty( $_REQUEST['eduadminloginEmail'] ) ) {
+		if ( $_REQUEST['eduformloginaction'] == "checkEmail" && !empty( $_REQUEST['eduadminloginEmail'] ) ) {
 			$ft                        = new XFiltering();
 			$selectedLoginField        = get_option( 'eduadmin-loginField', 'Email' );
 			$allowCustomerRegistration = get_option( "eduadmin-allowCustomerRegistration", true );

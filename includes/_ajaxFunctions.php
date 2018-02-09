@@ -9,77 +9,50 @@
 			$fetchMonths = 6;
 		}
 
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$filtering->AddItem( $f );
+		$filters = array();
+		$expands = array();
+		$sorting = array();
 
-		$f = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( "now +" . $fetchMonths . " months" ) ) );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'PeriodEnd', '>=', date( "Y-m-d", strtotime( "now" ) ) );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'StatusID', '=', '1' );
-		$filtering->AddItem( $f );
+		$expands['PriceNames'] = "";
+		$expands['Events']     =
+			'$filter=' .
+			'HasPublicPriceName' .
+			' and StatusId eq 1' .
+			' and CustomerId eq null' .
+			' and LastApplicationDate ge ' . date( "c" ) .
+			' and StartDate le ' . date( "c", strtotime( "now 23:59:59 +" . $fetchMonths . " months" ) ) .
+			' and EndDate ge ' . date( "c", strtotime( "now" ) ) .
+			';' .
+			'$expand=PriceNames' .
+			';' .
+			'$top=1' .
+			';' .
+			'$orderby=StartDate asc' .
+			';';
 
-		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
-		$filtering->AddItem( $f );
+		$filters[] = "ShowOnWeb";
 
-		if ( !empty( $objectIds ) ) {
-			$f = new XFilter( 'ObjectID', 'IN', join( ',', $objectIds ) );
-			$filtering->AddItem( $f );
+		$expandArr = array();
+		foreach ( $expands as $key => $value ) {
+			if ( empty( $value ) ) {
+				$expandArr[] = $key;
+			} else {
+				$expandArr[] = $key . "(" . $value . ")";
+			}
 		}
 
-		$f = new XFilter( 'CustomerID', '=', '0' );
-		$filtering->AddItem( $f );
-
-		$sorting = new XSorting();
-		$s       = new XSort( 'PeriodStart', 'ASC' );
-		$sorting->AddItem( $s );
-
-		$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
-
-		$occIds = array();
-		$evIds  = array();
-
-		foreach ( $ede as $e ) {
-			$occIds[] = $e->OccationID;
-			$evIds[]  = $e->EventID;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
-		$ft->AddItem( $f );
-
-		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-		$eventDates = array();
-		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][] = $ed;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
-		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
-
-		if ( !empty( $pricenames ) ) {
-			$ede = array_filter( $ede, function( $object ) use ( &$pricenames ) {
-				$pn = $pricenames;
-				foreach ( $pn as $subj ) {
-					if ( $object->OccationID == $subj->OccationID ) {
-						return true;
-					}
-				}
-
-				return false;
-			} );
-		}
+		$edo     = EDUAPI()->OData->CourseTemplates->Search(
+			"CourseTemplateId",
+			join( " and ", $filters ),
+			join( ",", $expandArr ),
+			join( ",", $sorting )
+		);
+		$courses = $edo["value"];
 
 		$returnValue = array();
-		foreach ( $ede as $event ) {
-			if ( !isset( $returnValue[ $event->ObjectID ] ) ) {
-				$returnValue[ $event->ObjectID ] = sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( $event->PeriodStart ) ) ) . " " . $event->City;
+		foreach ( $courses as $event ) {
+			if ( !isset( $returnValue[ $event["CourseTemplateId"] ] ) && count( $event["Events"] ) > 0 ) {
+				$returnValue[ $event["CourseTemplateId"] ] = sprintf( __( 'Next event %1$s', 'eduadmin-booking' ), date( "Y-m-d", strtotime( $event["Events"][0]["StartDate"] ) ) ) . " " . $event["Events"][0]["City"];
 			}
 		}
 
@@ -660,15 +633,15 @@
 		if ( isset( EDU()->session['eduadmin-loginUser'] ) &&
 		     !empty( EDU()->session['eduadmin-loginUser'] ) &&
 		     isset( $contact ) &&
-		     isset( $contact->CustomerContactID ) &&
-		     $contact->CustomerContactID != 0
+		     isset( $contact->PersonId ) &&
+		     $contact->PersonId != 0
 		) {
 			echo
 				"<div class=\"eduadminLogin\"><a href=\"" . $baseUrl . "/profile/myprofile" . edu_getQueryString( "?", array(
 					'eid',
 					'module',
 				) ) . "\" class=\"eduadminMyProfileLink\">" .
-				$contact->ContactName .
+				trim( $contact->FirstName . " " . $contact->LastName ) .
 				"</a> - <a href=\"" . $baseUrl . "/profile/logout" . edu_getQueryString( "?", array(
 					'eid',
 					'module',
@@ -693,10 +666,9 @@
 	}
 
 	function edu_api_check_coupon_code() {
-		$objectID   = $_POST['objectId'];
-		$categoryID = $_POST['categoryId'];
-		$code       = $_POST['code'];
-		$vcode      = EDU()->api->CheckCouponCode( EDU()->get_token(), $objectID, $categoryID, $code );
+		$eventId = $_POST['eventId'];
+		$code    = $_POST['code'];
+		$vcode   = EDUAPI()->REST->Coupon->IsValid( $eventId, $code );
 
 		return rest_ensure_response( $vcode );
 	}

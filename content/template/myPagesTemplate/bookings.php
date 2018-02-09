@@ -11,8 +11,15 @@
 	?>
     <h2><?php _e( "Reservations", 'eduadmin-booking' ); ?></h2>
 	<?php
+
+		/*$bookings = EDUAPI()->OData->Events->Search(
+				null,
+				"Bookings/any(b:b/Customer/CustomerId eq " . $customer->CustomerId . ") and Bookings/any(b:b/NumberOfParticipants gt 0)",
+				'Bookings($orderby=Created desc;$expand=Participants($filter=Canceled eq false))'
+		);
+		EDU()->__writeDebug($bookings);*/
 		$filtering = new XFiltering();
-		$f         = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+		$f         = new XFilter( 'CustomerID', '=', $customer->CustomerId );
 		$filtering->AddItem( $f );
 		$f = new XFilter( 'ParticipantNr', '>', 0 );
 		$filtering->AddItem( $f );
@@ -93,7 +100,7 @@
                                             <tr>
                                                 <td align="left"><?php echo $participant->PersonName; ?></td>
                                                 <td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
-                                                <td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
+                                                <td align="right"><?php echo( !empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
                                             </tr>
 											<?php
 										}

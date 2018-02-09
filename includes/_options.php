@@ -26,60 +26,43 @@
 		}
 
 		if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
-			$edo = get_transient( 'eduadmin-listCourses' );
+			$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"] );
 			if ( !$edo ) {
-				$filtering = new XFiltering();
-				$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-				$filtering->AddItem( $f );
-
-				$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
-				set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
+				$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+					intval( $wp->query_vars["courseId"] ),
+					null,
+					"CustomFields"
+				);
+				set_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"], $edo, 6 * HOUR_IN_SECONDS );
 			}
 
-			foreach ( $edo as $object ) {
-				$id = $object->ObjectID;
-				if ( $id == $wp->query_vars["courseId"] ) {
-					$selectedCourse = $object;
-					break;
-				}
+			$selectedCourse = false;
+			$id             = $edo["CourseTemplateId"];
+			if ( $id == $wp->query_vars["courseId"] ) {
+				$selectedCourse = $edo;
 			}
 
-			if ( $selectedCourse != null ) {
+			if ( $selectedCourse != false ) {
 				$titleField = get_option( 'eduadmin-pageTitleField', 'PublicName' );
 				if ( stristr( $titleField, "attr_" ) !== false ) {
 					$attrid = substr( $titleField, 5 );
-					$ft     = new XFiltering();
-					$f      = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-					$ft->AddItem( $f );
-					$f = new XFilter( 'AttributeID', '=', $attrid );
-					$ft->AddItem( $f );
-					$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
-					if ( !empty( $objAttr ) ) {
-						$attr = $objAttr[0];
-						switch ( $attr->AttributeTypeID ) {
-							case 5:
-								$value = $attr->AttributeAlternative;
-								break;
-							/*case 7:
-								$value = $attr->AttributeDate;
-							break;*/
-							default:
-								$value = $attr->AttributeValue;
-								break;
+					foreach ( $selectedCourse["CustomFields"] as $cf ) {
+						if ( $cf["CustomFieldId"] == $attrid ) {
+							$value = $cf["CustomFieldValue"];
+							break;
 						}
-						if ( !empty( $value ) && stristr( $title, $value ) === false ) {
-							$title = $value . " " . $sep . " " . $title;
-						} else {
-							$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
-						}
+					}
+
+					if ( !empty( $value ) && stristr( $title, $value ) === false ) {
+						$title = $value . " " . $sep . " " . $title;
 					} else {
-						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
+						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
 					}
 				} else {
-					if ( !empty( $selectedCourse->{$titleField} ) && stristr( $title, $selectedCourse->{$titleField} ) === false ) {
-						$title = $selectedCourse->{$titleField} . " " . $sep . " " . $title;
+					if ( !empty( $selectedCourse[ $titleField ] ) && stristr( $title, $selectedCourse[ $titleField ] ) === false ) {
+						$title = $selectedCourse[ $titleField ] . " " . $sep . " " . $title;
 					} else {
-						$title = $selectedCourse->ObjectName . " " . $sep . " " . $title;
+						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
 					}
 				}
 			}
@@ -247,10 +230,15 @@
 
 		if ( isset( $_REQUEST['edu-thankyou'] ) ) {
 			if ( stripos( $script, "$" ) !== false ) {
-				$ft = new XFiltering();
-				$f  = new XFilter( 'EventCustomerLnkID', '=', intval( $_REQUEST['edu-thankyou'] ) );
-				$ft->AddItem( $f );
-				$bookingInfo = EDU()->api->GetEventBooking( EDU()->get_token(), '', $ft->ToString() );
+				$bookingInfo = EDUAPI()->OData->Bookings->GetItem(
+					intval( $_REQUEST['edu-thankyou'] ),
+					null,
+					"Customer,ContactPerson,Participants"
+				);
+
+				$eventInfo = EDUAPI()->OData->Events->GetItem(
+					$bookingInfo["EventId"]
+				);
 
 				$script = str_replace(
 					array(
@@ -258,12 +246,32 @@
 						'$productname$',
 						'$totalsum$',
 						'$participants$',
+						'$startdate$',
+						'$enddate$',
+						'$eventid$',
+						'$eventdescription$',
+						'$customerid$',
+						'$customercontactid$',
+						'$created$',
+						'$paid$',
+						'$objectid$',
+						'$notes$',
 					),
 					array(
-						esc_js( $bookingInfo[0]->EventCustomerLnkID ), // $bookingno$
-						esc_js( $bookingInfo[0]->ObjectName ), // $productname$
-						esc_js( $bookingInfo[0]->TotalPrice ), // $totalsum$
-						esc_js( $bookingInfo[0]->ParticipantNr ) // $participants$
+						esc_js( $bookingInfo["BookingId"] ), // $bookingno$
+						esc_js( $eventInfo["CourseName"] ), // $productname$
+						esc_js( $bookingInfo["TotalPriceIncVat"] ), // $totalsum$
+						esc_js( $bookingInfo["NumberOfParticipants"] ), // $participants$
+						esc_js( $eventInfo["StartDate"] ), // $startdate$
+						esc_js( $eventInfo["EndDate"] ), // $enddate$
+						esc_js( $bookingInfo["EventId"] ), // $eventid$
+						esc_js( $eventInfo["EventName"] ), // $eventdescription$
+						esc_js( $bookingInfo["Customer"]["CustomerId"] ), // $customerid$
+						esc_js( $bookingInfo["ContactPerson"]["PersonId"] ), // $customercontactid$
+						esc_js( $bookingInfo["Created"] ), // $created$
+						esc_js( $bookingInfo["Paid"] ), // $paid$
+						esc_js( $eventInfo["CourseTemplateId"] ), // $objectid$
+						esc_js( $bookingInfo["Notes"] ), // $notes$
 					),
 					$script
 				);

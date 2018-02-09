@@ -25,7 +25,7 @@
 		 * @return mixed
 		 */
 		public function Update( $customerId, EduAdmin_Data_Customer $customer ) {
-			return parent::PATCH( "$customerId",
+			return parent::PATCH( "/$customerId",
 			                      $customer,
 			                      get_called_class() . "|" . __FUNCTION__
 			);

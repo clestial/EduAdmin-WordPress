@@ -2,8 +2,8 @@
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 	function edu_listview_courselist() {
-		$fetchMonths = $_POST['fetchmonths']; // input var okay; sanitization okay
-		if ( ! is_numeric( $fetchMonths ) ) {
+		$fetchMonths = intval( $_POST['fetchmonths'] );
+		if ( ! is_numeric( $fetchMonths ) || $fetchMonths == 0 ) {
 			$fetchMonths = 6;
 		}
 
@@ -60,8 +60,8 @@
 	function edu_api_listview_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
 
-		$fetchMonths = $_POST['fetchmonths'];
-		if ( ! is_numeric( $fetchMonths ) ) {
+		$fetchMonths = intval( $_POST['fetchmonths'] );
+		if ( ! is_numeric( $fetchMonths ) || $fetchMonths == 0 ) {
 			$fetchMonths = 6;
 		}
 

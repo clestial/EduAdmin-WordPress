@@ -2,7 +2,7 @@
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 	function edu_listview_courselist() {
-		$fetchMonths = $_POST['fetchmonths'];
+		$fetchMonths = $_POST['fetchmonths']; // input var okay; sanitization okay
 		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}

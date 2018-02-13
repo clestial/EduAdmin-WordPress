@@ -12,7 +12,6 @@
 				'methods'  => 'POST',
 				'callback' => 'edu_listview_courselist',
 				'args'     => array(
-					'objectIds'    => array( 'required' => true ),
 					'city'         => array(),
 					'category'     => array(),
 					'subject'      => array(),

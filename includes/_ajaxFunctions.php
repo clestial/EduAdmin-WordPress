@@ -2,8 +2,6 @@
 	defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 	function edu_listview_courselist() {
-		$objectIds = $_POST['objectIds'];
-
 		$fetchMonths = $_POST['fetchmonths'];
 		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
@@ -116,12 +114,12 @@
 
 		$customOrderBy      = null;
 		$customOrderByOrder = null;
-		if ( ! empty( $request['orderby'] ) ) {
-			$customOrderBy = $request['orderby'];
+		if ( ! empty( $_POST['orderby'] ) ) {
+			$customOrderBy = $_POST['orderby'];
 		}
 
-		if ( ! empty( $request['order'] ) ) {
-			$customOrderByOrder = $request['order'];
+		if ( ! empty( $_POST['order'] ) ) {
+			$customOrderByOrder = $_POST['order'];
 		}
 
 		if ( $customOrderBy != null ) {
@@ -348,17 +346,9 @@
 
 		$objectId = $_POST['objectid'];
 
-		if ( ! empty( $_POST['city'] ) ) {
-			$f = new XFilter( 'City', '=', $_POST['city'] );
-			$ft->AddItem( $f );
-		}
-
-		$st               = new XSorting();
 		$groupByCity      = $_POST['groupbycity'];
 		$groupByCityClass = "";
 		if ( $groupByCity ) {
-			$s = new XSort( 'City', 'ASC' );
-			$st->AddItem( $s );
 			$groupByCityClass = " noCity";
 		}
 
@@ -459,7 +449,6 @@
 		$hasHiddenDates = false;
 		if ( ! empty( $prices ) ) {
 			foreach ( $events as $ev ) {
-
 				if ( isset( $_POST['eid'] ) ) {
 					if ( $ev['EventId'] != $_POST['eid'] ) {
 						continue;

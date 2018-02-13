@@ -51,6 +51,10 @@
 		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
+	if ( isset( $attributes['subject'] ) && ! empty( $attributes['subject'] ) ) {
+		$filters[] = 'Subjects/any(s:s/SubjectName eq \'' . sanitize_text_field( $attributes['subject'] ) . '\')';
+	}
+
 	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 		$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
 		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );

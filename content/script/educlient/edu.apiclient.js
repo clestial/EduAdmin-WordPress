@@ -43,7 +43,7 @@ edu.apiclient = {
             objectIds.push(courseDateObjects[i].attributes['data-objectid'].value);
         }
         if (objectIds.length > 0) {
-            edu.apiclient.getCourseListDates(objectIds);
+            edu.apiclient.getCourseListDates();
         }
     },
     replaceCourseEventList: function () {
@@ -56,12 +56,11 @@ edu.apiclient = {
     authJS: function (next) {
         next();
     },
-    getCourseListDates: function (objectIds) {
+    getCourseListDates: function () {
         jQuery.ajax({
             url: edu.apiclient.baseUrl + '/courselist',
             type: 'POST',
             data: {
-                objectIds: objectIds,
                 city: jQuery('.eduadmin-courselistoptions').data('city'),
                 category: jQuery('.eduadmin-courselistoptions').data('category'),
                 subject: jQuery('.eduadmin-courselistoptions').data('subject'),

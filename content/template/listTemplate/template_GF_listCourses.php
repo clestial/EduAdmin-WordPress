@@ -53,7 +53,7 @@ if ( ! empty( $courses ) ) {
 			?>
 				<tr class="gf-header">
 					<th>
-						<?php echo esc_html($object['CategoryName']);  ?>
+						<?php echo esc_html( $object['CategoryName'] );  ?>
 					</th>
 					<th>
 						Stockholm
@@ -85,7 +85,7 @@ if ( ! empty( $courses ) ) {
 		<?php
 			$count = 4;
 			if ( $showCourseLocations && ! empty( $eventCities ) ) {
-			    if($object['Days'] > 0) {
+			    if( $object['Days'] > 0 ) {
 				    $days = sprintf( _n( '%1$d day', '%1$d days', $object['Days'], 'eduadmin-booking' ), $object['Days'] ) . ', ';
 				} else {
 			        $days = '';

@@ -6,247 +6,95 @@
 	if ( ! $apiKey || empty( $apiKey ) ) {
 		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
-		$edo = get_transient( 'eduadmin-listCourses' );
-		if ( ! $edo ) {
-			$filtering = new XFiltering();
-			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-			$filtering->AddItem( $f );
-
-			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
-			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
-		}
-
-		$surl    = get_home_url();
-		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
-		$baseUrl = $surl . '/' . $cat;
-
-		$selectedCourse = false;
-		$name           = "";
-		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
-				$selectedCourse = $object;
-				break;
-			}
-		}
+		include( 'course-info.php' );
 		if ( ! $selectedCourse ) {
 			?>
             <script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
 			<?php
 			die();
 		}
-
-		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-		if ( ! is_numeric( $fetchMonths ) ) {
-			$fetchMonths = 6;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( 'now +' . $fetchMonths . ' months' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'PeriodEnd', '>=', date( "Y-m-d H:i:s", strtotime( 'now' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'StatusID', '=', '1' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'CustomerID', '=', '0' );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'ParentEventID', '=', '0' );
-		$ft->AddItem( $f );
-
-		$st               = new XSorting();
-		$groupByCity      = get_option( 'eduadmin-groupEventsByCity', false );
-		$groupByCityClass = "";
-		if ( $groupByCity ) {
-			$s = new XSort( 'City', 'ASC' );
-			$st->AddItem( $s );
-			$groupByCityClass = " noCity";
-		}
-		$s = new XSort( 'PeriodStart', 'ASC' );
-		$st->AddItem( $s );
-
-		$events = EDU()->api->GetEvent(
-			EDU()->get_token(),
-			$st->ToString(),
-			$ft->ToString()
-		);
-
-		$occIds   = array();
-		$occIds[] = -1;
-
-		$eventIds   = array();
-		$eventIds[] = -1;
-
-		foreach ( $events as $e ) {
-			$occIds[]   = $e->OccationID;
-			$eventIds[] = $e->EventID;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
-		$ft->AddItem( $f );
-
-		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-		$eventDates = array();
-		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][] = $ed;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
-		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
-		set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
-
-		if ( ! empty( $pricenames ) ) {
-			$events = array_filter( $events, function( $object ) {
-				$pn = get_transient( 'eduadmin-publicpricenames' );
-				foreach ( $pn as $subj ) {
-					if ( $object->OccationID == $subj->OccationID ) {
-						return true;
-					}
-				}
-
-				return false;
-			} );
-		}
-
-		$courseLevel = get_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID );
-		if ( ! $courseLevel ) {
-			$ft = new XFiltering();
-			$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-			$ft->AddItem( $f );
-			$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
-			set_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID, $courseLevel, HOUR_IN_SECONDS );
-		}
-
-		$lastCity = "";
-
-		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
-
-		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
-
-		$hideSections = array();
-		if ( isset( $attributes['hide'] ) ) {
-			$hideSections = explode( ',', $attributes['hide'] );
-		}
 		?>
         <div class="eduadmin">
             <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
             <div class="title">
-	            <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
-                    <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
+	            <?php if ( ! empty( $selectedCourse["ImageUrl"] ) ) : ?>
+                    <img src="<?php echo $selectedCourse["ImageUrl"]; ?>" class="courseImage"/>
 	            <?php endif; ?>
                 <h1 class="courseTitle"><?php echo $name; ?>
-                    <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
+                    <small class="courseLevel"><?php echo( $courseLevel != null ? $courseLevel["Name"] : "" ); ?></small>
                 </h1>
             </div>
             <hr/>
             <div class="textblock">
-	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
+	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse["CourseDescription"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Course description", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->CourseDescription;
+							echo $selectedCourse["CourseDescription"];
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
+	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse["CourseGoal"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Course goal", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->CourseGoal;
+							echo $selectedCourse["CourseGoal"];
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
+	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse["TargetGroup"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Target group", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->TargetGroup;
+							echo $selectedCourse["TargetGroup"];
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
+	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse["Prerequisites"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Prerequisites", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->Prerequisites;
+							echo $selectedCourse["Prerequisites"];
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
+	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse["CourseAfter"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "After the course", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->CourseAfter;
+							echo $selectedCourse["CourseAfter"];
 						?>
                     </div>
 				<?php } ?>
-	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse->Quote ) ) { ?>
+	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse["Quote"] ) ) { ?>
 					<?php if ( $showHeaders ) { ?>
                         <h3><?php _e( "Quotes", 'eduadmin-booking' ); ?></h3>
 					<?php } ?>
                     <div>
 						<?php
-							echo $selectedCourse->Quote;
+							echo $selectedCourse["Quote"];
 						?>
                     </div>
 				<?php } ?>
             </div>
             <div class="eventInformation">
-	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
+	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse["StartTime"] ) && ! empty( $selectedCourse["EndTime"] ) ) { ?>
                     <h3><?php _e( "Time", 'eduadmin-booking' ); ?></h3>
 					<?php
-		            echo ( $selectedCourse->Days > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days ) . ', ' : '' ) . date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
+		            echo ( $selectedCourse["Days"] > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse["Days"], 'eduadmin-booking' ), $selectedCourse["Days"] ) . ', ' : '' ) . date( "H:i", strtotime( $selectedCourse["StartTime"] ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse["EndTime"] ) );
 					?>
 				<?php } ?>
 				<?php
-					$occIds   = Array();
-					$occIds[] = -1;
-					foreach ( $events as $ev ) {
-						$occIds[] = $ev->OccationID;
-					}
-
-					$ft = new XFiltering();
-					$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-					$ft->AddItem( $f );
-					$f = new XFilter( 'ObjectID', 'IN', $selectedCourse->ObjectID );
-					$ft->AddItem( $f );
-					$f = new XFilter( 'OccationID', 'IN', join( ',', $occIds ) );
-					$ft->AddItem( $f );
-
-					$st = new XSorting();
-					$s  = new XSort( 'Price', 'ASC' );
-					$st->AddItem( $s );
-
-					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-					$uniquePrices = Array();
-
-					foreach ( $prices as $price ) {
-						$uniquePrices[ $price->Description ] = $price;
-					}
 
 					if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
 						?>
@@ -254,11 +102,17 @@
 						<?php
 						$currency = get_option( 'eduadmin-currency', 'SEK' );
 						// PriceNameVat
-						foreach ( $uniquePrices as $price ) {
+						if ( count( $prices ) == 1 ) {
 							?>
-							<?php echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
-                            <br/>
+							<?php echo sprintf( '%1$s %2$s', current( $prices )["PriceNameDescription"], convertToMoney( current( $prices )["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
 							<?php
+						} else {
+							foreach ( $prices as $up ) {
+								?>
+								<?php echo sprintf( '%1$s %2$s', $up["PriceNameDescription"], convertToMoney( $up["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
+                                <br/>
+								<?php
+							}
 						}
 					}
 				?>
@@ -271,7 +125,7 @@
                     <br/>
                     <div class="inquiry">
                         <a class="inquiry-link"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
+                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
                     </div>
 					<?php
 				}

@@ -14,7 +14,7 @@
 	 * Requires at least: 4.7
 	 * Tested up to: 4.9
 	 * Author:	Chris Gårdenberg, MultiNet Interactive AB
-	 * Author URI:	http://www.multinet.se
+	 * Author URI:	https://www.multinet.com
 	 * License:	GPL3
 	 * Text Domain:	eduadmin-booking
 	 * Domain Path: /languages
@@ -329,7 +329,7 @@
 					2  => __( 'feb', 'eduadmin-booking' ),
 					3  => __( 'mar', 'eduadmin-booking' ),
 					4  => __( 'apr', 'eduadmin-booking' ),
-					5  => __( 'may', 'eduadmin-booking' ),
+					5  => _x( 'may', 'short form of the month may', 'eduadmin-booking' ),
 					6  => __( 'jun', 'eduadmin-booking' ),
 					7  => __( 'jul', 'eduadmin-booking' ),
 					8  => __( 'aug', 'eduadmin-booking' ),
@@ -340,17 +340,6 @@
 				);
 
 				$this->StopTimer( $t );
-			}
-
-			public static function OldApiKeyWarning() {
-				?>
-                <div class="notice notice-warning is-dismissable">
-                    <p><?php echo sprintf( __( 'You are using an old API key, please change to the new key: %1$sEduAdmin - Api Authentication%2$s<br />
-If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$s', 'eduadmin-booking' ),
-					                       '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>',
-					                       '<a href="https://support.eduadmin.se/support/tickets/new" target="_blank">', '</a>' ); ?></p>
-                </div>
-				<?php
 			}
 
 			public static function SetupWarning() {
@@ -407,7 +396,6 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 					if ( $oldKey != null ) {
 						$key = DecryptApiKey( $oldKey );
 						EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
-						add_action( 'admin_notices', array( $this, 'OldApiKeyWarning' ) );
 					} else {
 						EDUAPI()->SetCredentials( '', '' );
 					}
@@ -417,7 +405,7 @@ If you need help with getting a new API-key, contact the %3$sMultiNet Support%4$
 				if ( $currentToken == null || ! $currentToken->IsValid() ) {
 					$currentToken = EDUAPI()->GetToken();
 					if ( empty( $currentToken->Issued ) ) {
-						return new WP_Error( 'broke', __( "Faulty credentials for EduAdmin API provided, please correct this and try again. Or contact MultiNet support to get a new key.", 'eduadmin-booking' ) );
+						return new WP_Error( 'broke', __( "The key for the EduAdmin API is not configured to work with the new API, please contact MultiNet support.", 'eduadmin-booking' ) );
 					}
 					set_transient( 'eduadmin-newapi-token', $currentToken, WEEK_IN_SECONDS );
 				}

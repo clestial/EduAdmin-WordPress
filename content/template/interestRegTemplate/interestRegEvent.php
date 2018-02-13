@@ -10,26 +10,24 @@
 			include_once( "sendEventInquiry.php" );
 		}
 
-		$edo = get_transient( 'eduadmin-listCourses' );
+		$courseId = $wp_query->query_vars["courseId"];
+		$edo      = get_transient( 'eduadmin-object_' . $courseId );
 		if ( ! $edo ) {
-			$filtering = new XFiltering();
-			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-			$filtering->AddItem( $f );
-
-			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
-			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
+			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+				$courseId,
+				null,
+				"Subjects,Events,CustomFields"
+			);
+			set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
 		}
 
 		$selectedCourse = false;
 		$name           = "";
-		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
-				$selectedCourse = $object;
-				break;
-			}
+		if ( $edo ) {
+			$name           = ( ! empty( $edo["CourseName"] ) ? $edo["CourseName"] : $edo["InternalCourseName"] );
+			$selectedCourse = $edo;
 		}
+
 		if ( ! $selectedCourse ) {
 			?>
             <script>history.go(-1);</script>
@@ -45,7 +43,7 @@
 		}
 		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
 		$ft->AddItem( $f );
-		$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
+		$f = new XFilter( 'ObjectID', '=', $selectedCourse["CourseTemplateId"] );
 		$ft->AddItem( $f );
 		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
 		$ft->AddItem( $f );
@@ -75,7 +73,9 @@
         <div class="eduadmin">
             <a href="../../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
             <div class="title">
-                <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
+	            <?php if ( ! empty( $selectedCourse["ImageUrl"] ) ) : ?>
+                    <img src="<?php echo $selectedCourse["ImageUrl"]; ?>" class="courseImage"/>
+	            <?php endif; ?>
                 <h1 class="courseTitle"><?php echo $name; ?> - <?php _e( "Inquiry", 'eduadmin-booking' ); ?>
                     <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
                 </h1>
@@ -106,7 +106,7 @@
 	            <?php _e( "Please fill out the form below to send a inquiry to us about this course.", 'eduadmin-booking' ); ?>
                 <hr/>
                 <form action="" method="POST">
-                    <input type="hidden" name="objectid" value="<?php echo $selectedCourse->ObjectID; ?>"/>
+                    <input type="hidden" name="objectid" value="<?php echo $selectedCourse["CourseTemplateId"]; ?>"/>
                     <input type="hidden" name="eventid" value="<?php echo $event->EventID; ?>"/>
                     <input type="hidden" name="act" value="eventInquiry"/>
                     <input type="hidden" name="email"/>

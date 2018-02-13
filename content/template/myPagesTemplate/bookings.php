@@ -12,12 +12,31 @@
     <h2><?php _e( "Reservations", 'eduadmin-booking' ); ?></h2>
 	<?php
 
-		/*$bookings = EDUAPI()->OData->Events->Search(
-				null,
-				"Bookings/any(b:b/Customer/CustomerId eq " . $customer->CustomerId . ") and Bookings/any(b:b/NumberOfParticipants gt 0)",
-				'Bookings($orderby=Created desc;$expand=Participants($filter=Canceled eq false))'
+		$bookings = EDUAPI()->OData->Bookings->Search(
+			null,
+			"Customer/CustomerId eq " . $customer->CustomerId . " and NumberOfParticipants gt 0",
+			'Participants,UnnamedParticipants',
+			"Created desc"
 		);
-		EDU()->__writeDebug($bookings);*/
+
+		$eventIds = array();
+
+		foreach ( $bookings["value"] as $booking ) {
+			if ( ! in_array( $booking["EventId"], $eventIds ) ) {
+				$eventIds[] = $booking["EventId"];
+			}
+		}
+
+		if ( ! empty( $eventIds ) ) {
+			$events = EDUAPI()->OData->Events->Search(
+				null,
+				"(EventId eq " . join( " or EventId eq ", $eventIds ) . ")"
+			);
+		} else {
+			$events = null;
+		}
+
+		EDU()->__writeDebug( $events );
 		$filtering = new XFiltering();
 		$f         = new XFilter( 'CustomerID', '=', $customer->CustomerId );
 		$filtering->AddItem( $f );

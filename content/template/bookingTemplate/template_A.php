@@ -90,7 +90,7 @@
 			$discountPercent            = 0.0;
 			$participantDiscountPercent = 0.0;
 			$customerInvoiceEmail       = '';
-			$incVat                     = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+			$incVat                     = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 				$user     = EDU()->session['eduadmin-loginUser'];
@@ -168,7 +168,7 @@
 			$st->AddItem( $s );
 
 			$subPrices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-			$sePrice   = array();
+			$sePrice                    = array();
 			foreach ( $subPrices as $sp ) {
 				$sePrice[ $sp->OccationID ][] = $sp;
 			}

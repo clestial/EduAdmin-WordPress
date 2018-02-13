@@ -4,12 +4,18 @@
 	$numberOfEvents = $attributes['numberofevents'];
 	$currentEvents  = 0;
 
-	foreach ( $ede as $object ) {
+	foreach ( $events as $event ) {
 		if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 			break;
 		}
-		$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-		$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
+		$name      = $event["EventName"];
+		$spotsLeft = $event["ParticipantNumberLeft"];
+		$object    = $event['CourseTemplate'];
+
+		$eventDates = array();
+		if ( ! empty( $event["EventDates"] ) ) {
+			$eventDates[ $event["EventId"] ] = $event["EventDates"];
+		}
 		include( 'blocks/event_blockB.php' );
 		$currentEvents++;
 	}

@@ -121,7 +121,7 @@
 	$showNextEventDate   = get_option( 'eduadmin-showNextEventDate', false );
 	$showCourseLocations = get_option( 'eduadmin-showCourseLocations', false );
 	$showEventPrice      = get_option( 'eduadmin-showEventPrice', false );
-	$incVat              = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+	$incVat              = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 	$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 	$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );

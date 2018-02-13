@@ -5,29 +5,31 @@
 	$invoiceCustomer = $user->Customer->BillingInfo[0];
 
 	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "saveInfo" ) {
-		$customer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
-		$customer->Address      = trim( sanitize_text_field( $_POST['customerAddress'] ) );
-		$customer->Address2     = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
-		$customer->Zip          = trim( sanitize_text_field( $_POST['customerZip'] ) );
-		$customer->City         = trim( sanitize_text_field( $_POST['customerCity'] ) );
-		$customer->Phone        = trim( sanitize_text_field( $_POST['customerPhone'] ) );
-		$customer->Email        = trim( sanitize_email( $_POST['customerEmail'] ) );
+		$patchCustomer               = new stdClass;
+		$patchCustomer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
+		$patchCustomer->Address      = trim( sanitize_text_field( $_POST['customerAddress'] ) );
+		$patchCustomer->Address2     = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+		$patchCustomer->Zip          = trim( sanitize_text_field( $_POST['customerZip'] ) );
+		$patchCustomer->City         = trim( sanitize_text_field( $_POST['customerCity'] ) );
+		$patchCustomer->Phone        = trim( sanitize_text_field( $_POST['customerPhone'] ) );
+		$patchCustomer->Email        = trim( sanitize_email( $_POST['customerEmail'] ) );
 
-		$customer->InvoiceName       = trim( sanitize_text_field( $_POST['customerInvoiceName'] ) );
-		$customer->InvoiceAddress1   = trim( sanitize_text_field( $_POST['customerInvoiceAddress'] ) );
-		$customer->InvoiceZip        = trim( sanitize_text_field( $_POST['customerInvoiceZip'] ) );
-		$customer->InvoiceCity       = trim( sanitize_text_field( $_POST['customerInvoiceCity'] ) );
-		$customer->InvoiceOrgnr      = trim( sanitize_text_field( $_POST['customerInvoiceOrgNr'] ) );
-		$customer->CustomerReference = trim( sanitize_text_field( $_POST['customerReference'] ) );
-		$customer->InvoiceEmail      = trim( sanitize_email( $_POST['customerInvoiceEmail'] ) );
+		$patchCustomer->BillingInfo                     = new stdClass;
+		$patchCustomer->BillingInfo->CustomerName       = trim( sanitize_text_field( $_POST['customerInvoiceName'] ) );
+		$patchCustomer->BillingInfo->Address            = trim( sanitize_text_field( $_POST['customerInvoiceAddress'] ) );
+		$patchCustomer->BillingInfo->Zip                = trim( sanitize_text_field( $_POST['customerInvoiceZip'] ) );
+		$patchCustomer->BillingInfo->City               = trim( sanitize_text_field( $_POST['customerInvoiceCity'] ) );
+		$patchCustomer->BillingInfo->OrganisationNumber = trim( sanitize_text_field( $_POST['customerInvoiceOrgNr'] ) );
+		$patchCustomer->BillingInfo->SellerReference    = trim( sanitize_text_field( $_POST['customerReference'] ) );
+		$patchCustomer->BillingInfo->Email              = trim( sanitize_email( $_POST['customerInvoiceEmail'] ) );
 
-		$contact->ContactName = trim( sanitize_text_field( $_POST['contactName'] ) );
-		$contact->Phone       = trim( sanitize_text_field( $_POST['contactPhone'] ) );
-		$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
-		$contact->Email       = trim( sanitize_email( $_POST['contactEmail'] ) );
+		$patchContact         = new stdClass;
+		$patchContact->Phone  = trim( sanitize_text_field( $_POST['contactPhone'] ) );
+		$patchContact->Mobile = trim( sanitize_text_field( $_POST['contactMobile'] ) );
+		$patchContact->Email  = trim( sanitize_email( $_POST['contactEmail'] ) );
 
-		EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-		EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
+		EDUAPI()->REST->Customer->Update( $customer->CustomerId, $patchCustomer );
+		EDUAPI()->REST->Person->Update( $contact->PersonId, $patchContact );
 	}
 ?>
 
@@ -129,7 +131,7 @@
                 <div class="inputLabel"><?php _e( "Invoice reference", 'eduadmin-booking' ); ?></div>
                 <div class="inputHolder"><input type="text" name="customerReference"
                                                 placeholder="<?php echo esc_attr( __( "Invoice reference", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo @esc_attr( $invoiceCustomer->Reference ); ?>"/>
+                                                value="<?php echo @esc_attr( $invoiceCustomer->SellerReference ); ?>"/>
                 </div>
             </label>
         </div>
@@ -137,9 +139,10 @@
             <h3><?php _e( "Contact information", 'eduadmin-booking' ); ?></h3>
             <label>
                 <div class="inputLabel"><?php _e( "Contact name", 'eduadmin-booking' ); ?></div>
-                <div class="inputHolder"><input type="text" name="contactName" readonly required
-                                                placeholder="<?php echo esc_attr( __( "Contact name", 'eduadmin-booking' ) ); ?>"
-                                                value="<?php echo esc_attr( $contact->FirstName . " " . $contact->LastName ); ?>"/>
+                <div class="inputHolder">
+                    <input type="text" name="contactName" readonly required
+                           placeholder="<?php echo esc_attr( __( "Contact name", 'eduadmin-booking' ) ); ?>"
+                           value="<?php echo esc_attr( $contact->FirstName . " " . $contact->LastName ); ?>"/>
                 </div>
             </label>
             <label>

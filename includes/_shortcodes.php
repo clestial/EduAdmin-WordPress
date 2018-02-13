@@ -399,7 +399,7 @@
 					$s  = new XSort( 'Price', 'ASC' );
 					$st->AddItem( $s );
 
-					$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+					$incVat = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 					$uniquePrices = array();

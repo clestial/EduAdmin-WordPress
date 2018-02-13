@@ -310,7 +310,7 @@
 		$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 		$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
 		$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
-		$incVat          = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+		$incVat          = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 		$showEventPrice = get_option( 'eduadmin-showEventPrice', false );
 		$currency       = get_option( 'eduadmin-currency', 'SEK' );
@@ -369,7 +369,7 @@
 		$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 		$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
 		$showWeekDays    = get_option( 'eduadmin-showWeekDays', false );
-		$incVat          = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+		$incVat          = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 		$showEventPrice = get_option( 'eduadmin-showEventPrice', false );
 		$currency       = get_option( 'eduadmin-currency', 'SEK' );

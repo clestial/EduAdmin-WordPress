@@ -7,11 +7,11 @@
 		protected $api_url = "/v1/ProgrammeBooking";
 
 		/**
-		 * @param EduAdmin_Data_ProgrammeBooking $programmeBooking
+		 * @param EduAdmin_Data_ProgrammeBooking|stdClass|object $programmeBooking
 		 *
 		 * @return mixed
 		 */
-		public function Book( EduAdmin_Data_ProgrammeBooking $programmeBooking ) {
+		public function Book( $programmeBooking ) {
 			return parent::POST(
 				"",
 				$programmeBooking,
@@ -20,12 +20,12 @@
 		}
 
 		/**
-		 * @param integer            $programmeBookingId
-		 * @param EduAdmin_Data_Mail $pbEmail
+		 * @param integer                            $programmeBookingId
+		 * @param EduAdmin_Data_Mail|stdClass|object $pbEmail
 		 *
 		 * @return mixed
 		 */
-		public function SendEmail( $programmeBookingId, EduAdmin_Data_Mail $pbEmail ) {
+		public function SendEmail( $programmeBookingId, $pbEmail ) {
 			return parent::POST(
 				"/$programmeBookingId/Email/Send",
 				$pbEmail,
@@ -34,12 +34,12 @@
 		}
 
 		/**
-		 * @param integer                    $programmeBookingId
-		 * @param EduAdmin_Data_MailAdvanced $pbEmail
+		 * @param integer                                    $programmeBookingId
+		 * @param EduAdmin_Data_MailAdvanced|stdClass|object $pbEmail
 		 *
 		 * @return mixed
 		 */
-		public function SendEmailAdvanced( $programmeBookingId, EduAdmin_Data_MailAdvanced $pbEmail ) {
+		public function SendEmailAdvanced( $programmeBookingId, $pbEmail ) {
 			return parent::POST(
 				"/$programmeBookingId/Email/SendAdvanced",
 				$pbEmail,
@@ -48,12 +48,12 @@
 		}
 
 		/**
-		 * @param integer                              $programmeBookingId
-		 * @param EduAdmin_Data_ProgrammeBooking_Patch $patch
+		 * @param integer                                              $programmeBookingId
+		 * @param EduAdmin_Data_ProgrammeBooking_Patch|stdClass|object $patch
 		 *
 		 * @return mixed
 		 */
-		public function PatchBooking( $programmeBookingId, EduAdmin_Data_ProgrammeBooking_Patch $patch ) {
+		public function PatchBooking( $programmeBookingId, $patch ) {
 			return parent::PATCH(
 				"/$programmeBookingId",
 				$patch,

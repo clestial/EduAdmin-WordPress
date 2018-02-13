@@ -62,12 +62,12 @@
 		}
 
 		/**
-		 * @param integer                    $bookingId
-		 * @param EduAdmin_Data_PatchBooking $patch_booking
+		 * @param integer                                    $bookingId
+		 * @param EduAdmin_Data_PatchBooking|stdClass|object $patch_booking
 		 *
 		 * @return mixed
 		 */
-		public function PatchBooking( $bookingId, EduAdmin_Data_PatchBooking $patch_booking ) {
+		public function PatchBooking( $bookingId, $patch_booking ) {
 			return parent::PATCH(
 				"/$bookingId",
 				$patch_booking,
@@ -76,11 +76,11 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_BookingData $booking_data
+		 * @param EduAdmin_Data_BookingData|stdClass|object $booking_data
 		 *
 		 * @return mixed
 		 */
-		public function Create( EduAdmin_Data_BookingData $booking_data ) {
+		public function Create( $booking_data ) {
 			return parent::POST(
 				"",
 				$booking_data,
@@ -89,11 +89,11 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_BookingData $booking_data
+		 * @param EduAdmin_Data_BookingData|stdClass|object $booking_data
 		 *
 		 * @return mixed
 		 */
-		public function CheckPrice( EduAdmin_Data_BookingData $booking_data ) {
+		public function CheckPrice( $booking_data ) {
 			return parent::POST(
 				"/CheckPrice",
 				$booking_data,
@@ -102,12 +102,12 @@
 		}
 
 		/**
-		 * @param integer                           $bookingId
-		 * @param EduAdmin_Data_BookingParticipants $booking_participants
+		 * @param integer                                           $bookingId
+		 * @param EduAdmin_Data_BookingParticipants|stdClass|object $booking_participants
 		 *
 		 * @return mixed
 		 */
-		public function AddParticipantsToBooking( $bookingId, EduAdmin_Data_BookingParticipants $booking_participants ) {
+		public function AddParticipantsToBooking( $bookingId, $booking_participants ) {
 			return parent::POST(
 				"/$bookingId/Participants",
 				$booking_participants,
@@ -116,12 +116,12 @@
 		}
 
 		/**
-		 * @param integer                                  $bookingId
-		 * @param EduAdmin_Data_ConvertUnnamedParticipants $unnamed_participants
+		 * @param integer                                                  $bookingId
+		 * @param EduAdmin_Data_ConvertUnnamedParticipants|stdClass|object $unnamed_participants
 		 *
 		 * @return mixed
 		 */
-		public function ConvertUnnamedToParticipant( $bookingId, EduAdmin_Data_ConvertUnnamedParticipants $unnamed_participants ) {
+		public function ConvertUnnamedToParticipant( $bookingId, $unnamed_participants ) {
 			return parent::POST(
 				"/$bookingId/NameUnnamedParticipants",
 				$unnamed_participants,

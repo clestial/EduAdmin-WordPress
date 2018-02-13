@@ -5,14 +5,7 @@
 	if ( ! $apiKey || empty( $apiKey ) ) {
 		return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'ObjectID', '=', $courseId );
-		$filtering->AddItem( $f );
-
-		$f = new XFilter( 'PublicPriceName', '=', "True" );
-		$filtering->AddItem( $f );
-
-		$sorting       = new XSorting();
+		$sorting       = array();
 		$customOrder   = null;
 		$customOrderBy = null;
 		if ( ! empty( $attributes['order'] ) ) {
@@ -25,25 +18,27 @@
 
 		if ( $customOrderBy != null ) {
 			$orderby   = explode( ' ', $customOrderBy );
-			$sortorder = explode( ' ', $customOrder );
+			$sortorder = explode( ' ', $customOrderByOrder );
 			foreach ( $orderby as $od => $v ) {
 				if ( isset( $sortorder[ $od ] ) ) {
 					$or = $sortorder[ $od ];
 				} else {
-					$or = "ASC";
+					$or = "asc";
 				}
 
-				$s = new XSort( $v, $or );
-				$sorting->AddItem( $s );
+				$sorting[] = $v . ' ' . strtolower( $or );
 			}
 		} else {
-			$s = new XSort( 'PriceNameID', $customOrder != null ? $customOrder : 'ASC' );
-			$sorting->AddItem( $s );
+			$sorting[] = 'PriceNameId asc';
 		}
 
 		$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
 		if ( ! $edo ) {
-			$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
+			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+				$courseId,
+				"CourseTemplateId",
+				'PriceNames($filter=PublicPriceName;$orderby=' . join( ',', $sorting ) . ')'
+			)["PriceNames"];
 			set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
 		}
 
@@ -52,13 +47,13 @@
 		}
 
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
-		$incVat   = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
+		$incVat   = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 		?>
         <div class="eventInformation">
             <h3><?php _e( "Prices", 'eduadmin-booking' ); ?></h3>
 			<?php
 				foreach ( $edo as $price ) {
-					echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
+					echo sprintf( '%1$s: %2$s', $price["PriceNameDescription"], convertToMoney( $price["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
 					echo "<br>";
 				}
 			?>

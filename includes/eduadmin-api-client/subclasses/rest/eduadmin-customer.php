@@ -7,11 +7,11 @@
 		protected $api_url = "/v1/Customer";
 
 		/**
-		 * @param EduAdmin_Data_Customer $customer
+		 * @param EduAdmin_Data_Customer|stdClass|object $customer
 		 *
 		 * @return mixed
 		 */
-		public function Create( EduAdmin_Data_Customer $customer ) {
+		public function Create( $customer ) {
 			return parent::POST( "",
 			                     $customer,
 			                     get_called_class() . "|" . __FUNCTION__
@@ -19,12 +19,12 @@
 		}
 
 		/**
-		 * @param integer                $customerId
-		 * @param EduAdmin_Data_Customer $customer
+		 * @param integer                                $customerId
+		 * @param EduAdmin_Data_Customer|stdClass|object $customer
 		 *
 		 * @return mixed
 		 */
-		public function Update( $customerId, EduAdmin_Data_Customer $customer ) {
+		public function Update( $customerId, $customer ) {
 			return parent::PATCH( "/$customerId",
 			                      $customer,
 			                      get_called_class() . "|" . __FUNCTION__

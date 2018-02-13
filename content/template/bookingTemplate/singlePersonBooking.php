@@ -319,12 +319,6 @@
 		$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 		$db = array();
-		/*if($contact->PersonID != 0) {
-			$fo = new XFiltering();
-			$f = new XFilter('PersonID', '=', $contact->PersonID);
-			$fo->AddItem($f);
-			$db = EDU()->api->GetPersonAttribute(EDU()->get_token(), '', $fo->ToString());
-		}*/
 
 		foreach ( $contactAttributes as $attr ) {
 			$data = null;

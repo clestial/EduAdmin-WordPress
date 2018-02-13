@@ -13,7 +13,7 @@
 ?>
 <div class="event-table eventDays"
      data-eduwidget="eventlist"
-     data-objectid="<?php echo esc_attr( $selectedCourse->ObjectID ); ?>"
+     data-objectid="<?php echo esc_attr( $selectedCourse["CourseTemplateId"] ); ?>"
      data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
      data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
      data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
@@ -29,12 +29,12 @@
 		if ( ! empty( $prices ) ) {
 			foreach ( $events as $ev ) {
 				if ( isset( $_REQUEST['eid'] ) ) {
-					if ( $ev->EventID != $_REQUEST['eid'] ) {
+					if ( $ev["EventId"] != $_REQUEST['eid'] ) {
 						continue;
 					}
 				}
 				include( 'event-item.php' );
-				$lastCity = $ev->City;
+				$lastCity = $ev["City"];
 				$i++;
 			}
 		}
@@ -46,7 +46,7 @@
 			<?php
 		}
 		if ( $hasHiddenDates ) {
-			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev["City"] : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
 	?>
 </div>

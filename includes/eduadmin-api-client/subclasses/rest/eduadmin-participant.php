@@ -71,11 +71,11 @@
 		}
 
 		/**
-		 * @param EduAdmin_Data_GradeData $grade_data
+		 * @param EduAdmin_Data_GradeData|stdClass|object $grade_data
 		 *
 		 * @return mixed
 		 */
-		public function Grade( EduAdmin_Data_GradeData $grade_data ) {
+		public function Grade( $grade_data ) {
 			return parent::POST( "/Grade",
 			                     $grade_data,
 			                     get_called_class() . "|" . __FUNCTION__
@@ -83,12 +83,12 @@
 		}
 
 		/**
-		 * @param integer                       $participantId
-		 * @param EduAdmin_Data_ParticipantData $participant_data
+		 * @param integer                                       $participantId
+		 * @param EduAdmin_Data_ParticipantData|stdClass|object $participant_data
 		 *
 		 * @return mixed
 		 */
-		public function Update( $participantId, EduAdmin_Data_ParticipantData $participant_data ) {
+		public function Update( $participantId, $participant_data ) {
 			return parent::PATCH( "/$participantId",
 			                      $participant_data,
 			                      get_called_class() . "|" . __FUNCTION__

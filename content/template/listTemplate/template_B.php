@@ -9,10 +9,10 @@
 		include( "list-options.php" );
 		?>
         <div class="eduadmin">
-	        <?php
-		        include( "search-form.php" );
-		        include( "template_loader.php" );
-	        ?>
+			<?php
+				include( "search-form.php" );
+				include( "template_loader.php" );
+			?>
         </div>
 		<?php
 	}

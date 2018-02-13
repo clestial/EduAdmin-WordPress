@@ -23,28 +23,28 @@
 							);
 
 							$parent = array();
-							foreach ( $cg["value"] as $i => $v ) {
-								$parent[ $i ] = $v["ParentCustomerGroupId"];
+							foreach ( $cg[ "value" ] as $i => $v ) {
+								$parent[ $i ] = $v[ "ParentCustomerGroupId" ];
 							}
 
-							array_multisort( $parent, SORT_ASC, $cg["value"] );
+							array_multisort( $parent, SORT_ASC, $cg[ "value" ] );
 
 							$levelStack = array();
-							foreach ( $cg["value"] as $g ) {
-								$levelStack[ $g["ParentCustomerGroupId"] ][] = $g;
+							foreach ( $cg[ "value" ] as $g ) {
+								$levelStack[ $g[ "ParentCustomerGroupId" ] ][] = $g;
 							}
 
 							$depth = 0;
 
 							function edu_writeOptions( $g, $array, $depth, $selectedOption ) {
 								echo
-									"<option value=\"" . $g["CustomerGroupId"] . "\"" . ( $selectedOption == $g["CustomerGroupId"] ? " selected=\"selected\"" : "" ) . ">" .
+									"<option value=\"" . $g[ "CustomerGroupId" ] . "\"" . ( $selectedOption == $g[ "CustomerGroupId" ] ? " selected=\"selected\"" : "" ) . ">" .
 									str_repeat( '&nbsp;', $depth * 4 ) .
-									$g["CustomerGroupName"] .
+									$g[ "CustomerGroupName" ] .
 									"</option>\n";
-								if ( array_key_exists( $g["CustomerGroupId"], $array ) ) {
+								if ( array_key_exists( $g[ "CustomerGroupId" ], $array ) ) {
 									$depth++;
-									foreach ( $array[ $g["CustomerGroupId"] ] as $ng ) {
+									foreach ( $array[ $g[ "CustomerGroupId" ] ] as $ng ) {
 										edu_writeOptions( $ng, $array, $depth, $selectedOption );
 									}
 									$depth--;
@@ -56,7 +56,7 @@
                                     title="<?php esc_attr_e( "Select customer group", "eduadmin-booking" ); ?>">
                                 <option value=""><?php _e( "Select customer group", "eduadmin-booking" ); ?></option>
 								<?php
-									$root           = $levelStack['0'];
+									$root           = $levelStack[ '0' ];
 									$selectedOption = get_option( 'eduadmin-customerGroupId', null );
 									foreach ( $root as $g ) {
 										edu_writeOptions( $g, $levelStack, $depth, $selectedOption );
@@ -67,10 +67,10 @@
                             <label>
                                 <input type="checkbox"
                                        name="eduadmin-useLogin"
-	                                <?php echo( get_option( "eduadmin-useLogin", false ) ? " checked=\"checked\"" : "" ); ?>
+									<?php echo( get_option( "eduadmin-useLogin", false ) ? " checked=\"checked\"" : "" ); ?>
                                        onchange="EduAdmin.ToggleVisibility(this.checked, '.eduadmin-forceLogin');"
                                 />
-	                            <?php _e( "Use login", "eduadmin-booking" ); ?>
+								<?php _e( "Use login", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <div class="eduadmin-forceLogin"<?php echo( get_option( "eduadmin-useLogin", false ) ? " style=\"display: block;\"" : " style=\"display: none;\"" ); ?>>
@@ -84,7 +84,7 @@
                             </div>
                             <br/>
                             <label>
-	                            <?php _e( "Login field", "eduadmin-booking" ); ?>
+								<?php _e( "Login field", "eduadmin-booking" ); ?>
 								<?php $selectedLoginField = get_option( 'eduadmin-loginField', 'Email' ); ?>
                                 <select name="eduadmin-loginField">
                                     <option<?php echo( $selectedLoginField === "Email" ? " selected=\"selected\"" : "" ); ?>
@@ -103,7 +103,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-singlePersonBooking"<?php echo( $singlePersonBooking === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Participant is also customer and contact (Only allow a single participant)", "eduadmin-booking" ); ?>
+								<?php _e( "Participant is also customer and contact (Only allow a single participant)", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
 						<?php
@@ -113,7 +113,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-blockEditIfLoggedIn"<?php echo( $blockEditIfLoggedIn ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Block ability to edit login information if logged in", "eduadmin-booking" ); ?>
+								<?php _e( "Block ability to edit login information if logged in", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
 						<?php
@@ -123,7 +123,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-allowDiscountCode"<?php echo( $allowDiscountCode === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Allow end customers to use discount codes", "eduadmin-booking" ); ?>
+								<?php _e( "Allow end customers to use discount codes", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
 						<?php
@@ -133,7 +133,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-useLimitedDiscount"<?php echo( $useLimitedDiscount === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Allow end customers to use discount cards", "eduadmin-booking" ); ?>
+								<?php _e( "Allow end customers to use discount cards", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
 						<?php
@@ -143,7 +143,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-validateCivicRegNo"<?php echo( $validateCivicRegNo === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Validate civic registration numbers (Swedish)", "eduadmin-booking" ); ?>
+								<?php _e( "Validate civic registration numbers (Swedish)", "eduadmin-booking" ); ?>
                             </label>
                             <h4><?php _e( "Field order", "eduadmin-booking" ); ?></h4>
 						<?php
@@ -153,14 +153,14 @@
                                 <input type="radio"
                                        name="eduadmin-fieldOrder"<?php echo( $fieldOrder === "contact_customer" ? " checked=\"checked\"" : "" ); ?>
                                        value="contact_customer"/>
-	                            <?php _e( "Contact, customer", "eduadmin-booking" ); ?>
+								<?php _e( "Contact, customer", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <label>
                                 <input type="radio"
                                        name="eduadmin-fieldOrder"<?php echo( $fieldOrder === "customer_contact" ? " checked=\"checked\"" : "" ); ?>
                                        value="customer_contact"/>
-	                            <?php _e( "Customer, contact", "eduadmin-booking" ); ?>
+								<?php _e( "Customer, contact", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <h4><?php _e( "Sub Events", "eduadmin-booking" ); ?></h4>
@@ -171,7 +171,7 @@
                                 <input type="checkbox"
                                        name="eduadmin-hideSubEventDateTime"<?php echo( $hideSubEventDateTime === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Hide date and time information from sub events", "eduadmin-booking" ); ?>
+								<?php _e( "Hide date and time information from sub events", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <h4><?php _e( "Interest registration", "eduadmin-booking" ); ?></h4>
@@ -183,14 +183,14 @@
                                 <input type="checkbox"
                                        name="eduadmin-allowInterestRegObject"<?php echo( $allowInterestRegObject === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Allow interest registration for course", "eduadmin-booking" ); ?>
+								<?php _e( "Allow interest registration for course", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <label>
                                 <input type="checkbox"
                                        name="eduadmin-allowInterestRegEvent"<?php echo( $allowInterestRegEvent === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Allow interest registration for event", "eduadmin-booking" ); ?>
+								<?php _e( "Allow interest registration for event", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <h4><?php _e( "Form settings", "eduadmin-booking" ); ?></h4>
@@ -203,21 +203,21 @@
                                 <input type="checkbox"
                                        name="eduadmin-noInvoiceFreeEvents"<?php echo( $noInvoiceFreeEvents === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Hide invoice information if the event is free", "eduadmin-booking" ); ?>
+								<?php _e( "Hide invoice information if the event is free", "eduadmin-booking" ); ?>
                             </label><br/>
 						<?php $hideInvoiceEmailField = get_option( 'eduadmin-hideInvoiceEmailField', false ); ?>
                             <label>
                                 <input type="checkbox"
                                        name="eduadmin-hideInvoiceEmailField"<?php echo( $hideInvoiceEmailField === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Hide the invoice e-mail field", "eduadmin-booking" ); ?>
+								<?php _e( "Hide the invoice e-mail field", "eduadmin-booking" ); ?>
                             </label><br/>
 						<?php $forceShowInvoiceInformation = get_option( 'eduadmin-showInvoiceInformation', false ); ?>
                             <label>
                                 <input type="checkbox"
                                        name="eduadmin-showInvoiceInformation"<?php echo( $forceShowInvoiceInformation === "true" ? " checked=\"checked\"" : "" ); ?>
                                        value="true"/>
-	                            <?php _e( "Force show invoice information fields", "eduadmin-booking" ); ?>
+								<?php _e( "Force show invoice information fields", "eduadmin-booking" ); ?>
                             </label>
                             <h3><?php _e( "Price name settings", "eduadmin-booking" ); ?></h3>
 						<?php
@@ -227,21 +227,21 @@
                                 <input type="radio"
                                        name="eduadmin-selectPricename"<?php echo( $priceNameSetting === "firstPublic" ? " checked=\"checked\"" : "" ); ?>
                                        value="firstPublic"/>
-	                            <?php _e( "EduAdmin chooses the appropriate price name for the event and participants", "eduadmin-booking" ); ?>
+								<?php _e( "EduAdmin chooses the appropriate price name for the event and participants", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <label>
                                 <input type="radio"
                                        name="eduadmin-selectPricename"<?php echo( $priceNameSetting === "selectWholeEvent" ? " checked=\"checked\"" : "" ); ?>
                                        value="selectWholeEvent"/>
-	                            <?php _e( "Can choose between public price names", "eduadmin-booking" ); ?>
+								<?php _e( "Can choose between public price names", "eduadmin-booking" ); ?>
                             </label>
                             <br/>
                             <label>
                                 <input type="radio"
                                        name="eduadmin-selectPricename"<?php echo( $priceNameSetting === "selectParticipant" ? " checked=\"checked\"" : "" ); ?>
                                        value="selectParticipant"/>
-	                            <?php _e( "Can choose per participant", "eduadmin-booking" ); ?>
+								<?php _e( "Can choose per participant", "eduadmin-booking" ); ?>
                             </label>
 						<?php
 							$selectedMatch = get_option( 'eduadmin-customerMatching', 'name-zip-match' );
@@ -907,7 +907,7 @@
                                 <input type="checkbox" name="eduadmin-useBookingTermsCheckbox"
                                        value="true"<?php if ( get_option( 'eduadmin-useBookingTermsCheckbox', false ) ) {
 									echo " checked=\"checked\"";
-                                } ?> /> <?php _e( "Use booking terms", "eduadmin-booking" ); ?>
+								} ?> /> <?php _e( "Use booking terms", "eduadmin-booking" ); ?>
                             </label>
                             <h3><?php _e( "Javascript to run when a booking is completed", "eduadmin-booking" ); ?></h3>
                             <i><?php _e( "You do not need to include &lt;script&gt;-tags", "eduadmin-booking" ); ?></i>

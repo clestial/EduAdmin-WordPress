@@ -20,7 +20,7 @@
                                value="true"<?php if ( get_option( 'eduadmin-showDetailHeaders', true ) ) {
 							echo " checked=\"checked\"";
 						} ?> />
-	                    <?php _e( 'Show headers in detail view', 'eduadmin-booking' ); ?>
+						<?php _e( 'Show headers in detail view', 'eduadmin-booking' ); ?>
                     </label>
                     <br/>
                     <i><?php _e( 'Uncheck to hide the headers in the course detail view', 'eduadmin-booking' ); ?></i>
@@ -30,7 +30,7 @@
                                value="true"<?php if ( get_option( 'eduadmin-groupEventsByCity', false ) ) {
 							echo " checked=\"checked\"";
 						} ?> />
-	                    <?php _e( 'Group events by city', 'eduadmin-booking' ); ?>
+						<?php _e( 'Group events by city', 'eduadmin-booking' ); ?>
                     </label>
                     <br/>
                     <i><?php _e( 'Check to group the event list by city', 'eduadmin-booking' ); ?></i>
@@ -54,27 +54,27 @@
                             <option value="CourseDescriptionShort"<?php echo( $selectedDescriptionField === "CourseDescriptionShort" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Short course description", "eduadmin-booking" ); ?></option>
                             <option value="CourseDescription"<?php if ( $selectedDescriptionField === "CourseDescription" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "Course description", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "Course description", "eduadmin-booking" ); ?></option>
                             <option value="CourseGoal"<?php if ( $selectedDescriptionField === "CourseGoal" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "Course goal", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "Course goal", "eduadmin-booking" ); ?></option>
                             <option value="CourseTarget"<?php if ( $selectedDescriptionField === "CourseTarget" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "Target group", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "Target group", "eduadmin-booking" ); ?></option>
                             <option value="CoursePrerequisites"<?php if ( $selectedDescriptionField === "CoursePrerequisites" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "Prerequisites", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "Prerequisites", "eduadmin-booking" ); ?></option>
                             <option value="CourseAfter"<?php if ( $selectedDescriptionField === "CourseAfter" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "After the course", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "After the course", "eduadmin-booking" ); ?></option>
                             <option value="CourseQuote"<?php if ( $selectedDescriptionField === "CourseQuote" ) {
 								echo " selected=\"selected\"";
-                            } ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
+							} ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                         </optgroup>
-	                    <?php if ( ! empty( $attributes["value"] ) ) { ?>
+						<?php if ( ! empty( $attributes[ "value" ] ) ) { ?>
                             <optgroup label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
-	                            <?php foreach ( $attributes["value"] as $attr ) { ?>
-                                    <option value="attr_<?php echo $attr["CustomFieldId"]; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr["CustomFieldId"] ? " selected=\"selected\"" : "" ); ?>><?php echo $attr["CustomFieldName"]; ?></option>
+								<?php foreach ( $attributes[ "value" ] as $attr ) { ?>
+                                    <option value="attr_<?php echo $attr[ "CustomFieldId" ]; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr[ "CustomFieldId" ] ? " selected=\"selected\"" : "" ); ?>><?php echo $attr[ "CustomFieldName" ]; ?></option>
 								<?php } ?>
                             </optgroup>
 						<?php } ?>

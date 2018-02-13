@@ -6,24 +6,24 @@
     <h2><?php _e( "Contact information", 'eduadmin-booking' ); ?></h2>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Contact name", 'eduadmin-booking' ); ?>
+			<?php _e( "Contact name", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder"><input type="text"
-		        <?php echo( $__block ? " readonly" : "" ); ?>
+				<?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
                                         id="edu-contactFirstName" name="contactFirstName" class="first-name"
                                         placeholder="<?php _e( "Contact first name", 'eduadmin-booking' ); ?>"
-                                        value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
+                                        value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[ 0 ] ); ?>"/><input
                     type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
                     class="last-name"
                     name="contactLastName" placeholder="<?php _e( "Contact surname", 'eduadmin-booking' ); ?>"
-                    value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
+                    value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[ 0 ], '', $contact->ContactName ) ); ?>"/>
         </div>
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "E-mail address", 'eduadmin-booking' ); ?>
+			<?php _e( "E-mail address", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="email" id="edu-contactEmail" required
@@ -35,7 +35,7 @@
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Phone number", 'eduadmin-booking' ); ?>
+			<?php _e( "Phone number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactPhone" name="contactPhone"
@@ -46,7 +46,7 @@
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Mobile number", 'eduadmin-booking' ); ?>
+			<?php _e( "Mobile number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactMobile" name="contactMobile"
@@ -59,7 +59,7 @@
 	<?php if ( $selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber' ) { ?>
         <label>
             <div class="inputLabel">
-	            <?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
+				<?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="text" id="edu-contactCivReg" required name="contactCivReg"
@@ -73,7 +73,7 @@
 	<?php if ( get_option( 'eduadmin-useLogin', false ) && empty( $contact->Loginpass ) ) { ?>
         <label>
             <div class="inputLabel">
-	            <?php _e( "Please enter a password", 'eduadmin-booking' ); ?>
+				<?php _e( "Please enter a password", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="password" required name="contactPass"
@@ -82,7 +82,7 @@
         </label>
 	<?php } ?>
     <div class="edu-modal warning" id="edu-warning-participants-contact">
-	    <?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
+		<?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
     </div>
 </div>
 <?php
@@ -91,7 +91,7 @@
         <div class="customerView">
             <label>
                 <div class="inputLabel">
-	                <?php _e( "Address 1", 'eduadmin-booking' ); ?>
+					<?php _e( "Address 1", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="customerAddress1"
@@ -101,7 +101,7 @@
             </label>
             <label>
                 <div class="inputLabel">
-	                <?php _e( "Address 2", 'eduadmin-booking' ); ?>
+					<?php _e( "Address 2", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="customerAddress2"
@@ -111,7 +111,7 @@
             </label>
             <label>
                 <div class="inputLabel">
-	                <?php _e( "Postal code", 'eduadmin-booking' ); ?>
+					<?php _e( "Postal code", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="customerPostalCode"
@@ -121,7 +121,7 @@
             </label>
             <label>
                 <div class="inputLabel">
-	                <?php _e( "Postal city", 'eduadmin-booking' ); ?>
+					<?php _e( "Postal city", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="customerPostalCity"
@@ -132,10 +132,10 @@
         </div>
 
         <div class="invoiceView__wrapper">
-	        <?php if ( $showInvoiceEmail ) { ?>
+			<?php if ( $showInvoiceEmail ) { ?>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Invoice e-mail address", 'eduadmin-booking' ); ?>
+						<?php _e( "Invoice e-mail address", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceEmail"
@@ -143,10 +143,10 @@
                                value="<?php echo @esc_attr( $customerInvoiceEmail ); ?>"/>
                     </div>
                 </label>
-	        <?php } ?>
+			<?php } ?>
             <label>
                 <div class="inputLabel">
-	                <?php _e( "Invoice reference", 'eduadmin-booking' ); ?>
+					<?php _e( "Invoice reference", 'eduadmin-booking' ); ?>
                 </div>
                 <div class="inputHolder">
                     <input type="text" name="invoiceReference"
@@ -158,9 +158,9 @@
                 <div class="inputHolder alsoInvoiceCustomer">
                     <input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true"
                            onchange="eduBookingView.UpdateInvoiceCustomer(this);"
-	                    <?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
+						<?php echo $forceShowInvoiceInformation ? "checked" : "" ?>/>
                     <label class="inline-checkbox" for="alsoInvoiceCustomer"></label>
-	                <?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
+					<?php _e( "Use other information for invoicing", 'eduadmin-booking' ); ?>
                 </div>
             </label>
 
@@ -169,7 +169,7 @@
                 <h2><?php _e( "Invoice information", 'eduadmin-booking' ); ?></h2>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Customer name", 'eduadmin-booking' ); ?>
+						<?php _e( "Customer name", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceName"
@@ -179,7 +179,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Address 1", 'eduadmin-booking' ); ?>
+						<?php _e( "Address 1", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress1"
@@ -189,7 +189,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Address 2", 'eduadmin-booking' ); ?>
+						<?php _e( "Address 2", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoiceAddress2"
@@ -199,7 +199,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Postal code", 'eduadmin-booking' ); ?>
+						<?php _e( "Postal code", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCode"
@@ -209,7 +209,7 @@
                 </label>
                 <label>
                     <div class="inputLabel">
-	                    <?php _e( "Postal city", 'eduadmin-booking' ); ?>
+						<?php _e( "Postal city", 'eduadmin-booking' ); ?>
                     </div>
                     <div class="inputHolder">
                         <input type="text" name="invoicePostalCity"

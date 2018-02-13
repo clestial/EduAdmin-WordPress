@@ -4,13 +4,13 @@
 	$allowCategorySearch = get_option( 'eduadmin-allowCategorySearch', false );
 	$allowLevelSearch    = get_option( 'eduadmin-allowLevelSearch', false );
 
-	$showSearch      = $attributes['showsearch'];
-	$showMoreNumber  = $attributes['showmore'];
-	$showCity        = $attributes['showcity'];
-	$showBookBtn     = $attributes['showbookbtn'];
-	$showReadMoreBtn = $attributes['showreadmorebtn'];
+	$showSearch      = $attributes[ 'showsearch' ];
+	$showMoreNumber  = $attributes[ 'showmore' ];
+	$showCity        = $attributes[ 'showcity' ];
+	$showBookBtn     = $attributes[ 'showbookbtn' ];
+	$showReadMoreBtn = $attributes[ 'showreadmorebtn' ];
 
-	$searchVisible = $showSearch == true || ( $attributes['hidesearch'] == false || $attributes['hidesearch'] == null );
+	$searchVisible = $showSearch == true || ( $attributes[ 'hidesearch' ] == false || $attributes[ 'hidesearch' ] == null );
 
 	$subjects = get_transient( 'eduadmin-subjects' );
 	if ( ! $subjects ) {
@@ -19,14 +19,14 @@
 			null,
 			null,
 			"SubjectName asc"
-		)["value"];
+		)[ "value" ];
 		set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 	}
 
 	$distinctSubjects = array();
 	foreach ( $subjects as $subj ) {
-		if ( ! key_exists( $subj["SubjectId"], $distinctSubjects ) ) {
-			$distinctSubjects[ $subj["SubjectId"] ] = $subj["SubjectName"];
+		if ( ! key_exists( $subj[ "SubjectId" ], $distinctSubjects ) ) {
+			$distinctSubjects[ $subj[ "SubjectId" ] ] = $subj[ "SubjectName" ];
 		}
 	}
 
@@ -35,7 +35,7 @@
 		$addresses = EDUAPI()->OData->Locations->Search(
 			"LocationId,City",
 			"PublicLocation"
-		)["value"];
+		)[ "value" ];
 		set_transient( 'eduadmin-locations', $addresses, DAY_IN_SECONDS );
 	}
 
@@ -46,13 +46,13 @@
 		$categories = EDUAPI()->OData->Categories->Search(
 			"CategoryId,CategoryName",
 			"ShowOnWeb"
-		)["value"];
+		)[ "value" ];
 
 		set_transient( 'eduadmin-categories', $categories, DAY_IN_SECONDS );
 	}
 
 	$levels = get_transient( 'eduadmin-levels' );
 	if ( ! $levels ) {
-		$levels = EDUAPI()->OData->CourseLevels->Search()["value"];
+		$levels = EDUAPI()->OData->CourseLevels->Search()[ "value" ];
 		set_transient( 'eduadmin-levels', $levels, DAY_IN_SECONDS );
 	}

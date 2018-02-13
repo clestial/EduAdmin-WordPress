@@ -38,10 +38,10 @@
 
 			foreach ( timezone_abbreviations_list() as $abbr ) {
 				foreach ( $abbr as $city ) {
-					if ( $city['dst'] == $is_dst && $city['offset'] == $utc_offset ) {
+					if ( $city[ 'dst' ] == $is_dst && $city[ 'offset' ] == $utc_offset ) {
 						EDU()->StopTimer( $t );
 
-						return $city['timezone_id'];
+						return $city[ 'timezone_id' ];
 					}
 				}
 			}
@@ -154,8 +154,8 @@
 					foreach ( $lines as $line ) {
 						if ( stripos( $line, '-' ) > -1 ) {
 							$range = explode( "-", $line );
-							$min   = $range[0];
-							$max   = $range[1];
+							$min   = $range[ 0 ];
+							$max   = $range[ 1 ];
 							if ( $freeSpots <= $max && $freeSpots >= $min ) {
 								EDU()->StopTimer( $t );
 
@@ -241,12 +241,12 @@
 	function getRangeFromDays( $days, $short, $event, $showDays ) {
 		$t = EDU()->StartTimer( __METHOD__ );
 		sort( $days );
-		$startDate  = $days[0];
+		$startDate  = $days[ 0 ];
 		$finishDate = $days[ count( $days ) - 1 ];
 		$result     = array();
 		// walk through the dates, breaking at gaps
 		foreach ( $days as $key => $date ) {
-			if ( ( $key > 0 ) && ( strtotime( $date["StartDate"] ) - strtotime( $days[ $key - 1 ]["StartDate"] ) > 99999 ) ) {
+			if ( ( $key > 0 ) && ( strtotime( $date[ "StartDate" ] ) - strtotime( $days[ $key - 1 ][ "StartDate" ] ) > 99999 ) ) {
 				$result[]  = GetStartEndDisplayDate( $startDate, $days[ $key - 1 ], $short, $event, $showDays );
 				$startDate = $date;
 			}
@@ -257,7 +257,7 @@
 		if ( count( $result ) > 3 ) {
 			$nRes   = array();
 			$ret    =
-				"<span class=\"edu-manyDays\" title=\"" . __( "Show schedule", 'eduadmin-booking' ) . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf( __( '%1$d days between %2$s', 'eduadmin-booking' ), count( $days ), GetStartEndDisplayDate( $days[0], end( $days ), $short, $showDays ) ) .
+				"<span class=\"edu-manyDays\" title=\"" . __( "Show schedule", 'eduadmin-booking' ) . "\" onclick=\"edu_openDatePopup(this);\">" . sprintf( __( '%1$d days between %2$s', 'eduadmin-booking' ), count( $days ), GetStartEndDisplayDate( $days[ 0 ], end( $days ), $short, $showDays ) ) .
 				"</span><div class=\"edu-DayPopup\">
 <b>" . __( "Schedule", 'eduadmin-booking' ) . "</b><br />
 " . join( "<br />\n", $result ) . "
@@ -279,79 +279,79 @@
 		$weekDays = $short ? EDU()->shortWeekDays : EDU()->weekDays;
 		$months   = $short ? EDU()->shortMonths : EDU()->months;
 
-		$startYear  = date( 'Y', strtotime( $startDate["StartDate"] ) );
-		$startMonth = date( 'n', strtotime( $startDate["StartDate"] ) );
-		$endYear    = date( 'Y', strtotime( $endDate["EndDate"] ) );
-		$endMonth   = date( 'n', strtotime( $endDate["EndDate"] ) );
+		$startYear  = date( 'Y', strtotime( $startDate[ "StartDate" ] ) );
+		$startMonth = date( 'n', strtotime( $startDate[ "StartDate" ] ) );
+		$endYear    = date( 'Y', strtotime( $endDate[ "EndDate" ] ) );
+		$endMonth   = date( 'n', strtotime( $endDate[ "EndDate" ] ) );
 		$nowYear    = date( 'Y' );
 		$str        = '<span class="eduadmin-dateText">';
 		if ( $showDays ) {
-			$str .= $weekDays[ date( 'N', strtotime( $startDate["StartDate"] ) ) ] . " ";
+			$str .= $weekDays[ date( 'N', strtotime( $startDate[ "StartDate" ] ) ) ] . " ";
 		}
-		$str .= date( 'd', strtotime( $startDate["StartDate"] ) );
-		if ( date( 'Y-m-d', strtotime( $startDate["StartDate"] ) ) != date( 'Y-m-d', strtotime( $endDate["EndDate"] ) ) ) {
+		$str .= date( 'd', strtotime( $startDate[ "StartDate" ] ) );
+		if ( date( 'Y-m-d', strtotime( $startDate[ "StartDate" ] ) ) != date( 'Y-m-d', strtotime( $endDate[ "EndDate" ] ) ) ) {
 			if ( $startYear === $endYear ) {
 				if ( $startMonth === $endMonth ) {
 					if ( $showDays &&
-					     ( date( 'H:i', strtotime( $startDate["StartDate"] ) ) != date( 'H:i', strtotime( $endDate["StartDate"] ) ) &&
-					       date( 'H:i', strtotime( $startDate["EndDate"] ) ) != date( 'H:i', strtotime( $endDate["EndDate"] ) ) )
+					     ( date( 'H:i', strtotime( $startDate[ "StartDate" ] ) ) != date( 'H:i', strtotime( $endDate[ "StartDate" ] ) ) &&
+					       date( 'H:i', strtotime( $startDate[ "EndDate" ] ) ) != date( 'H:i', strtotime( $endDate[ "EndDate" ] ) ) )
 					) {
-						$str .= ' ' . date( 'H:i', strtotime( $startDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $startDate["EndDate"] ) );
+						$str .= ' ' . date( 'H:i', strtotime( $startDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $startDate[ "EndDate" ] ) );
 					}
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $weekDays[ date( 'N', strtotime( $endDate["EndDate"] ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate[ "EndDate" ] ) ) ] . " ";
 					}
-					$str .= date( 'd', strtotime( $endDate["EndDate"] ) );
+					$str .= date( 'd', strtotime( $endDate[ "EndDate" ] ) );
 					$str .= ' ';
-					$str .= $months[ date( 'n', strtotime( $startDate["StartDate"] ) ) ];
+					$str .= $months[ date( 'n', strtotime( $startDate[ "StartDate" ] ) ) ];
 					$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 					if ( $showDays ) {
-						$str .= ' ' . date( 'H:i', strtotime( $endDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $endDate["EndDate"] ) );
+						$str .= ' ' . date( 'H:i', strtotime( $endDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $endDate[ "EndDate" ] ) );
 					}
 				} else {
 					if ( $showDays &&
-					     ( date( 'H:i', strtotime( $startDate["StartDate"] ) ) != date( 'H:i', strtotime( $endDate["StartDate"] ) ) &&
-					       date( 'H:i', strtotime( $startDate["EndDate"] ) ) != date( 'H:i', strtotime( $endDate["EndDate"] ) ) )
+					     ( date( 'H:i', strtotime( $startDate[ "StartDate" ] ) ) != date( 'H:i', strtotime( $endDate[ "StartDate" ] ) ) &&
+					       date( 'H:i', strtotime( $startDate[ "EndDate" ] ) ) != date( 'H:i', strtotime( $endDate[ "EndDate" ] ) ) )
 					) {
-						$str .= ' ' . date( 'H:i', strtotime( $startDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $startDate["EndDate"] ) );
+						$str .= ' ' . date( 'H:i', strtotime( $startDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $startDate[ "EndDate" ] ) );
 					}
 					$str .= ' ';
-					$str .= $months[ date( 'n', strtotime( $startDate["StartDate"] ) ) ];
+					$str .= $months[ date( 'n', strtotime( $startDate[ "StartDate" ] ) ) ];
 					$str .= ' - ';
 					if ( $showDays ) {
-						$str .= $weekDays[ date( 'N', strtotime( $endDate["EndDate"] ) ) ] . " ";
+						$str .= $weekDays[ date( 'N', strtotime( $endDate[ "EndDate" ] ) ) ] . " ";
 					}
-					$str .= date( 'd', strtotime( $endDate["EndDate"] ) );
+					$str .= date( 'd', strtotime( $endDate[ "EndDate" ] ) );
 					$str .= ' ';
-					$str .= $months[ date( 'n', strtotime( $endDate["EndDate"] ) ) ];
+					$str .= $months[ date( 'n', strtotime( $endDate[ "EndDate" ] ) ) ];
 					$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 					if ( $showDays ) {
-						$str .= ' ' . date( 'H:i', strtotime( $endDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $endDate["EndDate"] ) );
+						$str .= ' ' . date( 'H:i', strtotime( $endDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $endDate[ "EndDate" ] ) );
 					}
 				}
 			} else {
 				$str .= ' ';
-				$str .= $months[ date( 'n', strtotime( $startDate["StartDate"] ) ) ];
+				$str .= $months[ date( 'n', strtotime( $startDate[ "StartDate" ] ) ) ];
 				$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 				$str .= ' - ';
 				if ( $showDays ) {
-					$str .= $weekDays[ date( 'N', strtotime( $endDate["EndDate"] ) ) ] . " ";
+					$str .= $weekDays[ date( 'N', strtotime( $endDate[ "EndDate" ] ) ) ] . " ";
 				}
-				$str .= date( 'd', strtotime( $endDate["EndDate"] ) );
+				$str .= date( 'd', strtotime( $endDate[ "EndDate" ] ) );
 				$str .= ' ';
-				$str .= $months[ date( 'n', strtotime( $endDate["EndDate"] ) ) ];
+				$str .= $months[ date( 'n', strtotime( $endDate[ "EndDate" ] ) ) ];
 				$str .= ( $nowYear != $endYear ? ' ' . $endYear : '' );
 				if ( $showDays ) {
-					$str .= ' ' . date( 'H:i', strtotime( $endDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $endDate["EndDate"] ) );
+					$str .= ' ' . date( 'H:i', strtotime( $endDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $endDate[ "EndDate" ] ) );
 				}
 			}
 		} else {
 			$str .= ' ';
-			$str .= $months[ date( 'n', strtotime( $startDate["EndDate"] ) ) ];
+			$str .= $months[ date( 'n', strtotime( $startDate[ "EndDate" ] ) ) ];
 			$str .= ( $nowYear != $startYear ? ' ' . $startYear : '' );
 			if ( $showDays ) {
-				$str .= ' ' . date( 'H:i', strtotime( $startDate["StartDate"] ) ) . '-' . date( 'H:i', strtotime( $startDate["EndDate"] ) );
+				$str .= ' ' . date( 'H:i', strtotime( $startDate[ "StartDate" ] ) ) . '-' . date( 'H:i', strtotime( $startDate[ "EndDate" ] ) );
 			}
 		}
 

@@ -1,7 +1,7 @@
 <?php
 	function edu_render_general_settings() {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
-		if ( isset( $_REQUEST['act'] ) && $_REQUEST['act'] == "clearTransients" ) {
+		if ( isset( $_REQUEST[ 'act' ] ) && $_REQUEST[ 'act' ] == "clearTransients" ) {
 			global $wpdb;
 
 			$prefix     = esc_sql( 'eduadmin-' );
@@ -25,7 +25,7 @@
 				<?php do_settings_sections( 'eduadmin-rewrite' ); ?>
                 <div class="block">
                     <h3><?php _e( "General settings", "eduadmin-booking" ); ?></h3>
-	                <?php _e( "Availability text", "eduadmin-booking" ); ?><br/>
+					<?php _e( "Availability text", "eduadmin-booking" ); ?><br/>
 					<?php
 						$spotLeft = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 					?>
@@ -44,7 +44,7 @@
                         <div id="eduadmin-intervalSetting">
                             <br/>
                             <b><?php _e( "Interval settings", "eduadmin-booking" ); ?></b><br/>
-	                        <?php _e( "Insert one interval range per row (1-3, 4-10, 10+)", "eduadmin-booking" ); ?>
+							<?php _e( "Insert one interval range per row (1-3, 4-10, 10+)", "eduadmin-booking" ); ?>
                             <br/>
                             <textarea name="eduadmin-spotsSettings" class="form-control" rows="5"
                                       cols="30"><?php echo get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" ); ?></textarea>
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <br/>
-	                <?php _e( "Number of months to fetch events for", "eduadmin-booking" ); ?><br/>
+					<?php _e( "Number of months to fetch events for", "eduadmin-booking" ); ?><br/>
                     <input type="number" name="eduadmin-monthsToFetch"
                            value="<?php echo esc_attr( get_option( 'eduadmin-monthsToFetch', '6' ) ); ?>"/> <?php _e( "months", "eduadmin-booking" ); ?>
                     <br/>
@@ -67,7 +67,7 @@
                     </p>
                     <h3><?php _e( "Rewrite settings", "eduadmin-booking" ); ?></h3>
                     <p>
-	                    <?php echo __( "Enter the URL you want to use with the application (please check that the URL does not exists)", "eduadmin-booking" ); ?>
+						<?php echo __( "Enter the URL you want to use with the application (please check that the URL does not exists)", "eduadmin-booking" ); ?>
                     </p>
 					<?php echo home_url(); ?>/<input style="width: 200px;" type="text" class="form-control folder"
                                                      name="eduadmin-rewriteBaseUrl" id="eduadmin-rewriteBaseUrl"

@@ -21,7 +21,7 @@
 		foreach ( $edo as $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
+			if ( makeSlugs( $name ) == $wp_query->query_vars[ 'courseSlug' ] && $id == $wp_query->query_vars[ "courseId" ] ) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -33,8 +33,8 @@
 			die();
 		}
 		$ft = new XFiltering();
-		if ( isset( $_REQUEST['eid'] ) ) {
-			$eventid = intval( $_REQUEST['eid'] );
+		if ( isset( $_REQUEST[ 'eid' ] ) ) {
+			$eventid = intval( $_REQUEST[ 'eid' ] );
 			$f       = new XFilter( 'EventID', '=', $eventid );
 			$ft->AddItem( $f );
 		}
@@ -79,9 +79,9 @@
 			die();
 		}
 
-		$event = $events[0];
+		$event = $events[ 0 ];
 
-		if ( isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
+		if ( isset( $_POST[ 'act' ] ) && 'bookCourse' === sanitize_text_field( $_POST[ 'act' ] ) ) {
 			include_once( 'createBooking.php' );
 		} else {
 			$contact  = new CustomerContact();
@@ -90,10 +90,10 @@
 			$discountPercent            = 0.0;
 			$participantDiscountPercent = 0.0;
 			$customerInvoiceEmail       = '';
-			$incVat                     = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
+			$incVat                     = EDUAPI()->REST->Organisation->GetOrganisation()[ "PriceIncVat" ];
 
-			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
-				$user     = EDU()->session['eduadmin-loginUser'];
+			if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
+				$user     = EDU()->session[ 'eduadmin-loginUser' ];
 				$contact  = $user->Contact;
 				$customer = $user->Customer;
 				if ( isset( $customer->CustomerId ) ) {
@@ -115,7 +115,7 @@
 
 			$occIds   = Array();
 			$occIds[] = -1;
-			if ( isset( $_REQUEST['eid'] ) ) {
+			if ( isset( $_REQUEST[ 'eid' ] ) ) {
 				foreach ( $events as $ev ) {
 					$occIds[] = $ev->OccationID;
 				}
@@ -168,7 +168,7 @@
 			$st->AddItem( $s );
 
 			$subPrices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-			$sePrice                    = array();
+			$sePrice   = array();
 			foreach ( $subPrices as $sp ) {
 				$sePrice[ $sp->OccationID ][] = $sp;
 			}
@@ -183,16 +183,16 @@
                     <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
 
                     <div class="title">
-	                    <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
+						<?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
                             <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
-	                    <?php endif; ?>
+						<?php endif; ?>
                         <h1 class="courseTitle">
 							<?php echo $name; ?>
                         </h1>
 
 						<?php if ( count( $events ) > 1 ): ?>
                             <div class="dateSelectLabel">
-	                            <?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?>
+								<?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?>
                             </div>
 
                             <select name="eid" required class="dateInfo" onchange="eduBookingView.SelectEvent(this);">
@@ -205,7 +205,7 @@
                                         - <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
 											$addresses = get_transient( 'eduadmin-location-' . $ev->LocationAddressID );
 
-		                                    if ( ! $addresses ) {
+											if ( ! $addresses ) {
 												$ft = new XFiltering();
 												$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 												$ft->AddItem( $f );
@@ -248,7 +248,7 @@
 						<?php endif; ?>
                     </div>
 					<?php
-						if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+						if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
 							$userVal = '';
 							if ( isset( $contact->PersonId ) && $contact->PersonId > 0 ) {
 								$userVal = trim( $contact->FirstName . " " . $contact->LastName );
@@ -279,8 +279,8 @@
 					<?php
 						$noInvoiceFreeEvents         = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 						$singlePersonBooking         = get_option( 'eduadmin-singlePersonBooking', false );
-						$showInvoiceEmail            = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
-						$forceShowInvoiceInformation = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
+						$showInvoiceEmail            = isset( $attributes[ 'hideinvoiceemailfield' ] ) ? $attributes[ 'hideinvoiceemailfield' ] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
+						$forceShowInvoiceInformation = isset( $attributes[ 'showinvoiceinformation' ] ) ? $attributes[ 'showinvoiceinformation' ] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
 						if ( $singlePersonBooking ) {
 							include_once( "singlePersonBooking.php" );
 						} else {
@@ -297,7 +297,7 @@
 					?>
 					<?php if ( "selectWholeEvent" === get_option( 'eduadmin-selectPricename', 'firstPublic' ) ): ?>
                         <div class="priceView">
-	                        <?php _e( "Price name", 'eduadmin-booking' ); ?>
+							<?php _e( "Price name", 'eduadmin-booking' ); ?>
                             <select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename"
                                     onchange="eduBookingView.UpdatePrice();">
                                 <option data-price="0"
@@ -328,7 +328,7 @@
                         <div class="discountView">
                             <label>
                                 <div class="inputLabel">
-	                                <?php _e( 'Discount code', 'eduadmin-booking' ); ?>
+									<?php _e( 'Discount code', 'eduadmin-booking' ); ?>
                                 </div>
                                 <div class="inputHolder">
                                     <input type="text" name="edu-discountCode" id="edu-discountCode"
@@ -339,13 +339,13 @@
                                             data-categoryid="<?php echo @esc_attr( $selectedCourse->CategoryID ); ?>"
                                             data-objectid="<?php echo @esc_attr( $selectedCourse->ObjectID ); ?>"
                                             onclick="eduBookingView.ValidateDiscountCode(); return false;">
-	                                    <?php _e( "Validate", 'eduadmin-booking' ); ?>
+										<?php _e( "Validate", 'eduadmin-booking' ); ?>
                                     </button>
                                     <input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>
                                 </div>
                             </label>
                             <div class="edu-modal warning" id="edu-warning-discount">
-	                            <?php _e( 'Invalid discount code, please check your code and try again.', 'eduadmin-booking' ); ?>
+								<?php _e( 'Invalid discount code, please check your code and try again.', 'eduadmin-booking' ); ?>
                             </div>
                         </div>
 					<?php endif; ?>
@@ -357,7 +357,7 @@
 					?>
                     <div class="submitView">
                         <div class="sumTotal">
-	                        <?php _e( 'Total sum:', 'eduadmin-booking' ); ?> <span id="sumValue"
+							<?php _e( 'Total sum:', 'eduadmin-booking' ); ?> <span id="sumValue"
                                                                                    class="sumValue"></span>
                         </div>
 
@@ -365,7 +365,7 @@
                             <div class="confirmTermsHolder">
                                 <label>
                                     <input type="checkbox" id="confirmTerms" name="confirmTerms" value="agree"/>
-	                                <?php echo sprintf( __( 'I agree to the %sTerms and Conditions%s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ); ?>
+									<?php echo sprintf( __( 'I agree to the %sTerms and Conditions%s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ); ?>
                                 </label>
                             </div>
 						<?php endif; ?>
@@ -377,23 +377,23 @@
                                value="<?php esc_attr_e( "Book now", 'eduadmin-booking' ); ?>"/>
 
                         <div class="edu-modal warning" id="edu-warning-terms">
-	                        <?php _e( 'You must accept Terms and Conditions to continue.', 'eduadmin-booking' ); ?>
+							<?php _e( 'You must accept Terms and Conditions to continue.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-no-participants">
-	                        <?php _e( 'You must add some participants.', 'eduadmin-booking' ); ?>
+							<?php _e( 'You must add some participants.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-missing-participants">
-	                        <?php _e( 'One or more participants is missing a name.', 'eduadmin-booking' ); ?>
+							<?php _e( 'One or more participants is missing a name.', 'eduadmin-booking' ); ?>
                         </div>
                         <div class="edu-modal warning" id="edu-warning-missing-civicregno">
-	                        <?php _e( 'One or more participants is missing their civic registration number.', 'eduadmin-booking' ); ?>
+							<?php _e( 'One or more participants is missing their civic registration number.', 'eduadmin-booking' ); ?>
                         </div>
 						<?php
 							$errorList = apply_filters( 'edu-booking-error', array() );
 							foreach ( $errorList as $error ) {
 								?>
                                 <div class="edu-modal warning">
-	                                <?php _e( $error, 'eduadmin-booking' ); ?>
+									<?php _e( $error, 'eduadmin-booking' ); ?>
                                 </div>
 								<?php
 							}
@@ -431,7 +431,7 @@
 			<?php
 		}
 	}
-	do_action( 'eduadmin-bookingform-loaded', EDU()->session['eduadmin-loginUser'] );
+	do_action( 'eduadmin-bookingform-loaded', EDU()->session[ 'eduadmin-loginUser' ] );
 	$out = ob_get_clean();
 
 	return $out;

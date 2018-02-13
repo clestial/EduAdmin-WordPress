@@ -1,7 +1,7 @@
 <?php
 	function edu_render_style_settings_page() {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
-		if ( isset( $_POST['resetStyle'] ) ) {
+		if ( isset( $_POST[ 'resetStyle' ] ) ) {
 			delete_option( 'eduadmin-style' );
 		}
 		?>
@@ -16,7 +16,7 @@
                          style="position: relative; min-width: 1000px; width: 100%; min-height: 600px; border: 1px solid #c3c3c3;"></div>
                     <textarea name="eduadmin-style" id="eduadmin-style" style="width: 100%;" cols="250" rows="40"
                               spellcheck="false"><?php
-		                    $defaultCss = '';
+							$defaultCss = '';
 							$css        = get_option( 'eduadmin-style', $defaultCss );
 							echo $css;
 						?></textarea>

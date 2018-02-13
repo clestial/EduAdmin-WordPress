@@ -1,6 +1,6 @@
 <div class="checkLoginForm">
     <input type="hidden" name="eduformloginaction" value=""/>
-    <input type="hidden" name="eduReturnUrl" value="<?php echo @esc_attr( $_SERVER['REQUEST_URI'] ); ?>"/>
+    <input type="hidden" name="eduReturnUrl" value="<?php echo @esc_attr( $_SERVER[ 'REQUEST_URI' ] ); ?>"/>
     <h3><?php _e( "Please login to continue.", 'eduadmin-booking' ); ?></h3>
 	<?php
 		$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
@@ -29,7 +29,7 @@
                    required autocomplete="off"
                    title="<?php echo esc_attr( sprintf( __( "Please enter your %s here", 'eduadmin-booking' ), $loginLabel ) ); ?>"
                    placeholder="<?php echo esc_attr( $loginLabel ); ?>"
-                   value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>
+                   value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST[ "eduadminloginEmail" ] ) ); ?>"/>
         </div>
     </label>
     <label>
@@ -51,22 +51,22 @@
     <button class="forgotPasswordButton neutral-btn"
             onclick="this.form.eduadminpassword.required = false; this.form.eduadminpassword.value = ''; this.form.eduformloginaction.value = 'forgot';"><?php _e( "Forgot password", 'eduadmin-booking' ); ?></button>
 </div>
-<?php if ( isset( EDU()->session['eduadminLoginError'] ) ) { ?>
+<?php if ( isset( EDU()->session[ 'eduadminLoginError' ] ) ) { ?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-	    <?php echo EDU()->session['eduadminLoginError']; ?>
+		<?php echo EDU()->session[ 'eduadminLoginError' ]; ?>
     </div>
-	<?php unset( EDU()->session['eduadminLoginError'] );
+	<?php unset( EDU()->session[ 'eduadminLoginError' ] );
 } ?>
-<?php if ( isset( EDU()->session['eduadmin-forgotPassSent'] ) && EDU()->session['eduadmin-forgotPassSent'] == true ) {
-	unset( EDU()->session['eduadmin-forgotPassSent'] );
+<?php if ( isset( EDU()->session[ 'eduadmin-forgotPassSent' ] ) && EDU()->session[ 'eduadmin-forgotPassSent' ] == true ) {
+	unset( EDU()->session[ 'eduadmin-forgotPassSent' ] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-	    <?php _e( "A new password has been sent by email.", 'eduadmin-booking' ); ?>
+		<?php _e( "A new password has been sent by email.", 'eduadmin-booking' ); ?>
     </div>
-<?php } else if ( isset( EDU()->session['eduadmin-forgotPassSent'] ) && EDU()->session['eduadmin-forgotPassSent'] == false ) {
-	unset( EDU()->session['eduadmin-forgotPassSent'] );
+<?php } else if ( isset( EDU()->session[ 'eduadmin-forgotPassSent' ] ) && EDU()->session[ 'eduadmin-forgotPassSent' ] == false ) {
+	unset( EDU()->session[ 'eduadmin-forgotPassSent' ] );
 	?>
     <div class="edu-modal warning" style="display: block; clear: both;">
-	    <?php _e( "Could not send a new password by email.", 'eduadmin-booking' ); ?>
+		<?php _e( "Could not send a new password by email.", 'eduadmin-booking' ); ?>
     </div>
 <?php } ?>

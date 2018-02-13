@@ -1,5 +1,5 @@
 <?php
-	$user     = EDU()->session['eduadmin-loginUser'];
+	$user     = EDU()->session[ 'eduadmin-loginUser' ];
 	$contact  = $user->Contact;
 	$customer = $user->Customer;
 
@@ -21,9 +21,9 @@
 
 		$eventIds = array();
 
-		foreach ( $bookings["value"] as $booking ) {
-			if ( ! in_array( $booking["EventId"], $eventIds ) ) {
-				$eventIds[] = $booking["EventId"];
+		foreach ( $bookings[ "value" ] as $booking ) {
+			if ( ! in_array( $booking[ "EventId" ], $eventIds ) ) {
+				$eventIds[] = $booking[ "EventId" ];
 			}
 		}
 

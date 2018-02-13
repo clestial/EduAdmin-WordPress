@@ -8,12 +8,12 @@
 		$sorting       = array();
 		$customOrder   = null;
 		$customOrderBy = null;
-		if ( ! empty( $attributes['order'] ) ) {
-			$customOrder = $attributes['order'];
+		if ( ! empty( $attributes[ 'order' ] ) ) {
+			$customOrder = $attributes[ 'order' ];
 		}
 
-		if ( ! empty( $attributes['orderby'] ) ) {
-			$customOrderBy = $attributes['orderby'];
+		if ( ! empty( $attributes[ 'orderby' ] ) ) {
+			$customOrderBy = $attributes[ 'orderby' ];
 		}
 
 		if ( $customOrderBy != null ) {
@@ -38,22 +38,22 @@
 				$courseId,
 				"CourseTemplateId",
 				'PriceNames($filter=PublicPriceName;$orderby=' . join( ',', $sorting ) . ')'
-			)["PriceNames"];
+			)[ "PriceNames" ];
 			set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
 		}
 
-		if ( ! empty( $attributes['numberofprices'] ) ) {
-			$edo = array_slice( $edo, 0, $attributes['numberofprices'], true );
+		if ( ! empty( $attributes[ 'numberofprices' ] ) ) {
+			$edo = array_slice( $edo, 0, $attributes[ 'numberofprices' ], true );
 		}
 
 		$currency = get_option( 'eduadmin-currency', 'SEK' );
-		$incVat   = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
+		$incVat   = EDUAPI()->REST->Organisation->GetOrganisation()[ "PriceIncVat" ];
 		?>
         <div class="eventInformation">
             <h3><?php _e( "Prices", 'eduadmin-booking' ); ?></h3>
 			<?php
 				foreach ( $edo as $price ) {
-					echo sprintf( '%1$s: %2$s', $price["PriceNameDescription"], convertToMoney( $price["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
+					echo sprintf( '%1$s: %2$s', $price[ "PriceNameDescription" ], convertToMoney( $price[ "Price" ], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
 					echo "<br>";
 				}
 			?>

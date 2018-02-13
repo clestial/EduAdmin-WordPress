@@ -21,7 +21,7 @@
 		foreach ( $edo as $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
+			if ( makeSlugs( $name ) == $wp_query->query_vars[ 'courseSlug' ] && $id == $wp_query->query_vars[ "courseId" ] ) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -33,8 +33,8 @@
 			die();
 		}
 		$ft = new XFiltering();
-		if ( isset( $_REQUEST['eid'] ) ) {
-			$eventid = intval( $_REQUEST['eid'] );
+		if ( isset( $_REQUEST[ 'eid' ] ) ) {
+			$eventid = intval( $_REQUEST[ 'eid' ] );
 			$f       = new XFilter( 'EventID', '=', $eventid );
 			$ft->AddItem( $f );
 		}
@@ -59,7 +59,7 @@
 			$ft->ToString()
 		);
 
-		$event = $events[0];
+		$event = $events[ 0 ];
 
 		if ( ! $event ) {
 			?>
@@ -71,14 +71,14 @@
 		include_once( "__loginHandler.php" );
 		?>
         <div class="eduadmin loginForm">
-            <form action="<?php if ( isset( $_REQUEST['eid'] ) ) {
-	            echo "?eid=" . sanitize_text_field( $_REQUEST['eid'] );
-            } ?>" method="post">
+            <form action="<?php if ( isset( $_REQUEST[ 'eid' ] ) ) {
+				echo "?eid=" . sanitize_text_field( $_REQUEST[ 'eid' ] );
+			} ?>" method="post">
                 <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
                 <div class="title">
-	                <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
+					<?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
                         <img class="courseImage" src="<?php echo $selectedCourse->ImageUrl; ?>"/>
-	                <?php endif; ?>
+					<?php endif; ?>
                     <h1 class="courseTitle"><?php echo $name; ?></h1>
 					<?php if ( count( $events ) > 1 ) { ?>
                         <div class="dateSelectLabel"><?php _e( "Select the event you want to book", 'eduadmin-booking' ); ?></div>
@@ -91,7 +91,7 @@
 											echo date( "H:i", strtotime( $ev->PeriodStart ) ); ?>
                                         - <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
 											$addresses = get_transient( 'eduadmin-location-' . $ev->LocationAddressID );
-		                                    if ( ! $addresses ) {
+											if ( ! $addresses ) {
 												$ft = new XFiltering();
 												$f  = new XFilter( 'LocationAddressID', '=', $ev->LocationAddressID );
 												$ft->AddItem( $f );
@@ -132,14 +132,14 @@
 						echo "</div>\n";
 					}
 
-						if ( ! isset( EDU()->session['checkEmail'] ) ) {
+						if ( ! isset( EDU()->session[ 'checkEmail' ] ) ) {
 							include_once( "__checkEmail.php" );
-						} else if ( isset( EDU()->session['checkEmail'] ) ) {
-							if ( isset( EDU()->session['needsLogin'] ) && EDU()->session['needsLogin'] == true ) {
+						} else if ( isset( EDU()->session[ 'checkEmail' ] ) ) {
+							if ( isset( EDU()->session[ 'needsLogin' ] ) && EDU()->session[ 'needsLogin' ] == true ) {
 								include_once( "__loginForm.php" );
 							} else {
-								unset( EDU()->session['checkEmail'] );
-								unset( EDU()->session['needsLogin'] );
+								unset( EDU()->session[ 'checkEmail' ] );
+								unset( EDU()->session[ 'needsLogin' ] );
 								?>
                                 <script type="text/javascript">(function () {
                                         location.reload(true);

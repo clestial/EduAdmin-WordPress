@@ -10,7 +10,7 @@
 		?>
         <div class="eduadmin">
             <div class="courseContainer">
-	            <?php include( "template_loader.php" ); ?>
+				<?php include( "template_loader.php" ); ?>
             </div>
         </div>
 		<?php

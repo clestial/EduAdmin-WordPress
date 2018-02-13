@@ -1,11 +1,11 @@
 <?php
-	$user         = EDU()->session['eduadmin-loginUser'];
+	$user         = EDU()->session[ 'eduadmin-loginUser' ];
 	$contact      = $user->Contact;
 	$customer     = $user->Customer;
 	$certificates = EDUAPI()->OData->Persons->GetItem( $contact->PersonId,
 	                                                   "PersonId",
 	                                                   "Certificates"
-	)["Certificates"];
+	)[ "Certificates" ];
 ?>
 <div class="eduadmin">
 	<?php
@@ -24,9 +24,9 @@
 				foreach ( $certificates as $certificate ) {
 					?>
                     <tr>
-                        <td align="left"><?php echo wp_strip_all_tags( $certificate["CertificateName"] ); ?></td>
-                        <td align="left"><?php echo date( "Y-m-d", strtotime( $certificate["CertificateName"] ) ); ?></td>
-                        <td align="left"><?php echo GetOldStartEndDisplayDate( $certificate["ValidFrom"], $certificate["ValidTo"] ); ?></td>
+                        <td align="left"><?php echo wp_strip_all_tags( $certificate[ "CertificateName" ] ); ?></td>
+                        <td align="left"><?php echo date( "Y-m-d", strtotime( $certificate[ "CertificateName" ] ) ); ?></td>
+                        <td align="left"><?php echo GetOldStartEndDisplayDate( $certificate[ "ValidFrom" ], $certificate[ "ValidTo" ] ); ?></td>
                     </tr>
 					<?php
 				}

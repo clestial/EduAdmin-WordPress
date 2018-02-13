@@ -6,10 +6,10 @@
     <h2><?php _e( "Contact information", 'eduadmin-booking' ); ?></h2>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Contact name", 'eduadmin-booking' ); ?>
+			<?php _e( "Contact name", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder"><input type="text"
-		        <?php echo( $__block ? " readonly" : "" ); ?>
+				<?php echo( $__block ? " readonly" : "" ); ?>
                                         required onchange="eduBookingView.ContactAsParticipant();"
                                         autocomplete="given-name" class="first-name"
                                         id="edu-contactFirstName" name="contactFirstName"
@@ -25,7 +25,7 @@
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "E-mail address", 'eduadmin-booking' ); ?>
+			<?php _e( "E-mail address", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="email" id="edu-contactEmail" required
@@ -37,7 +37,7 @@
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Phone number", 'eduadmin-booking' ); ?>
+			<?php _e( "Phone number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactPhone" name="contactPhone" autocomplete="tel"
@@ -48,7 +48,7 @@
     </label>
     <label>
         <div class="inputLabel">
-	        <?php _e( "Mobile number", 'eduadmin-booking' ); ?>
+			<?php _e( "Mobile number", 'eduadmin-booking' ); ?>
         </div>
         <div class="inputHolder">
             <input type="tel" id="edu-contactMobile" name="contactMobile" autocomplete="tel"
@@ -61,7 +61,7 @@
 	<?php if ( $selectedCourse->RequireCivicRegistrationNumber || $selectedLoginField == 'CivicRegistrationNumber' ) { ?>
         <label>
             <div class="inputLabel">
-	            <?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
+				<?php _e( "Civic Registration Number", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo"
@@ -75,7 +75,7 @@
 	<?php if ( get_option( 'eduadmin-useLogin', false ) && ! $contact->CanLogin ) { ?>
         <label>
             <div class="inputLabel">
-	            <?php _e( "Please enter a password", 'eduadmin-booking' ); ?>
+				<?php _e( "Please enter a password", 'eduadmin-booking' ); ?>
             </div>
             <div class="inputHolder">
                 <input type="password" required name="contactPass" autocomplete="new-password"
@@ -134,10 +134,10 @@
             <input type="checkbox" id="contactIsAlsoParticipant" name="contactIsAlsoParticipant" value="true"
                    onchange="if(eduBookingView.CheckParticipantCount()) { eduBookingView.UpdatePrice(); } else { this.checked = false; return false; }"/>
             <label class="inline-checkbox" for="contactIsAlsoParticipant"></label>
-	        <?php _e( "I am also participating", 'eduadmin-booking' ); ?>
+			<?php _e( "I am also participating", 'eduadmin-booking' ); ?>
         </div>
     </label>
     <div class="edu-modal warning" id="edu-warning-participants-contact">
-	    <?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
+		<?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
     </div>
 </div>

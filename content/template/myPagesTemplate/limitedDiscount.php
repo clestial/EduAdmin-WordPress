@@ -1,5 +1,5 @@
 <?php
-	$user     = EDU()->session['eduadmin-loginUser'];
+	$user     = EDU()->session[ 'eduadmin-loginUser' ];
 	$contact  = $user->Contact;
 	$customer = $user->Customer;
 ?>
@@ -10,7 +10,7 @@
 	?>
     <h2><?php _e( "Discount Cards", 'eduadmin-booking' ); ?></h2>
 	<?php
-		$cards = EDUAPI()->OData->Customers->GetItem( $customer->CustomerId, "", "Vouchers" )["Vouchers"];
+		$cards = EDUAPI()->OData->Customers->GetItem( $customer->CustomerId, "", "Vouchers" )[ "Vouchers" ];
 	?>
     <table class="myReservationsTable">
         <tr>
@@ -33,11 +33,11 @@
 				foreach ( $cards as $card ) {
 					?>
                     <tr>
-                        <td><?php echo $card["Description"]; ?></td>
-                        <td><?php echo GetOldStartEndDisplayDate( $card["ValidFrom"], $card["ValidTo"], false ); ?></td>
-                        <td align="right"><?php echo $card["CreditsLeft"] . ' / ' . $card["CreditsStartValue"]; ?></td>
-                        <td align="right"><?php echo $card["DiscountPercent"]; ?> %</td>
-                        <td align="right"><?php echo convertToMoney( $card["Price"], $currency ); ?></td>
+                        <td><?php echo $card[ "Description" ]; ?></td>
+                        <td><?php echo GetOldStartEndDisplayDate( $card[ "ValidFrom" ], $card[ "ValidTo" ], false ); ?></td>
+                        <td align="right"><?php echo $card[ "CreditsLeft" ] . ' / ' . $card[ "CreditsStartValue" ]; ?></td>
+                        <td align="right"><?php echo $card[ "DiscountPercent" ]; ?> %</td>
+                        <td align="right"><?php echo convertToMoney( $card[ "Price" ], $currency ); ?></td>
                     </tr>
 				<?php }
 			} ?>

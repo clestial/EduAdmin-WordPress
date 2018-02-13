@@ -10,16 +10,16 @@
 			"$loginField eq '" . sanitize_text_field( $loginValue ) . "' and CanLogin"
 		);
 
-		if ( $cc["@odata.count"] == 1 ) {
-			$ccId = current( $cc["value"] )["PersonId"];
+		if ( $cc[ "@odata.count" ] == 1 ) {
+			$ccId = current( $cc[ "value" ] )[ "PersonId" ];
 		}
 
-		if ( $ccId > 0 && ! empty( current( $cc["value"] )["Email"] ) ) {
+		if ( $ccId > 0 && ! empty( current( $cc[ "value" ] )[ "Email" ] ) ) {
 			$sent = EDUAPI()->REST->Person->SendResetPasswordEmailById( $ccId );
 			EDU()->StopTimer( $t );
 			EDU()->__writeDebug( $sent );
 
-			return $sent["EmailSent"];
+			return $sent[ "EmailSent" ];
 		}
 		EDU()->StopTimer( $t );
 
@@ -33,11 +33,11 @@
 
 		$baseUrl = $surl . '/' . $cat;
 
-		unset( EDU()->session['eduadmin-loginUser'] );
-		unset( EDU()->session['needsLogin'] );
-		unset( EDU()->session['checkEmail'] );
+		unset( EDU()->session[ 'eduadmin-loginUser' ] );
+		unset( EDU()->session[ 'needsLogin' ] );
+		unset( EDU()->session[ 'checkEmail' ] );
 		EDU()->session->regenerate_id( true );
-		unset( $_COOKIE['eduadmin-loginUser'] );
+		unset( $_COOKIE[ 'eduadmin-loginUser' ] );
 		setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
 		wp_redirect( $baseUrl . edu_getQueryString() );
 		EDU()->StopTimer( $t );
@@ -61,22 +61,22 @@
 
 				$cat = get_option( 'eduadmin-rewriteBaseUrl' );
 
-				if ( stristr( $_SERVER['REQUEST_URI'], "/$cat/profile/logout" ) !== false ) {
+				if ( stristr( $_SERVER[ 'REQUEST_URI' ], "/$cat/profile/logout" ) !== false ) {
 					logoutUser();
 				}
 
 				/* BACKEND FUNCTIONS FOR FORMS */
-				if ( isset( $_POST['eduformloginaction'] ) ) {
-					$act = sanitize_text_field( $_POST['eduformloginaction'] );
-					if ( isset( $_POST['eduadminloginEmail'] ) ) {
+				if ( isset( $_POST[ 'eduformloginaction' ] ) ) {
+					$act = sanitize_text_field( $_POST[ 'eduformloginaction' ] );
+					if ( isset( $_POST[ 'eduadminloginEmail' ] ) ) {
 						switch ( $act ) {
 							case "forgot":
-								$success                                  = sendForgottenPassword( $_POST['eduadminloginEmail'] );
-								EDU()->session['eduadmin-forgotPassSent'] = $success;
+								$success                                    = sendForgottenPassword( $_POST[ 'eduadminloginEmail' ] );
+								EDU()->session[ 'eduadmin-forgotPassSent' ] = $success;
 								break;
 						}
 					} else {
-						EDU()->session['eduadminLoginError'] = __( "You have to provide your login credentials.", 'eduadmin-booking' );
+						EDU()->session[ 'eduadminLoginError' ] = __( "You have to provide your login credentials.", 'eduadmin-booking' );
 					}
 				}
 			}

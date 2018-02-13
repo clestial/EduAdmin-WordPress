@@ -1,5 +1,6 @@
 <?php
 	$courseId = $wp_query->query_vars["courseId"];
+	$groupByCity = get_option( 'eduadmin-groupEventsByCity', false );
 	$edo      = get_transient( 'eduadmin-object_' . $courseId );
 	if ( ! $edo ) {
 		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
@@ -7,10 +8,7 @@
 			$fetchMonths = 6;
 		}
 
-		$groupByCity = get_option( 'eduadmin-groupEventsByCity', false );
-
 		$expands = array();
-		$sorting = array();
 
 		$expands['Subjects']   = "";
 		$expands['Categories'] = "";

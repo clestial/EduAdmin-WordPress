@@ -45,7 +45,7 @@
 			if ( $ev["MaxParticipantNumber"] == 0 || $spotsLeft > 0 ) {
 				?>
                 <a class="bookButton book-link cta-btn"
-                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/book/?eid=<?php echo $ev["EventId"]; ?><?php echo edu_getQueryString( "&" ); ?>"
+                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/book/?eid=<?php echo $ev["EventId"]; ?><?php echo edu_getQueryString( "&", array( 'eid' ) ); ?>"
                 ><?php _e( "Book", 'eduadmin-booking' ); ?></a>
 				<?php
 			} else {
@@ -55,7 +55,7 @@
 				if ( $allowInterestRegEvent && $eventInterestPage != false ) {
 					?>
                     <a class="inquiry-link"
-                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/book/interest/?eid=<?php echo $ev["EventId"]; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
+                       href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/book/interest/?eid=<?php echo $ev["EventId"]; ?><?php echo edu_getQueryString( "&", array( 'eid' ) ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
 					<?php
 				}
 				?>

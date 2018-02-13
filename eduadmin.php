@@ -252,7 +252,7 @@
 
 				include_once( 'class/controller-eduadmin-api.php' );
 
-				$this->restController = new EduAdminAPIController( $this );
+				$this->restController = new EduAdminAPIController();
 				$this->bookingHandler = new EduAdminBookingHandler( $this );
 				$this->loginHandler   = new EduAdminLoginHandler( $this );
 				$this->StopTimer( $t );

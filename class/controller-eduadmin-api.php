@@ -3,7 +3,7 @@
 	class EduAdminAPIController {
 		var $namespace;
 
-		public function __construct( $_edu ) {
+		public function __construct() {
 			$this->namespace = "edu/v1";
 		}
 

@@ -99,21 +99,24 @@
 		$courses = array_filter( $courses, function( $object ) {
 			$name       = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
 			$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
-			$descr      = strip_tags( $object[ $descrField ] );
+			$descr      = '';
+			if ( stripos( $descrField, "attr_" ) !== false ) {
+				$attrId = intval( substr( $descrField, 5 ) );
+				foreach ( $object['CustomFields'] as $custom_field ) {
+					if ( $attrId === $custom_field['CustomFieldId'] ) {
+						$descr = strip_tags( $custom_field['CustomFieldValue'] );
+						break;
+					}
+				}
+			} else {
+				$descr = strip_tags( $object[ $descrField ] );
+			}
 
 			$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 			$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
 			return ( $nameMatch || $descrMatch );
 		} );
-	}
-
-	$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
-	if ( stripos( $descrField, "attr_" ) !== false ) {
-		$ft = new XFiltering();
-		$f  = new XFilter( "AttributeID", "=", intval( substr( $descrField, 5 ) ) );
-		$ft->AddItem( $f );
-		$objectAttributes = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
 	}
 
 	$events = array();

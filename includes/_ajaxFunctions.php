@@ -62,133 +62,57 @@
 	function edu_api_listview_eventlist() {
 		header( "Content-type: text/html; charset=UTF-8" );
 
-		$sorting = new XSorting();
-		$s       = new XSort( 'SubjectName', 'ASC' );
-		$sorting->AddItem( $s );
-		$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
-
-		$filterCourses = array();
-
-		if ( ! empty( $_POST['subject'] ) ) {
-			foreach ( $subjects as $subject ) {
-				if ( $subject->SubjectName == $_POST['subject'] ) {
-					if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
-						$filterCourses[] = $subject->ObjectID;
-					}
-				}
-			}
-		}
-
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$filtering->AddItem( $f );
-
-		if ( isset( $_POST['category'] ) ) {
-			$f = new XFilter( 'CategoryID', '=', sanitize_text_field( $_POST['category'] ) );
-			$filtering->AddItem( $f );
-		}
-
-		if ( isset( $_POST['subjectid'] ) ) {
-			$f = new XFilter( 'SubjectID', '=', sanitize_text_field( $_POST['subjectid'] ) );
-			$filtering->AddItem( $f );
-		}
-
-		if ( ! empty( $filterCourses ) ) {
-			$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
-			$filtering->AddItem( $f );
-		}
-
-		if ( isset( $_POST['city'] ) ) {
-			$f = new XFilter( 'LocationID', '=', sanitize_text_field( $_POST['city'] ) );
-			$filtering->AddItem( $f );
-		}
-
-		if ( isset( $_POST['courselevel'] ) ) {
-			$f = new XFilter( 'EducationLevelID', '=', sanitize_text_field( $_POST['courselevel'] ) );
-			$filtering->AddItem( $f );
-		}
-
 		$fetchMonths = $_POST['fetchmonths'];
 		if ( ! is_numeric( $fetchMonths ) ) {
 			$fetchMonths = 6;
 		}
 
-		$edo = EDU()->api->GetEducationObjectV2( EDU()->get_token(), '', $filtering->ToString(), false );
+		$filters = array();
+		$expands = array();
+		$sorting = array();
 
-		if ( ! empty( $_POST['search'] ) ) {
-			$edo = array_filter( $edo, function( $object ) use ( &$request ) {
-				$name            = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-				$descrMatch      = stripos( $object->CourseDescription, sanitize_text_field( $_POST['search'] ) ) !== false;
-				$shortDescrMatch = stripos( $object->CourseDescriptionShort, sanitize_text_field( $_POST['search'] ) ) !== false;
-				$nameMatch       = stripos( $name, sanitize_text_field( $_POST['search'] ) ) !== false;
+		$expands['Subjects']   = "";
+		$expands['Categories'] = "";
+		$expands['PriceNames'] = '$filter=PublicPriceName';
+		$expands['Events']     =
+			'$filter=' .
+			'HasPublicPriceName' .
+			' and StatusId eq 1' .
+			' and CustomerId eq null' .
+			' and LastApplicationDate ge ' . date( "c" ) .
+			' and StartDate le ' . date( "c", strtotime( "now 23:59:59 +" . $fetchMonths . " months" ) ) .
+			' and EndDate ge ' . date( "c", strtotime( "now" ) ) .
+			';' .
+			'$expand=PriceNames,EventDates' .
+			';' .
+			'$orderby=StartDate asc' .
+			';';
 
-				return ( $nameMatch || $descrMatch || $shortDescrMatch );
-			} );
+		$expands['CustomFields'] = '$filter=ShowOnWeb';
+
+		$filters[] = "ShowOnWeb";
+
+		if ( isset( $_POST['category'] ) && ! empty( $_POST['category'] ) ) {
+			$filters[] = "CategoryId eq " . intval( sanitize_text_field( $_POST['category'] ) );
+		}
+
+		if ( isset( $_POST['city'] ) && ! empty( $_POST['city'] ) ) {
+			$filters[] = 'Events/any(e:e/LocationId eq ' . intval( $_POST['city'] ) . ')';
 		}
 
 		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
-			$subjects = get_transient( 'eduadmin-subjects' );
-			if ( ! $subjects ) {
-				$sorting = new XSorting();
-				$s       = new XSort( 'SubjectName', 'ASC' );
-				$sorting->AddItem( $s );
-				$subjects = EDU()->api->GetEducationSubject( EDU()->get_token(), $sorting->ToString(), '' );
-				set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
-			}
-
-			$edo = array_filter( $edo, function( $object ) {
-				$subjects = get_transient( 'eduadmin-subjects' );
-				foreach ( $subjects as $subj ) {
-					if ( $object->ObjectID == $subj->ObjectID && $subj->SubjectID == intval( $_POST['subjectid'] ) ) {
-						return true;
-					}
-				}
-
-				return false;
-			} );
+			$filters[] = 'Subjects/any(s:s/SubjectId eq ' . intval( $_POST['subjectid'] ) . ')';
 		}
 
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$filtering->AddItem( $f );
-
-		$f = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( "now +" . $fetchMonths . " months" ) ) );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'PeriodEnd', '>=', date( "Y-m-d H:i:s", strtotime( "now" ) ) );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'StatusID', '=', '1' );
-		$filtering->AddItem( $f );
-
-		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
-		$filtering->AddItem( $f );
-
-		if ( ! empty( $filterCourses ) ) {
-			$f = new XFilter( 'ObjectID', 'IN', join( ',', $filterCourses ) );
-			$filtering->AddItem( $f );
+		if ( ! empty( $_POST['subject'] ) ) {
+			$filters[] = 'Subjects/any(s:s/SubjectName eq \'' . sanitize_text_field( $_POST['subject'] ) . '\')';
 		}
 
-		if ( isset( $_POST['city'] ) ) {
-			$f = new XFilter( 'LocationID', '=', sanitize_text_field( $_POST['city'] ) );
-			$filtering->AddItem( $f );
+		if ( isset( $_POST['courselevel'] ) && ! empty( $_POST['courselevel'] ) ) {
+			$filters[] = 'EducationLevelId eq ' . intval( sanitize_text_field( $_POST['courselevel'] ) );
 		}
 
-		if ( isset( $_POST['subjectid'] ) && ! empty( $_POST['subjectid'] ) ) {
-			$f = new XFilter( 'SubjectID', '=', sanitize_text_field( $_POST['subjectid'] ) );
-			$filtering->AddItem( $f );
-		}
-
-		if ( isset( $_POST['category'] ) ) {
-			$f = new XFilter( 'CategoryID', '=', sanitize_text_field( $_POST['category'] ) );
-			$filtering->AddItem( $f );
-		}
-
-		$f = new XFilter( 'CustomerID', '=', '0' );
-		$filtering->AddItem( $f );
-
-		$f = new XFilter( 'ParentEventID', '=', '0' );
-		$filtering->AddItem( $f );
-
-		$sorting = new XSorting();
+		$sortOrder = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
 
 		$customOrderBy      = null;
 		$customOrderByOrder = null;
@@ -207,101 +131,86 @@
 				if ( isset( $sortorder[ $od ] ) ) {
 					$or = $sortorder[ $od ];
 				} else {
-					$or = "ASC";
+					$or = "asc";
 				}
 
-				$s = new XSort( $v, $or );
-				$sorting->AddItem( $s );
+				$sorting[] = $v . ' ' . strtolower( $or );
 			}
-		} else {
-			$s = new XSort( 'PeriodStart', 'ASC' );
-			$sorting->AddItem( $s );
 		}
 
-		$ede = EDU()->api->GetEvent( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
+		$sorting[] = $sortOrder . ' asc';
 
-		$ede = array_filter( $ede, function( $object ) use ( &$edo ) {
-			$pn = $edo;
-			foreach ( $pn as $subj ) {
-				if ( $object->ObjectID == $subj->ObjectID ) {
-					return true;
-				}
+		$expandArr = array();
+		foreach ( $expands as $key => $value ) {
+			if ( empty( $value ) ) {
+				$expandArr[] = $key;
+			} else {
+				$expandArr[] = $key . "(" . $value . ")";
 			}
-
-			return false;
-		} );
-
-		$occIds = array();
-		$evIds  = array();
-
-		foreach ( $ede as $e ) {
-			$occIds[] = $e->OccationID;
-			$evIds[]  = $e->EventID;
 		}
 
-		$ft = new XFiltering();
-		$f  = new XFilter( 'EventID', 'IN', join( ",", $evIds ) );
-		$ft->AddItem( $f );
+		$edo     = EDUAPI()->OData->CourseTemplates->Search(
+			null,
+			join( " and ", $filters ),
+			join( ",", $expandArr ),
+			join( ",", $sorting )
+		);
+		$courses = $edo["value"];
 
-		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-		$eventDates = array();
-		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][] = $ed;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
-		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
-
-		if ( ! empty( $pricenames ) ) {
-			$ede = array_filter( $ede, function( $object ) use ( &$pricenames ) {
-				$pn = $pricenames;
-				foreach ( $pn as $subj ) {
-					if ( $object->OccationID == $subj->OccationID ) {
-						return true;
+		if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
+			$courses = array_filter( $courses, function( $object ) {
+				$name       = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
+				$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
+				$descr      = '';
+				if ( stripos( $descrField, "attr_" ) !== false ) {
+					$attrId = intval( substr( $descrField, 5 ) );
+					foreach ( $object['CustomFields'] as $custom_field ) {
+						if ( $attrId === $custom_field['CustomFieldId'] ) {
+							$descr = strip_tags( $custom_field['CustomFieldValue'] );
+							break;
+						}
 					}
+				} else {
+					$descr = strip_tags( $object[ $descrField ] );
 				}
 
-				return false;
+				$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+				$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+
+				return ( $nameMatch || $descrMatch );
 			} );
 		}
 
-		foreach ( $ede as $object ) {
-			foreach ( $edo as $course ) {
-				$id = $course->ObjectID;
-				if ( $id == $object->ObjectID ) {
-					$object->Days       = $course->Days;
-					$object->StartTime  = $course->StartTime;
-					$object->EndTime    = $course->EndTime;
-					$object->CategoryID = $course->CategoryID;
-					$object->PublicName = $course->PublicName;
-					break;
-				}
-			}
+		$events = array();
+		foreach ( $courses as $object ) {
+			foreach ( $object["Events"] as $event ) {
+				$event['CourseTemplate'] = $object;
+				unset( $event['CourseTemplate']['Events'] );
 
-			foreach ( $pricenames as $pn ) {
-				$id = $pn->OccationID;
-				if ( $id == $object->OccationID ) {
-					$object->Price        = $pn->Price;
-					$object->PriceNameVat = $pn->PriceNameVat;
-					break;
+				$pricenames = array();
+				foreach ( $object['PriceNames'] as $pn ) {
+					$pricenames[] = $pn['Price'];
 				}
+				foreach ( $event['PriceNames'] as $pn ) {
+					$pricenames[] = $pn['Price'];
+				}
+
+				$minPrice       = min( $pricenames );
+				$event['Price'] = $minPrice;
+
+				$events[] = $event;
 			}
 		}
 
 		if ( "A" == $_POST['template'] ) {
-			edu_api_listview_eventlist_template_A( $ede, $eventDates, $_POST );
+			edu_api_listview_eventlist_template_A( $events, $_POST );
 		} else if ( "B" == $_POST['template'] ) {
-			edu_api_listview_eventlist_template_B( $ede, $eventDates, $_POST );
+			edu_api_listview_eventlist_template_B( $events, $_POST );
 		}
 		die();
 	}
 
-	function edu_api_listview_eventlist_template_A( $data, $eventDates, $request ) {
+	function edu_api_listview_eventlist_template_A( $data, $request ) {
 		$showMoreNumber  = $request['showmore'];
 		$showCity        = $request['showcity'];
 		$showBookBtn     = $request['showbookbtn'];
@@ -349,18 +258,26 @@
 
 		$currentEvents = 0;
 
-		foreach ( $data as $object ) {
+		foreach ( $data as $event ) {
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
-			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
+
+			$name      = $event["EventName"];
+			$spotsLeft = $event["ParticipantNumberLeft"];
+			$object    = $event['CourseTemplate'];
+
+			$eventDates = array();
+			if ( ! empty( $event["EventDates"] ) ) {
+				$eventDates[ $event["EventId"] ] = $event["EventDates"];
+			}
+
 			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockA.php' );
 			$currentEvents++;
 		}
 	}
 
-	function edu_api_listview_eventlist_template_B( $data, $eventDates, $request ) {
+	function edu_api_listview_eventlist_template_B( $data, $request ) {
 		$showMoreNumber  = $request['showmore'];
 		$showCity        = $request['showcity'];
 		$showBookBtn     = $request['showbookbtn'];
@@ -407,12 +324,20 @@
 
 		$currentEvents = 0;
 
-		foreach ( $data as $object ) {
+		foreach ( $data as $event ) {
 			if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
 				break;
 			}
-			$name      = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			$spotsLeft = ( $object->MaxParticipantNr - $object->TotalParticipantNr );
+
+			$name      = $event["EventName"];
+			$spotsLeft = $event["ParticipantNumberLeft"];
+			$object    = $event['CourseTemplate'];
+
+			$eventDates = array();
+			if ( ! empty( $event["EventDates"] ) ) {
+				$eventDates[ $event["EventId"] ] = $event["EventDates"];
+			}
+
 			include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockB.php' );
 			$currentEvents++;
 		}
@@ -422,47 +347,6 @@
 		header( "Content-type: text/html; charset=UTF-8" );
 
 		$objectId = $_POST['objectid'];
-
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'ObjectID', '=', $objectId );
-		$filtering->AddItem( $f );
-
-		$edo            = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
-		$selectedCourse = false;
-		foreach ( $edo as $object ) {
-			$id = $object->ObjectID;
-			if ( $id == $objectId ) {
-				$selectedCourse = $object;
-				break;
-			}
-		}
-
-		$fetchMonths = $_POST['fetchmonths'];
-		if ( ! is_numeric( $fetchMonths ) ) {
-			$fetchMonths = 6;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( 'now +' . $fetchMonths . ' months' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'PeriodEnd', '>=', date( "Y-m-d H:i:s", strtotime( 'now' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'StatusID', '=', '1' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ObjectID', '=', $objectId );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'CustomerID', '=', '0' );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'ParentEventID', '=', '0' );
-		$ft->AddItem( $f );
 
 		if ( ! empty( $_POST['city'] ) ) {
 			$f = new XFilter( 'City', '=', $_POST['city'] );
@@ -488,80 +372,78 @@
 			$customOrderByOrder = $_POST['order'];
 		}
 
-		if ( $customOrderBy != null ) {
-			$orderby   = explode( ' ', $customOrderBy );
-			$sortorder = explode( ' ', $customOrderByOrder );
-			foreach ( $orderby as $od => $v ) {
-				if ( isset( $sortorder[ $od ] ) ) {
-					$or = $sortorder[ $od ];
-				} else {
-					$or = "ASC";
-				}
-
-				$s = new XSort( $v, $or );
-				$st->AddItem( $s );
+		$courseId = $objectId;
+		$edo      = get_transient( 'eduadmin-object_' . $courseId );
+		if ( ! $edo ) {
+			$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
+			if ( ! is_numeric( $fetchMonths ) ) {
+				$fetchMonths = 6;
 			}
-		} else {
-			$s = new XSort( 'PeriodStart', 'ASC' );
-			$st->AddItem( $s );
-		}
 
-		$events = EDU()->api->GetEvent(
-			EDU()->get_token(),
-			$st->ToString(),
-			$ft->ToString()
-		);
+			$groupByCity = get_option( 'eduadmin-groupEventsByCity', false );
 
-		$occIds   = array();
-		$occIds[] = -1;
+			$expands = array();
 
-		$eventIds   = array();
-		$eventIds[] = -1;
+			$expands['Subjects']   = "";
+			$expands['Categories'] = "";
+			$expands['PriceNames'] = '$filter=PublicPriceName;';
+			$expands['Events']     =
+				'$filter=' .
+				'HasPublicPriceName' .
+				' and StatusId eq 1' .
+				' and CustomerId eq null' .
+				' and LastApplicationDate ge ' . date( "c" ) .
+				' and StartDate le ' . date( "c", strtotime( "now 23:59:59 +" . $fetchMonths . " months" ) ) .
+				' and EndDate ge ' . date( "c", strtotime( "now" ) ) .
+				';' .
+				'$expand=PriceNames($filter=PublicPriceName),EventDates' .
+				';' .
+				'$orderby=' . ( $groupByCity ? 'City asc,' : '' ) . 'StartDate asc' .
+				';';
 
-		foreach ( $events as $e ) {
-			$occIds[]   = $e->OccationID;
-			$eventIds[] = $e->EventID;
-		}
+			$expands['CustomFields'] = '$filter=ShowOnWeb';
 
-		$ft = new XFiltering();
-		$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
-		$ft->AddItem( $f );
-
-		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-		$eventDates = array();
-		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][] = $ed;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
-		$ft->AddItem( $f );
-
-		$st = new XSorting();
-		$s  = new XSort( 'Price', 'ASC' );
-		$st->AddItem( $s );
-
-		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-
-		if ( ! empty( $pricenames ) ) {
-			$events = array_filter( $events, function( $object ) use ( &$pricenames ) {
-				$pn = $pricenames;
-				foreach ( $pn as $subj ) {
-					if ( $object->OccationID == $subj->OccationID ) {
-						return true;
-					}
+			$expandArr = array();
+			foreach ( $expands as $key => $value ) {
+				if ( empty( $value ) ) {
+					$expandArr[] = $key;
+				} else {
+					$expandArr[] = $key . "(" . $value . ")";
 				}
+			}
 
-				return false;
-			} );
+			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+				$courseId,
+				null,
+				join( ",", $expandArr )
+			);
+			set_transient( 'eduadmin-object_' . $courseId, $edo, 10 );
+		}
+
+		$selectedCourse = false;
+		$name           = "";
+		if ( $edo ) {
+			$name           = ( ! empty( $edo["CourseName"] ) ? $edo["CourseName"] : $edo["InternalCourseName"] );
+			$selectedCourse = $edo;
 		}
 
 		$surl    = get_home_url();
 		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
 		$baseUrl = $surl . '/' . $cat;
+
+		$events = $selectedCourse["Events"];
+
+		$prices = array();
+
+		foreach ( $selectedCourse["PriceNames"] as $pn ) {
+			$prices[ $pn["PriceNameId"] ] = $pn;
+		}
+
+		foreach ( $events as $e ) {
+			foreach ( $e["PriceNames"] as $pn ) {
+				$prices[ $pn["PriceNameId"] ] = $pn;
+			}
+		}
 
 		$lastCity = "";
 
@@ -571,16 +453,15 @@
 		$showEventVenue   = $_POST['showvenue'];
 		$spotSettings     = $_POST['spotsettings'];
 		$showEventInquiry = isset( $_POST['eventinquiry'] ) && $_POST['eventinquiry'] == "true";
-		$name             = ( ! empty( $selectedCourse->PublicName ) ? $selectedCourse->PublicName : $selectedCourse->ObjectName );
+
 		echo '<div class="eduadmin"><div class="event-table eventDays">';
 		$i              = 0;
 		$hasHiddenDates = false;
-		if ( ! empty( $pricenames ) ) {
+		if ( ! empty( $prices ) ) {
 			foreach ( $events as $ev ) {
-				$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
 
-				if ( isset( $request['eid'] ) ) {
-					if ( $ev->EventID != $_POST['eid'] ) {
+				if ( isset( $_POST['eid'] ) ) {
+					if ( $ev['EventId'] != $_POST['eid'] ) {
 						continue;
 					}
 				}
@@ -600,15 +481,15 @@
 				);
 
 				include( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php' );
-				$lastCity = $ev->City;
+				$lastCity = $ev['City'];
 				$i++;
 			}
 		}
-		if ( empty( $pricenames ) || empty( $events ) ) {
+		if ( empty( $prices ) || empty( $events ) ) {
 			echo '<div class="noDatesAvailable"><i>' . __( "No available dates for the selected course", 'eduadmin-booking' ) . '</i></div>';
 		}
 		if ( $hasHiddenDates ) {
-			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $ev->City : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
+			echo "<div class=\"eventShowMore\"><a class='neutral-btn' href=\"javascript://\" onclick=\"eduDetailView.ShowAllEvents('eduev" . ( $groupByCity ? "-" . $lastCity : "" ) . "', this);\">" . __( "Show all events", 'eduadmin-booking' ) . "</a></div>";
 		}
 		echo '</div></div>';
 

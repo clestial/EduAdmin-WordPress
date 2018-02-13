@@ -20,7 +20,7 @@
      data-showmore="<?php echo @esc_attr( $showMore ); ?>"
      data-groupbycity="<?php echo $groupByCity; ?>"
      data-fetchmonths="<?php echo $fetchMonths; ?>"
-	<?php echo( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ); ?>
+	<?php echo( isset( $_REQUEST['eid'] ) ? ' data-eid="' . intval( $_REQUEST['eid'] ) . '"' : '' ); ?>
      data-showvenue="<?php echo @esc_attr( $showEventVenue ); ?>"
      data-eventinquiry="<?php echo @esc_attr( get_option( 'eduadmin-allowInterestRegEvent', false ) ); ?>"
 >

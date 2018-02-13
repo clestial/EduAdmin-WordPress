@@ -419,7 +419,7 @@
 
 		/**
 		 * @param string   $authToken
-		 * @param stdClass $bookingInfo
+		 * @param \BookingInfoSubEvent $bookingInfo
 		 *
 		 * @return int
 		 */

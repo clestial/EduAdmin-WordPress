@@ -1,23 +1,14 @@
 <?php
 
 	class EduAdminBookingHandler {
-		/**
-		 * @var EduAdmin
-		 */
-		private $edu = null;
-
-		public function __construct( $_edu ) {
-			$this->edu = $_edu;
-
+		public function __construct() {
 			add_action( 'wp_loaded', array( $this, 'process_booking' ) );
 		}
 
 		public function process_booking() {
 			if ( isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 				$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
-				$bookingInfo         = array();
-
-				$eventCustomerLnkID = 0;
+				$eventCustomerLnkID  = 0;
 
 				if ( $singlePersonBooking ) {
 					$bookingInfo = $this->book_single_participant();
@@ -218,7 +209,7 @@
 					}
 				}
 
-				$res = EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
+				EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
 			}
 
 			$contact->CustomerID = $customer->CustomerID;
@@ -311,10 +302,9 @@
 					}
 				}
 
-				$res = EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
+				EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
 			}
 
-			$persons     = array();
 			$personEmail = array();
 			if ( ! empty( $contact->Email ) && ! in_array( $contact->Email, $personEmail ) ) {
 				$personEmail[] = $contact->Email;
@@ -515,6 +505,7 @@
 
 				return $bookingInfo;
 			}
+			return null;
 		}
 
 		public function book_multiple_participants() {
@@ -679,7 +670,7 @@
 					}
 				}
 
-				$res = EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
+				EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
 			}
 
 			$contact->CustomerID = $customer->CustomerID;
@@ -770,10 +761,9 @@
 					}
 				}
 
-				$res = EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
+				EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
 			}
 
-			$persons     = array();
 			$personEmail = array();
 			if ( ! empty( $contact->Email ) && ! in_array( $contact->Email, $personEmail ) ) {
 				$personEmail[] = $contact->Email;
@@ -1057,5 +1047,6 @@
 
 				return $bookingInfo;
 			}
+			return null;
 		}
 	}

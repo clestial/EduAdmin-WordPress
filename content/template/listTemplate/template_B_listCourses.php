@@ -7,11 +7,11 @@
 
 	foreach ( $courses as $object ) {
 		include( 'blocks/course_block.php' );
-		if ( $showEventsWithEventsOnly && empty( $object[ "Events" ] ) ) {
+		if ( $showEventsWithEventsOnly && empty( $object["Events"] ) ) {
 			continue;
 		}
 
-		if ( $showEventsWithoutEventsOnly && ! empty( $object[ "Events" ] ) ) {
+		if ( $showEventsWithoutEventsOnly && ! empty( $object["Events"] ) ) {
 			continue;
 		}
 		include( 'blocks/course_blockB.php' );

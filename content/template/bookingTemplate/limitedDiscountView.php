@@ -1,7 +1,7 @@
 <?php
 	if ( isset( $customer->CustomerId ) && isset( $contact->PersonId ) && $eventid > 0 ) {
 		$cCards = EDUAPI()->REST->Customer->GetValidVouchers( $customer->CustomerId, $eventid, $contact->PersonId );
-		unset( $cCards[ '@curl' ] );
+		unset( $cCards['@curl'] );
 		?>
         <div class="discountCardView">
 			<?php
@@ -11,7 +11,7 @@
 
 					<?php
 					foreach ( $cCards as $card ) {
-						if ( $card[ "ValidForNumberOfParticipants" ] > 0 ) {
+						if ( $card["ValidForNumberOfParticipants"] > 0 ) {
 							$enoughCredits = true;
 							?>
                             <label class="discountCardItem">
@@ -20,9 +20,9 @@
 									<?php if ( ! $enoughCredits ) : ?>
                                         disabled readonly title="<?php _e( "Not enough uses left on this card.", 'eduadmin-booking' ); ?>"
 									<?php endif; ?>
-                                       value="<?php echo $card[ "VoucherId" ]; ?>"/>
-								<?php echo $card[ "Description" ]; ?>&nbsp;
-                                <i>(<?php echo sprintf( _n( "Valid for %s participant", "Valid for %s participants", $card[ "ValidForNumberOfParticipants" ], 'eduadmin-booking' ), $card[ "ValidForNumberOfParticipants" ] ); ?>
+                                       value="<?php echo $card["VoucherId"]; ?>"/>
+								<?php echo $card["Description"]; ?>&nbsp;
+                                <i>(<?php echo sprintf( _n( "Valid for %s participant", "Valid for %s participants", $card["ValidForNumberOfParticipants"], 'eduadmin-booking' ), $card["ValidForNumberOfParticipants"] ); ?>
                                     )</i>
                             </label>
 							<?php

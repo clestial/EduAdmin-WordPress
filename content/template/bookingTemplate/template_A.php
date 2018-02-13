@@ -21,7 +21,7 @@
 		foreach ( $edo as $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars[ 'courseSlug' ] && $id == $wp_query->query_vars[ "courseId" ] ) {
+			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -33,8 +33,8 @@
 			die();
 		}
 		$ft = new XFiltering();
-		if ( isset( $_REQUEST[ 'eid' ] ) ) {
-			$eventid = intval( $_REQUEST[ 'eid' ] );
+		if ( isset( $_REQUEST['eid'] ) ) {
+			$eventid = intval( $_REQUEST['eid'] );
 			$f       = new XFilter( 'EventID', '=', $eventid );
 			$ft->AddItem( $f );
 		}
@@ -79,9 +79,9 @@
 			die();
 		}
 
-		$event = $events[ 0 ];
+		$event = $events[0];
 
-		if ( isset( $_POST[ 'act' ] ) && 'bookCourse' === sanitize_text_field( $_POST[ 'act' ] ) ) {
+		if ( isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 			include_once( 'createBooking.php' );
 		} else {
 			$contact  = new CustomerContact();
@@ -90,10 +90,10 @@
 			$discountPercent            = 0.0;
 			$participantDiscountPercent = 0.0;
 			$customerInvoiceEmail       = '';
-			$incVat                     = EDUAPI()->REST->Organisation->GetOrganisation()[ "PriceIncVat" ];
+			$incVat                     = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
-			if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
-				$user     = EDU()->session[ 'eduadmin-loginUser' ];
+			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+				$user     = EDU()->session['eduadmin-loginUser'];
 				$contact  = $user->Contact;
 				$customer = $user->Customer;
 				if ( isset( $customer->CustomerId ) ) {
@@ -115,7 +115,7 @@
 
 			$occIds   = Array();
 			$occIds[] = -1;
-			if ( isset( $_REQUEST[ 'eid' ] ) ) {
+			if ( isset( $_REQUEST['eid'] ) ) {
 				foreach ( $events as $ev ) {
 					$occIds[] = $ev->OccationID;
 				}
@@ -248,7 +248,7 @@
 						<?php endif; ?>
                     </div>
 					<?php
-						if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
+						if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 							$userVal = '';
 							if ( isset( $contact->PersonId ) && $contact->PersonId > 0 ) {
 								$userVal = trim( $contact->FirstName . " " . $contact->LastName );
@@ -279,8 +279,8 @@
 					<?php
 						$noInvoiceFreeEvents         = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 						$singlePersonBooking         = get_option( 'eduadmin-singlePersonBooking', false );
-						$showInvoiceEmail            = isset( $attributes[ 'hideinvoiceemailfield' ] ) ? $attributes[ 'hideinvoiceemailfield' ] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
-						$forceShowInvoiceInformation = isset( $attributes[ 'showinvoiceinformation' ] ) ? $attributes[ 'showinvoiceinformation' ] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
+						$showInvoiceEmail            = isset( $attributes['hideinvoiceemailfield'] ) ? $attributes['hideinvoiceemailfield'] == false : get_option( 'eduadmin-hideInvoiceEmailField', false ) == false;
+						$forceShowInvoiceInformation = isset( $attributes['showinvoiceinformation'] ) ? $attributes['showinvoiceinformation'] == true : get_option( 'eduadmin-showInvoiceInformation', false ) == true;
 						if ( $singlePersonBooking ) {
 							include_once( "singlePersonBooking.php" );
 						} else {
@@ -431,7 +431,7 @@
 			<?php
 		}
 	}
-	do_action( 'eduadmin-bookingform-loaded', EDU()->session[ 'eduadmin-loginUser' ] );
+	do_action( 'eduadmin-bookingform-loaded', EDU()->session['eduadmin-loginUser'] );
 	$out = ob_get_clean();
 
 	return $out;

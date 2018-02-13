@@ -23,28 +23,28 @@
 							);
 
 							$parent = array();
-							foreach ( $cg[ "value" ] as $i => $v ) {
-								$parent[ $i ] = $v[ "ParentCustomerGroupId" ];
+							foreach ( $cg["value"] as $i => $v ) {
+								$parent[ $i ] = $v["ParentCustomerGroupId"];
 							}
 
-							array_multisort( $parent, SORT_ASC, $cg[ "value" ] );
+							array_multisort( $parent, SORT_ASC, $cg["value"] );
 
 							$levelStack = array();
-							foreach ( $cg[ "value" ] as $g ) {
-								$levelStack[ $g[ "ParentCustomerGroupId" ] ][] = $g;
+							foreach ( $cg["value"] as $g ) {
+								$levelStack[ $g["ParentCustomerGroupId"] ][] = $g;
 							}
 
 							$depth = 0;
 
 							function edu_writeOptions( $g, $array, $depth, $selectedOption ) {
 								echo
-									"<option value=\"" . $g[ "CustomerGroupId" ] . "\"" . ( $selectedOption == $g[ "CustomerGroupId" ] ? " selected=\"selected\"" : "" ) . ">" .
+									"<option value=\"" . $g["CustomerGroupId"] . "\"" . ( $selectedOption == $g["CustomerGroupId"] ? " selected=\"selected\"" : "" ) . ">" .
 									str_repeat( '&nbsp;', $depth * 4 ) .
-									$g[ "CustomerGroupName" ] .
+									$g["CustomerGroupName"] .
 									"</option>\n";
-								if ( array_key_exists( $g[ "CustomerGroupId" ], $array ) ) {
+								if ( array_key_exists( $g["CustomerGroupId"], $array ) ) {
 									$depth++;
-									foreach ( $array[ $g[ "CustomerGroupId" ] ] as $ng ) {
+									foreach ( $array[ $g["CustomerGroupId"] ] as $ng ) {
 										edu_writeOptions( $ng, $array, $depth, $selectedOption );
 									}
 									$depth--;
@@ -56,7 +56,7 @@
                                     title="<?php esc_attr_e( "Select customer group", "eduadmin-booking" ); ?>">
                                 <option value=""><?php _e( "Select customer group", "eduadmin-booking" ); ?></option>
 								<?php
-									$root           = $levelStack[ '0' ];
+									$root           = $levelStack['0'];
 									$selectedOption = get_option( 'eduadmin-customerGroupId', null );
 									foreach ( $root as $g ) {
 										edu_writeOptions( $g, $levelStack, $depth, $selectedOption );

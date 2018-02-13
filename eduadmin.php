@@ -148,7 +148,7 @@
 				if ( function_exists( 'get_plugin_data' ) ) {
 					$pData = get_plugin_data( __FILE__ );
 
-					return $pData[ 'Version' ];
+					return $pData['Version'];
 				} else {
 					$default_headers = array(
 						'Name'        => 'Plugin Name',
@@ -165,7 +165,7 @@
 					);
 					$pData           = get_file_data( __FILE__, $default_headers );
 
-					return $pData[ 'Version' ];
+					return $pData['Version'];
 				}
 			}
 
@@ -423,7 +423,7 @@
 			return EduAdmin::instance();
 		}
 
-		$GLOBALS[ 'eduadmin' ] = EDU();
+		$GLOBALS['eduadmin'] = EDU();
 		if ( function_exists( 'wp_get_timezone_string' ) ) {
 			date_default_timezone_set( wp_get_timezone_string() );
 			if ( false === @ini_set( 'date.timezone', wp_get_timezone_string() ) ) {
@@ -442,7 +442,7 @@
 			'wp_loaded',
 			function() {
 				$t = EDU()->StartTimer( __METHOD__ );
-				if ( isset( $_POST[ 'option_page' ] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST[ 'option_page' ] ) ) {
+				if ( isset( $_POST['option_page'] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST['option_page'] ) ) {
 					$integrations = EDU()->integrations->integrations;
 					foreach ( $integrations as $integration ) {
 						do_action( 'eduadmin-plugin-save_' . $integration->id );

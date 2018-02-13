@@ -372,7 +372,7 @@
 						if ( $this->debugTimers ) {
 							echo "<!-- " . $objName . '__getArray' . ": " . round( $this->timers[ $objName . '__getArray' ] * 1000, 2 ) . "ms -->\n";
 						}
-						if ( isset( $res->{"ArrayOf" . $objName}[ 0 ]->{$objName} ) ) {
+						if ( isset( $res->{"ArrayOf" . $objName}[0]->{$objName} ) ) {
 							$arRes             = new stdClass;
 							$arRes->{$objName} = array();
 							foreach ( $res->{"ArrayOf" . $objName} as $item ) {

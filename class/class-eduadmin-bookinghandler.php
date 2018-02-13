@@ -13,7 +13,7 @@
 		}
 
 		public function process_booking() {
-			if ( isset( $_POST[ 'act' ] ) && 'bookCourse' === sanitize_text_field( $_POST[ 'act' ] ) ) {
+			if ( isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 				$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
 				$bookingInfo         = array();
 
@@ -26,25 +26,25 @@
 				}
 
 				$filter = new XFiltering();
-				$f      = new XFilter( 'EventCustomerLnkID', '=', $bookingInfo[ 'eventCustomerLnkId' ] );
+				$f      = new XFilter( 'EventCustomerLnkID', '=', $bookingInfo['eventCustomerLnkId'] );
 				$filter->AddItem( $f );
 
-				$eventBooking = EDU()->api->GetEventBookingV2( EDU()->get_token(), '', $filter->ToString() )[ 0 ];
+				$eventBooking = EDU()->api->GetEventBookingV2( EDU()->get_token(), '', $filter->ToString() )[0];
 
 				$filter = new XFiltering();
-				$f      = new XFilter( 'CustomerID', '=', $bookingInfo[ 'customerId' ] );
+				$f      = new XFilter( 'CustomerID', '=', $bookingInfo['customerId'] );
 				$filter->AddItem( $f );
 
-				$_customer = EDU()->api->GetCustomerV3( EDU()->get_token(), '', $filter->ToString(), false )[ 0 ];
+				$_customer = EDU()->api->GetCustomerV3( EDU()->get_token(), '', $filter->ToString(), false )[0];
 
 				$filter = new XFiltering();
-				$f      = new XFilter( 'CustomerContactID', '=', $bookingInfo[ 'contactId' ] );
+				$f      = new XFilter( 'CustomerContactID', '=', $bookingInfo['contactId'] );
 				$filter->AddItem( $f );
 
-				$_contact = EDU()->api->GetCustomerContactV2( EDU()->get_token(), '', $filter->ToString(), false )[ 0 ];
+				$_contact = EDU()->api->GetCustomerContactV2( EDU()->get_token(), '', $filter->ToString(), false )[0];
 
-				$ebi                         = new EduAdminBookingInfo( $eventBooking, $_customer, $_contact );
-				$GLOBALS[ 'edubookinginfo' ] = $ebi;
+				$ebi                       = new EduAdminBookingInfo( $eventBooking, $_customer, $_contact );
+				$GLOBALS['edubookinginfo'] = $ebi;
 
 				do_action( 'eduadmin-checkpaymentplugins', $ebi );
 
@@ -56,46 +56,46 @@
 		}
 
 		public function book_single_participant() {
-			$eventId = intval( $_REQUEST[ 'eid' ] );
+			$eventId = intval( $_REQUEST['eid'] );
 
 			$customer = new CustomerV2();
 			$contact  = new CustomerContact();
 
-			if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
-				$user                       = EDU()->session[ 'eduadmin-loginUser' ];
+			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+				$user                       = EDU()->session['eduadmin-loginUser'];
 				$contact->CustomerContactID = $user->Contact->PersonId;
 				$customer->CustomerID       = $user->Customer->CustomerId;
 			}
-			$first                     = trim( sanitize_text_field( $_POST[ 'contactFirstName' ] ) );
-			$last                      = trim( sanitize_text_field( $_POST[ "contactLastName" ] ) );
+			$first                     = trim( sanitize_text_field( $_POST['contactFirstName'] ) );
+			$last                      = trim( sanitize_text_field( $_POST["contactLastName"] ) );
 			$customer->CustomerName    = $first . " " . $last;
 			$customer->CustomerGroupID = get_option( 'eduadmin-customerGroupId', null );
-			if ( isset( $_POST[ 'contactCivRegNr' ] ) ) {
-				$customer->InvoiceOrgnr = trim( sanitize_text_field( $_POST[ 'contactCivRegNr' ] ) );
+			if ( isset( $_POST['contactCivRegNr'] ) ) {
+				$customer->InvoiceOrgnr = trim( sanitize_text_field( $_POST['contactCivRegNr'] ) );
 			}
-			$customer->Address1          = trim( sanitize_text_field( $_POST[ 'customerAddress1' ] ) );
-			$customer->Address2          = trim( sanitize_text_field( $_POST[ 'customerAddress2' ] ) );
-			$customer->Zip               = trim( sanitize_text_field( $_POST[ 'customerPostalCode' ] ) );
-			$customer->City              = trim( sanitize_text_field( $_POST[ 'customerPostalCity' ] ) );
-			$customer->Phone             = trim( sanitize_text_field( $_POST[ 'contactPhone' ] ) );
-			$customer->Mobile            = trim( sanitize_text_field( $_POST[ 'contactMobile' ] ) );
-			$customer->Email             = sanitize_email( $_POST[ 'contactEmail' ] );
-			$customer->CustomerReference = trim( sanitize_text_field( $_POST[ 'invoiceReference' ] ) );
+			$customer->Address1          = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
+			$customer->Address2          = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+			$customer->Zip               = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
+			$customer->City              = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
+			$customer->Phone             = trim( sanitize_text_field( $_POST['contactPhone'] ) );
+			$customer->Mobile            = trim( sanitize_text_field( $_POST['contactMobile'] ) );
+			$customer->Email             = sanitize_email( $_POST['contactEmail'] );
+			$customer->CustomerReference = trim( sanitize_text_field( $_POST['invoiceReference'] ) );
 
-			$customerInvoiceEmailAddress = sanitize_email( $_POST[ 'invoiceEmail' ] );
+			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
-			if ( ! isset( $_POST[ 'alsoInvoiceCustomer' ] ) ) {
+			if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
 				$customer->InvoiceName     = $first . " " . $last;
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST[ 'customerAddress1' ] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST[ 'customerAddress2' ] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST[ 'customerPostalCode' ] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST[ 'customerPostalCity' ] ) );
+				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
+				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
+				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
 			} else {
-				$customer->InvoiceName     = trim( sanitize_text_field( $_POST[ 'invoiceName' ] ) );
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST[ 'invoiceAddress1' ] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST[ 'invoiceAddress2' ] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST[ 'invoicePostalCode' ] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST[ 'invoicePostalCity' ] ) );
+				$customer->InvoiceName     = trim( sanitize_text_field( $_POST['invoiceName'] ) );
+				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['invoiceAddress1'] ) );
+				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['invoiceAddress2'] ) );
+				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['invoicePostalCode'] ) );
+				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['invoicePostalCity'] ) );
 			}
 
 			if ( ! empty( $customerInvoiceEmailAddress ) ) {
@@ -123,9 +123,9 @@
 				if ( empty( $matchingCustomer ) ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
-					$customer = $matchingCustomer[ 0 ];
+					$customer = $matchingCustomer[0];
 				}
 			} else if ( $selectedMatch === "name-zip-match-overwrite" ) {
 				$ft = new XFiltering();
@@ -147,20 +147,20 @@
 				if ( empty( $matchingCustomer ) ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
-					$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
+					$customer->CustomerID = $matchingCustomer[0]->CustomerID;
 					EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 				}
 			} else if ( $selectedMatch === "no-match" ) {
 				$customer->CustomerID = 0;
 				$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-				$customer->CustomerID = $cres[ 0 ];
+				$customer->CustomerID = $cres[0];
 			} else if ( $selectedMatch === "no-match-new-overwrite" ) {
 				if ( $contact->CustomerContactID == 0 ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
 					$ft = new XFiltering();
 					$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
@@ -169,9 +169,9 @@
 					if ( empty( $matchingCustomer ) ) {
 						$customer->CustomerID = 0;
 						$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-						$customer->CustomerID = $cres[ 0 ];
+						$customer->CustomerID = $cres[0];
 					} else {
-						$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
+						$customer->CustomerID = $matchingCustomer[0]->CustomerID;
 						EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 					}
 				}
@@ -223,16 +223,16 @@
 
 			$contact->CustomerID = $customer->CustomerID;
 
-			if ( ! empty( $_POST[ 'contactFirstName' ] ) ) {
-				$contact->ContactName = trim( sanitize_text_field( $_POST[ 'contactFirstName' ] ) ) . ";" . trim( sanitize_text_field( $_POST[ 'contactLastName' ] ) );
-				$contact->Phone       = trim( sanitize_text_field( $_POST[ 'contactPhone' ] ) );
-				$contact->Mobile      = trim( sanitize_text_field( $_POST[ 'contactMobile' ] ) );
-				$contact->Email       = sanitize_email( $_POST[ 'contactEmail' ] );
-				if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-					$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST[ 'contactCivReg' ] ) );
+			if ( ! empty( $_POST['contactFirstName'] ) ) {
+				$contact->ContactName = trim( sanitize_text_field( $_POST['contactFirstName'] ) ) . ";" . trim( sanitize_text_field( $_POST['contactLastName'] ) );
+				$contact->Phone       = trim( sanitize_text_field( $_POST['contactPhone'] ) );
+				$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
+				$contact->Email       = sanitize_email( $_POST['contactEmail'] );
+				if ( isset( $_POST['contactCivReg'] ) ) {
+					$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 				}
-				if ( isset( $_POST[ 'contactPass' ] ) && ! empty( $_POST[ 'contactPass' ] ) ) {
-					$contact->Loginpass = sanitize_text_field( $_POST[ 'contactPass' ] );
+				if ( isset( $_POST['contactPass'] ) && ! empty( $_POST['contactPass'] ) ) {
+					$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 				}
 				$contact->CanLogin    = 'true';
 				$contact->PublicGroup = 'true';
@@ -255,15 +255,15 @@
 				$matchingContacts = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), false );
 				if ( empty( $matchingContacts ) ) {
 					$contact->CustomerContactID = 0;
-					$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[ 0 ];
+					$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[0];
 				} else {
 					if ( $selectedMatch === 'name-zip-match-overwrite' ) {
-						$contact->CustomerContactID = $matchingContacts[ 0 ]->CustomerContactID;
+						$contact->CustomerContactID = $matchingContacts[0]->CustomerContactID;
 						EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 					} else {
-						$contact = $matchingContacts[ 0 ];
-						if ( isset( $_POST[ 'contactPass' ] ) && empty( $contact->Loginpass ) ) {
-							$contact->Loginpass = sanitize_text_field( $_POST[ 'contactPass' ] );
+						$contact = $matchingContacts[0];
+						if ( isset( $_POST['contactPass'] ) && empty( $contact->Loginpass ) ) {
+							$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 							EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 						}
 					}
@@ -360,7 +360,7 @@
 				$ft->AddItem( $f );
 				$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
 				if ( ! empty( $matchingPersons ) ) {
-					$person = $matchingPersons[ 0 ];
+					$person = $matchingPersons[0];
 				}
 
 				$cmpArr = array();
@@ -391,12 +391,12 @@
 
 				$person->Attribute = $cmpArr;
 
-				if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-					$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST[ 'contactCivReg' ] ) );
+				if ( isset( $_POST['contactCivReg'] ) ) {
+					$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 				}
 
-				if ( isset( $_POST[ 'contactPriceName' ] ) ) {
-					$person->OccasionPriceNameLnkID = intval( $_POST[ 'contactPriceName' ] );
+				if ( isset( $_POST['contactPriceName'] ) ) {
+					$person->OccasionPriceNameLnkID = intval( $_POST['contactPriceName'] );
 				}
 				$person->SubEvents = array();
 				foreach ( $subEvents as $subEvent ) {
@@ -426,19 +426,19 @@
 					$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 				}
 
-				if ( isset( $_POST[ 'edu-limitedDiscountID' ] ) ) {
-					$bi->LimitedDiscountID = intval( $_POST[ 'edu-limitedDiscountID' ] );
+				if ( isset( $_POST['edu-limitedDiscountID'] ) ) {
+					$bi->LimitedDiscountID = intval( $_POST['edu-limitedDiscountID'] );
 				}
 
-				if ( isset( $_POST[ 'edu-pricename' ] ) ) {
-					$bi->OccasionPriceNameLnkID = intval( $_POST[ 'edu-pricename' ] );
+				if ( isset( $_POST['edu-pricename'] ) ) {
+					$bi->OccasionPriceNameLnkID = intval( $_POST['edu-pricename'] );
 				}
 
-				if ( isset( $_POST[ 'edu-discountCodeID' ] ) && $_POST[ 'edu-discountCodeID' ] != "0" ) {
-					$bi->CouponID = intval( $_POST[ 'edu-discountCodeID' ] );
+				if ( isset( $_POST['edu-discountCodeID'] ) && $_POST['edu-discountCodeID'] != "0" ) {
+					$bi->CouponID = intval( $_POST['edu-discountCodeID'] );
 				}
 
-				$bi->CustomerReference = ( ! empty( $_POST[ 'invoiceReference' ] ) ? trim( sanitize_text_field( $_POST[ 'invoiceReference' ] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
+				$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( sanitize_text_field( $_POST['invoiceReference'] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
 				$eventCustomerLnkID    = EDU()->api->CreateSubEventBooking(
 					EDU()->get_token(),
 					$bi
@@ -448,8 +448,8 @@
 				foreach ( $_POST as $input => $value ) {
 					if ( strpos( $input, "question_" ) !== false ) {
 						$question = explode( '_', $input );
-						$answerID = intval( $question[ 1 ] );
-						$type     = sanitize_text_field( $question[ 2 ] );
+						$answerID = intval( $question[1] );
+						$type     = sanitize_text_field( $question[2] );
 
 						switch ( $type ) {
 							case 'radio':
@@ -459,7 +459,7 @@
 								break;
 						}
 						if ( $type === "time" ) {
-							$answers[ $answerID ][ 'AnswerTime' ] = trim( sanitize_text_field( $value ) );
+							$answers[ $answerID ]['AnswerTime'] = trim( sanitize_text_field( $value ) );
 						} else {
 							$answers[ $answerID ] =
 								array(
@@ -481,7 +481,7 @@
 					EDU()->api->SetEventCustomerAnswerV2( EDU()->get_token(), $sanswers );
 				}
 
-				$ai = EDU()->api->GetAccountInfo( EDU()->get_token() )[ 0 ];
+				$ai = EDU()->api->GetAccountInfo( EDU()->get_token() )[0];
 
 				$senderEmail = $ai->Email;
 				if ( empty( $senderEmail ) ) {
@@ -491,10 +491,10 @@
 					EDU()->api->SendConfirmationEmail( EDU()->get_token(), $eventCustomerLnkID, $senderEmail, $personEmail );
 				}
 
-				EDU()->session[ 'eduadmin-printJS' ] = true;
+				EDU()->session['eduadmin-printJS'] = true;
 
-				if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
-					$user = EDU()->session[ 'eduadmin-loginUser' ];
+				if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+					$user = EDU()->session['eduadmin-loginUser'];
 				} else {
 					$user = new stdClass;
 				}
@@ -504,7 +504,7 @@
 
 				$jsEncCustomer = json_encode( $customer );
 				@$user->Customer = json_decode( $jsEncCustomer );
-				EDU()->session[ 'eduadmin-loginUser' ] = $user;
+				EDU()->session['eduadmin-loginUser'] = $user;
 
 				$bookingInfo = array(
 					'eventCustomerLnkId' => $eventCustomerLnkID,
@@ -518,43 +518,43 @@
 		}
 
 		public function book_multiple_participants() {
-			$eventId = intval( $_REQUEST[ 'eid' ] );
+			$eventId = intval( $_REQUEST['eid'] );
 
 			$customer = new CustomerV2();
 			$contact  = new CustomerContact();
 
-			if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
-				$user                       = EDU()->session[ 'eduadmin-loginUser' ];
+			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+				$user                       = EDU()->session['eduadmin-loginUser'];
 				$contact->CustomerContactID = $user->Contact->CustomerContactID;
 				$customer->CustomerID       = $user->Customer->CustomerID;
 			}
 
-			$customer->CustomerName      = trim( sanitize_text_field( $_POST[ 'customerName' ] ) );
+			$customer->CustomerName      = trim( sanitize_text_field( $_POST['customerName'] ) );
 			$customer->CustomerGroupID   = get_option( 'eduadmin-customerGroupId', null );
-			$customer->InvoiceOrgnr      = trim( sanitize_text_field( $_POST[ 'customerVatNo' ] ) );
-			$customer->Address1          = trim( sanitize_text_field( $_POST[ 'customerAddress1' ] ) );
-			$customer->Address2          = trim( sanitize_text_field( $_POST[ 'customerAddress2' ] ) );
-			$customer->Zip               = trim( sanitize_text_field( $_POST[ 'customerPostalCode' ] ) );
-			$customer->City              = trim( sanitize_text_field( $_POST[ 'customerPostalCity' ] ) );
-			$customer->Email             = sanitize_email( $_POST[ 'customerEmail' ] );
-			$customer->CustomerReference = trim( sanitize_text_field( $_POST[ 'invoiceReference' ] ) );
+			$customer->InvoiceOrgnr      = trim( sanitize_text_field( $_POST['customerVatNo'] ) );
+			$customer->Address1          = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
+			$customer->Address2          = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+			$customer->Zip               = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
+			$customer->City              = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
+			$customer->Email             = sanitize_email( $_POST['customerEmail'] );
+			$customer->CustomerReference = trim( sanitize_text_field( $_POST['invoiceReference'] ) );
 
-			$purchaseOrderNumber = trim( sanitize_text_field( $_POST[ 'purchaseOrderNumber' ] ) );
+			$purchaseOrderNumber = trim( sanitize_text_field( $_POST['purchaseOrderNumber'] ) );
 
-			$customerInvoiceEmailAddress = sanitize_email( $_POST[ 'invoiceEmail' ] );
+			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
-			if ( ! isset( $_POST[ 'alsoInvoiceCustomer' ] ) ) {
-				$customer->InvoiceName     = trim( sanitize_text_field( $_POST[ 'customerName' ] ) );
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST[ 'customerAddress1' ] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST[ 'customerAddress2' ] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST[ 'customerPostalCode' ] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST[ 'customerPostalCity' ] ) );
+			if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
+				$customer->InvoiceName     = trim( sanitize_text_field( $_POST['customerName'] ) );
+				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
+				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
+				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
 			} else {
-				$customer->InvoiceName     = trim( sanitize_text_field( $_POST[ 'invoiceName' ] ) );
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST[ 'invoiceAddress1' ] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST[ 'invoiceAddress2' ] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST[ 'invoicePostalCode' ] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST[ 'invoicePostalCity' ] ) );
+				$customer->InvoiceName     = trim( sanitize_text_field( $_POST['invoiceName'] ) );
+				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['invoiceAddress1'] ) );
+				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['invoiceAddress2'] ) );
+				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['invoicePostalCode'] ) );
+				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['invoicePostalCity'] ) );
 			}
 
 			if ( ! empty( $customerInvoiceEmailAddress ) ) {
@@ -582,9 +582,9 @@
 				if ( empty( $matchingCustomer ) ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
-					$customer = $matchingCustomer[ 0 ];
+					$customer = $matchingCustomer[0];
 				}
 			} else if ( 'name-zip-match-overwrite' === $selectedMatch ) {
 				$ft = new XFiltering();
@@ -608,20 +608,20 @@
 				if ( empty( $matchingCustomer ) ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
-					$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
+					$customer->CustomerID = $matchingCustomer[0]->CustomerID;
 					EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 				}
 			} else if ( 'no-match' === $selectedMatch ) {
 				$customer->CustomerID = 0;
 				$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-				$customer->CustomerID = $cres[ 0 ];
+				$customer->CustomerID = $cres[0];
 			} else if ( 'no-match-new-overwrite' === $selectedMatch ) {
 				if ( $contact->CustomerContactID == 0 ) {
 					$customer->CustomerID = 0;
 					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[ 0 ];
+					$customer->CustomerID = $cres[0];
 				} else {
 					$ft = new XFiltering();
 					$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
@@ -630,9 +630,9 @@
 					if ( empty( $matchingCustomer ) ) {
 						$customer->CustomerID = 0;
 						$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-						$customer->CustomerID = $cres[ 0 ];
+						$customer->CustomerID = $cres[0];
 					} else {
-						$customer->CustomerID = $matchingCustomer[ 0 ]->CustomerID;
+						$customer->CustomerID = $matchingCustomer[0]->CustomerID;
 						EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
 					}
 				}
@@ -684,16 +684,16 @@
 
 			$contact->CustomerID = $customer->CustomerID;
 
-			if ( ! empty( $_POST[ 'contactFirstName' ] ) ) {
-				$contact->ContactName = trim( sanitize_text_field( $_POST[ 'contactFirstName' ] ) ) . ";" . trim( sanitize_text_field( $_POST[ 'contactLastName' ] ) );
-				$contact->Phone       = trim( sanitize_text_field( $_POST[ 'contactPhone' ] ) );
-				$contact->Mobile      = trim( sanitize_text_field( $_POST[ 'contactMobile' ] ) );
-				$contact->Email       = sanitize_email( $_POST[ 'contactEmail' ] );
-				if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-					$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST[ 'contactCivReg' ] ) );
+			if ( ! empty( $_POST['contactFirstName'] ) ) {
+				$contact->ContactName = trim( sanitize_text_field( $_POST['contactFirstName'] ) ) . ";" . trim( sanitize_text_field( $_POST['contactLastName'] ) );
+				$contact->Phone       = trim( sanitize_text_field( $_POST['contactPhone'] ) );
+				$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
+				$contact->Email       = sanitize_email( $_POST['contactEmail'] );
+				if ( isset( $_POST['contactCivReg'] ) ) {
+					$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 				}
-				if ( isset( $_POST[ 'contactPass' ] ) && ! empty( $_POST[ 'contactPass' ] ) ) {
-					$contact->Loginpass = sanitize_text_field( $_POST[ 'contactPass' ] );
+				if ( isset( $_POST['contactPass'] ) && ! empty( $_POST['contactPass'] ) ) {
+					$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 				}
 				$contact->CanLogin    = 'true';
 				$contact->PublicGroup = 'true';
@@ -714,15 +714,15 @@
 				$matchingContacts = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), false );
 				if ( empty( $matchingContacts ) ) {
 					$contact->CustomerContactID = 0;
-					$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[ 0 ];
+					$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[0];
 				} else {
 					if ( 'name-zip-match-overwrite' === $selectedMatch ) {
-						$contact->CustomerContactID = $matchingContacts[ 0 ]->CustomerContactID;
+						$contact->CustomerContactID = $matchingContacts[0]->CustomerContactID;
 						EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 					} else {
-						$contact = $matchingContacts[ 0 ];
-						if ( isset( $_POST[ 'contactPass' ] ) && empty( $contact->Loginpass ) ) {
-							$contact->Loginpass = sanitize_text_field( $_POST[ 'contactPass' ] );
+						$contact = $matchingContacts[0];
+						if ( isset( $_POST['contactPass'] ) && empty( $contact->Loginpass ) ) {
+							$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
 							EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
 						}
 					}
@@ -803,18 +803,18 @@
 			$fo->AddItem( $f );
 			$personAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
-			foreach ( $_POST[ 'participantFirstName' ] as $key => $value ) {
+			foreach ( $_POST['participantFirstName'] as $key => $value ) {
 				if ( "0" === $key ) {
 					continue;
 				}
 
-				if ( ! empty( $_POST[ 'participantFirstName' ][ $key ] ) ) {
+				if ( ! empty( $_POST['participantFirstName'][ $key ] ) ) {
 					$person               = new SubEventPerson();
 					$person->CustomerID   = $customer->CustomerID;
-					$person->PersonName   = trim( sanitize_text_field( $_POST[ 'participantFirstName' ][ $key ] ) ) . ";" . trim( sanitize_text_field( $_POST[ 'participantLastName' ][ $key ] ) );
-					$person->PersonEmail  = sanitize_email( $_POST[ 'participantEmail' ][ $key ] );
-					$person->PersonPhone  = trim( sanitize_text_field( $_POST[ 'participantPhone' ][ $key ] ) );
-					$person->PersonMobile = trim( sanitize_text_field( $_POST[ 'participantMobile' ][ $key ] ) );
+					$person->PersonName   = trim( sanitize_text_field( $_POST['participantFirstName'][ $key ] ) ) . ";" . trim( sanitize_text_field( $_POST['participantLastName'][ $key ] ) );
+					$person->PersonEmail  = sanitize_email( $_POST['participantEmail'][ $key ] );
+					$person->PersonPhone  = trim( sanitize_text_field( $_POST['participantPhone'][ $key ] ) );
+					$person->PersonMobile = trim( sanitize_text_field( $_POST['participantMobile'][ $key ] ) );
 
 					$ft = new XFiltering();
 					$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
@@ -825,7 +825,7 @@
 					$ft->AddItem( $f );
 					$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
 					if ( ! empty( $matchingPersons ) ) {
-						$person = $matchingPersons[ 0 ];
+						$person = $matchingPersons[0];
 					}
 
 					$cmpArr = array();
@@ -856,16 +856,16 @@
 
 					$person->Attribute = $cmpArr;
 
-					$person->PersonEmail  = sanitize_email( $_POST[ 'participantEmail' ][ $key ] );
-					$person->PersonPhone  = trim( sanitize_text_field( $_POST[ 'participantPhone' ][ $key ] ) );
-					$person->PersonMobile = trim( sanitize_text_field( $_POST[ 'participantMobile' ][ $key ] ) );
+					$person->PersonEmail  = sanitize_email( $_POST['participantEmail'][ $key ] );
+					$person->PersonPhone  = trim( sanitize_text_field( $_POST['participantPhone'][ $key ] ) );
+					$person->PersonMobile = trim( sanitize_text_field( $_POST['participantMobile'][ $key ] ) );
 
-					if ( isset( $_POST[ 'participantCivReg' ][ $key ] ) ) {
-						$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST[ 'participantCivReg' ][ $key ] ) );
+					if ( isset( $_POST['participantCivReg'][ $key ] ) ) {
+						$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST['participantCivReg'][ $key ] ) );
 					}
 
-					if ( isset( $_POST[ 'participantPriceName' ][ $key ] ) ) {
-						$person->OccasionPriceNameLnkID = intval( $_POST[ 'participantPriceName' ][ $key ] );
+					if ( isset( $_POST['participantPriceName'][ $key ] ) ) {
+						$person->OccasionPriceNameLnkID = intval( $_POST['participantPriceName'][ $key ] );
 					}
 
 					foreach ( $subEvents as $subEvent ) {
@@ -890,7 +890,7 @@
 				}
 			}
 
-			if ( isset( $_POST[ 'contactIsAlsoParticipant' ] ) && $contact->CustomerContactID > 0 ) {
+			if ( isset( $_POST['contactIsAlsoParticipant'] ) && $contact->CustomerContactID > 0 ) {
 				$person                                = new SubEventPerson();
 				$person->CustomerID                    = $customer->CustomerID;
 				$person->CustomerContactID             = $contact->CustomerContactID;
@@ -906,7 +906,7 @@
 				$ft->AddItem( $f );
 				$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
 				if ( ! empty( $matchingPersons ) ) {
-					$person = $matchingPersons[ 0 ];
+					$person = $matchingPersons[0];
 				}
 
 				$cmpArr = array();
@@ -937,12 +937,12 @@
 
 				$person->Attribute = $cmpArr;
 
-				if ( isset( $_POST[ 'contactCivReg' ] ) ) {
-					$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST[ 'contactCivReg' ] ) );
+				if ( isset( $_POST['contactCivReg'] ) ) {
+					$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
 				}
 
-				if ( isset( $_POST[ 'contactPriceName' ] ) ) {
-					$person->OccasionPriceNameLnkID = intval( $_POST[ 'contactPriceName' ] );
+				if ( isset( $_POST['contactPriceName'] ) ) {
+					$person->OccasionPriceNameLnkID = intval( $_POST['contactPriceName'] );
 				}
 				$person->SubEvents = array();
 				foreach ( $subEvents as $subEvent ) {
@@ -969,19 +969,19 @@
 				$bi->CustomerContactID   = $contact->CustomerContactID;
 				$bi->SubEventPersons     = $pArr;
 				$bi->PurchaseOrderNumber = $purchaseOrderNumber;
-				if ( isset( $_POST[ 'edu-pricename' ] ) ) {
-					$bi->OccasionPriceNameLnkID = intval( $_POST[ 'edu-pricename' ] );
+				if ( isset( $_POST['edu-pricename'] ) ) {
+					$bi->OccasionPriceNameLnkID = intval( $_POST['edu-pricename'] );
 				}
 
-				if ( isset( $_POST[ 'edu-limitedDiscountID' ] ) ) {
-					$bi->LimitedDiscountID = intval( $_POST[ 'edu-limitedDiscountID' ] );
+				if ( isset( $_POST['edu-limitedDiscountID'] ) ) {
+					$bi->LimitedDiscountID = intval( $_POST['edu-limitedDiscountID'] );
 				}
 
-				if ( isset( $_POST[ 'edu-discountCodeID' ] ) && $_POST[ 'edu-discountCodeID' ] != "0" ) {
-					$bi->CouponID = intval( $_POST[ 'edu-discountCodeID' ] );
+				if ( isset( $_POST['edu-discountCodeID'] ) && $_POST['edu-discountCodeID'] != "0" ) {
+					$bi->CouponID = intval( $_POST['edu-discountCodeID'] );
 				}
 
-				$bi->CustomerReference = ( ! empty( $_POST[ 'invoiceReference' ] ) ? trim( sanitize_text_field( $_POST[ 'invoiceReference' ] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
+				$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( sanitize_text_field( $_POST['invoiceReference'] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
 				$eventCustomerLnkID    = EDU()->api->CreateSubEventBooking(
 					EDU()->get_token(),
 					$bi
@@ -991,8 +991,8 @@
 				foreach ( $_POST as $input => $value ) {
 					if ( strpos( $input, "question_" ) !== false ) {
 						$question = explode( '_', $input );
-						$answerID = intval( $question[ 1 ] );
-						$type     = sanitize_text_field( $question[ 2 ] );
+						$answerID = intval( $question[1] );
+						$type     = sanitize_text_field( $question[2] );
 
 						switch ( $type ) {
 							case 'radio':
@@ -1002,7 +1002,7 @@
 								break;
 						}
 						if ( $type === "time" ) {
-							$answers[ $answerID ][ 'AnswerTime' ] = trim( sanitize_text_field( $value ) );
+							$answers[ $answerID ]['AnswerTime'] = trim( sanitize_text_field( $value ) );
 						} else {
 							$answers[ $answerID ] =
 								array(
@@ -1024,7 +1024,7 @@
 					EDU()->api->SetEventCustomerAnswerV2( EDU()->get_token(), $sanswers );
 				}
 
-				$ai          = EDU()->api->GetAccountInfo( EDU()->get_token() )[ 0 ];
+				$ai          = EDU()->api->GetAccountInfo( EDU()->get_token() )[0];
 				$senderEmail = $ai->Email;
 				if ( empty( $senderEmail ) ) {
 					$senderEmail = 'no-reply@legaonline.se';
@@ -1033,10 +1033,10 @@
 					EDU()->api->SendConfirmationEmail( EDU()->get_token(), $eventCustomerLnkID, $senderEmail, $personEmail );
 				}
 
-				EDU()->session[ 'eduadmin-printJS' ] = true;
+				EDU()->session['eduadmin-printJS'] = true;
 
-				if ( isset( EDU()->session[ 'eduadmin-loginUser' ] ) ) {
-					$user = EDU()->session[ 'eduadmin-loginUser' ];
+				if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+					$user = EDU()->session['eduadmin-loginUser'];
 				} else {
 					$user = new stdClass;
 				}
@@ -1046,7 +1046,7 @@
 
 				$jsEncCustomer = json_encode( $customer );
 				@$user->Customer = json_decode( $jsEncCustomer );
-				EDU()->session[ 'eduadmin-loginUser' ] = $user;
+				EDU()->session['eduadmin-loginUser'] = $user;
 
 				$bookingInfo = array(
 					'eventCustomerLnkId' => $eventCustomerLnkID,

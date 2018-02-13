@@ -1,7 +1,7 @@
 <?php
 	function edu_render_style_settings_page() {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
-		if ( isset( $_POST[ 'resetStyle' ] ) ) {
+		if ( isset( $_POST['resetStyle'] ) ) {
 			delete_option( 'eduadmin-style' );
 		}
 		?>

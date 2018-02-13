@@ -44,12 +44,12 @@
 			?>
             <tr valign="top">
                 <th scope="row"><label
-                            for="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"><?php echo wp_kses_post( $field[ 'title' ] ); ?></label>
+                            for="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"><?php echo wp_kses_post( $field['title'] ); ?></label>
                 </th>
                 <td>
                     <fieldset>
 						<?php
-							switch ( $field[ 'type' ] ) {
+							switch ( $field['type'] ) {
 								case 'checkbox':
 									echo $this->renderCheckBox( $key, $field );
 									break;
@@ -87,7 +87,7 @@
 					<?php checked( $this->get_option( $key ), '1' ); ?>
                         value="1"
                 />
-				<?php echo esc_html( $field[ 'description' ] ); ?>
+				<?php echo esc_html( $field['description'] ); ?>
             </label>
 			<?php
 			EDU()->StopTimer( $t );
@@ -103,7 +103,7 @@
 
 			if ( ! isset( $this->settings[ $key ] ) ) {
 				$form_fields            = $this->get_form_fields();
-				$this->settings[ $key ] = isset( $form_fields[ $key ] ) ? $form_fields[ $key ][ 'default' ] : '';
+				$this->settings[ $key ] = isset( $form_fields[ $key ] ) ? $form_fields[ $key ]['default'] : '';
 			}
 
 			if ( ! is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
@@ -136,13 +136,13 @@
 			?>
             <input
                     class="regular-text"
-                    type="<?php echo esc_attr( $field[ 'type' ] ); ?>"
+                    type="<?php echo esc_attr( $field['type'] ); ?>"
                     name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
                     id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
-                    placeholder="<?php echo esc_attr( $field[ 'placeholder' ] ); ?>"
+                    placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>"
                     value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
             />
-            <p class="description"><?php echo esc_html( $field[ 'description' ] ); ?></p>
+            <p class="description"><?php echo esc_html( $field['description'] ); ?></p>
 			<?php
 			EDU()->StopTimer( $t );
 

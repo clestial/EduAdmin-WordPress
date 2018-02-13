@@ -4,8 +4,8 @@
 		$decrypted = explode( '|', base64_decode( $key ) );
 		if ( count( $decrypted ) == 2 ) {
 			$apiKey         = new stdClass();
-			$apiKey->UserId = $decrypted[ 0 ];
-			$apiKey->Hash   = $decrypted[ 1 ];
+			$apiKey->UserId = $decrypted[0];
+			$apiKey->Hash   = $decrypted[1];
 
 			return $apiKey;
 		}
@@ -26,7 +26,7 @@
 	}
 
 	function edu_getTimers() {
-		if ( isset( $_REQUEST[ 'edu-showtimers' ] ) && $_REQUEST[ 'edu-showtimers' ] == "1" ) {
+		if ( isset( $_REQUEST['edu-showtimers'] ) && $_REQUEST['edu-showtimers'] == "1" ) {
 			if ( EDU()->timers ) {
 				echo "<!-- EduAdmin Booking (" . EDU()->version . ") API - Timers -->\n";
 				$totalValue = 0;

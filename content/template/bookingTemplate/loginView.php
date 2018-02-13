@@ -21,7 +21,7 @@
 		foreach ( $edo as $object ) {
 			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars[ 'courseSlug' ] && $id == $wp_query->query_vars[ "courseId" ] ) {
+			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 				$selectedCourse = $object;
 				break;
 			}
@@ -33,8 +33,8 @@
 			die();
 		}
 		$ft = new XFiltering();
-		if ( isset( $_REQUEST[ 'eid' ] ) ) {
-			$eventid = intval( $_REQUEST[ 'eid' ] );
+		if ( isset( $_REQUEST['eid'] ) ) {
+			$eventid = intval( $_REQUEST['eid'] );
 			$f       = new XFilter( 'EventID', '=', $eventid );
 			$ft->AddItem( $f );
 		}
@@ -59,7 +59,7 @@
 			$ft->ToString()
 		);
 
-		$event = $events[ 0 ];
+		$event = $events[0];
 
 		if ( ! $event ) {
 			?>
@@ -71,8 +71,8 @@
 		include_once( "__loginHandler.php" );
 		?>
         <div class="eduadmin loginForm">
-            <form action="<?php if ( isset( $_REQUEST[ 'eid' ] ) ) {
-				echo "?eid=" . sanitize_text_field( $_REQUEST[ 'eid' ] );
+            <form action="<?php if ( isset( $_REQUEST['eid'] ) ) {
+				echo "?eid=" . sanitize_text_field( $_REQUEST['eid'] );
 			} ?>" method="post">
                 <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
                 <div class="title">
@@ -132,14 +132,14 @@
 						echo "</div>\n";
 					}
 
-						if ( ! isset( EDU()->session[ 'checkEmail' ] ) ) {
+						if ( ! isset( EDU()->session['checkEmail'] ) ) {
 							include_once( "__checkEmail.php" );
-						} else if ( isset( EDU()->session[ 'checkEmail' ] ) ) {
-							if ( isset( EDU()->session[ 'needsLogin' ] ) && EDU()->session[ 'needsLogin' ] == true ) {
+						} else if ( isset( EDU()->session['checkEmail'] ) ) {
+							if ( isset( EDU()->session['needsLogin'] ) && EDU()->session['needsLogin'] == true ) {
 								include_once( "__loginForm.php" );
 							} else {
-								unset( EDU()->session[ 'checkEmail' ] );
-								unset( EDU()->session[ 'needsLogin' ] );
+								unset( EDU()->session['checkEmail'] );
+								unset( EDU()->session['needsLogin'] );
 								?>
                                 <script type="text/javascript">(function () {
                                         location.reload(true);

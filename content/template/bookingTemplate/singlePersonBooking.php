@@ -13,12 +13,12 @@
                                         required onchange="eduBookingView.ContactAsParticipant();"
                                         id="edu-contactFirstName" name="contactFirstName" class="first-name"
                                         placeholder="<?php _e( "Contact first name", 'eduadmin-booking' ); ?>"
-                                        value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[ 0 ] ); ?>"/><input
+                                        value="<?php echo @esc_attr( explode( ' ', $contact->ContactName )[0] ); ?>"/><input
                     type="text" <?php echo( $__block ? " readonly" : "" ); ?>
                     required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName"
                     class="last-name"
                     name="contactLastName" placeholder="<?php _e( "Contact surname", 'eduadmin-booking' ); ?>"
-                    value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[ 0 ], '', $contact->ContactName ) ); ?>"/>
+                    value="<?php echo @esc_attr( str_replace( explode( ' ', $contact->ContactName )[0], '', $contact->ContactName ) ); ?>"/>
         </div>
     </label>
     <label>

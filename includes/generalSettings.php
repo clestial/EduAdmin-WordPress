@@ -1,7 +1,7 @@
 <?php
 	function edu_render_general_settings() {
 		EDU()->timers[ __METHOD__ ] = microtime( true );
-		if ( isset( $_REQUEST[ 'act' ] ) && $_REQUEST[ 'act' ] == "clearTransients" ) {
+		if ( isset( $_REQUEST['act'] ) && $_REQUEST['act'] == "clearTransients" ) {
 			global $wpdb;
 
 			$prefix     = esc_sql( 'eduadmin-' );

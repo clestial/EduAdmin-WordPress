@@ -71,10 +71,10 @@
 								echo " selected=\"selected\"";
 							} ?>><?php _e( "Quote", "eduadmin-booking" ); ?></option>
                         </optgroup>
-						<?php if ( ! empty( $attributes[ "value" ] ) ) { ?>
+						<?php if ( ! empty( $attributes["value"] ) ) { ?>
                             <optgroup label="<?php _e( "Course attributes", "eduadmin-booking" ); ?>">
-								<?php foreach ( $attributes[ "value" ] as $attr ) { ?>
-                                    <option value="attr_<?php echo $attr[ "CustomFieldId" ]; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr[ "CustomFieldId" ] ? " selected=\"selected\"" : "" ); ?>><?php echo $attr[ "CustomFieldName" ]; ?></option>
+								<?php foreach ( $attributes["value"] as $attr ) { ?>
+                                    <option value="attr_<?php echo $attr["CustomFieldId"]; ?>"<?php echo( $selectedDescriptionField === "attr_" . $attr["CustomFieldId"] ? " selected=\"selected\"" : "" ); ?>><?php echo $attr["CustomFieldName"]; ?></option>
 								<?php } ?>
                             </optgroup>
 						<?php } ?>

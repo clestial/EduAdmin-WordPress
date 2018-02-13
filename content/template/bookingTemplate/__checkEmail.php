@@ -28,7 +28,7 @@
                    required autocomplete="off"
                    title="<?php echo esc_attr( sprintf( __( "Please enter your %s here", 'eduadmin-booking' ), $loginLabel ) ); ?>"
                    placeholder="<?php echo esc_attr( $loginLabel ); ?>"
-                   value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST[ "eduadminloginEmail" ] ) ); ?>"/>
+                   value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>
         </div>
     </label>
     <input type="submit"

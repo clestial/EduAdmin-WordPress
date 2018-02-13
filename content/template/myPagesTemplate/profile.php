@@ -1,32 +1,32 @@
 <?php
-	$user            = EDU()->session[ 'eduadmin-loginUser' ];
+	$user            = EDU()->session['eduadmin-loginUser'];
 	$contact         = $user->Contact;
 	$customer        = $user->Customer;
-	$invoiceCustomer = $user->Customer->BillingInfo[ 0 ];
+	$invoiceCustomer = $user->Customer->BillingInfo[0];
 
-	if ( isset( $_POST[ 'eduaction' ] ) && sanitize_text_field( $_POST[ 'eduaction' ] ) == "saveInfo" ) {
+	if ( isset( $_POST['eduaction'] ) && sanitize_text_field( $_POST['eduaction'] ) == "saveInfo" ) {
 		$patchCustomer               = new stdClass;
-		$patchCustomer->CustomerName = trim( sanitize_text_field( $_POST[ 'customerName' ] ) );
-		$patchCustomer->Address      = trim( sanitize_text_field( $_POST[ 'customerAddress' ] ) );
-		$patchCustomer->Address2     = trim( sanitize_text_field( $_POST[ 'customerAddress2' ] ) );
-		$patchCustomer->Zip          = trim( sanitize_text_field( $_POST[ 'customerZip' ] ) );
-		$patchCustomer->City         = trim( sanitize_text_field( $_POST[ 'customerCity' ] ) );
-		$patchCustomer->Phone        = trim( sanitize_text_field( $_POST[ 'customerPhone' ] ) );
-		$patchCustomer->Email        = trim( sanitize_email( $_POST[ 'customerEmail' ] ) );
+		$patchCustomer->CustomerName = trim( sanitize_text_field( $_POST['customerName'] ) );
+		$patchCustomer->Address      = trim( sanitize_text_field( $_POST['customerAddress'] ) );
+		$patchCustomer->Address2     = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
+		$patchCustomer->Zip          = trim( sanitize_text_field( $_POST['customerZip'] ) );
+		$patchCustomer->City         = trim( sanitize_text_field( $_POST['customerCity'] ) );
+		$patchCustomer->Phone        = trim( sanitize_text_field( $_POST['customerPhone'] ) );
+		$patchCustomer->Email        = trim( sanitize_email( $_POST['customerEmail'] ) );
 
 		$patchCustomer->BillingInfo                     = new stdClass;
-		$patchCustomer->BillingInfo->CustomerName       = trim( sanitize_text_field( $_POST[ 'customerInvoiceName' ] ) );
-		$patchCustomer->BillingInfo->Address            = trim( sanitize_text_field( $_POST[ 'customerInvoiceAddress' ] ) );
-		$patchCustomer->BillingInfo->Zip                = trim( sanitize_text_field( $_POST[ 'customerInvoiceZip' ] ) );
-		$patchCustomer->BillingInfo->City               = trim( sanitize_text_field( $_POST[ 'customerInvoiceCity' ] ) );
-		$patchCustomer->BillingInfo->OrganisationNumber = trim( sanitize_text_field( $_POST[ 'customerInvoiceOrgNr' ] ) );
-		$patchCustomer->BillingInfo->SellerReference    = trim( sanitize_text_field( $_POST[ 'customerReference' ] ) );
-		$patchCustomer->BillingInfo->Email              = trim( sanitize_email( $_POST[ 'customerInvoiceEmail' ] ) );
+		$patchCustomer->BillingInfo->CustomerName       = trim( sanitize_text_field( $_POST['customerInvoiceName'] ) );
+		$patchCustomer->BillingInfo->Address            = trim( sanitize_text_field( $_POST['customerInvoiceAddress'] ) );
+		$patchCustomer->BillingInfo->Zip                = trim( sanitize_text_field( $_POST['customerInvoiceZip'] ) );
+		$patchCustomer->BillingInfo->City               = trim( sanitize_text_field( $_POST['customerInvoiceCity'] ) );
+		$patchCustomer->BillingInfo->OrganisationNumber = trim( sanitize_text_field( $_POST['customerInvoiceOrgNr'] ) );
+		$patchCustomer->BillingInfo->SellerReference    = trim( sanitize_text_field( $_POST['customerReference'] ) );
+		$patchCustomer->BillingInfo->Email              = trim( sanitize_email( $_POST['customerInvoiceEmail'] ) );
 
 		$patchContact         = new stdClass;
-		$patchContact->Phone  = trim( sanitize_text_field( $_POST[ 'contactPhone' ] ) );
-		$patchContact->Mobile = trim( sanitize_text_field( $_POST[ 'contactMobile' ] ) );
-		$patchContact->Email  = trim( sanitize_email( $_POST[ 'contactEmail' ] ) );
+		$patchContact->Phone  = trim( sanitize_text_field( $_POST['contactPhone'] ) );
+		$patchContact->Mobile = trim( sanitize_text_field( $_POST['contactMobile'] ) );
+		$patchContact->Email  = trim( sanitize_email( $_POST['contactEmail'] ) );
 
 		EDUAPI()->REST->Customer->Update( $customer->CustomerId, $patchCustomer );
 		EDUAPI()->REST->Person->Update( $contact->PersonId, $patchContact );

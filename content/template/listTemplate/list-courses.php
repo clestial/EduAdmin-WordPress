@@ -12,10 +12,10 @@
 	$expands = array();
 	$sorting = array();
 
-	$expands[ 'Subjects' ]   = "";
-	$expands[ 'Categories' ] = "";
-	$expands[ 'PriceNames' ] = "";
-	$expands[ 'Events' ]     =
+	$expands['Subjects']   = "";
+	$expands['Categories'] = "";
+	$expands['PriceNames'] = "";
+	$expands['Events']     =
 		'$filter=' .
 		'HasPublicPriceName' .
 		' and StatusId eq 1' .
@@ -31,35 +31,35 @@
 		'$orderby=StartDate asc' .
 		';';
 
-	$expands[ 'CustomFields' ] = '$filter=ShowOnWeb';
+	$expands['CustomFields'] = '$filter=ShowOnWeb';
 
 	$filters[] = "ShowOnWeb";
 
-	$showEventsWithEventsOnly    = $attributes[ 'onlyevents' ];
-	$showEventsWithoutEventsOnly = $attributes[ 'onlyempty' ];
+	$showEventsWithEventsOnly    = $attributes['onlyevents'];
+	$showEventsWithoutEventsOnly = $attributes['onlyempty'];
 
 	if ( $categoryID > 0 ) {
-		$filters[]                = "CategoryId eq " . $categoryID;
-		$attributes[ 'category' ] = $categoryID;
+		$filters[]              = "CategoryId eq " . $categoryID;
+		$attributes['category'] = $categoryID;
 	}
 
-	if ( isset( $_REQUEST[ 'eduadmin-category' ] ) && ! empty( $_REQUEST[ 'eduadmin-category' ] ) ) {
-		$filters[]                = "CategoryId eq " . intval( sanitize_text_field( $_REQUEST[ 'eduadmin-category' ] ) );
-		$attributes[ 'category' ] = intval( $_REQUEST[ 'eduadmin-category' ] );
+	if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
+		$filters[]              = "CategoryId eq " . intval( sanitize_text_field( $_REQUEST['eduadmin-category'] ) );
+		$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 	}
 
-	if ( isset( $_REQUEST[ 'eduadmin-city' ] ) && ! empty( $_REQUEST[ 'eduadmin-city' ] ) ) {
-		$filters[]            = 'Events/any(e:e/LocationId eq ' . intval( $_REQUEST[ 'eduadmin-city' ] ) . ')';
-		$attributes[ 'city' ] = intval( $_REQUEST[ 'eduadmin-city' ] );
+	if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
+		$filters[]          = 'Events/any(e:e/LocationId eq ' . intval( $_REQUEST['eduadmin-city'] ) . ')';
+		$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 	}
 
-	if ( isset( $_REQUEST[ 'eduadmin-subject' ] ) && ! empty( $_REQUEST[ 'eduadmin-subject' ] ) ) {
-		$filters[]                 = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST[ 'eduadmin-subject' ] ) . ')';
-		$attributes[ 'subjectid' ] = intval( $_REQUEST[ 'eduadmin-subject' ] );
+	if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+		$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
+		$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 	}
 
-	if ( isset( $_REQUEST[ 'eduadmin-level' ] ) && ! empty( $_REQUEST[ 'eduadmin-level' ] ) ) {
-		$filters[] = 'EducationLevelId eq ' . intval( sanitize_text_field( $_REQUEST[ 'eduadmin-level' ] ) );
+	if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
+		$filters[] = 'EducationLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 	}
 
 	$sortOrder = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
@@ -95,16 +95,16 @@
 		join( ",", $expandArr ),
 		join( ",", $sorting )
 	);
-	$courses = $edo[ "value" ];
+	$courses = $edo["value"];
 
-	if ( isset( $_REQUEST[ 'searchCourses' ] ) && ! empty( $_REQUEST[ 'searchCourses' ] ) ) {
+	if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 		$courses = array_filter( $courses, function( $object ) {
-			$name       = ( ! empty( $object[ "CourseName" ] ) ? $object[ "CourseName" ] : $object[ "InternalCourseName" ] );
+			$name       = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
 			$descrField = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 			$descr      = strip_tags( $object[ $descrField ] );
 
-			$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST[ 'searchCourses' ] ) ) !== false;
-			$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST[ 'searchCourses' ] ) ) !== false;
+			$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+			$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
 			return ( $nameMatch || $descrMatch );
 		} );
@@ -121,7 +121,7 @@
 	$showNextEventDate   = get_option( 'eduadmin-showNextEventDate', false );
 	$showCourseLocations = get_option( 'eduadmin-showCourseLocations', false );
 	$showEventPrice      = get_option( 'eduadmin-showEventPrice', false );
-	$incVat              = EDUAPI()->REST->Organisation->GetOrganisation()[ "PriceIncVat" ];
+	$incVat              = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
 
 	$showCourseDays  = get_option( 'eduadmin-showCourseDays', true );
 	$showCourseTimes = get_option( 'eduadmin-showCourseTimes', true );
@@ -132,11 +132,11 @@
 	$currency       = get_option( 'eduadmin-currency', 'SEK' );
 ?>
 <div class="eduadmin-courselistoptions"
-     data-subject="<?php echo @esc_attr( $attributes[ 'subject' ] ); ?>"
-     data-subjectid="<?php echo @esc_attr( $attributes[ 'subjectid' ] ); ?>"
-     data-category="<?php echo @esc_attr( $attributes[ 'category' ] ); ?>"
-     data-city="<?php echo @esc_attr( $attributes[ 'city' ] ); ?>"
-     data-courselevel="<?php echo @esc_attr( $attributes[ 'courselevel' ] ); ?>"
-     data-search="<?php echo @esc_attr( $_REQUEST[ 'searchCourses' ] ); ?>"
-     data-numberofevents="<?php echo @esc_attr( $attributes[ 'numberofevents' ] ); ?>"
+     data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
+     data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
+     data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
+     data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"
+     data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
+     data-search="<?php echo @esc_attr( $_REQUEST['searchCourses'] ); ?>"
+     data-numberofevents="<?php echo @esc_attr( $attributes['numberofevents'] ); ?>"
 ></div>

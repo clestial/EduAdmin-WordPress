@@ -9,10 +9,10 @@
 							<?php
 								$addedCities = array();
 								foreach ( $addresses as $address ) {
-									$city = trim( $address[ "City" ] );
-									if ( ! in_array( $address[ "LocationId" ], $addedCities ) && ! empty( $city ) ) {
-										echo '<option value="' . $address[ "LocationId" ] . '"' . ( isset( $_REQUEST[ 'eduadmin-city' ] ) && intval( $_REQUEST[ 'eduadmin-city' ] ) == $address[ "LocationId" ] ? " selected=\"selected\"" : "" ) . '>' . trim( $address[ "City" ] ) . '</option>';
-										$addedCities[] = $address[ "LocationId" ];
+									$city = trim( $address["City"] );
+									if ( ! in_array( $address["LocationId"], $addedCities ) && ! empty( $city ) ) {
+										echo '<option value="' . $address["LocationId"] . '"' . ( isset( $_REQUEST['eduadmin-city'] ) && intval( $_REQUEST['eduadmin-city'] ) == $address["LocationId"] ? " selected=\"selected\"" : "" ) . '>' . trim( $address["City"] ) . '</option>';
+										$addedCities[] = $address["LocationId"];
 									}
 								}
 							?>
@@ -25,7 +25,7 @@
                             <option value=""><?php _e( "Choose subject", 'eduadmin-booking' ); ?></option>
 							<?php
 								foreach ( $distinctSubjects as $subj => $val ) {
-									echo '<option value="' . intval( $subj ) . '"' . ( isset( $_REQUEST[ 'eduadmin-subject' ] ) && $_REQUEST[ 'eduadmin-subject' ] == $subj ? " selected=\"selected\"" : "" ) . '>' . $val . '</option>';
+									echo '<option value="' . intval( $subj ) . '"' . ( isset( $_REQUEST['eduadmin-subject'] ) && $_REQUEST['eduadmin-subject'] == $subj ? " selected=\"selected\"" : "" ) . '>' . $val . '</option>';
 								}
 							?>
                         </select>
@@ -37,7 +37,7 @@
                             <option value=""><?php _e( "Choose category", 'eduadmin-booking' ); ?></option>
 							<?php
 								foreach ( $categories as $subj ) {
-									echo '<option value="' . intval( $subj[ "CategoryId" ] ) . '"' . ( isset( $_REQUEST[ 'eduadmin-category' ] ) && intval( $_REQUEST[ 'eduadmin-category' ] ) == $subj[ "CategoryId" ] ? " selected=\"selected\"" : "" ) . '>' . $subj[ "CategoryName" ] . '</option>';
+									echo '<option value="' . intval( $subj["CategoryId"] ) . '"' . ( isset( $_REQUEST['eduadmin-category'] ) && intval( $_REQUEST['eduadmin-category'] ) == $subj["CategoryId"] ? " selected=\"selected\"" : "" ) . '>' . $subj["CategoryName"] . '</option>';
 								}
 							?>
                         </select>
@@ -49,7 +49,7 @@
                             <option value=""><?php _e( "Choose course level", 'eduadmin-booking' ); ?></option>
 							<?php
 								foreach ( $levels as $level ) {
-									echo '<option value="' . $level[ "CourseLevelId" ] . '"' . ( isset( $_REQUEST[ 'eduadmin-level' ] ) && intval( $_REQUEST[ 'eduadmin-level' ] ) == $level[ "CourseLevelId" ] ? " selected=\"selected\"" : "" ) . '>' . $level[ "Name" ] . '</option>';
+									echo '<option value="' . $level["CourseLevelId"] . '"' . ( isset( $_REQUEST['eduadmin-level'] ) && intval( $_REQUEST['eduadmin-level'] ) == $level["CourseLevelId"] ? " selected=\"selected\"" : "" ) . '>' . $level["Name"] . '</option>';
 								}
 							?>
                         </select>
@@ -60,8 +60,8 @@
                 <div class="search-item search-text">
                     <input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
                            autosave="edu-course-search_<?php echo session_id(); ?>"
-                           placeholder="<?php _e( "Search courses", 'eduadmin-booking' ); ?>"<?php if ( isset( $_REQUEST[ 'searchCourses' ] ) ) {
-						echo " value=\"" . sanitize_text_field( $_REQUEST[ 'searchCourses' ] ) . "\"";
+                           placeholder="<?php _e( "Search courses", 'eduadmin-booking' ); ?>"<?php if ( isset( $_REQUEST['searchCourses'] ) ) {
+						echo " value=\"" . sanitize_text_field( $_REQUEST['searchCourses'] ) . "\"";
 					} ?> />
                 </div>
                 <div class="search-item search-button">
@@ -71,7 +71,7 @@
             </div>
         </div>
 		<?php
-			if ( isset( $_REQUEST[ 'searchCourses' ] ) ) {
+			if ( isset( $_REQUEST['searchCourses'] ) ) {
 				?>
                 <script type="text/javascript">
                     (function () {

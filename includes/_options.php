@@ -25,20 +25,20 @@
 			$sep = "|";
 		}
 
-		if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars[ "courseId" ] ) ) {
-			$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars[ "courseId" ] );
+		if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
+			$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"] );
 			if ( ! $edo ) {
 				$edo = EDUAPI()->OData->CourseTemplates->GetItem(
-					intval( $wp->query_vars[ "courseId" ] ),
+					intval( $wp->query_vars["courseId"] ),
 					null,
 					"CustomFields"
 				);
-				set_transient( 'eduadmin-courseTemplate_' . $wp->query_vars[ "courseId" ], $edo, 6 * HOUR_IN_SECONDS );
+				set_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"], $edo, 6 * HOUR_IN_SECONDS );
 			}
 
 			$selectedCourse = false;
-			$id             = $edo[ "CourseTemplateId" ];
-			if ( $id == $wp->query_vars[ "courseId" ] ) {
+			$id             = $edo["CourseTemplateId"];
+			if ( $id == $wp->query_vars["courseId"] ) {
 				$selectedCourse = $edo;
 			}
 
@@ -46,9 +46,9 @@
 				$titleField = get_option( 'eduadmin-pageTitleField', 'PublicName' );
 				if ( stristr( $titleField, "attr_" ) !== false ) {
 					$attrid = substr( $titleField, 5 );
-					foreach ( $selectedCourse[ "CustomFields" ] as $cf ) {
-						if ( $cf[ "CustomFieldId" ] == $attrid ) {
-							$value = $cf[ "CustomFieldValue" ];
+					foreach ( $selectedCourse["CustomFields"] as $cf ) {
+						if ( $cf["CustomFieldId"] == $attrid ) {
+							$value = $cf["CustomFieldValue"];
 							break;
 						}
 					}
@@ -56,13 +56,13 @@
 					if ( ! empty( $value ) && stristr( $title, $value ) === false ) {
 						$title = $value . " " . $sep . " " . $title;
 					} else {
-						$title = $selectedCourse[ "CourseName" ] . " " . $sep . " " . $title;
+						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
 					}
 				} else {
 					if ( ! empty( $selectedCourse[ $titleField ] ) && stristr( $title, $selectedCourse[ $titleField ] ) === false ) {
 						$title = $selectedCourse[ $titleField ] . " " . $sep . " " . $title;
 					} else {
-						$title = $selectedCourse[ "CourseName" ] . " " . $sep . " " . $title;
+						$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
 					}
 				}
 			}
@@ -228,16 +228,16 @@
 	function eduadmin_RewriteJavaScript( $script ) {
 		$t = EDU()->StartTimer( __METHOD__ );
 
-		if ( isset( $_REQUEST[ 'edu-thankyou' ] ) ) {
+		if ( isset( $_REQUEST['edu-thankyou'] ) ) {
 			if ( stripos( $script, "$" ) !== false ) {
 				$bookingInfo = EDUAPI()->OData->Bookings->GetItem(
-					intval( $_REQUEST[ 'edu-thankyou' ] ),
+					intval( $_REQUEST['edu-thankyou'] ),
 					null,
 					"Customer,ContactPerson,Participants"
 				);
 
 				$eventInfo = EDUAPI()->OData->Events->GetItem(
-					$bookingInfo[ "EventId" ]
+					$bookingInfo["EventId"]
 				);
 
 				$script = str_replace(
@@ -258,20 +258,20 @@
 						'$notes$',
 					),
 					array(
-						esc_js( $bookingInfo[ "BookingId" ] ), // $bookingno$
-						esc_js( $eventInfo[ "CourseName" ] ), // $productname$
-						esc_js( $bookingInfo[ "TotalPriceIncVat" ] ), // $totalsum$
-						esc_js( $bookingInfo[ "NumberOfParticipants" ] ), // $participants$
-						esc_js( $eventInfo[ "StartDate" ] ), // $startdate$
-						esc_js( $eventInfo[ "EndDate" ] ), // $enddate$
-						esc_js( $bookingInfo[ "EventId" ] ), // $eventid$
-						esc_js( $eventInfo[ "EventName" ] ), // $eventdescription$
-						esc_js( $bookingInfo[ "Customer" ][ "CustomerId" ] ), // $customerid$
-						esc_js( $bookingInfo[ "ContactPerson" ][ "PersonId" ] ), // $customercontactid$
-						esc_js( $bookingInfo[ "Created" ] ), // $created$
-						esc_js( $bookingInfo[ "Paid" ] ), // $paid$
-						esc_js( $eventInfo[ "CourseTemplateId" ] ), // $objectid$
-						esc_js( $bookingInfo[ "Notes" ] ), // $notes$
+						esc_js( $bookingInfo["BookingId"] ), // $bookingno$
+						esc_js( $eventInfo["CourseName"] ), // $productname$
+						esc_js( $bookingInfo["TotalPriceIncVat"] ), // $totalsum$
+						esc_js( $bookingInfo["NumberOfParticipants"] ), // $participants$
+						esc_js( $eventInfo["StartDate"] ), // $startdate$
+						esc_js( $eventInfo["EndDate"] ), // $enddate$
+						esc_js( $bookingInfo["EventId"] ), // $eventid$
+						esc_js( $eventInfo["EventName"] ), // $eventdescription$
+						esc_js( $bookingInfo["Customer"]["CustomerId"] ), // $customerid$
+						esc_js( $bookingInfo["ContactPerson"]["PersonId"] ), // $customercontactid$
+						esc_js( $bookingInfo["Created"] ), // $created$
+						esc_js( $bookingInfo["Paid"] ), // $paid$
+						esc_js( $eventInfo["CourseTemplateId"] ), // $objectid$
+						esc_js( $bookingInfo["Notes"] ), // $notes$
 					),
 					$script
 				);
@@ -287,12 +287,12 @@
 
 	function eduadmin_printJavascript() {
 		$t = EDU()->StartTimer( __METHOD__ );
-		if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session[ 'eduadmin-printJS' ] ) ) {
+		if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session['eduadmin-printJS'] ) ) {
 			$str    = "<script type=\"text/javascript\">\n";
 			$script = get_option( 'eduadmin-javascript' );
 			$str    .= eduadmin_RewriteJavaScript( $script );
 			$str    .= "\n</script>";
-			unset( EDU()->session[ 'eduadmin-printJS' ] );
+			unset( EDU()->session['eduadmin-printJS'] );
 			echo $str;
 		}
 		EDU()->StopTimer( $t );

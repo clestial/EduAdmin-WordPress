@@ -2,24 +2,24 @@
   Mobile Styles
 ----------------------------*/
 .eduadmin div {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .eduadmin h1, .eduadmin h2 {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 100%;
 }
 
-
 .eduadmin h3 {
-  color: hsl(0, 0%, 35%);
-  font-weight: 600;
+	color: hsl(0, 0%, 35%);
+	font-weight: 600;
 }
 
 .eduadmin ul,
-.eduadmin ol  {padding: 0 0 0 32px;}
-
+.eduadmin ol {
+	padding: 0 0 0 32px;
+}
 
 /* Link and Heading Resets */
 h1.courseTitle,
@@ -30,9 +30,9 @@ h1.courseTitle:hover,
 .eduadmin a.bookButton,
 .eduadmin a.bookButton:hover,
 .eduadmin a.readMoreButton {
-  border: none;
-  outline: none;
-  box-shadow: none;
+	border: none;
+	outline: none;
+	box-shadow: none;
 }
 
 /* ------------------------
@@ -41,83 +41,93 @@ h1.courseTitle:hover,
 
 /* Call to action*/
 .eduadmin .cta-btn {
-  padding: 8px 16px;
-  display: inline-block;
-  box-sizing: border-box;
-  border-radius: 3px;
-  border: 1px solid hsl(116, 33%, 55%);
-  background: hsl(120, 33%, 50%);
-  color: hsl(0, 0%, 100%);
+	padding: 8px 16px;
+	display: inline-block;
+	box-sizing: border-box;
+	border-radius: 3px;
+	border: 1px solid hsl(116, 33%, 55%);
+	background: hsl(120, 33%, 50%);
+	color: hsl(0, 0%, 100%);
 }
+
 .eduadmin .cta-btn:hover {
-  color: hsl(0, 0%, 100%);
-  background: hsl(116, 33%, 55%);
+	color: hsl(0, 0%, 100%);
+	background: hsl(116, 33%, 55%);
 }
 
 .eduadmin .neutral-btn {
-    padding: 8px 16px;
-    display: inline-block;
-    box-sizing: border-box;
-    border-radius: 3px;
-  color: hsl(0, 0%, 44%);
-  font-weight: 400;
-    border: 1px solid hsl(0, 0%, 67%);
-    background: transparent;
-    box-shadow: unset;
+	padding: 8px 16px;
+	display: inline-block;
+	box-sizing: border-box;
+	border-radius: 3px;
+	color: hsl(0, 0%, 44%);
+	font-weight: 400;
+	border: 1px solid hsl(0, 0%, 67%);
+	background: transparent;
+	box-shadow: unset;
 }
 
 .eduadmin .neutral-btn:hover {
-  background: hsla(0, 0%, 95%, 0.88);
-    box-shadow: unset;
+	background: hsla(0, 0%, 95%, 0.88);
+	box-shadow: unset;
 }
 
 /* ------------------------
   Form and Search Control
 ----------------------------*/
 .eduadmin .search-form {
-    margin: 0 0 32px 0;
-    max-width: 740px;
+	margin: 0 0 32px 0;
+	max-width: 740px;
 }
 
-.eduadmin .search-form .search-row select {width: 100%}
+.eduadmin .search-form .search-row select {
+	width: 100%
+}
+
 .eduadmin .search-form .search-row {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
+
 .eduadmin .search-form .search-row .search-dropdowns {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
+
 .eduadmin .search-form .search-item {
-  margin: 0 0 16px 0;
+	margin: 0 0 16px 0;
 }
 
 .eduadmin .search-form .search-row .searchButton {
-  height: 100%;
+	height: 100%;
 }
 
 /* Desktop */
 @media (min-width: 800px) {
-  .eduadmin .search-form .search-row .search-dropdowns {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .eduadmin .search-form .search-dropdown:last-child {margin-right: 0;}
-  .eduadmin .search-form .search-dropdown {
-    flex: 1;
-    margin-right: 8px;
-    min-width: 190px;
-  }
+	.eduadmin .search-form .search-row .search-dropdowns {
+		flex-direction: row;
+		justify-content: space-between;
+	}
 
-  .eduadmin .search-form .search-row .search-box {
-    display: flex;
-    flex-direction: row;
-  }
+	.eduadmin .search-form .search-dropdown:last-child {
+		margin-right: 0;
+	}
 
-  .eduadmin .search-form .search-item.search-text {
-    margin-right: 8px;
-    flex: 1;
-  }
+	.eduadmin .search-form .search-dropdown {
+		flex: 1;
+		margin-right: 8px;
+		min-width: 190px;
+	}
+
+	.eduadmin .search-form .search-row .search-box {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.eduadmin .search-form .search-item.search-text {
+		margin-right: 8px;
+		flex: 1;
+	}
 
 }
 
@@ -125,147 +135,159 @@ h1.courseTitle:hover,
       Detail View
 ----------------------------*/
 .eduadmin div.title {
-  display: flex;
-  align-items: center;
-  padding: 16px 0;
+	display: flex;
+	align-items: center;
+	padding: 16px 0;
 }
+
 .eduadmin div.title .courseTitle {
-  color: hsl(0, 0%, 30%);
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
+	color: hsl(0, 0%, 30%);
+	font-weight: 600;
+	margin: 0;
+	padding: 0;
 }
+
 .eduadmin div.title .courseImage {
-  width: 72px;
-  height: 72px;
-  margin: 0 16px 0 0;
+	width: 72px;
+	height: 72px;
+	margin: 0 16px 0 0;
 }
 
 .eduadmin .textblock {
-  color: hsl(0, 0%, 35%);
+	color: hsl(0, 0%, 35%);
 }
+
 .eduadmin .eventInformation {
-  margin: 0 0 48px 0;
-  color: hsl(0, 0%, 35%);
+	margin: 0 0 48px 0;
+	color: hsl(0, 0%, 35%);
 }
 
-.eduadmin .eventItem:first-child { border-top: 1px solid hsl(0, 0%, 95%);}
-.eduadmin .eventItem:last-child { border: none;}
+.eduadmin .eventItem:first-child {
+	border-top: 1px solid hsl(0, 0%, 95%);
+}
+
+.eduadmin .eventItem:last-child {
+	border: none;
+}
+
 .eduadmin .eventItem {
-  padding: 16px 0 ;
-  border-bottom: 1px solid hsl(0, 0%, 95%);
+	padding: 16px 0;
+	border-bottom: 1px solid hsl(0, 0%, 95%);
 }
 
+.eduadmin .eventItem .eventStatus {
+	margin: 0 0 16px 0;
+}
 
-.eduadmin .eventItem .eventStatus { margin: 0 0 16px 0; }
 .eduadmin .eventItem .eventDate,
 .eduadmin .eventItem .eventCity {
-  margin: 0 0 8px 0;
+	margin: 0 0 8px 0;
 }
 
 @media (min-width: 800px) {
-  .eduadmin .eventItem {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+	.eduadmin .eventItem {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 
-  .eduadmin .eventItem .eventStatus,
-  .eduadmin .eventItem .eventDate,
-  .eduadmin .eventItem .eventCity {
-    margin: 0;
-    flex: 1;
-  }
+	.eduadmin .eventItem .eventStatus,
+	.eduadmin .eventItem .eventDate,
+	.eduadmin .eventItem .eventCity {
+		margin: 0;
+		flex: 1;
+	}
 }
 
 /* ------------------------
       Booking View: Login
 ----------------------------*/
 .eduadmin.loginForm form .title {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .eduadmin.loginForm form .title .courseImage {
-  width: 72px;
-  height: 72px;
+	width: 72px;
+	height: 72px;
 }
 
 .eduadmin.loginForm form .title .dateInfo {
-  width: 100%;
-  padding: 48px 0;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 500;
+	width: 100%;
+	padding: 48px 0;
+	text-align: center;
+	font-size: 20px;
+	font-weight: 500;
 }
 
 .eduadmin.loginForm form .title select.dateInfo {
-    padding: unset;
+	padding: unset;
 }
 
 .eduadmin.loginForm form .title .checkEmailForm {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .eduadmin.loginForm form .title .checkEmailForm h3 {
-  font-weight: normal;
-  color: hsl(0, 0%, 40%);
-  font-style: italic;
-  font-size: 16px;
-  margin: 0 0 16px 0;
-  padding: 0;
+	font-weight: normal;
+	color: hsl(0, 0%, 40%);
+	font-style: italic;
+	font-size: 16px;
+	margin: 0 0 16px 0;
+	padding: 0;
 }
 
 .eduadmin.loginForm form .title .checkEmailForm .inputLabel {
-  display: none;
+	display: none;
 }
 
 .eduadmin.loginForm form .title .checkEmailForm .inputHolder {
-  margin: 0 0 16px 0;
-}
-.eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
-  padding: 16px 24px;
+	margin: 0 0 16px 0;
 }
 
+.eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
+	padding: 16px 24px;
+}
 
 @media (min-width: 700px) {
-  .eduadmin.loginForm form .title .checkEmailForm {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    /* justify-content: center; */
-  }
+	.eduadmin.loginForm form .title .checkEmailForm {
+		width: 100%;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		/* justify-content: center; */
+	}
 
-  .eduadmin.loginForm form .title .checkEmailForm h3 {
-    width: 100%;
-    /* text-align: center; */
-  }
+	.eduadmin.loginForm form .title .checkEmailForm h3 {
+		width: 100%;
+		/* text-align: center; */
+	}
 
-  .eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
-    align-self: flex-end;
-  }
-  .eduadmin.loginForm form .title .dateInfo {
-    padding: 72px 0;
-    text-align: left;
-  }
+	.eduadmin.loginForm form .title .checkEmailForm .bookingLoginButton {
+		align-self: flex-end;
+	}
 
-    .eduadmin.loginForm form .title select.dateInfo {
-        padding: unset;
-    }
+	.eduadmin.loginForm form .title .dateInfo {
+		padding: 72px 0;
+		text-align: left;
+	}
 
-  .eduadmin.loginForm form .title .checkEmailForm label {
-    margin: 0
-  }
+	.eduadmin.loginForm form .title select.dateInfo {
+		padding: unset;
+	}
 
-  .eduadmin.loginForm form .title .checkEmailForm label .inputHolder {
-    flex: 1;
-    width: 350px;
-    margin: 0 16px 0 0;
-  }
+	.eduadmin.loginForm form .title .checkEmailForm label {
+		margin: 0
+	}
+
+	.eduadmin.loginForm form .title .checkEmailForm label .inputHolder {
+		flex: 1;
+		width: 350px;
+		margin: 0 16px 0 0;
+	}
 
 }
 
@@ -275,180 +297,210 @@ h1.courseTitle:hover,
 .eduadmin.booking-page form {
 
 }
+
 .eduadmin.booking-page form .title {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 16px 0 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 16px 0 0;
 }
 
 .eduadmin.booking-page form .title .courseImage {
-  width: 72px;
-  height: 72px;
+	width: 72px;
+	height: 72px;
 }
 
 .eduadmin.booking-page form .title .dateInfo {
-  width: 100%;
-  padding: 48px 0 0;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 500;
+	width: 100%;
+	padding: 48px 0 0;
+	text-align: center;
+	font-size: 1.2rem;
+	font-weight: 500;
 }
 
 .eduadmin.booking-page form .title select.dateInfo {
-    padding: unset;
+	padding: unset;
 }
 
-.eduadmin.booking-page form .notUserCheck a {margin: 0 0 0 8px; color: hsl(0, 0%, 40%);}
+.eduadmin.booking-page form .notUserCheck a {
+	margin: 0 0 0 8px;
+	color: hsl(0, 0%, 40%);
+}
+
 .eduadmin.booking-page form .notUserCheck {
-  text-align: center;
-  color: hsl(0, 0%, 40%);
-  margin: 0 0 56px;
-  font-size: .95rem;
+	text-align: center;
+	color: hsl(0, 0%, 40%);
+	margin: 0 0 56px;
+	font-size: .95rem;
 }
 
 /* Form Sections */
 .eduadmin.booking-page form h2 {
-  color: hsl(0, 0%, 20%);
-  font-weight: 600;
-  margin: 0 0 24px 0;
+	color: hsl(0, 0%, 20%);
+	font-weight: 600;
+	margin: 0 0 24px 0;
 }
 
 .eduadmin .inputHolder input[required] {
-    background-color: #feffcc;
+	background-color: #feffcc;
 }
 
 .eduadmin.booking-page form .contactView,
 .eduadmin.booking-page form .customerView,
 .eduadmin.booking-page form .participantView,
 .eduadmin.booking-page form .questionPanel {
-  margin: 0 0 48px 0;
+	margin: 0 0 48px 0;
 }
-.eduadmin.booking-page form .invoiceView {margin: 48px 0 0 0;}
 
+.eduadmin.booking-page form .invoiceView {
+	margin: 48px 0 0 0;
+}
 
 .eduadmin.booking-page form label {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0 0 16px;
-  /* justify-content: space-between; */
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0 0 16px;
+	/* justify-content: space-between; */
+	align-items: center;
 }
 
-.eduadmin.booking-page form label .inputLabel.noHide { display: inherit; }
-.eduadmin.booking-page form label .inputLabel {
-  display: none;
-  margin: 0 0 8px;
-  color: hsl(0, 0%, 20%);
+.eduadmin.booking-page form label .inputLabel.noHide {
+	display: inherit;
 }
-.eduadmin.booking-page form label .inputHolder select {width: 100%}
+
+.eduadmin.booking-page form label .inputLabel {
+	display: none;
+	margin: 0 0 8px;
+	color: hsl(0, 0%, 20%);
+}
+
+.eduadmin.booking-page form label .inputHolder select {
+	width: 100%
+}
+
 .eduadmin.booking-page form label .inputHolder {
-  width: 100%;
+	width: 100%;
 }
 
 .eduadmin.booking-page form label .inputHolder .contactFirstName,
-.eduadmin.booking-page form label .inputHolder .first-name { margin-right: 2%}
+.eduadmin.booking-page form label .inputHolder .first-name {
+	margin-right: 2%
+}
 
 .eduadmin.booking-page form label .inputHolder .contactLastName,
 .eduadmin.booking-page form label .inputHolder .contactFirstName,
 .eduadmin.booking-page form label .inputHolder .last-name,
 .eduadmin.booking-page form label .inputHolder .first-name {
-  display: inline-block;
-  width: 49%
+	display: inline-block;
+	width: 49%
 }
 
 .eduadmin.booking-page form label .inputHolder.alsoInvoiceCustomer {
-  display: flex;
+	display: flex;
 }
 
 .eduadmin.booking-page form label .inputHolder.contactIsAlsoParticipant {
-  display: flex;
-  align-items: center;
-  padding: 8px 0;
+	display: flex;
+	align-items: center;
+	padding: 8px 0;
 }
 
-.eduadmin.booking-page form .participantView h3 .removeParticipant:hover {cursor: pointer;}
-.eduadmin.booking-page form .participantView h3 .removeParticipant {
-  color: hsl(0, 0%, 40%);
-  font-size: 1rem;
+.eduadmin.booking-page form .participantView h3 .removeParticipant:hover {
+	cursor: pointer;
 }
+
+.eduadmin.booking-page form .participantView h3 .removeParticipant {
+	color: hsl(0, 0%, 40%);
+	font-size: 1rem;
+}
+
 .eduadmin.booking-page form .participantView h3 {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  color: hsl(0, 0%, 20%);
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	color: hsl(0, 0%, 20%);
 }
 
 .eduadmin.booking-page form .participantView .addParticipantLink {
-  display: inline-block;
-  margin: 0 0 16px 0;
+	display: inline-block;
+	margin: 0 0 16px 0;
 }
 
 .eduadmin.booking-page form .submitView {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
+
 .eduadmin.booking-page form .submitView .sumTotal {
-  font-weight: bold;
-  margin: 0 0 8px 0;
+	font-weight: bold;
+	margin: 0 0 8px 0;
 }
+
 .eduadmin.booking-page form .submitView .sumTotal span {
-  font-weight: normal;
-  margin: 0 0 0 8px;
+	font-weight: normal;
+	margin: 0 0 0 8px;
 }
 
 .eduadmin.booking-page form .edu-modal.warning {
-  display: none;
-  width: 100%;
-  padding: 8px 16px;
-  color: hsl(5, 80%, 50%);
-  text-shadow: 0 1px 1px rgba(0, 0, 0, .08);
-  order: -1;
-  background: hsl(6, 100%, 94%);
-  margin: 0 0 16px 0;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
+	display: none;
+	width: 100%;
+	padding: 8px 16px;
+	color: hsl(5, 80%, 50%);
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .08);
+	order: -1;
+	background: hsl(6, 100%, 94%);
+	margin: 0 0 16px 0;
+	border-radius: 3px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
 }
 
 .eduadmin.booking-page form .bookButton {
-  padding: 16px 24px;
+	padding: 16px 24px;
 }
 
-@media  (min-width: 800px) {
+@media (min-width: 800px) {
 
-  .eduadmin.booking-page form .title .dateInfo { padding: 48px 0 56px; }
+	.eduadmin.booking-page form .title .dateInfo {
+		padding: 48px 0 56px;
+	}
 
-    .eduadmin.booking-page form .title select.dateInfo {
-        padding: unset;
-    }
-  .eduadmin.booking-page form .notUserCheck {
-    text-align: right;
-    margin: 0;
-    position: relative;
-    bottom: -1.9rem;
-  }
+	.eduadmin.booking-page form .title select.dateInfo {
+		padding: unset;
+	}
 
-  .eduadmin.booking-page form label .inputLabel {
-    display: inherit;
-    margin: 0;
-    flex: 1;
-  }
-  .eduadmin.booking-page form label .inputHolder select {width: 100%}
-  .eduadmin.booking-page form label .inputHolder {
-    width: 100%;
-    max-width: 400px;
-  }
-  .eduadmin.booking-page form .submitView {
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+	.eduadmin.booking-page form .notUserCheck {
+		text-align: right;
+		margin: 0;
+		position: relative;
+		bottom: -1.9rem;
+	}
 
-  .eduadmin.booking-page form .submitView .sumTotal {
-    margin: 0;
-  }
+	.eduadmin.booking-page form label .inputLabel {
+		display: inherit;
+		margin: 0;
+		flex: 1;
+	}
+
+	.eduadmin.booking-page form label .inputHolder select {
+		width: 100%
+	}
+
+	.eduadmin.booking-page form label .inputHolder {
+		width: 100%;
+		max-width: 400px;
+	}
+
+	.eduadmin.booking-page form .submitView {
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.eduadmin.booking-page form .submitView .sumTotal {
+		margin: 0;
+	}
 
 }
 
@@ -456,179 +508,192 @@ h1.courseTitle:hover,
   Template A Specific
 -------------------------*/
 .eduadmin .eventListTable[data-template="A"] {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .eduadmin .objectItem {
-  padding: 24px 8px;
-  border-bottom: 1px solid hsl(0, 0%, 95%);
+	padding: 24px 8px;
+	border-bottom: 1px solid hsl(0, 0%, 95%);
 }
 
-
-
 .eduadmin .objectItem:last-child .objectInfoHolder {
-  border-bottom: none;
+	border-bottom: none;
 }
 
 .eduadmin .objectItem .objectImage {
- display: none;
+	display: none;
 
- background-size: cover;
- background-position: center;
- border-radius: 1px;
- margin: 0 0 16px 0;
+	background-size: cover;
+	background-position: center;
+	border-radius: 1px;
+	margin: 0 0 16px 0;
 }
 
-.eduadmin .objectItem .objectName a { color: hsl(0, 0%, 30%); }
+.eduadmin .objectItem .objectName a {
+	color: hsl(0, 0%, 30%);
+}
+
 .eduadmin .objectItem .objectName {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0 0 16px 0;
 }
 
 .eduadmin .objectItem .objectDescription {
-  color: hsl(0, 0%, 35%);
-  margin: 0 0 16px 0;
+	color: hsl(0, 0%, 35%);
+	margin: 0 0 16px 0;
 }
 
 .eduadmin .objectItem .objectDescription .eduadmin-dateText,
 .eduadmin .objectItem .objectDescription .cityInfo {
-  display: inline-block;
-  margin: 0 0 8px 0;
+	display: inline-block;
+	margin: 0 0 8px 0;
 }
 
 .eduadmin .objectItem .objectDescription .spotsLeftInfo {
-  display: block;
-  margin: 24px 0 32px 0;
+	display: block;
+	margin: 24px 0 32px 0;
 }
 
 .eduadmin .objectItem .objectBook {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
 }
 
-.eduadmin .objectItem .objectBook a.bookButton { margin: 0 16px 0 0}
-.eduadmin .objectItem .objectBook a.readMoreButton:not(.cta-btn):hover {color: hsl(0, 0%, 15%);}
+.eduadmin .objectItem .objectBook a.bookButton {
+	margin: 0 16px 0 0
+}
+
+.eduadmin .objectItem .objectBook a.readMoreButton:not(.cta-btn):hover {
+	color: hsl(0, 0%, 15%);
+}
+
 .eduadmin .objectItem .objectBook a.readMoreButton:not(.cta-btn) {
-  color: hsl(0, 0%, 40%);
-  font-style: italic;
+	color: hsl(0, 0%, 40%);
+	font-style: italic;
 }
-
 
 /* Desktop */
 @media (min-width: 800px) {
-  .eduadmin .objectItem {
-    display: flex;
-    align-items: stretch;
-  }
+	.eduadmin .objectItem {
+		display: flex;
+		align-items: stretch;
+	}
 
-  .eduadmin .objectItem .objectImage {
-    display: block;
-    width: 170px;
-    /* height: 72px; */
-    margin: 0 32px 0 0;
-  }
+	.eduadmin .objectItem .objectImage {
+		display: block;
+		width: 170px;
+		/* height: 72px; */
+		margin: 0 32px 0 0;
+	}
 
-  .eduadmin .objectItem .objectInfoHolder {
-    flex: 1;
-  }
+	.eduadmin .objectItem .objectInfoHolder {
+		flex: 1;
+	}
 
-  .eduadmin .objectItem .objectDescription {
-    margin: 0;
-  }
+	.eduadmin .objectItem .objectDescription {
+		margin: 0;
+	}
 
-  .eduadmin .objectItem .objectDescription .spotsLeftInfo {
-    margin: 24px 0 0 0;
-  }
+	.eduadmin .objectItem .objectDescription .spotsLeftInfo {
+		margin: 24px 0 0 0;
+	}
 
-  .eduadmin .objectItem .objectBook {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+	.eduadmin .objectItem .objectBook {
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 
-  .eduadmin .objectItem .objectBook a.bookButton { order: -1; margin: 0 0 16px 0}
+	.eduadmin .objectItem .objectBook a.bookButton {
+		order: -1;
+		margin: 0 0 16px 0
+	}
 
-  .course-holder.tmpl_A .objectItem {
-    align-items: center;
-  }
+	.course-holder.tmpl_A .objectItem {
+		align-items: center;
+	}
 
-  .course-holder.tmpl_A .objectImage {
-    width: 56px;
-    height: 56px;
-  }
+	.course-holder.tmpl_A .objectImage {
+		width: 56px;
+		height: 56px;
+	}
 }
 
 /*------------------------
   Template B Specific
 -------------------------*/
 .eduadmin .eventListTable[data-template="B"] {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
 }
 
 .eduadmin .objectBlock.brick {
-  width: 100%;
-  min-height: 300px;
-  margin: 0 0 16px 0;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-  padding: 16px;
-  border-radius: 3px;
-  background: hsl(0, 0%, 99.5%);
+	width: 100%;
+	min-height: 300px;
+	margin: 0 0 16px 0;
+	text-align: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+	padding: 16px;
+	border-radius: 3px;
+	background: hsl(0, 0%, 99.5%);
 
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: space-between;
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .eduadmin .objectBlock.brick .objectImage {
-  height: 160px;
-  background-size: cover;
-  background-position: center;
-  margin: 0 0 16px 0;
-  border-radius: 1px;
+	height: 160px;
+	background-size: cover;
+	background-position: center;
+	margin: 0 0 16px 0;
+	border-radius: 1px;
 }
 
-.eduadmin .objectBlock.brick .objectName a { color: hsl(0, 0%, 30%); }
+.eduadmin .objectBlock.brick .objectName a {
+	color: hsl(0, 0%, 30%);
+}
+
 .eduadmin .objectBlock.brick .objectName {
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0 0 16px 0;
 }
 
 .eduadmin .objectBlock.brick .objectDescription {
-  color: hsl(0, 0%, 35%);
+	color: hsl(0, 0%, 35%);
 }
 
 .eduadmin .objectBlock.brick .objectDescription .eduadmin-dateText,
 .eduadmin .objectBlock.brick .objectDescription .cityInfo {
-  display: inline-block;
-  margin: 0 0 8px 0;
+	display: inline-block;
+	margin: 0 0 8px 0;
 }
 
 .eduadmin .objectBlock.brick .objectDescription .spotsLeft {
-  display: none;
+	display: none;
 }
+
 .eduadmin .objectBlock.brick .objectDescription .spotsLeftInfo {
-  display: block;
-  margin: 24px 0 32px 0;
+	display: block;
+	margin: 24px 0 32px 0;
 }
 
 .eduadmin .objectBlock.brick .readMoreButton {
-  width: 100%;
+	width: 100%;
 }
 
 /* Desktop */
 @media (min-width: 732px) {
-  .eduadmin .objectBlock.brick {
-    max-width: 350px;
-    margin: 0 16px 16px 0;
-  }
+	.eduadmin .objectBlock.brick {
+		max-width: 350px;
+		margin: 0 16px 16px 0;
+	}
 }
 
 /*------------------------
@@ -636,70 +701,70 @@ h1.courseTitle:hover,
 -------------------------*/
 
 .eduadmin .edu-dateSeparator::before {
-    content: ', ';
+	content: ', ';
 }
 
 .edu-DayPopup {
-    display: none;
-    opacity: 0;
-    position: absolute;
-    background-color: white;
-    border: 1px solid #c9c9c9;
-    padding: 10px;
-    margin-top: 5px;
-    min-width: 100px;
-    transition: opacity 0.5s, visibility 0.5s;
-    z-index: 1000000;
-    white-space: nowrap;
+	display: none;
+	opacity: 0;
+	position: absolute;
+	background-color: white;
+	border: 1px solid #c9c9c9;
+	padding: 10px;
+	margin-top: 5px;
+	min-width: 100px;
+	transition: opacity 0.5s, visibility 0.5s;
+	z-index: 1000000;
+	white-space: nowrap;
 }
 
 .eduadmin .courseContainer {
-    width: 100%;
-    margin: auto;
-    font-size: 14px;
+	width: 100%;
+	margin: auto;
+	font-size: 14px;
 }
 
 .eduadmin .tab_container.tabhead {
-    border-bottom: 1px solid hsl(0, 0%, 82%);
+	border-bottom: 1px solid hsl(0, 0%, 82%);
 }
 
 .eduadmin .tab_container .tab_item {
-    padding: 5px 10px 4px 10px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.0);
+	padding: 5px 10px 4px 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid rgba(0, 0, 0, 0.0);
 }
 
 .eduadmin .tab_container .tab_item:hover {
-    border: 1px solid hsl(0, 0%, 72%);
-    border-bottom: 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+	border: 1px solid hsl(0, 0%, 72%);
+	border-bottom: 0;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 .eduadmin .tab_container a.tab_item {
-    text-decoration: none;
-    box-shadow: unset;
+	text-decoration: none;
+	box-shadow: unset;
 }
 
 .eduadmin .tab_container .tab_item.active {
-    border: 1px solid hsl(0, 0%, 82%);
-    border-bottom: 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+	border: 1px solid hsl(0, 0%, 82%);
+	border-bottom: 0;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 .eduadmin .eventItem.showMoreHidden {
-    display: none;
+	display: none;
 }
 
 .eduadmin .event-table.eventDays .eventSeparator {
-    margin-top: 1rem;
-  font-size: 1.4rem;
-  font-weight: 500;
+	margin-top: 1rem;
+	font-size: 1.4rem;
+	font-weight: 500;
 }
 
 .eduadmin .eduadmin-courselistoptions {
-    display: none;
+	display: none;
 }

@@ -1,22 +1,22 @@
 <?php
 
-	class EDU_IntegrationLoader {
-		public $integrations = array();
+class EDU_IntegrationLoader {
+	public $integrations = array();
 
-		public function __construct() {
-			$t = EDU()->StartTimer( __METHOD__ );
-			do_action( 'edu_integrations_init' );
+	public function __construct() {
+		$t = EDU()->StartTimer( __METHOD__ );
+		do_action( 'edu_integrations_init' );
 
-			$integrationList = apply_filters( 'edu_integrations', array() );
+		$integrationList = apply_filters( 'edu_integrations', array() );
 
-			foreach ( $integrationList as $int ) {
-				$load_int                            = new $int();
-				$this->integrations[ $load_int->id ] = $load_int;
-			}
-			EDU()->StopTimer( $t );
+		foreach ( $integrationList as $int ) {
+			$load_int                            = new $int();
+			$this->integrations[ $load_int->id ] = $load_int;
 		}
-
-		public function get_integrations() {
-			return $this->integrations;
-		}
+		EDU()->StopTimer( $t );
 	}
+
+	public function get_integrations() {
+		return $this->integrations;
+	}
+}

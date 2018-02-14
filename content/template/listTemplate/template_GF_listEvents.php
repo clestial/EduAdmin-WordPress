@@ -1,8 +1,8 @@
 <?php
-	ob_start();
+ob_start();
 ?>
-    This template does not support a list of events
+	This template does not support a list of events
 <?php
-	$out = ob_get_clean();
+$out = ob_get_clean();
 
-	return $out;
+return $out;

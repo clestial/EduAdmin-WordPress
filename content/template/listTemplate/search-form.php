@@ -11,7 +11,7 @@
 							foreach ( $addresses as $address ) {
 								$city = trim( $address['City'] );
 								if ( ! in_array( $address['LocationId'], $addedCities, true ) && ! empty( $city ) ) {
-									echo '<option value="' . intval( $address['LocationId'] ) . '"' . ( ! empty( $_POST['eduadmin-city'] ) && intval( $_POST['eduadmin-city'] ) === $address['LocationId'] ? ' selected="selected"' : '' ) . '>' . esc_html( $address["City"] ) . '</option>';
+									echo '<option value="' . intval( $address['LocationId'] ) . '"' . ( ! empty( $_POST['eduadmin-city'] ) && intval( $_POST['eduadmin-city'] ) === $address['LocationId'] ? ' selected="selected"' : '' ) . '>' . esc_html( $address['City'] ) . '</option>';  // Input var okay.
 									$addedCities[] = $address['LocationId'];
 								}
 							}
@@ -25,7 +25,7 @@
 							<option value=""><?php esc_html_e( 'Choose subject', 'eduadmin-booking' ); ?></option>
 							<?php
 							foreach ( $distinctSubjects as $subj => $val ) {
-								echo '<option value="' . intval( $subj ) . '"' . ( isset( $_POST['eduadmin-subject'] ) && $_POST['eduadmin-subject'] === $subj ? ' selected="selected"' : '' ) . '>' . esc_html( $val ) . '</option>'; // Input var okay.
+								echo '<option value="' . intval( $subj ) . '"' . ( ! empty( $_POST['eduadmin-subject'] ) && intval( $_POST['eduadmin-subject'] ) === $subj ? ' selected="selected"' : '' ) . '>' . esc_html( $val ) . '</option>'; // Input var okay.
 							}
 							?>
 						</select>
@@ -60,8 +60,8 @@
 				<div class="search-item search-text">
 					<input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
 					       autosave="edu-course-search_<?php echo session_id(); ?>"
-					       placeholder="<?php esc_attr_e( 'Search courses', 'eduadmin-booking' ); ?>"<?php if ( isset( $_POST['searchCourses'] ) ) {
-						echo ' value="' . sanitize_text_field( $_POST['searchCourses'] ) . '"'; // Input var okay.
+					       placeholder="<?php esc_attr_e( 'Search courses', 'eduadmin-booking' ); ?>"<?php if ( isset( $_POST['searchCourses'] ) ) { // Input var okay.
+						echo ' value="' . esc_attr( sanitize_text_field( wp_unslash( $_POST['searchCourses'] ) ) ) . '"'; // Input var okay.
 					} ?> />
 				</div>
 				<div class="search-item search-button">

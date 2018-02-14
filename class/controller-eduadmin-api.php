@@ -4,7 +4,7 @@ class EduAdminAPIController {
 	var $namespace;
 
 	public function __construct() {
-		$this->namespace = "edu/v1";
+		$this->namespace = 'edu/v1';
 	}
 
 	public function register_routes() {

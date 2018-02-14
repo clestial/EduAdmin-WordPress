@@ -18,8 +18,15 @@ class EduAdminBookingInfo {
 	 */
 	public $NoRedirect = false;
 
-	public function __construct( $eventBooking = null, $customer = null, $contact = null ) {
-		$this->EventBooking = $eventBooking;
+	/**
+	 * EduAdminBookingInfo constructor.
+	 *
+	 * @param null $event_booking
+	 * @param null $customer
+	 * @param null $contact
+	 */
+	public function __construct( $event_booking = null, $customer = null, $contact = null ) {
+		$this->EventBooking = $event_booking;
 		$this->Customer     = $customer;
 		$this->Contact      = $contact;
 	}

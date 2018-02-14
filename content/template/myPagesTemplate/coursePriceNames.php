@@ -1,29 +1,29 @@
 <?php
-$apiKey = get_option( 'eduadmin-api-key' );
+$api_key = get_option( 'eduadmin-api-key' );
 ob_start();
 
-if ( ! $apiKey || empty( $apiKey ) ) {
+if ( ! $api_key || empty( $api_key ) ) {
 	return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 } else {
-	$sorting       = array();
-	$customOrder   = null;
-	$customOrderBy = null;
+	$sorting         = array();
+	$custom_order    = null;
+	$custom_order_by = null;
 	if ( ! empty( $attributes['order'] ) ) {
-		$customOrder = $attributes['order'];
+		$custom_order = $attributes['order'];
 	}
 
 	if ( ! empty( $attributes['orderby'] ) ) {
-		$customOrderBy = $attributes['orderby'];
+		$custom_order_by = $attributes['orderby'];
 	}
 
-	if ( $customOrderBy != null ) {
-		$orderby   = explode( ' ', $customOrderBy );
-		$sortorder = explode( ' ', $customOrderByOrder );
+	if ( null !== $custom_order_by ) {
+		$orderby   = explode( ' ', $custom_order );
+		$sortorder = explode( ' ', $custom_order_by );
 		foreach ( $orderby as $od => $v ) {
 			if ( isset( $sortorder[ $od ] ) ) {
 				$or = $sortorder[ $od ];
 			} else {
-				$or = "asc";
+				$or = 'asc';
 			}
 
 			$sorting[] = $v . ' ' . strtolower( $or );
@@ -32,14 +32,14 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 		$sorting[] = 'PriceNameId asc';
 	}
 
-	$edo = get_transient( 'eduadmin-objectpublicpricename_' . $courseId );
+	$edo = get_transient( 'eduadmin-objectpublicpricename_' . $course_id );
 	if ( ! $edo ) {
 		$edo = EDUAPI()->OData->CourseTemplates->GetItem(
-			$courseId,
-			"CourseTemplateId",
+			$course_id,
+			'CourseTemplateId',
 			'PriceNames($filter=PublicPriceName;$orderby=' . join( ',', $sorting ) . ')'
-		)["PriceNames"];
-		set_transient( 'eduadmin-objectpublicpricename_' . $courseId, $edo, 10 );
+		)['PriceNames'];
+		set_transient( 'eduadmin-objectpublicpricename_' . $course_id, $edo, 10 );
 	}
 
 	if ( ! empty( $attributes['numberofprices'] ) ) {
@@ -47,14 +47,14 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	}
 
 	$currency = get_option( 'eduadmin-currency', 'SEK' );
-	$incVat   = EDUAPI()->REST->Organisation->GetOrganisation()["PriceIncVat"];
+	$inc_vat  = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
 	?>
 	<div class="eventInformation">
-		<h3><?php _e( "Prices", 'eduadmin-booking' ); ?></h3>
+		<h3><?php esc_html_e( 'Prices', 'eduadmin-booking' ); ?></h3>
 		<?php
 		foreach ( $edo as $price ) {
-			echo sprintf( '%1$s: %2$s', $price["PriceNameDescription"], convertToMoney( $price["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) );
-			echo "<br>";
+			echo esc_html( sprintf( '%1$s: %2$s', $price['PriceNameDescription'], convertToMoney( $price['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) );
+			echo '<br />';
 		}
 		?>
 		<hr/>

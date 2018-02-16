@@ -2,20 +2,20 @@
 defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
 
 function eduadmin_activate_rewrite() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	eduadmin_rewrite_init();
 	flush_rewrite_rules();
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_deactivate_rewrite() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	flush_rewrite_rules();
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_rewrite_init() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	add_rewrite_tag( '%courseSlug%', '([^&]+)' );
 	add_rewrite_tag( '%courseId%', '([^&]+)' );
 	add_rewrite_tag( '%edu-login%', '([^&]+)' );
@@ -71,7 +71,7 @@ function eduadmin_rewrite_init() {
 		flush_rewrite_rules();
 		update_option( 'eduadmin-options_have_changed', false );
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 add_action( 'init', 'eduadmin_rewrite_init' );

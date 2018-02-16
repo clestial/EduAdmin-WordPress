@@ -1,6 +1,6 @@
 <?php
 function sendForgottenPassword( $loginValue ) {
-	$t    = EDU()->StartTimer( __METHOD__ );
+	$t    = EDU()->start_timer( __METHOD__ );
 	$ccId = 0;
 
 	$loginField = get_option( 'eduadmin-loginField', 'Email' );
@@ -16,18 +16,18 @@ function sendForgottenPassword( $loginValue ) {
 
 	if ( $ccId > 0 && ! empty( current( $cc["value"] )["Email"] ) ) {
 		$sent = EDUAPI()->REST->Person->SendResetPasswordEmailById( $ccId );
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 		EDU()->__writeDebug( $sent );
 
 		return $sent["EmailSent"];
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return false;
 }
 
 function logoutUser() {
-	$t    = EDU()->StartTimer( __METHOD__ );
+	$t    = EDU()->start_timer( __METHOD__ );
 	$surl = get_home_url();
 	$cat  = get_option( 'eduadmin-rewriteBaseUrl' );
 
@@ -40,21 +40,21 @@ function logoutUser() {
 	unset( $_COOKIE['eduadmin-loginUser'] );
 	setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
 	wp_redirect( $baseUrl . edu_getQueryString() );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 	exit();
 }
 
 add_action(
 	'wp_loaded',
 	function() {
-		$apiKey = get_option( 'eduadmin-api-key' );
+		$api_key = get_option( 'eduadmin-api-key' );
 
-		if ( ! $apiKey || empty( $apiKey ) ) {
-			add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
+		if ( ! $api_key || empty( $api_key ) ) {
+			add_action( 'admin_notices', array( 'EduAdmin', 'setup_warning' ) );
 		} else {
-			$key = DecryptApiKey( $apiKey );
+			$key = edu_decrypt_api_key( $api_key );
 			if ( ! $key ) {
-				add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
+				add_action( 'admin_notices', array( 'EduAdmin', 'setup_warning' ) );
 
 				return;
 			}

@@ -17,19 +17,19 @@ abstract class EDU_Integration {
 	}
 
 	public function get_settings() {
-		$t = EDU()->StartTimer( __METHOD__ );
+		$t = EDU()->start_timer( __METHOD__ );
 		ob_start();
 		$fields = $this->get_form_fields();
 		?>
 		<table class="form-table">
 			<?php
 			foreach ( $fields as $key => $field ) {
-				echo $this->renderField( $key, $field );
+				$this->render_field( $key, $field );
 			}
 			?>
 		</table>
 		<?php
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return ob_get_clean();
 	}
@@ -38,9 +38,8 @@ abstract class EDU_Integration {
 		return array_map( array( $this, 'set_defaults' ), $this->setting_fields );
 	}
 
-	private function renderField( $key, $field ) {
-		$t = EDU()->StartTimer( __METHOD__ );
-		ob_start();
+	private function render_field( $key, $field ) {
+		$t = EDU()->start_timer( __METHOD__ );
 		?>
 		<tr valign="top">
 			<th scope="row"><label
@@ -51,11 +50,11 @@ abstract class EDU_Integration {
 					<?php
 					switch ( $field['type'] ) {
 						case 'checkbox':
-							echo $this->renderCheckBox( $key, $field );
+							$this->render_check_box( $key, $field );
 							break;
 						case 'text':
 						case 'password':
-							echo $this->renderTextBox( $key, $field );
+							$this->render_text_box( $key, $field );
 							break;
 						default: // Unhandled field types
 							echo '<pre id="' . esc_attr( $this->get_field_key( $key ) ) . '">' . print_r( $field, true ) . '</pre>';
@@ -66,18 +65,15 @@ abstract class EDU_Integration {
 			</td>
 		</tr>
 		<?php
-		EDU()->StopTimer( $t );
-
-		return ob_get_clean();
+		EDU()->stop_timer( $t );
 	}
 
 	private function get_field_key( $key ) {
 		return $this->plugin_id . $this->id . '_' . $key;
 	}
 
-	private function renderCheckBox( $key, $field ) {
-		$t = EDU()->StartTimer( __METHOD__ );
-		ob_start();
+	private function render_check_box( $key, $field ) {
+		$t = EDU()->start_timer( __METHOD__ );
 		?>
 		<label>
 			<input
@@ -90,13 +86,11 @@ abstract class EDU_Integration {
 			<?php echo esc_html( $field['description'] ); ?>
 		</label>
 		<?php
-		EDU()->StopTimer( $t );
-
-		return ob_get_clean();
+		EDU()->stop_timer( $t );
 	}
 
 	public function get_option( $key, $empty_value = null ) {
-		$t = EDU()->StartTimer( __METHOD__ );
+		$t = EDU()->start_timer( __METHOD__ );
 		if ( empty( $this->settings ) ) {
 			$this->init_settings();
 		}
@@ -109,13 +103,13 @@ abstract class EDU_Integration {
 		if ( ! is_null( $empty_value ) && '' === $this->settings[ $key ] ) {
 			$this->settings[ $key ] = $empty_value;
 		}
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return $this->settings[ $key ];
 	}
 
 	public function init_settings() {
-		$t              = EDU()->StartTimer( __METHOD__ );
+		$t              = EDU()->start_timer( __METHOD__ );
 		$this->settings = get_option( $this->get_option_key(), null );
 		add_action( 'eduadmin-plugin-save_' . $this->id, array( $this, 'save_options' ) );
 
@@ -123,16 +117,15 @@ abstract class EDU_Integration {
 			$form_fields    = $this->get_form_fields();
 			$this->settings = array_merge( array_fill_keys( array_keys( $form_fields ), '' ), wp_list_pluck( $form_fields, 'default' ) );
 		}
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 	}
 
 	private function get_option_key() {
 		return $this->plugin_id . $this->id . '_settings';
 	}
 
-	private function renderTextBox( $key, $field ) {
-		$t = EDU()->StartTimer( __METHOD__ );
-		ob_start();
+	private function render_text_box( $key, $field ) {
+		$t = EDU()->start_timer( __METHOD__ );
 		?>
 		<input
 				class="regular-text"
@@ -144,13 +137,11 @@ abstract class EDU_Integration {
 		/>
 		<p class="description"><?php echo esc_html( $field['description'] ); ?></p>
 		<?php
-		EDU()->StopTimer( $t );
-
-		return ob_get_clean();
+		EDU()->stop_timer( $t );
 	}
 
 	public function save_options() {
-		$t = EDU()->StartTimer( __METHOD__ );
+		$t = EDU()->start_timer( __METHOD__ );
 		$this->init_settings();
 
 		$post_data = $this->get_post_data();
@@ -159,12 +150,11 @@ abstract class EDU_Integration {
 		foreach ( $fields as $key => $field ) {
 			try {
 				$this->settings[ $key ] = $this->get_field_value( $key, $post_data );
-			}
-			catch ( Exception $e ) {
+			} catch ( Exception $e ) {
 				// Ignore problems with saving options.
 			}
 		}
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return update_option( $this->get_option_key(), $this->settings );
 	}
@@ -173,14 +163,21 @@ abstract class EDU_Integration {
 		if ( ! empty( $this->data ) && is_array( $this->data ) ) {
 			return $this->data;
 		}
+		if ( wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
+			return $_POST; // Input var okay.
+		}
 
-		return $_POST;
+		return null;
 	}
 
 	private function get_field_value( $key, $post_data = array() ) {
-		$fKey      = $this->get_field_key( $key );
-		$post_data = empty( $post_data ) ? $_POST : $post_data;
-		$value     = isset( $post_data[ $fKey ] ) ? $post_data[ $fKey ] : null;
+		$f_key = $this->get_field_key( $key );
+		if ( wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
+			$post_data = empty( $post_data ) ? $_POST : $post_data; // Input var okay.
+		} else {
+			$post_data = null;
+		}
+		$value = isset( $post_data[ $f_key ] ) ? $post_data[ $f_key ] : null;
 
 		return $value;
 	}

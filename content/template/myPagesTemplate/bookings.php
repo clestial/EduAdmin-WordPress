@@ -6,37 +6,37 @@ $customer = $user->Customer;
 ?>
 <div class="eduadmin">
 	<?php
-	$tab = "bookings";
-	include_once( "login_tab_header.php" );
+	$tab = 'bookings';
+	include_once( 'login_tab_header.php' );
 	?>
-	<h2><?php _e( "Reservations", 'eduadmin-booking' ); ?></h2>
+	<h2><?php esc_html_e( 'Reservations', 'eduadmin-booking' ); ?></h2>
 	<?php
 
 	$bookings = EDUAPI()->OData->Bookings->Search(
 		null,
-		"Customer/CustomerId eq " . $customer->CustomerId . " and NumberOfParticipants gt 0",
+		'Customer/CustomerId eq ' . $customer->CustomerId . ' and NumberOfParticipants gt 0',
 		'Participants,UnnamedParticipants',
-		"Created desc"
+		'Created desc'
 	);
 
 	$eventIds = array();
 
-	foreach ( $bookings["value"] as $booking ) {
-		if ( ! in_array( $booking["EventId"], $eventIds ) ) {
-			$eventIds[] = $booking["EventId"];
+	foreach ( $bookings['value'] as $booking ) {
+		if ( ! in_array( $booking['EventId'], $eventIds, true ) ) {
+			$eventIds[] = $booking['EventId'];
 		}
 	}
 
 	if ( ! empty( $eventIds ) ) {
 		$events = EDUAPI()->OData->Events->Search(
 			null,
-			"(EventId eq " . join( " or EventId eq ", $eventIds ) . ")"
+			'(EventId eq ' . join( ' or EventId eq ', $eventIds ) . ')'
 		);
 	} else {
 		$events = null;
 	}
 
-	EDU()->__writeDebug( $events );
+	EDU()->write_debug( $events );
 	$filtering = new XFiltering();
 	$f         = new XFilter( 'CustomerID', '=', $customer->CustomerId );
 	$filtering->AddItem( $f );
@@ -71,17 +71,18 @@ $customer = $user->Customer;
 	?>
 	<table class="myReservationsTable">
 		<tr>
-			<th align="left"><?php _e( "Booked", 'eduadmin-booking' ); ?></th>
-			<th align="left"><?php _e( "Course", 'eduadmin-booking' ); ?></th>
-			<th align="left"><?php _e( "Dates", 'eduadmin-booking' ); ?></th>
-			<th align="right"><?php _e( "Participants", 'eduadmin-booking' ); ?></th>
-			<th align="right"><?php _e( "Price", 'eduadmin-booking' ); ?></th>
+			<th align="left"><?php esc_html_e( 'Booked', 'eduadmin-booking' ); ?></th>
+			<th align="left"><?php esc_html_e( 'Course', 'eduadmin-booking' ); ?></th>
+			<th align="left"><?php esc_html_e( 'Dates', 'eduadmin-booking' ); ?></th>
+			<th align="right"><?php esc_html_e( 'Participants', 'eduadmin-booking' ); ?></th>
+			<th align="right"><?php esc_html_e( 'Price', 'eduadmin-booking' ); ?></th>
 		</tr>
 		<?php
 		if ( empty( $bookings ) ) {
 			?>
 			<tr>
-				<td colspan="5" align="center"><i><?php _e( "No courses booked", 'eduadmin-booking' ); ?></i></td>
+				<td colspan="5" align="center"><i><?php esc_html_e( 'No courses booked', 'eduadmin-booking' ); ?></i>
+				</td>
 			</tr>
 			<?php
 		} else {
@@ -107,19 +108,19 @@ $customer = $user->Customer;
 							<table class="edu-event-participantList">
 								<tr>
 									<th align="left"
-									    class="edu-participantList-name"><?php _e( "Participant name", 'eduadmin-booking' ); ?></th>
+									    class="edu-participantList-name"><?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?></th>
 									<th align="center"
-									    class="edu-participantList-arrived"><?php _e( "Arrived", 'eduadmin-booking' ); ?></th>
+									    class="edu-participantList-arrived"><?php esc_html_e( 'Arrived', 'eduadmin-booking' ); ?></th>
 									<th align="right"
-									    class="edu-participantList-grade"><?php _e( "Grade", 'eduadmin-booking' ); ?></th>
+									    class="edu-participantList-grade"><?php esc_html_e( 'Grade', 'eduadmin-booking' ); ?></th>
 								</tr>
 								<?php
 								foreach ( $book->Participants as $participant ) {
 									?>
 									<tr>
-										<td align="left"><?php echo $participant->PersonName; ?></td>
-										<td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
-										<td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
+										<td align="left"><?php echo esc_html( $participant->PersonName ); ?></td>
+										<td align="center"><?php echo '1' === $participant->Arrived ? '&#9745;' : '&#9744;'; ?></td>
+										<td align="right"><?php echo( ! empty( $participant->GradeName ) ? esc_html( $participant->GradeName ) : '<i>' . esc_html__( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
 									</tr>
 									<?php
 								}
@@ -128,8 +129,10 @@ $customer = $user->Customer;
 						</td>
 					</tr>
 				<?php } ?>
-			<?php }
-		} ?>
+				<?php
+			}
+		}
+		?>
 	</table>
-	<?php include_once( "login_tab_footer.php" ); ?>
+	<?php require_once( 'login_tab_footer.php' ); ?>
 </div>

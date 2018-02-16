@@ -1,7 +1,7 @@
 <?php
-defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
+defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 define( 'EDUADMIN_PLUGIN_PATH', dirname( __FILE__ ) );
-defined( 'WP_SESSION_COOKIE' ) or define( 'WP_SESSION_COOKIE', 'eduadmin-cookie' );
+defined( 'WP_SESSION_COOKIE' ) || define( 'WP_SESSION_COOKIE', 'eduadmin-cookie' );
 
 /*
  * Plugin Name:	EduAdmin Booking
@@ -59,15 +59,15 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		/**
 		 * @var EduAdminBookingHandler
 		 */
-		public $bookingHandler = null;
+		public $booking_handler = null;
 		/**
 		 * @var \EduAdminLoginHandler
 		 */
-		public $loginHandler = null;
+		public $login_handler = null;
 		/**
 		 * @var \EduAdminAPIController
 		 */
-		public $restController = null;
+		public $rest_controller = null;
 		/**
 		 * @var WP_Session
 		 */
@@ -85,13 +85,13 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 */
 		public $version;
 		/** @var array */
-		public $weekDays;
+		public $week_days;
 		/** @var array */
-		public $shortWeekDays;
+		public $short_week_days;
 		/** @var array */
 		public $months;
 		/** @var array */
-		public $shortMonths;
+		public $short_months;
 
 		/**
 		 * @return EduAdmin
@@ -106,13 +106,13 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		public function __construct() {
 			$this->timers  = array();
-			$t             = $this->StartTimer( __METHOD__ );
+			$t             = $this->start_timer( __METHOD__ );
 			$this->version = $this->get_version();
 			$this->includes();
 			$this->init_hooks();
 
 			do_action( 'eduadmin_loaded' );
-			$this->StopTimer( $t );
+			$this->stop_timer( $t );
 		}
 
 		/**
@@ -120,35 +120,35 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 *
 		 * @return string Returns the unique name for the created timer
 		 */
-		public function StartTimer( $name ) {
+		public function start_timer( $name ) {
 			$timer_id                                = count( $this->timers ) + 1;
-			$this->timers[ $name . "_" . $timer_id ] = microtime( true );
+			$this->timers[ $name . '_' . $timer_id ] = microtime( true );
 
-			return $name . "_" . $timer_id;
+			return $name . '_' . $timer_id;
 		}
 
 		/**
 		 * @param string $name The unique name of the timer (Returned from StartTimer)
 		 */
-		public function StopTimer( $name ) {
+		public function stop_timer( $name ) {
 			$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
 		}
 
 		/**
 		 * @param stdClass|array|object|null $object
 		 */
-		public function __writeDebug( $object ) {
+		public function write_debug( $object ) {
 			ob_start();
 			var_dump( $object );
 
-			echo "<xmp>" . ob_get_clean() . "</xmp>";
+			echo '<xmp>' . ob_get_clean() . '</xmp>';
 		}
 
 		public function get_version() {
 			if ( function_exists( 'get_plugin_data' ) ) {
-				$pData = get_plugin_data( __FILE__ );
+				$p_data = get_plugin_data( __FILE__ );
 
-				return $pData['Version'];
+				return $p_data['Version'];
 			} else {
 				$default_headers = array(
 					'Name'        => 'Plugin Name',
@@ -163,9 +163,10 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 					// Site Wide Only is deprecated in favor of Network.
 					'_sitewide'   => 'Site Wide Only',
 				);
-				$pData           = get_file_data( __FILE__, $default_headers );
 
-				return $pData['Version'];
+				$p_data = get_file_data( __FILE__, $default_headers );
+
+				return $p_data['Version'];
 			}
 		}
 
@@ -173,18 +174,18 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 * @return mixed|null|string Returnerar en API-token från Lega Online
 		 */
 		public function get_token() {
-			$t      = $this->StartTimer( __METHOD__ );
-			$apiKey = get_option( 'eduadmin-api-key' );
-			if ( ! $apiKey || empty( $apiKey ) ) {
-				add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
-				$this->StopTimer( $t );
+			$t       = $this->start_timer( __METHOD__ );
+			$api_key = get_option( 'eduadmin-api-key' );
+			if ( ! $api_key || empty( $api_key ) ) {
+				add_action( 'admin_notices', array( $this, 'setup_warning' ) );
+				$this->stop_timer( $t );
 
 				return '';
 			} else {
-				$key = DecryptApiKey( $apiKey );
+				$key = edu_decrypt_api_key( $api_key );
 				if ( ! $key ) {
-					add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
-					$this->StopTimer( $t );
+					add_action( 'admin_notices', array( $this, 'setup_warning' ) );
+					$this->stop_timer( $t );
 
 					return '';
 				}
@@ -204,92 +205,92 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 					}
 				}
 				$this->token = $edutoken;
-				$this->StopTimer( $t );
+				$this->stop_timer( $t );
 
 				return $this->token;
 			}
 		}
 
 		private function includes() {
-			$t = $this->StartTimer( __METHOD__ );
-			include_once( 'includes/eduadmin-api-client/eduadmin-api-client.php' );
+			$t = $this->start_timer( __METHOD__ );
+			include_once 'includes/eduadmin-api-client/eduadmin-api-client.php';
 			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
-				include_once( 'libraries/class-recursive-arrayaccess.php' );
+				include_once 'libraries/class-recursive-arrayaccess.php';
 			}
 
 			if ( ! class_exists( 'WP_Session' ) ) {
-				include_once( 'libraries/class-wp-session.php' );
-				include_once( 'libraries/wp-session.php' );
+				include_once 'libraries/class-wp-session.php';
+				include_once 'libraries/wp-session.php';
 			}
 
 			$this->session = WP_Session::get_instance();
 
-			include_once( 'includes/loApiClasses.php' );
-			include_once( 'includes/_apiFunctions.php' );
-			include_once( 'class/class-eduadmin-bookinginfo.php' );
-			include_once( 'class/class-eduadmin-bookinghandler.php' );
-			include_once( 'class/class-eduadmin-loginhandler.php' );
+			include_once 'includes/loApiClasses.php';
+			include_once 'includes/_apiFunctions.php';
+			include_once 'class/class-eduadmin-bookinginfo.php';
+			include_once 'class/class-eduadmin-bookinghandler.php';
+			include_once 'class/class-eduadmin-loginhandler.php';
 
-			include_once( 'includes/plugin/edu-integration.php' ); // Integration interface
-			include_once( 'includes/plugin/edu-integrationloader.php' ); // Integration loader
-			include_once( 'includes/loApiClient.php' );
+			include_once 'includes/plugin/class-edu-integration.php'; // Integration interface
+			include_once 'includes/plugin/class-edu-integrationloader.php'; // Integration loader
+			include_once 'includes/loApiClient.php';
 
 			if ( is_wp_error( $this->get_new_api_token() ) ) {
-				add_action( 'admin_notices', array( $this, 'SetupWarning' ) );
+				add_action( 'admin_notices', array( $this, 'setup_warning' ) );
 			}
 
 			$this->api = new EduAdminClient( $this->version );
 
-			include_once( 'includes/_options.php' );
-			include_once( 'includes/_ajaxFunctions.php' );
-			include_once( 'includes/_rewrites.php' );
-			include_once( 'includes/_shortcodes.php' );
+			include_once 'includes/_options.php';
+			include_once 'includes/_ajaxFunctions.php';
+			include_once 'includes/_rewrites.php';
+			include_once 'includes/_shortcodes.php';
 
-			include_once( 'includes/_questionFunctions.php' );
-			include_once( 'includes/_attributeFunctions.php' );
-			include_once( 'includes/_textFunctions.php' );
-			include_once( 'includes/_loginFunctions.php' );
+			include_once 'includes/_questionFunctions.php';
+			include_once 'includes/_attributeFunctions.php';
+			include_once 'includes/_textFunctions.php';
+			include_once 'includes/_loginFunctions.php';
 
-			include_once( 'class/controller-eduadmin-api.php' );
+			include_once 'class/controller-eduadmin-api.php';
 
-			$this->restController = new EduAdminAPIController();
-			$this->bookingHandler = new EduAdminBookingHandler( $this );
-			$this->loginHandler   = new EduAdminLoginHandler( $this );
-			$this->StopTimer( $t );
+			$this->rest_controller = new EduAdminAPIController();
+			$this->booking_handler = new EduAdminBookingHandler();
+			$this->login_handler   = new EduAdminLoginHandler();
+			$this->stop_timer( $t );
 		}
 
 		public function call_home() {
 			global $wp_version;
-			$usageData   = array(
+			$usage_data    = array(
 				'siteUrl'       => get_site_url(),
 				'siteName'      => get_option( 'blogname' ),
 				'wpVersion'     => $wp_version,
 				'token'         => get_option( 'eduadmin-api-key' ),
 				'pluginVersion' => $this->version,
 			);
-			$callHomeUrl = 'https://ws10.multinet.se/edu-plugin/wp_phone_home.php';
-			wp_remote_post( $callHomeUrl, array( 'body' => $usageData ) );
+			$call_home_url = 'https://ws10.multinet.se/edu-plugin/wp_phone_home.php';
+			wp_remote_post( $call_home_url, array( 'body' => $usage_data ) );
 		}
 
 		private function init_hooks() {
-			$t = $this->StartTimer( __METHOD__ );
+			$t = $this->start_timer( __METHOD__ );
 			register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
 
 			add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
 			add_action( 'init', array( $this, 'init' ) );
 			add_action( 'plugins_loaded', array( $this, 'load_language' ) );
 			add_action( 'eduadmin_call_home', array( $this, 'call_home' ) );
-			add_action( 'wp_footer', 'edu_getTimers' );
+			add_action( 'wp_footer', 'edu_get_timers' );
 
 			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-			$this->StopTimer( $t );
+			$this->stop_timer( $t );
 		}
 
 		public function init() {
-			$t                  = $this->StartTimer( __METHOD__ );
+			$t                  = $this->start_timer( __METHOD__ );
 			$this->integrations = new EDU_IntegrationLoader();
-			$this->restController->register_routes();
-			$this->weekDays = array(
+			$this->rest_controller->register_routes();
+			$this->week_days = array(
 				1 => __( 'monday', 'eduadmin-booking' ),
 				2 => __( 'tuesday', 'eduadmin-booking' ),
 				3 => __( 'wednesday', 'eduadmin-booking' ),
@@ -299,7 +300,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				7 => __( 'sunday', 'eduadmin-booking' ),
 			);
 
-			$this->shortWeekDays = array(
+			$this->short_week_days = array(
 				1 => __( 'mon', 'eduadmin-booking' ),
 				2 => __( 'tue', 'eduadmin-booking' ),
 				3 => __( 'wed', 'eduadmin-booking' ),
@@ -324,7 +325,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				12 => __( 'december', 'eduadmin-booking' ),
 			);
 
-			$this->shortMonths = array(
+			$this->short_months = array(
 				1  => __( 'jan', 'eduadmin-booking' ),
 				2  => __( 'feb', 'eduadmin-booking' ),
 				3  => __( 'mar', 'eduadmin-booking' ),
@@ -339,13 +340,18 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				12 => __( 'dec', 'eduadmin-booking' ),
 			);
 
-			$this->StopTimer( $t );
+			$this->stop_timer( $t );
 		}
 
-		public static function SetupWarning() {
+		public static function setup_warning() {
 			?>
 			<div class="notice notice-warning is-dismissable">
-				<p><?php echo sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin-booking' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ); ?></p>
+				<p>
+					<?php
+					/* translators: 1: start of link 2: end of link */
+					echo esc_html( sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin-booking' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ) );
+					?>
+				</p>
 			</div>
 			<?php
 		}
@@ -354,27 +360,25 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 * @return string Returns the users IP adress
 		 */
 		public function get_ip_adress() {
-			$ipCheck = array( 'HTTP_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
-			foreach ( $ipCheck as $header ) {
-				if ( isset( $_SERVER[ $header ] ) && ! empty( $_SERVER[ $header ] ) ) {
-					return $_SERVER[ $header ];
+			$ip_check = array( 'HTTP_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
+			foreach ( $ip_check as $header ) {
+				if ( ! empty( $_SERVER[ $header ] ) ) { // Var input okay.
+					return $_SERVER[ $header ]; // Var input okay.
 				}
 			}
 
-			return "UNKNOWN";
+			return 'UNKNOWN';
 		}
 
 		public function load_language() {
-			$t      = $this->StartTimer( __METHOD__ );
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'eduadmin-booking' );
-			load_textdomain( 'eduadmin-booking', WP_LANG_DIR . '/eduadmin/' . 'eduadmin-booking' . '-' . $locale . '.mo' );
+			$t = $this->start_timer( __METHOD__ );
 			load_plugin_textdomain( 'eduadmin-booking', false, EDUADMIN_PLUGIN_PATH . '/languages' );
 
 			if ( ! wp_next_scheduled( 'eduadmin_call_home' ) ) {
 				wp_schedule_event( time(), 'hourly', 'eduadmin_call_home' );
 			}
 
-			$this->StopTimer( $t );
+			$this->stop_timer( $t );
 		}
 
 		public function new_theme() {
@@ -387,30 +391,30 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		}
 
 		private function get_new_api_token() {
-			$newKey = get_option( 'eduadmin-newapi-key', null );
-			if ( $newKey != null ) {
-				$key = DecryptApiKey( $newKey );
+			$new_key = get_option( 'eduadmin-newapi-key', null );
+			if ( null !== $new_key ) {
+				$key = edu_decrypt_api_key( $new_key );
 				EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
 			} else {
-				$oldKey = get_option( 'eduadmin-api-key', null );
-				if ( $oldKey != null ) {
-					$key = DecryptApiKey( $oldKey );
+				$old_key = get_option( 'eduadmin-api-key', null );
+				if ( null !== $old_key ) {
+					$key = edu_decrypt_api_key( $old_key );
 					EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
 				} else {
 					EDUAPI()->SetCredentials( '', '' );
 				}
 			}
 
-			$currentToken = get_transient( 'eduadmin-newapi-token' );
-			if ( $currentToken == null || ! $currentToken->IsValid() ) {
-				$currentToken = EDUAPI()->GetToken();
-				if ( empty( $currentToken->Issued ) ) {
-					return new WP_Error( 'broke', __( "The key for the EduAdmin API is not configured to work with the new API, please contact MultiNet support.", 'eduadmin-booking' ) );
+			$current_token = get_transient( 'eduadmin-newapi-token' );
+			if ( null === $current_token || ! $current_token->IsValid() ) {
+				$current_token = EDUAPI()->GetToken();
+				if ( empty( $current_token->Issued ) ) {
+					return new WP_Error( 'broke', __( 'The key for the EduAdmin API is not configured to work with the new API, please contact MultiNet support.', 'eduadmin-booking' ) );
 				}
-				set_transient( 'eduadmin-newapi-token', $currentToken, WEEK_IN_SECONDS );
+				set_transient( 'eduadmin-newapi-token', $current_token, WEEK_IN_SECONDS );
 			}
 
-			EDUAPI()->SetToken( $currentToken );
+			EDUAPI()->SetToken( $current_token );
 
 			return null;
 		}
@@ -430,7 +434,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			add_action( 'admin_notices', function() {
 				?>
 				<div class="notice notice-warning is-dismissable">
-					<p><?php echo __( 'Could not set timezone', 'eduadmin-booking' ); ?></p>
+					<p><?php echo esc_html__( 'Could not set timezone', 'eduadmin-booking' ); ?></p>
 				</div>
 				<?php
 			} );
@@ -441,28 +445,31 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 	add_action(
 		'wp_loaded',
 		function() {
-			$t = EDU()->StartTimer( __METHOD__ );
-			if ( isset( $_POST['option_page'] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST['option_page'] ) ) {
-				$integrations = EDU()->integrations->integrations;
-				foreach ( $integrations as $integration ) {
-					do_action( 'eduadmin-plugin-save_' . $integration->id );
+			$t = EDU()->start_timer( __METHOD__ );
+			if ( wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
+				if ( ! empty( $_POST['option_page'] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST['option_page'] ) ) { // Input var okay.
+					$integrations = EDU()->integrations->integrations;
+					foreach ( $integrations as $integration ) {
+						do_action( 'eduadmin-plugin-save_' . $integration->id );
+					}
+					add_action( 'admin_notices', function() {
+						?>
+						<div class="notice notice-success is-dismissible">
+							<p><?php esc_html_e( 'Plugin settings saved', 'eduadmin-booking' ); ?></p>
+						</div>
+						<?php
+					} );
 				}
-				add_action( 'admin_notices', function() {
-					?>
-					<div class="notice notice-success is-dismissible">
-						<p><?php _e( 'Plugin settings saved', 'eduadmin-booking' ); ?></p>
-					</div>
-					<?php
-				} );
 			}
-			EDU()->StopTimer( $t );
-		} );
+			EDU()->stop_timer( $t );
+		}
+	);
 
 	add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin.php',
-		function( $currentPluginMetadata, $newPluginMetadata ) {
-			if ( isset( $newPluginMetadata->upgrade_notice ) && strlen( trim( $newPluginMetadata->upgrade_notice ) ) > 0 ) {
-				echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . __( 'Important Upgrade Notice', 'eduadmin-booking' ) . ':</strong> ';
-				echo esc_html( $newPluginMetadata->upgrade_notice ), '</p>';
+		function( $current_plugin_metadata, $new_plugin_metadata ) {
+			if ( ! empty( $new_plugin_metadata->upgrade_notice ) && strlen( trim( $new_plugin_metadata->upgrade_notice ) ) > 0 ) {
+				echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . esc_html__( 'Important Upgrade Notice', 'eduadmin-booking' ) . ':</strong> ';
+				echo esc_html( $new_plugin_metadata->upgrade_notice ), '</p>';
 			}
 		},
 		        10,

@@ -7,7 +7,7 @@ $filterCourses = array();
 
 if ( ! empty( $attributes['subject'] ) ) {
 	foreach ( $eds as $subject ) {
-		if ( $subject->SubjectName == $attributes['subject'] ) {
+		if ( $subject->SubjectName === $attributes['subject'] ) {
 			if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
 				$filterCourses[] = $subject->ObjectID;
 			}
@@ -37,20 +37,20 @@ if ( ! empty( $attributes['mode'] ) ) {
 	$customMode = $attributes['mode'];
 }
 
-if ( $customMode != null ) {
-	if ( $customMode == 'event' ) {
-		$str = include( $attributes["template"] . "_listEvents.php" );
+if ( null !== $customMode ) {
+	if ( 'event' === $customMode ) {
+		$str = include( $attributes['template'] . '_listEvents.php' );
 		echo $str;
-	} else if ( $customMode == 'course' ) {
-		$str = include( $attributes["template"] . "_listCourses.php" );
+	} else if ( 'course' === $customMode ) {
+		$str = include( $attributes['template'] . '_listCourses.php' );
 		echo $str;
 	}
 } else {
 	if ( $showEvents ) {
-		$str = include( $attributes["template"] . "_listEvents.php" );
+		$str = include( $attributes['template'] . '_listEvents.php' );
 		echo $str;
 	} else if ( ! $showEvents ) {
-		$str = include( $attributes["template"] . "_listCourses.php" );
+		$str = include( $attributes['template'] . '_listCourses.php' );
 		echo $str;
 	}
 }

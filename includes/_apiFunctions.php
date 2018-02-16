@@ -1,53 +1,41 @@
 <?php
 
-function DecryptApiKey( $key ) {
+function edu_decrypt_api_key( $key ) {
 	$decrypted = explode( '|', base64_decode( $key ) );
-	if ( count( $decrypted ) == 2 ) {
-		$apiKey         = new stdClass();
-		$apiKey->UserId = $decrypted[0];
-		$apiKey->Hash   = $decrypted[1];
+	if ( 2 === count( $decrypted ) ) {
+		$api_key         = new stdClass();
+		$api_key->UserId = $decrypted[0];
+		$api_key->Hash   = $decrypted[1];
 
-		return $apiKey;
+		return $api_key;
 	}
 
 	return false;
 }
 
-if ( ! function_exists( 'edu_encrypt' ) ) {
-	function edu_encrypt( $key, $toEncrypt ) {
-		return base64_encode( openssl_encrypt( $toEncrypt, "AES-128-ECB", md5( $key ), OPENSSL_RAW_DATA, "" ) );
-	}
-}
-
-if ( ! function_exists( 'edu_decrypt' ) ) {
-	function edu_decrypt( $key, $toDecrypt ) {
-		return rtrim( openssl_decrypt( base64_decode( $toDecrypt ), "AES-128-ECB", md5( $key ), OPENSSL_RAW_DATA, "" ) );
-	}
-}
-
-function edu_getTimers() {
-	if ( isset( $_REQUEST['edu-showtimers'] ) && $_REQUEST['edu-showtimers'] == "1" ) {
+function edu_get_timers() {
+	if ( ! empty( $_GET['edu-showtimers'] ) && '1' === $_GET['edu-showtimers'] ) { // Input var okay.
 		if ( EDU()->timers ) {
-			echo "<!-- EduAdmin Booking (" . EDU()->version . ") API - Timers -->\n";
-			$totalValue = 0;
+			echo '<!-- EduAdmin Booking (' . esc_html( EDU()->version ) . ") API - Timers -->\n";
+			$total_value = 0;
 			foreach ( EDU()->timers as $timer => $value ) {
-				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
-				$totalValue += $value;
+				echo '<!-- ' . esc_html( $timer ) . ': ' . esc_html( round( $value * 1000, 2 ) ) . "ms -->\n";
+				$total_value += $value;
 			}
-			echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
+			echo '<!-- EduAdmin Total: ' . esc_html( round( $total_value * 1000, 2 ) ) . "ms -->\n";
 			echo "<!-- /EduAdmin Booking API - Timers -->\n";
 		}
 		if ( EDU()->api->timers ) {
 			echo "<!-- EduAdmin Booking Class - Timers -->\n";
-			$totalValue = 0;
+			$total_value = 0;
 			foreach ( EDU()->api->timers as $timer => $value ) {
-				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
-				$totalValue += $value;
+				echo '<!-- ' . esc_html( $timer ) . ': ' . esc_html( round( $value * 1000, 2 ) ) . "ms -->\n";
+				$total_value += $value;
 			}
-			echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
+			echo '<!-- EduAdmin Total: ' . esc_html( round( $total_value * 1000, 2 ) ) . "ms -->\n";
 			echo "<!-- /EduAdmin Booking Class - Timers -->\n";
 		}
 
-		do_action( 'eduadmin-showtimers' );
+		do_action( 'eduadmin_showtimers' );
 	}
 }

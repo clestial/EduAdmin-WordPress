@@ -1,6 +1,6 @@
 <?php
 function renderAttribute( $attribute, $multiple = false, $suffix = "", $data = null ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	switch ( $attribute->AttributeTypeID ) {
 		case 1: // Checkbox
 			renderCheckField( $attribute, $multiple, $suffix, $data );
@@ -35,7 +35,7 @@ function renderAttribute( $attribute, $multiple = false, $suffix = "", $data = n
 			renderDebugAttributeInfo( $attribute );
 			break;
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function renderCheckField( $attribute, $multiple, $suffix, $data ) {

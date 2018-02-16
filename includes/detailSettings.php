@@ -1,6 +1,6 @@
 <?php
 function edu_render_detail_settings_page() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	?>
 	<div class="eduadmin wrap">
 		<h2><?php echo sprintf( __( "EduAdmin settings - %s", "eduadmin-booking" ), __( "Detail settings", "eduadmin-booking" ) ); ?></h2>
@@ -88,5 +88,5 @@ function edu_render_detail_settings_page() {
 		</form>
 	</div>
 	<?php
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }

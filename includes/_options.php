@@ -18,7 +18,7 @@ add_action( 'add_meta_boxes', 'eduadmin_shortcode_metabox' );
 add_action( 'wp_footer', 'eduadmin_printJavascript' );
 
 function eduadmin_page_title( $title, $sep = "|" ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	global $wp;
 
 	if ( $sep == null || empty( $sep ) ) {
@@ -67,7 +67,7 @@ function eduadmin_page_title( $title, $sep = "|" ) {
 			}
 		}
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $title;
 }
@@ -77,7 +77,7 @@ add_filter( 'wp_title', 'eduadmin_page_title', PHP_INT_MAX, 2 );
 add_filter( 'aioseop_title', 'eduadmin_page_title', PHP_INT_MAX, 2 );
 
 function eduadmin_settings_init() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	/* Credential settings */
 	register_setting( 'eduadmin-credentials', 'eduadmin-api-key' );
 	register_setting( 'eduadmin-credentials', 'eduadmin-newapi-key' );
@@ -159,11 +159,11 @@ function eduadmin_settings_init() {
 	register_setting( 'eduadmin-rewrite', 'eduadmin-spotsSettings' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-alwaysFewSpots' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-monthsToFetch' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_frontend_content() {
-	$t            = EDU()->StartTimer( __METHOD__ );
+	$t            = EDU()->start_timer( __METHOD__ );
 	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
 	wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
 	$customcss = get_option( 'eduadmin-style', '' );
@@ -184,11 +184,11 @@ function eduadmin_frontend_content() {
 	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );
 	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
 	wp_enqueue_script( 'eduadmin_frontend_script', false, array( 'jquery' ) );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_backend_content() {
-	$t            = EDU()->StartTimer( __METHOD__ );
+	$t            = EDU()->start_timer( __METHOD__ );
 	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
 	wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
 	wp_enqueue_style( 'eduadmin_admin_style' );
@@ -196,11 +196,11 @@ function eduadmin_backend_content() {
 	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/adminjs.js' );
 	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
 	wp_enqueue_script( 'eduadmin_admin_script', false, array( 'jquery' ) );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_backend_menu() {
-	$t     = EDU()->StartTimer( __METHOD__ );
+	$t     = EDU()->start_timer( __METHOD__ );
 	$level = 'administrator';
 	add_menu_page( 'EduAdmin', 'EduAdmin', $level, 'eduadmin-settings', 'edu_render_general_settings', 'dashicons-welcome-learn-more' );
 	add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - General', 'eduadmin-booking' ), __( 'General settings', 'eduadmin-booking' ), $level, 'eduadmin-settings', 'edu_render_general_settings' );
@@ -210,23 +210,23 @@ function eduadmin_backend_menu() {
 	add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Style', 'eduadmin-booking' ), __( 'Style settings', 'eduadmin-booking' ), $level, 'eduadmin-settings-style', 'edu_render_style_settings_page' );
 	add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Plugins', 'eduadmin-booking' ), __( 'Plugins', 'eduadmin-booking' ), $level, 'eduadmin-settings-plugins', 'edu_render_plugin_page' );
 	add_submenu_page( 'eduadmin-settings', __( 'EduAdmin - Api Authentication', 'eduadmin-booking' ), __( 'Api Authentication', 'eduadmin-booking' ), $level, 'eduadmin-settings-api', 'edu_render_settings_page' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_shortcode_metabox() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	add_meta_box( 'eduadmin-metabox', __( 'EduAdmin - Shortcodes', 'eduadmin-booking' ), 'eduadmin_create_metabox', null, 'side', 'high' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_create_metabox() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	include_once( "_metaBox.php" );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 function eduadmin_RewriteJavaScript( $script ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 
 	if ( isset( $_REQUEST['edu-thankyou'] ) ) {
 		if ( stripos( $script, "$" ) !== false ) {
@@ -276,17 +276,17 @@ function eduadmin_RewriteJavaScript( $script ) {
 				$script
 			);
 		}
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return $script;
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return '';
 }
 
 function eduadmin_printJavascript() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session['eduadmin-printJS'] ) ) {
 		$str    = "<script type=\"text/javascript\">\n";
 		$script = get_option( 'eduadmin-javascript' );
@@ -295,5 +295,5 @@ function eduadmin_printJavascript() {
 		unset( EDU()->session['eduadmin-printJS'] );
 		echo $str;
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }

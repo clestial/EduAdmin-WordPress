@@ -93,12 +93,12 @@
 			<?php if ( get_option( 'eduadmin-selectPricename', 'firstPublic' ) == "selectParticipant" ) { ?>
 				<label>
 					<div class="inputLabel">
-						<?php _e( "Price name", 'eduadmin-booking' ); ?>
+						<?php esc_html_e( 'Price name', 'eduadmin-booking' ); ?>
 					</div>
 					<div class="inputHolder">
 						<select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required
 						        onchange="eduBookingView.UpdatePrice();">
-							<option data-price="0" value=""><?php _e( "Choose price", 'eduadmin-booking' ); ?></option>
+							<option data-price="0" value=""><?php esc_html_e( 'Choose price', 'eduadmin-booking' ); ?></option>
 							<?php foreach ( $prices as $price ) { ?>
 								<option
 										data-price="<?php echo esc_attr( $price->Price ); ?>"
@@ -219,10 +219,10 @@
 			}
 
 			?>
-			<?php if ( get_option( 'eduadmin-selectPricename', 'firstPublic' ) == "selectParticipant" ) { ?>
+			<?php if ( 'selectParticipant' === get_option( 'eduadmin-selectPricename', 'firstPublic' )  ) { ?>
 				<label>
 					<div class="inputLabel">
-						<?php _e( "Price name", 'eduadmin-booking' ); ?>
+						<?php esc_html_e( 'Price name', 'eduadmin-booking' ); ?>
 					</div>
 					<div class="inputHolder">
 						<select name="participantPriceName[]" required
@@ -241,7 +241,7 @@
 									<?php } ?>
 										value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 									<?php echo trim( $price->Description ); ?>
-									(<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
+									(<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ); ?>
 									)
 								</option>
 							<?php } ?>
@@ -251,7 +251,7 @@
 			<?php } ?>
 			<?php
 			if ( count( $subEvents ) > 0 ) {
-				echo "<h4>" . __( "Sub events", 'eduadmin-booking' ) . "</h4>\n";
+				echo '<h4>' . esc_html__( 'Sub events', 'eduadmin-booking' ) . "</h4>\n";
 				foreach ( $subEvents as $subEvent ) {
 					if ( count( $sePrice[ $subEvent->OccasionID ] ) > 0 ) {
 						$s = current( $sePrice[ $subEvent->OccasionID ] )->Price;
@@ -263,12 +263,12 @@
 					     "<input class=\"subEventCheckBox\" data-price=\"" . $s . "\" onchange=\"eduBookingView.UpdatePrice();\" " .
 					     "name=\"participantSubEvent_" . $subEvent->EventID . "[]\" " .
 					     "type=\"checkbox\"" .
-					     ( $subEvent->SelectedByDefault == true || $subEvent->MandatoryParticipation == true ? " checked=\"checked\"" : "" ) .
-					     ( $subEvent->MandatoryParticipation == true ? " disabled=\"disabled\"" : "" ) .
+					     ( $subEvent->SelectedByDefault == true || $subEvent->MandatoryParticipation == true ? " checked=\"checked\"" : '' ) .
+					     ( $subEvent->MandatoryParticipation == true ? " disabled=\"disabled\"" : '' ) .
 					     " value=\"" . $subEvent->EventID . "\"> " .
 					     $subEvent->Description .
-					     ( $hideSubEventDateInfo ? "" : " (" . date( "d/m H:i", strtotime( $subEvent->StartDate ) ) . " - " . date( "d/m H:i", strtotime( $subEvent->EndDate ) ) . ") " ) .
-					     ( $s > 0 ? " <i class=\"priceLabel\">" . convertToMoney( $s ) . "</i>" : "" ) .
+					     ( $hideSubEventDateInfo ? '' : ' (' . date( 'd/m H:i', strtotime( $subEvent->StartDate ) ) . ' - ' . date( 'd/m H:i', strtotime( $subEvent->EndDate ) ) . ') ' ) .
+					     ( $s > 0 ? " <i class=\"priceLabel\">" . convertToMoney( $s ) . '</i>' : '' ) .
 					     "</label>\n";
 				}
 				echo "<br />";
@@ -278,9 +278,9 @@
 	</div>
 	<div>
 		<a href="javascript://" class="addParticipantLink neutral-btn"
-		   onclick="eduBookingView.AddParticipant(); return false;">+ <?php _e( "Add participant", 'eduadmin-booking' ); ?></a>
+		   onclick="eduBookingView.AddParticipant(); return false;"><?php esc_html_e( '+ Add participant', 'eduadmin-booking' ); ?></a>
 	</div>
 	<div class="edu-modal warning" id="edu-warning-participants">
-		<?php _e( "You cannot add any more participants.", 'eduadmin-booking' ); ?>
+		<?php esc_html_e( 'You cannot add any more participants.', 'eduadmin-booking' ); ?>
 	</div>
 </div>

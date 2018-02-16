@@ -1,37 +1,43 @@
 <div class="checkEmailForm">
 	<input type="hidden" name="eduformloginaction" value="checkEmail"/>
 	<?php
-	$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
-	$loginLabel         = __( "E-mail address", 'eduadmin-booking' );
-	$fieldType          = "text";
-	switch ( $selectedLoginField ) {
-		case "Email":
-			$loginLabel = __( "E-mail address", 'eduadmin-booking' );
-			$fieldType  = "email";
+	$selected_login_field = get_option( 'eduadmin-loginField', 'Email' );
+	$login_label          = __( 'E-mail address', 'eduadmin-booking' );
+	$field_type           = 'text';
+	switch ( $selected_login_field ) {
+		case 'Email':
+			$login_label = __( 'E-mail address', 'eduadmin-booking' );
+			$field_type  = 'email';
 			break;
-		case "CivicRegistrationNumber":
-			$loginLabel = __( "Civic Registration Number", 'eduadmin-booking' );
-			$fieldType  = "text";
+		case 'CivicRegistrationNumber':
+			$login_label = __( 'Civic Registration Number', 'eduadmin-booking' );
+			$field_type  = 'text';
 			break;
-		case "CustomerNumber":
-			$loginLabel = __( "Customer number", 'eduadmin-booking' );
-			$fieldType  = "text";
+		case 'CustomerNumber':
+			$login_label = __( 'Customer number', 'eduadmin-booking' );
+			$field_type  = 'text';
 			break;
 	}
 	?>
-	<h3><?php echo sprintf( __( "Please enter your %s to continue.", 'eduadmin-booking' ), $loginLabel ); ?></h3>
+	<h3><?php
+		/* translators: %s is the chosen field to use for login */
+		echo esc_html( sprintf( __( 'Please enter your %s to continue.', 'eduadmin-booking' ), $login_label ) );
+		?></h3>
 	<label>
-		<div class="inputLabel"><?php echo $loginLabel; ?></div>
+		<div class="inputLabel"><?php echo $login_label; ?></div>
 		<div class="inputHolder">
-			<input type="<?php echo $fieldType; ?>"
-			       name="eduadminloginEmail"<?php echo( $selectedLoginField == "CivicRegistrationNumber" ? " class=\"eduadmin-civicRegNo\" onblur=\"eduBookingView.ValidateCivicRegNo();\"" : "" ); ?>
+			<input type="<?php echo $field_type; ?>"
+			       name="eduadminloginEmail"<?php echo( 'CivicRegistrationNumber' === $selected_login_field ? ' class="eduadmin-civicRegNo" onblur="eduBookingView.ValidateCivicRegNo();"' : '' ); ?>
 			       required autocomplete="off"
-			       title="<?php echo esc_attr( sprintf( __( "Please enter your %s here", 'eduadmin-booking' ), $loginLabel ) ); ?>"
-			       placeholder="<?php echo esc_attr( $loginLabel ); ?>"
-			       value="<?php echo @esc_attr( sanitize_text_field( $_REQUEST["eduadminloginEmail"] ) ); ?>"/>
+			       title="<?php
+			       /* translators: %s is the chosen field to use for login */
+			       echo esc_attr( sprintf( __( 'Please enter your %s here', 'eduadmin-booking' ), $login_label ) );
+			       ?>"
+			       placeholder="<?php echo esc_attr( $login_label ); ?>"
+			       value="<?php echo @esc_attr( sanitize_text_field( $_POST['eduadminloginEmail'] ) ); ?>"/>
 		</div>
 	</label>
 	<input type="submit"
-	       class="bookingLoginButton cta-btn"<?php echo( $selectedLoginField == "CivicRegistrationNumber" && get_option( 'eduadmin-validateCivicRegNo', false ) === "true" ? " onclick=\"if(!eduBookingView.ValidateCivicRegNo()) { alert('" . __( "Please enter a valid swedish civic registration number.", 'eduadmin-booking' ) . "'); return false; }\"" : "" ); ?>
-	       value="<?php echo esc_attr( __( "Continue", 'eduadmin-booking' ) ); ?>"/>
+	       class="bookingLoginButton cta-btn"<?php echo( 'CivicRegistrationNumber' === $selected_login_field && 'true' === get_option( 'eduadmin-validateCivicRegNo', false ) ? ' onclick="if(!eduBookingView.ValidateCivicRegNo()) { alert(\'' . __( 'Please enter a valid swedish civic registration number.', 'eduadmin-booking' ) . '\'); return false; }"' : '' ); ?>
+	       value="<?php echo esc_attr__( 'Continue', 'eduadmin-booking' ); ?>"/>
 </div>

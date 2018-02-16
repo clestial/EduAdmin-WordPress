@@ -1,7 +1,7 @@
 <?php
 // Render ALL the types
 function renderQuestion( $question ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	switch ( $question->QuestionTypeID ) {
 		case 1: // Text-fråga
 			renderTextQuestion( $question );
@@ -39,7 +39,7 @@ function renderQuestion( $question ) {
 			echo "<xmp>" . print_r( $question, true ) . "</xmp>";
 			break;
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 // QuestionTypeID 5

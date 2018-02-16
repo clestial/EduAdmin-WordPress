@@ -17,7 +17,7 @@ if ( ! function_exists( 'normalize_empty_atts' ) ) {
 }
 
 function eduadmin_get_list_view( $attributes ) {
-	$t                 = EDU()->StartTimer( __METHOD__ );
+	$t                 = EDU()->start_timer( __METHOD__ );
 	$selected_template = get_option( 'eduadmin-listTemplate', 'template_A' );
 	$attributes        = shortcode_atts(
 		array(
@@ -43,13 +43,13 @@ function eduadmin_get_list_view( $attributes ) {
 		'eduadmin-listview'
 	);
 	$str               = include( EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/' . $attributes['template'] . '.php' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $str;
 }
 
 function eduadmin_get_object_interest( $attributes ) {
-	$t          = EDU()->StartTimer( __METHOD__ );
+	$t          = EDU()->start_timer( __METHOD__ );
 	$attributes = shortcode_atts(
 		array(
 			'courseid' => null,
@@ -58,26 +58,26 @@ function eduadmin_get_object_interest( $attributes ) {
 		'eduadmin-objectinterest'
 	);
 	$str        = include( EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interestRegObject.php' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $str;
 }
 
 function eduadmin_get_event_interest( $attributes ) {
-	$t          = EDU()->StartTimer( __METHOD__ );
+	$t          = EDU()->start_timer( __METHOD__ );
 	$attributes = shortcode_atts(
 		array(),
 		normalize_empty_atts( $attributes ),
 		'eduadmin-eventinterest'
 	);
 	$str        = include( EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interestRegEvent.php' );
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $str;
 }
 
 function eduadmin_get_detail_view( $attributes ) {
-	$t                 = EDU()->StartTimer( __METHOD__ );
+	$t                 = EDU()->start_timer( __METHOD__ );
 	$selected_template = get_option( 'eduadmin-detailTemplate', 'template_A' );
 	$attributes        = shortcode_atts(
 		array(
@@ -98,17 +98,17 @@ function eduadmin_get_detail_view( $attributes ) {
 
 	if ( ! isset( $attributes['customtemplate'] ) || 1 !== $attributes['customtemplate'] ) {
 		$str = include_once( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/' . $attributes['template'] . '.php' );
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return $str;
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return '';
 }
 
 function eduadmin_get_course_public_pricename( $attributes ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	global $wp_query;
 	$attributes = shortcode_atts(
 		array(
@@ -125,20 +125,20 @@ function eduadmin_get_course_public_pricename( $attributes ) {
 		if ( isset( $wp_query->query_vars['courseId'] ) ) {
 			$course_id = $wp_query->query_vars['courseId'];
 		} else {
-			EDU()->StopTimer( $t );
+			EDU()->stop_timer( $t );
 
 			return 'Missing courseId in attributes';
 		}
 	} else {
 		$course_id = $attributes['courseid'];
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return include_once( EDUADMIN_PLUGIN_PATH . '/content/template/myPagesTemplate/coursePriceNames.php' );
 }
 
 function edu_no_index() {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	global $wp_query;
 	$detailpage = get_option( 'eduadmin-detailViewPage' );
 	if ( isset( $wp_query->queried_object ) ) {
@@ -146,13 +146,13 @@ function edu_no_index() {
 			echo '<meta name="robots" content="noindex" />';
 		}
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 }
 
 add_action( 'wp_head', 'edu_no_index' );
 
 function eduadmin_get_booking_view( $attributes ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 		define( 'DONOTCACHEPAGE', true );
 	}
@@ -172,13 +172,13 @@ function eduadmin_get_booking_view( $attributes ) {
 	} else {
 		$str = include_once( EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/loginView.php' );
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $str;
 }
 
 function eduadmin_get_detailinfo( $attributes ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	global $wp_query;
 	$attributes = shortcode_atts(
 		array(
@@ -220,7 +220,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 		if ( isset( $wp_query->query_vars['courseId'] ) ) {
 			$courseId = $wp_query->query_vars['courseId'];
 		} else {
-			EDU()->StopTimer( $t );
+			EDU()->stop_timer( $t );
 
 			return 'Missing courseId in attributes';
 		}
@@ -231,7 +231,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 	$apiKey = get_option( 'eduadmin-api-key' );
 
 	if ( ! $apiKey || empty( $apiKey ) ) {
-		EDU()->StopTimer( $t );
+		EDU()->stop_timer( $t );
 
 		return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
@@ -251,7 +251,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 		}
 
 		if ( ! $selectedCourse ) {
-			EDU()->StopTimer( $t );
+			EDU()->stop_timer( $t );
 
 			return 'Course with ID ' . $courseId . ' could not be found.';
 		} else {
@@ -672,13 +672,13 @@ function eduadmin_get_detailinfo( $attributes ) {
 			}
 		}
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return $ret_str;
 }
 
 function eduadmin_get_login_widget( $attributes ) {
-	$t          = EDU()->StartTimer( __METHOD__ );
+	$t          = EDU()->start_timer( __METHOD__ );
 	$attributes = shortcode_atts(
 		array(
 			'logintext'  => __( "Log in", 'eduadmin-booking' ),
@@ -696,7 +696,7 @@ function eduadmin_get_login_widget( $attributes ) {
 	if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 		$user = EDU()->session['eduadmin-loginUser'];
 	}
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return
 		"<div class=\"eduadminLogin\" data-eduwidget=\"loginwidget\"
@@ -707,7 +707,7 @@ function eduadmin_get_login_widget( $attributes ) {
 }
 
 function eduadmin_get_login_view( $attributes ) {
-	$t = EDU()->StartTimer( __METHOD__ );
+	$t = EDU()->start_timer( __METHOD__ );
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
 		define( 'DONOTCACHEPAGE', true );
 	}
@@ -720,7 +720,7 @@ function eduadmin_get_login_view( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-loginview'
 	);
-	EDU()->StopTimer( $t );
+	EDU()->stop_timer( $t );
 
 	return include_once( EDUADMIN_PLUGIN_PATH . "/content/template/myPagesTemplate/login.php" );
 }

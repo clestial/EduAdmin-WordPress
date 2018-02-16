@@ -1,13 +1,13 @@
 <?php
 
+/**
+ * Class EduAdminLoginHandler
+ */
 class EduAdminLoginHandler {
 	/**
-	 * @var EduAdmin
+	 * EduAdminLoginHandler constructor.
 	 */
-	private $edu = null;
-
-	public function __construct( $_edu ) {
-		$this->edu = $_edu;
+	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'process_login' ) );
 	}
 
@@ -49,10 +49,10 @@ class EduAdminLoginHandler {
 					unset( $customer['@odata.context'] );
 					unset( $customer['@curl'] );
 
-					$user           = new stdClass;
-					$c1             = wp_json_encode( $contact );
+					$user           = new stdClass();
+					$c1             = json_encode( $contact );
 					$user->Contact  = json_decode( $c1 );
-					$c2             = wp_json_encode( $customer );
+					$c2             = json_encode( $customer );
 					$user->Customer = json_decode( $c2 );
 
 					EDU()->session['eduadmin-loginUser'] = $user;
@@ -61,10 +61,10 @@ class EduAdminLoginHandler {
 				}
 			}
 
-			if ( isset( $user ) ) {
+			if ( ! empty( $user ) ) {
 				if ( $regular_login ) {
 					if ( ! empty( $_POST['eduReturnUrl'] ) ) {
-						wp_safe_redirect( esc_url_raw( wp_unslash( $_POST['eduReturnUrl'] ) ) ); // Input var okay.
+						wp_safe_redirect( esc_url_raw( $_POST['eduReturnUrl'] ) ); // Input var okay.
 					} else {
 						wp_safe_redirect( esc_url_raw( $base_url . '/profile/myprofile/' . edu_getQueryString() ) );
 					}

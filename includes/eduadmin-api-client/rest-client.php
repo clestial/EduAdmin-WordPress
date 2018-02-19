@@ -12,9 +12,9 @@ class EduAdminRESTClient {
 	/**
 	 * @var string API Password
 	 */
-	static $api_pass = null;
-	static $root_url = 'https://api.eduadmin.se';
-	protected $api_url = '';
+	static    $api_pass = null;
+	static    $root_url = 'https://api.eduadmin.se';
+	protected $api_url  = '';
 
 	/**
 	 * @param resource $curl
@@ -49,19 +49,19 @@ class EduAdminRESTClient {
 	 * @param      $endpoint   string Where are we going with this request?
 	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $methodName string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json    Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
 	public function POST( $endpoint, $params, $methodName, $is_json = true ) {
-		return $this->makeRequest( "POST", $endpoint, $params, $methodName, $is_json );
+		return $this->makeRequest( 'POST', $endpoint, $params, $methodName, $is_json );
 	}
 
 	/**
 	 * @param      $endpoint   string Where are we going with this request?
 	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $methodName string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json    Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -73,7 +73,7 @@ class EduAdminRESTClient {
 	 * @param      $endpoint   string Where are we going with this request?
 	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $methodName string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json    Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -85,7 +85,7 @@ class EduAdminRESTClient {
 	 * @param      $endpoint   string Where are we going with this request?
 	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $methodName string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json    Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -94,11 +94,11 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param string $type
-	 * @param string $endpoint
+	 * @param string              $type
+	 * @param string              $endpoint
 	 * @param string|array|object $params
-	 * @param string $methodName
-	 * @param bool $is_json
+	 * @param string              $methodName
+	 * @param bool                $is_json
 	 *
 	 * @return mixed
 	 */
@@ -128,15 +128,15 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param string $endpoint
+	 * @param string       $endpoint
 	 * @param object|array $params
-	 * @param string $methodName
+	 * @param string       $methodName
 	 *
 	 * @return mixed
 	 */
 	public function GET( $endpoint, $params, $methodName ) {
 		$t = EDUAPI()->StartTimer( $methodName . ' - GET' );
-		$c = $this->getCurlObject( $endpoint . "?" . http_build_query( $params ) );
+		$c = $this->getCurlObject( $endpoint . '?' . http_build_query( $params ) );
 		$this->setHeaders( $c, array() );
 		$result = $this->executeRequest( $c );
 		EDUAPI()->StopTimer( $t );
@@ -161,7 +161,7 @@ class EduAdminRESTClient {
 
 	/**
 	 * @param resource $curlObject
-	 * @param array $array
+	 * @param array    $array
 	 */
 	private function setHeaders( $curlObject, array $array = array() ) {
 		if ( isset( EDUAPI()->api_token ) ) {

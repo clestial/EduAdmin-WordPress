@@ -15,7 +15,7 @@ function edu_decrypt_api_key( $key ) {
 
 function edu_get_timers() {
 	if ( ! empty( $_GET['edu-showtimers'] ) && '1' === $_GET['edu-showtimers'] ) { // Input var okay.
-		if ( EDU()->timers ) {
+		if ( ! empty( EDU()->timers ) ) {
 			echo '<!-- EduAdmin Booking (' . esc_html( EDU()->version ) . ") API - Timers -->\n";
 			$total_value = 0;
 			foreach ( EDU()->timers as $timer => $value ) {
@@ -25,7 +25,7 @@ function edu_get_timers() {
 			echo '<!-- EduAdmin Total: ' . esc_html( round( $total_value * 1000, 2 ) ) . "ms -->\n";
 			echo "<!-- /EduAdmin Booking API - Timers -->\n";
 		}
-		if ( EDU()->api->timers ) {
+		if ( ! empty( EDU()->api->timers ) ) {
 			echo "<!-- EduAdmin Booking Class - Timers -->\n";
 			$total_value = 0;
 			foreach ( EDU()->api->timers as $timer => $value ) {

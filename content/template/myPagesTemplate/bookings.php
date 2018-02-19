@@ -107,12 +107,9 @@ $customer = $user->Customer;
 						<td colspan="5">
 							<table class="edu-event-participantList">
 								<tr>
-									<th align="left"
-									    class="edu-participantList-name"><?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?></th>
-									<th align="center"
-									    class="edu-participantList-arrived"><?php esc_html_e( 'Arrived', 'eduadmin-booking' ); ?></th>
-									<th align="right"
-									    class="edu-participantList-grade"><?php esc_html_e( 'Grade', 'eduadmin-booking' ); ?></th>
+									<th align="left" class="edu-participantList-name"><?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?></th>
+									<th align="center" class="edu-participantList-arrived"><?php esc_html_e( 'Arrived', 'eduadmin-booking' ); ?></th>
+									<th align="right" class="edu-participantList-grade"><?php esc_html_e( 'Grade', 'eduadmin-booking' ); ?></th>
 								</tr>
 								<?php
 								foreach ( $book->Participants as $participant ) {
@@ -128,11 +125,10 @@ $customer = $user->Customer;
 							</table>
 						</td>
 					</tr>
-				<?php } ?>
-				<?php
+				<?php } ?><?php
 			}
 		}
 		?>
 	</table>
-	<?php require_once( 'login_tab_footer.php' ); ?>
+	<?php include_once 'login_tab_footer.php'; ?>
 </div>

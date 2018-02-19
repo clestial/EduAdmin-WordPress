@@ -59,9 +59,9 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		 */
 		public function StartTimer( $name ) {
 			$timer_id                                = count( $this->timers ) + 1;
-			$this->timers[ $name . "_" . $timer_id ] = microtime( true );
+			$this->timers[ $name . '_' . $timer_id ] = microtime( true );
 
-			return $name . "_" . $timer_id;
+			return $name . '_' . $timer_id;
 		}
 
 		/**
@@ -72,9 +72,9 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		}
 
 		private function includes() {
+			include_once( "eduadmin-api-classes.php" );
 			include_once( "rest-client.php" );
 			include_once( "odata-client.php" );
-			include_once( "eduadmin-api-classes.php" );
 
 			/* OData Classes */
 			include_once( "subclasses/odata/eduadmin-bookings.php" );
@@ -187,11 +187,12 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 				throw new Exception( "You must use SetCredentials before fetching token." );
 			}
 
-			$result          = $this->rest->POST( "/token", array(
+			$result = $this->rest->POST( "/token", array(
 				'username'   => EduAdminRESTClient::$api_user,
 				'password'   => EduAdminRESTClient::$api_pass,
 				'grant_type' => 'password',
 			), "GetToken", false );
+
 			$this->api_token = new EduAdminToken( $result );
 
 			return $this->api_token;

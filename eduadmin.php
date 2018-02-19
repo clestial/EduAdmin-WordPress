@@ -110,7 +110,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			$this->version = $this->get_version();
 			$this->includes();
 			$this->init_hooks();
-
 			do_action( 'eduadmin_loaded' );
 			$this->stop_timer( $t );
 		}
@@ -213,7 +212,9 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		private function includes() {
 			$t = $this->start_timer( __METHOD__ );
+
 			include_once 'includes/eduadmin-api-client/eduadmin-api-client.php';
+
 			if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
 				include_once 'libraries/class-recursive-arrayaccess.php';
 			}
@@ -238,7 +239,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			if ( is_wp_error( $this->get_new_api_token() ) ) {
 				add_action( 'admin_notices', array( $this, 'setup_warning' ) );
 			}
-
 			$this->api = new EduAdminClient( $this->version );
 
 			include_once 'includes/_options.php';
@@ -392,6 +392,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		private function get_new_api_token() {
 			$new_key = get_option( 'eduadmin-newapi-key', null );
+
 			if ( null !== $new_key ) {
 				$key = edu_decrypt_api_key( $new_key );
 				EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
@@ -406,8 +407,12 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			}
 
 			$current_token = get_transient( 'eduadmin-newapi-token' );
-			if ( null === $current_token || ! $current_token->IsValid() ) {
-				$current_token = EDUAPI()->GetToken();
+			if ( false === $current_token || ! $current_token->IsValid() ) {
+				try {
+					$current_token = EDUAPI()->GetToken();
+				} catch ( Exception $ex ) {
+					return new WP_Error( 'broke', __( 'Could not fetch a new access token for the EduAdmin API, please contact MultiNet support.', 'eduadmin-booking' ) );
+				}
 				if ( empty( $current_token->Issued ) ) {
 					return new WP_Error( 'broke', __( 'The key for the EduAdmin API is not configured to work with the new API, please contact MultiNet support.', 'eduadmin-booking' ) );
 				}

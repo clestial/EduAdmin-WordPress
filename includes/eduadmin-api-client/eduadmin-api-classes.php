@@ -27,15 +27,15 @@ class EduAdminToken {
 	 */
 	public function __construct( $obj ) {
 		if ( null === $obj ) {
-			die( "Could not deserialize the token" );
+			die( 'Could not deserialize the token' );
 		}
 
-		$this->AccessToken = $obj["access_token"];
-		$this->TokenType   = $obj["token_type"];
-		$this->ExpiresIn   = $obj["expires_in"];
-		$this->UserName    = $obj["userName"];
-		$this->Issued      = strtotime( $obj[".issued"] );
-		$this->Expires     = strtotime( $obj[".expires"] );
+		$this->AccessToken = $obj['access_token'];
+		$this->TokenType   = $obj['token_type'];
+		$this->ExpiresIn   = $obj['expires_in'];
+		$this->UserName    = $obj['userName'];
+		$this->Issued      = strtotime( $obj['.issued'] );
+		$this->Expires     = strtotime( $obj['.expires'] );
 	}
 
 	/**
@@ -43,7 +43,10 @@ class EduAdminToken {
 	 * @return bool
 	 */
 	public function IsValid() {
-		return strtotime( "now" ) < $this->Expires;
+		if(!empty($this->Expires)) {
+			return strtotime( 'now' ) < $this->Expires;
+		}
+		return false;
 	}
 }
 

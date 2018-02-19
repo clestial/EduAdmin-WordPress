@@ -43,9 +43,10 @@ class EduAdminToken {
 	 * @return bool
 	 */
 	public function IsValid() {
-		if(!empty($this->Expires)) {
+		if ( ! empty( $this->Expires ) ) {
 			return strtotime( 'now' ) < $this->Expires;
 		}
+
 		return false;
 	}
 }
@@ -66,7 +67,7 @@ class EduAdmin_ODataHolder {
 	public $CustomerGroups = null;
 	/** @var EduAdmin_OData_Customers */
 	public $Customers = null;
-	/** @var EduAdmin_OData_CustomFields  */
+	/** @var EduAdmin_OData_CustomFields */
 	public $CustomFields = null;
 	/** @var EduAdmin_OData_Events */
 	public $Events = null;
@@ -90,7 +91,7 @@ class EduAdmin_ODataHolder {
 	public $Regions = null;
 	/** @var EduAdmin_OData_Reports */
 	public $Reports = null;
-	/** @var EduAdmin_OData_Subjects  */
+	/** @var EduAdmin_OData_Subjects */
 	public $Subjects = null;
 }
 

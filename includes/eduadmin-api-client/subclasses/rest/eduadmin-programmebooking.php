@@ -4,60 +4,60 @@
  * Class EduAdmin_REST_ProgrammeBooking
  */
 class EduAdmin_REST_ProgrammeBooking extends EduAdminRESTClient {
-	protected $api_url = "/v1/ProgrammeBooking";
+	protected $api_url = '/v1/ProgrammeBooking';
 
 	/**
-	 * @param EduAdmin_Data_ProgrammeBooking|stdClass|object $programmeBooking
+	 * @param EduAdmin_Data_ProgrammeBooking|stdClass|object $programme_booking
 	 *
 	 * @return mixed
 	 */
-	public function Book( $programmeBooking ) {
+	public function Book( $programme_booking ) {
 		return parent::POST(
-			"",
-			$programmeBooking,
-			get_called_class() . "|" . __FUNCTION__
+			'',
+			$programme_booking,
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $programmeBookingId
-	 * @param EduAdmin_Data_Mail|stdClass|object $pbEmail
+	 * @param integer $programme_booking_id
+	 * @param EduAdmin_Data_Mail|stdClass|object $pb_email
 	 *
 	 * @return mixed
 	 */
-	public function SendEmail( $programmeBookingId, $pbEmail ) {
+	public function SendEmail( $programme_booking_id, $pb_email ) {
 		return parent::POST(
-			"/$programmeBookingId/Email/Send",
-			$pbEmail,
-			get_called_class() . "|" . __FUNCTION__
+			"/$programme_booking_id/Email/Send",
+			$pb_email,
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $programmeBookingId
-	 * @param EduAdmin_Data_MailAdvanced|stdClass|object $pbEmail
+	 * @param integer $programme_booking_id
+	 * @param EduAdmin_Data_MailAdvanced|stdClass|object $pb_email
 	 *
 	 * @return mixed
 	 */
-	public function SendEmailAdvanced( $programmeBookingId, $pbEmail ) {
+	public function SendEmailAdvanced( $programme_booking_id, $pb_email ) {
 		return parent::POST(
-			"/$programmeBookingId/Email/SendAdvanced",
-			$pbEmail,
-			get_called_class() . "|" . __FUNCTION__
+			"/$programme_booking_id/Email/SendAdvanced",
+			$pb_email,
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $programmeBookingId
+	 * @param integer $programme_booking_id
 	 * @param EduAdmin_Data_ProgrammeBooking_Patch|stdClass|object $patch
 	 *
 	 * @return mixed
 	 */
-	public function PatchBooking( $programmeBookingId, $patch ) {
+	public function PatchBooking( $programme_booking_id, $patch ) {
 		return parent::PATCH(
-			"/$programmeBookingId",
+			"/$programme_booking_id",
 			$patch,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 }

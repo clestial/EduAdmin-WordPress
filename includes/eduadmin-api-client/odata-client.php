@@ -39,7 +39,7 @@ class EduAdminODataClient extends EduAdminRESTClient {
 		}
 		$params['$count'] = $count ? 'true' : false;
 
-		return parent::GET( "", $params, get_called_class() . "|" . __FUNCTION__ );
+		return parent::GET( '', $params, get_called_class() . '|' . __FUNCTION__ );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class EduAdminODataClient extends EduAdminRESTClient {
 			$params['$expand'] = $expand;
 		}
 
-		return parent::GET( "($id)", $params, get_called_class() . "|" . __FUNCTION__ );
+		return parent::GET( "($id)", $params, get_called_class() . '|' . __FUNCTION__ );
 	}
 
 	/**
@@ -66,14 +66,14 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @param string $endpoint
 	 * @param array|object $params
-	 * @param string $methodName
+	 * @param string $method_name
 	 * @param bool $is_json
 	 *
 	 * @return mixed|void
 	 * @throws Exception
 	 */
-	final public function GET( $endpoint, $params, $methodName, $is_json = true ) {
-		throw new Exception( "This is OData, not REST, use Search or GetItem" );
+	final public function GET( $endpoint, $params, $method_name, $is_json = true ) {
+		throw new Exception( 'This is OData, not REST, use Search or GetItem' );
 	}
 
 	/**
@@ -81,14 +81,14 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @param string $endpoint
 	 * @param array|object $params
-	 * @param string $methodName
+	 * @param string $method_name
 	 * @param bool $is_json
 	 *
 	 * @return mixed|void
 	 * @throws Exception
 	 */
-	final public function POST( $endpoint, $params, $methodName, $is_json = true ) {
-		throw new Exception( "This is OData, not REST, use Search or GetItem" );
+	final public function POST( $endpoint, $params, $method_name, $is_json = true ) {
+		throw new Exception( 'This is OData, not REST, use Search or GetItem' );
 	}
 
 	/**
@@ -96,14 +96,14 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @param string $endpoint
 	 * @param array|object $params
-	 * @param string $methodName
+	 * @param string $method_name
 	 * @param bool $is_json
 	 *
 	 * @return mixed|void
 	 * @throws Exception
 	 */
-	final public function PATCH( $endpoint, $params, $methodName, $is_json = true ) {
-		throw new Exception( "This is OData, not REST, use Search or GetItem" );
+	final public function PATCH( $endpoint, $params, $method_name, $is_json = true ) {
+		throw new Exception( 'This is OData, not REST, use Search or GetItem' );
 	}
 
 	/**
@@ -111,14 +111,14 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @param string $endpoint
 	 * @param array|object $params
-	 * @param string $methodName
+	 * @param string $method_name
 	 * @param bool $is_json
 	 *
 	 * @return mixed|void
 	 * @throws Exception
 	 */
-	final public function DELETE( $endpoint, $params, $methodName, $is_json = true ) {
-		throw new Exception( "This is OData, not REST, use Search or GetItem" );
+	final public function DELETE( $endpoint, $params, $method_name, $is_json = true ) {
+		throw new Exception( 'This is OData, not REST, use Search or GetItem' );
 	}
 
 	/**
@@ -126,13 +126,13 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @param string $endpoint
 	 * @param array|object $params
-	 * @param string $methodName
+	 * @param string $method_name
 	 * @param bool $is_json
 	 *
 	 * @return mixed|void
 	 * @throws Exception
 	 */
-	final public function PUT( $endpoint, $params, $methodName, $is_json = true ) {
-		throw new Exception( "This is OData, not REST, use Search or GetItem" );
+	final public function PUT( $endpoint, $params, $method_name, $is_json = true ) {
+		throw new Exception( 'This is OData, not REST, use Search or GetItem' );
 	}
 }

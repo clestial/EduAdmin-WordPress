@@ -4,15 +4,15 @@
  * Class EduAdmin_REST_Report
  */
 class EduAdmin_REST_Report extends EduAdminRESTClient {
-	protected $api_url = "/v1/Report";
+	protected $api_url = '/v1/Report';
 
 	/**
-	 * @param integer $reportId
+	 * @param integer $report_id
 	 * @param EduAdmin_Data_ReportOptions|stdClass|object $options
 	 *
 	 * @return mixed
 	 */
-	public function CreateUrl( $reportId, $options ) {
-		return parent::POST( "/$reportId/CreateUrl", $options, get_called_class() . "|" . __FUNCTION__ );
+	public function CreateUrl( $report_id, $options ) {
+		return parent::POST( "/$report_id/CreateUrl", $options, get_called_class() . '|' . __FUNCTION__ );
 	}
 }

@@ -193,15 +193,13 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				if ( ! $edutoken ) {
 					$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
 					set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
-				} else {
-					if ( false === get_transient( 'eduadmin-validatedToken_' . $edutoken ) ) {
-						$valid = $this->api->ValidateAuthToken( $edutoken );
-						if ( ! $valid ) {
-							$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
-							set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
-						}
-						set_transient( 'eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS );
+				} elseif ( false === get_transient( 'eduadmin-validatedToken_' . $edutoken ) ) {
+					$valid = $this->api->ValidateAuthToken( $edutoken );
+					if ( ! $valid ) {
+						$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
+						set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
 					}
+					set_transient( 'eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS );
 				}
 				$this->token = $edutoken;
 				$this->stop_timer( $t );
@@ -413,6 +411,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				} catch ( Exception $ex ) {
 					return new WP_Error( 'broke', __( 'Could not fetch a new access token for the EduAdmin API, please contact MultiNet support.', 'eduadmin-booking' ) );
 				}
+
 				if ( empty( $current_token->Issued ) ) {
 					return new WP_Error( 'broke', __( 'The key for the EduAdmin API is not configured to work with the new API, please contact MultiNet support.', 'eduadmin-booking' ) );
 				}

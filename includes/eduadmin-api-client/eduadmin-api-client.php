@@ -47,9 +47,9 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		 */
 		public function __construct() {
 			$this->timers = array();
-			$t            = $this->StartTimer( 'InitRESTClient' );
+			$t            = $this->start_timer( 'InitRESTClient' );
 			$this->includes();
-			$this->StopTimer( $t );
+			$this->stop_timer( $t );
 		}
 
 		/**
@@ -57,7 +57,7 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		 *
 		 * @return string Returns the unique name for the created timer
 		 */
-		public function StartTimer( $name ) {
+		public function start_timer( $name ) {
 			$timer_id                                = count( $this->timers ) + 1;
 			$this->timers[ $name . '_' . $timer_id ] = microtime( true );
 
@@ -67,49 +67,49 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		/**
 		 * @param string $name The unique name of the timer (Returned from StartTimer)
 		 */
-		public function StopTimer( $name ) {
+		public function stop_timer( $name ) {
 			$this->timers[ $name ] = microtime( true ) - $this->timers[ $name ];
 		}
 
 		private function includes() {
-			include_once( "eduadmin-api-classes.php" );
-			include_once( "rest-client.php" );
-			include_once( "odata-client.php" );
+			include_once 'rest-client.php';
+			include_once 'odata-client.php';
+			include_once 'eduadmin-api-classes.php';
 
 			/* OData Classes */
-			include_once( "subclasses/odata/eduadmin-bookings.php" );
-			include_once( "subclasses/odata/eduadmin-categories.php" );
-			include_once( "subclasses/odata/eduadmin-courselevels.php" );
-			include_once( "subclasses/odata/eduadmin-coursetemplates.php" );
-			include_once( "subclasses/odata/eduadmin-customergroups.php" );
-			include_once( "subclasses/odata/eduadmin-customers.php" );
-			include_once( "subclasses/odata/eduadmin-customfields.php" );
-			include_once( "subclasses/odata/eduadmin-events.php" );
-			include_once( "subclasses/odata/eduadmin-grades.php" );
-			include_once( "subclasses/odata/eduadmin-interestregistrations.php" );
-			include_once( "subclasses/odata/eduadmin-locations.php" );
-			include_once( "subclasses/odata/eduadmin-personnel.php" );
-			include_once( "subclasses/odata/eduadmin-persons.php" );
-			include_once( "subclasses/odata/eduadmin-programmebookings.php" );
-			include_once( "subclasses/odata/eduadmin-programmes.php" );
-			include_once( "subclasses/odata/eduadmin-programmestarts.php" );
-			include_once( "subclasses/odata/eduadmin-regions.php" );
-			include_once( "subclasses/odata/eduadmin-reports.php" );
-			include_once( "subclasses/odata/eduadmin-subjects.php" );
+			include_once 'subclasses/odata/eduadmin-bookings.php';
+			include_once 'subclasses/odata/eduadmin-categories.php';
+			include_once 'subclasses/odata/eduadmin-courselevels.php';
+			include_once 'subclasses/odata/eduadmin-coursetemplates.php';
+			include_once 'subclasses/odata/eduadmin-customergroups.php';
+			include_once 'subclasses/odata/eduadmin-customers.php';
+			include_once 'subclasses/odata/eduadmin-customfields.php';
+			include_once 'subclasses/odata/eduadmin-events.php';
+			include_once 'subclasses/odata/eduadmin-grades.php';
+			include_once 'subclasses/odata/eduadmin-interestregistrations.php';
+			include_once 'subclasses/odata/eduadmin-locations.php';
+			include_once 'subclasses/odata/eduadmin-personnel.php';
+			include_once 'subclasses/odata/eduadmin-persons.php';
+			include_once 'subclasses/odata/eduadmin-programmebookings.php';
+			include_once 'subclasses/odata/eduadmin-programmes.php';
+			include_once 'subclasses/odata/eduadmin-programmestarts.php';
+			include_once 'subclasses/odata/eduadmin-regions.php';
+			include_once 'subclasses/odata/eduadmin-reports.php';
+			include_once 'subclasses/odata/eduadmin-subjects.php';
 			/* /OData Classes */
 
 			/* REST Classes */
-			include_once( "subclasses/rest/eduadmin-booking.php" );
-			include_once( "subclasses/rest/eduadmin-coupon.php" );
-			include_once( "subclasses/rest/eduadmin-customer.php" );
-			include_once( "subclasses/rest/eduadmin-event.php" );
-			include_once( "subclasses/rest/eduadmin-interestregistration.php" );
-			include_once( "subclasses/rest/eduadmin-organisation.php" );
-			include_once( "subclasses/rest/eduadmin-participant.php" );
-			include_once( "subclasses/rest/eduadmin-person.php" );
-			include_once( "subclasses/rest/eduadmin-personnel.php" );
-			include_once( "subclasses/rest/eduadmin-programmebooking.php" );
-			include_once( "subclasses/rest/eduadmin-report.php" );
+			include_once 'subclasses/rest/eduadmin-booking.php';
+			include_once 'subclasses/rest/eduadmin-coupon.php';
+			include_once 'subclasses/rest/eduadmin-customer.php';
+			include_once 'subclasses/rest/eduadmin-event.php';
+			include_once 'subclasses/rest/eduadmin-interestregistration.php';
+			include_once 'subclasses/rest/eduadmin-organisation.php';
+			include_once 'subclasses/rest/eduadmin-participant.php';
+			include_once 'subclasses/rest/eduadmin-person.php';
+			include_once 'subclasses/rest/eduadmin-personnel.php';
+			include_once 'subclasses/rest/eduadmin-programmebooking.php';
+			include_once 'subclasses/rest/eduadmin-report.php';
 			/* /REST Classes */
 
 			$this->rest = new EduAdminRESTClient();
@@ -154,18 +154,18 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 
 			// If we're inside a WordPress-plugin
 			if ( function_exists( 'add_action' ) ) {
-				add_action( 'eduadmin-showtimers', array( $this, 'RenderTimers' ) );
+				add_action( 'eduadmin-showtimers', array( $this, 'render_timers' ) );
 			}
 		}
 
-		public function RenderTimers() {
+		public function render_timers() {
 			echo "<!-- EduAdmin API (OData/REST) Client - Timers -->\n";
-			$totalValue = 0;
+			$total_value = 0;
 			foreach ( EDUAPI()->timers as $timer => $value ) {
-				echo "<!-- " . $timer . ": " . round( $value * 1000, 2 ) . "ms -->\n";
-				$totalValue += $value;
+				echo '<!-- ' . $timer . ': ' . round( $value * 1000, 2 ) . "ms -->\n";
+				$total_value += $value;
 			}
-			echo "<!-- EduAdmin Total: " . round( $totalValue * 1000, 2 ) . "ms -->\n";
+			echo '<!-- EduAdmin Total: ' . round( $total_value * 1000, 2 ) . "ms -->\n";
 			echo "<!-- /EduAdmin API (OData/REST) Client - Timers -->\n";
 		}
 
@@ -184,15 +184,14 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 		 */
 		public function GetToken() {
 			if ( ! isset( EduAdminRESTClient::$api_user ) || ! isset( EduAdminRESTClient::$api_pass ) ) {
-				throw new Exception( "You must use SetCredentials before fetching token." );
+				throw new Exception( 'You must use SetCredentials before fetching token.' );
 			}
 
-			$result = $this->rest->POST( "/token", array(
+			$result          = $this->rest->POST( '/token', array(
 				'username'   => EduAdminRESTClient::$api_user,
 				'password'   => EduAdminRESTClient::$api_pass,
 				'grant_type' => 'password',
-			), "GetToken", false );
-
+			), 'GetToken', false );
 			$this->api_token = new EduAdminToken( $result );
 
 			return $this->api_token;

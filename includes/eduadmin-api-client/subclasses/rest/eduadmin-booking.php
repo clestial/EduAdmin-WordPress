@@ -4,74 +4,74 @@
  * Class EduAdmin_REST_Booking
  */
 class EduAdmin_REST_Booking extends EduAdminRESTClient {
-	protected $api_url = "/v1/Booking";
+	protected $api_url = '/v1/Booking';
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 *
 	 * @return mixed
 	 */
-	public function DeleteBooking( $bookingId ) {
+	public function DeleteBooking( $booking_id ) {
 		return parent::DELETE(
-			"/$bookingId",
+			"/$booking_id",
 			array(),
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_MailAdvanced $mail
 	 *
 	 * @return mixed
 	 */
-	public function SendAdvancedEmail( $bookingId, EduAdmin_Data_MailAdvanced $mail ) {
+	public function SendAdvancedEmail( $booking_id, EduAdmin_Data_MailAdvanced $mail ) {
 		return parent::POST(
-			"/$bookingId/Email/SendAdvanced",
+			"/$booking_id/Email/SendAdvanced",
 			$mail,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_Mail $mail
 	 *
 	 * @return mixed
 	 */
-	public function SendEmail( $bookingId, EduAdmin_Data_Mail $mail ) {
+	public function SendEmail( $booking_id, EduAdmin_Data_Mail $mail ) {
 		return parent::POST(
-			"/$bookingId/Email/Send",
+			"/$booking_id/Email/Send",
 			$mail,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_UnnamedParticipants[] $unnamed_participants
 	 *
 	 * @return mixed
 	 */
-	public function CreateUnnamedParticipants( $bookingId, array $unnamed_participants ) {
+	public function CreateUnnamedParticipants( $booking_id, array $unnamed_participants ) {
 		return parent::POST(
-			"/$bookingId/UnnamedParticipants",
+			"/$booking_id/UnnamedParticipants",
 			$unnamed_participants,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_PatchBooking|stdClass|object $patch_booking
 	 *
 	 * @return mixed
 	 */
-	public function PatchBooking( $bookingId, $patch_booking ) {
+	public function PatchBooking( $booking_id, $patch_booking ) {
 		return parent::PATCH(
-			"/$bookingId",
+			"/$booking_id",
 			$patch_booking,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -82,9 +82,9 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	 */
 	public function Create( $booking_data ) {
 		return parent::POST(
-			"",
+			'',
 			$booking_data,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -95,37 +95,37 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	 */
 	public function CheckPrice( $booking_data ) {
 		return parent::POST(
-			"/CheckPrice",
+			'/CheckPrice',
 			$booking_data,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_BookingParticipants|stdClass|object $booking_participants
 	 *
 	 * @return mixed
 	 */
-	public function AddParticipantsToBooking( $bookingId, $booking_participants ) {
+	public function AddParticipantsToBooking( $booking_id, $booking_participants ) {
 		return parent::POST(
-			"/$bookingId/Participants",
+			"/$booking_id/Participants",
 			$booking_participants,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $bookingId
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_ConvertUnnamedParticipants|stdClass|object $unnamed_participants
 	 *
 	 * @return mixed
 	 */
-	public function ConvertUnnamedToParticipant( $bookingId, $unnamed_participants ) {
+	public function ConvertUnnamedToParticipant( $booking_id, $unnamed_participants ) {
 		return parent::POST(
-			"/$bookingId/NameUnnamedParticipants",
+			"/$booking_id/NameUnnamedParticipants",
 			$unnamed_participants,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 }

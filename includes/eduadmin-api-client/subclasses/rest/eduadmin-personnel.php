@@ -4,7 +4,7 @@
  * Class EduAdmin_REST_Personnel
  */
 class EduAdmin_REST_Personnel extends EduAdminRESTClient {
-	protected $api_url = "/v1/Personnel";
+	protected $api_url = '/v1/Personnel';
 
 	/**
 	 * @param EduAdmin_Data_Login|stdClass|object $login
@@ -12,36 +12,36 @@ class EduAdmin_REST_Personnel extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function Login( $login ) {
-		return parent::POST( "Login",
+		return parent::POST( 'Login',
 			$login,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $personnelId
+	 * @param integer $personnel_id
 	 * @param string $password
 	 *
 	 * @return mixed
 	 */
-	public function LoginById( $personnelId, $password ) {
-		return parent::POST( "/$personnelId/Login",
+	public function LoginById( $personnel_id, $password ) {
+		return parent::POST( "/$personnel_id/Login",
 			array(
-				'password' => $password
+				'password' => $password,
 			),
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $personnelId
+	 * @param integer $personnel_id
 	 *
 	 * @return mixed
 	 */
-	public function SendResetPasswordEmailById( $personnelId ) {
-		return parent::POST( "/$personnelId/SendResetPasswordEmail",
+	public function SendResetPasswordEmailById( $personnel_id ) {
+		return parent::POST( "/$personnel_id/SendResetPasswordEmail",
 			array(),
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -51,11 +51,11 @@ class EduAdmin_REST_Personnel extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function SendResetPasswordEmail( $email ) {
-		return parent::POST( "/SendResetPasswordEmail",
+		return parent::POST( '/SendResetPasswordEmail',
 			array(
-				'email' => $email
+				'email' => $email,
 			),
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 }

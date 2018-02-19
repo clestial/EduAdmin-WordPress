@@ -4,45 +4,45 @@
  * Class EduAdmin_REST_Participant
  */
 class EduAdmin_REST_Participant extends EduAdminRESTClient {
-	protected $api_url = "/v1/Participant";
+	protected $api_url = '/v1/Participant';
 
 	/**
-	 * @param integer $participantId
+	 * @param integer $participant_id
 	 *
 	 * @return mixed
 	 */
-	public function CancelParticipant( $participantId ) {
+	public function CancelParticipant( $participant_id ) {
 		return parent::POST(
-			"/$participantId/Cancel",
+			"/$participant_id/Cancel",
 			array(),
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $participantId
+	 * @param integer $participant_id
 	 * @param EduAdmin_Data_Sessions[] $sessions
 	 *
 	 * @return mixed
 	 */
-	public function AddToSessions( $participantId, array $sessions ) {
+	public function AddToSessions( $participant_id, array $sessions ) {
 		return parent::POST(
-			"/$participantId/AddToSessions",
+			"/$participant_id/AddToSessions",
 			$sessions,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $participantId
-	 * @param integer[] $sessionIds
+	 * @param integer $participant_id
+	 * @param integer[] $session_ids
 	 *
 	 * @return mixed
 	 */
-	public function RemoveSessions( $participantId, $sessionIds ) {
-		return parent::POST( "/$participantId/RemoveFromSessions",
-			$sessionIds,
-			get_called_class() . "|" . __FUNCTION__
+	public function RemoveSessions( $participant_id, $session_ids ) {
+		return parent::POST( "/$participant_id/RemoveFromSessions",
+			$session_ids,
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -52,9 +52,9 @@ class EduAdmin_REST_Participant extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function MarkAsArrived( array $arrival_status ) {
-		return parent::POST( "/Arrived",
+		return parent::POST( '/Arrived',
 			$arrival_status,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -64,9 +64,9 @@ class EduAdmin_REST_Participant extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function MarkAsNotArrived( array $arrival_status ) {
-		return parent::POST( "/NotArrived",
+		return parent::POST( '/NotArrived',
 			$arrival_status,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
@@ -76,22 +76,22 @@ class EduAdmin_REST_Participant extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function Grade( $grade_data ) {
-		return parent::POST( "/Grade",
+		return parent::POST( '/Grade',
 			$grade_data,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 
 	/**
-	 * @param integer $participantId
+	 * @param integer $participant_id
 	 * @param EduAdmin_Data_ParticipantData|stdClass|object $participant_data
 	 *
 	 * @return mixed
 	 */
-	public function Update( $participantId, $participant_data ) {
-		return parent::PATCH( "/$participantId",
+	public function Update( $participant_id, $participant_data ) {
+		return parent::PATCH( "/$participant_id",
 			$participant_data,
-			get_called_class() . "|" . __FUNCTION__
+			get_called_class() . '|' . __FUNCTION__
 		);
 	}
 }

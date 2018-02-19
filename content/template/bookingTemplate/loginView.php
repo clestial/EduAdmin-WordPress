@@ -21,7 +21,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 	foreach ( $edo as $object ) {
 		$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
 		$id   = $object->ObjectID;
-		if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
+		if ( make_slugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
 			$selectedCourse = $object;
 			break;
 		}
@@ -87,7 +87,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 						foreach ( $events as $ev ) {
 							?>
 							<option value="<?php echo $ev->EventID; ?>"><?php
-								echo wp_strip_all_tags( GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ) ) . ", ";
+								echo wp_strip_all_tags( get_old_start_end_display_date( $ev->PeriodStart, $ev->PeriodEnd ) ) . ", ";
 								echo date( "H:i", strtotime( $ev->PeriodStart ) ); ?>
 								- <?php echo date( "H:i", strtotime( $ev->PeriodEnd ) );
 								$addresses = get_transient( 'eduadmin-location-' . $ev->LocationAddressID );
@@ -112,7 +112,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 					</select>
 					<?php
 				} else {
-					echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate( $event->PeriodStart, $event->PeriodEnd ) . ", ";
+					echo "<div class=\"dateInfo\">" . get_old_start_end_display_date( $event->PeriodStart, $event->PeriodEnd ) . ", ";
 					echo date( "H:i", strtotime( $event->PeriodStart ) ); ?> - <?php echo date( "H:i", strtotime( $event->PeriodEnd ) );
 					$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );
 					if ( ! $addresses ) {

@@ -105,12 +105,12 @@ if ( ! $api_key || empty( $api_key ) ) {
 
 				if ( 1 === count( $prices ) ) {
 					?>
-					<?php echo esc_html( sprintf( '%1$s %2$s', current( $prices )['PriceNameDescription'], convertToMoney( current( $prices )['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
+					<?php echo esc_html( sprintf( '%1$s %2$s', current( $prices )['PriceNameDescription'], convert_to_money( current( $prices )['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
 					<?php
 				} else {
 					foreach ( $prices as $up ) {
 						?>
-						<?php echo esc_html( sprintf( '%1$s %2$s', $up['PriceNameDescription'], convertToMoney( $up['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
+						<?php echo esc_html( sprintf( '%1$s %2$s', $up['PriceNameDescription'], convert_to_money( $up['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
 						<br/>
 						<?php
 					}
@@ -126,7 +126,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 			<br/>
 			<div class="inquiry">
 				<a class="inquiry-link"
-				   href="<?php echo $base_url; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/interest/<?php echo edu_getQueryString( '?' ); ?>"><?php _e( 'Send inquiry about this course', 'eduadmin-booking' ); ?></a>
+				   href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/interest/<?php echo edu_get_query_string( '?' ); ?>"><?php _e( 'Send inquiry about this course', 'eduadmin-booking' ); ?></a>
 			</div>
 			<?php
 		}

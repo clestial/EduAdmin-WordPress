@@ -457,10 +457,10 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 				$currency = get_option( 'eduadmin-currency', 'SEK' );
 				if ( 1 === count( $uniquePrices ) ) {
-					$ret_str .= convertToMoney( current( $uniquePrices )->Price, $currency ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) . "\n";
+					$ret_str .= convert_to_money( current( $uniquePrices )->Price, $currency ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) . "\n";
 				} else {
 					foreach ( $uniquePrices as $price ) {
-						$ret_str .= sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) . "<br />\n";
+						$ret_str .= sprintf( '%1$s: %2$s', $price->Description, convert_to_money( $price->Price, $currency ) ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) . "<br />\n";
 					}
 				}
 			}
@@ -483,7 +483,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 				$name = ( ! empty( $selectedCourse['CourseName'] ) ? $selectedCourse['CourseName'] : $selectedCourse['InternalCourseName'] );
 
-				$ret_str .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse['CourseTemplateId'] . '/book/' . edu_getQueryString();
+				$ret_str .= $baseUrl . '/' . make_slugs( $name ) . '__' . $selectedCourse['CourseTemplateId'] . '/book/' . edu_get_query_string();
 			}
 
 			if ( isset( $attributes['courseinquiryurl'] ) ) {
@@ -493,7 +493,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 				$name = ( ! empty( $selectedCourse['CourseName'] ) ? $selectedCourse['CourseName'] : $selectedCourse['InternalCourseName'] );
 
-				$ret_str .= $baseUrl . '/' . makeSlugs( $name ) . '__' . $selectedCourse['CourseTemplateId'] . '/interest/' . edu_getQueryString();
+				$ret_str .= $baseUrl . '/' . make_slugs( $name ) . '__' . $selectedCourse['CourseTemplateId'] . '/interest/' . edu_get_query_string();
 			}
 
 			if ( isset( $attributes['courseeventlist'] ) ) {

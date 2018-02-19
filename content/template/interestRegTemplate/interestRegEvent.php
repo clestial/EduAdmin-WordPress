@@ -81,7 +81,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 			</h1>
 		</div>
 		<?php
-		echo "<div class=\"dateInfo\">" . GetOldStartEndDisplayDate( $event->PeriodStart, $event->PeriodEnd ) . ", ";
+		echo "<div class=\"dateInfo\">" . get_old_start_end_display_date( $event->PeriodStart, $event->PeriodEnd ) . ", ";
 		echo date( "H:i", strtotime( $event->PeriodStart ) ); ?>
 		- <?php echo date( "H:i", strtotime( $event->PeriodEnd ) );
 		$addresses = get_transient( 'eduadmin-location-' . $event->LocationAddressID );

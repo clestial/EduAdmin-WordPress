@@ -359,7 +359,7 @@ if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 
 					     " value=\"" . $subEvent->EventID . "\"> " .
 					     $subEvent->Description .
 					     ( $hideSubEventDateInfo ? "" : " (" . date( "d/m H:i", strtotime( $subEvent->StartDate ) ) . " - " . date( "d/m H:i", strtotime( $subEvent->EndDate ) ) . ") " ) .
-					     ( $s > 0 ? " <i class=\"priceLabel\">" . convertToMoney( $s ) . "</i>" : "" ) .
+					     ( $s > 0 ? " <i class=\"priceLabel\">" . convert_to_money( $s ) . "</i>" : "" ) .
 					     "</label>\n";
 				}
 			}

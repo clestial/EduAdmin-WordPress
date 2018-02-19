@@ -107,12 +107,12 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 				$currency = get_option( 'eduadmin-currency', 'SEK' );
 				if ( count( $prices ) == 1 ) {
 					?>
-					<?php echo sprintf( '%1$s %2$s', current( $prices )["PriceNameDescription"], convertToMoney( current( $prices )["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
+					<?php echo sprintf( '%1$s %2$s', current( $prices )["PriceNameDescription"], convert_to_money( current( $prices )["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
 					<?php
 				} else {
 					foreach ( $prices as $up ) {
 						?>
-						<?php echo sprintf( '%1$s %2$s', $up["PriceNameDescription"], convertToMoney( $up["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
+						<?php echo sprintf( '%1$s %2$s', $up["PriceNameDescription"], convert_to_money( $up["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
 						<br/>
 						<?php
 					}
@@ -126,7 +126,7 @@ if ( ! $apiKey || empty( $apiKey ) ) {
 			<br/>
 			<div class="inquiry">
 				<a class="inquiry-link"
-				   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
+				   href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/interest/<?php echo edu_get_query_string( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
 			</div>
 			<?php
 		}

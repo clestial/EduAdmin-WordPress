@@ -504,10 +504,10 @@ function edu_api_loginwidget() {
 
 	if ( ! empty( EDU()->session['eduadmin-loginUser'] ) && isset( $contact ) && isset( $contact->PersonId ) && 0 !== $contact->PersonId ) {
 		echo '<div class="eduadminLogin"><a href="' .
-		     esc_url( $base_url . '/profile/myprofile' . edu_getQueryString( '?', array( 'eid', 'module' ) ) ) .
+		     esc_url( $base_url . '/profile/myprofile' . edu_get_query_string( '?', array( 'eid', 'module' ) ) ) .
 		     '" class="eduadminMyProfileLink">' .
 		     esc_html( trim( $contact->FirstName . ' ' . $contact->LastName ) ) .
-		     '</a> - <a href="' . esc_url( $base_url . '/profile/logout' . edu_getQueryString( '?', array(
+		     '</a> - <a href="' . esc_url( $base_url . '/profile/logout' . edu_get_query_string( '?', array(
 			                                   'eid',
 			                                   'module',
 		                                   ) ) ) .
@@ -519,7 +519,7 @@ function edu_api_loginwidget() {
 		echo '<div class="eduadminLogin"><i>' .
 		     esc_html( ! empty( $guest_text ) ? $guest_text : __( 'Guest', 'eduadmin-booking' ) ) .
 		     '</i> - ' .
-		     '<a href="' . esc_url( $base_url . '/profile/login' . edu_getQueryString( '?', array(
+		     '<a href="' . esc_url( $base_url . '/profile/login' . edu_get_query_string( '?', array(
 			                            'eid',
 			                            'module',
 		                            ) ) ) .

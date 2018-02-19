@@ -111,7 +111,7 @@
 									<?php } ?>
 										value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 									<?php echo trim( $price->Description ); ?>
-									(<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
+									(<?php echo convert_to_money( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
 									)
 								</option>
 							<?php } ?>
@@ -138,7 +138,7 @@
 					     " value=\"" . $subEvent->EventID . "\"> " .
 					     $subEvent->Description .
 					     ( $hideSubEventDateInfo ? "" : " (" . date( "d/m H:i", strtotime( $subEvent->StartDate ) ) . " - " . date( "d/m H:i", strtotime( $subEvent->EndDate ) ) . ") " ) .
-					     ( $s > 0 ? " <i class=\"priceLabel\">" . convertToMoney( $s ) . "</i>" : "" ) .
+					     ( $s > 0 ? " <i class=\"priceLabel\">" . convert_to_money( $s ) . "</i>" : "" ) .
 					     "</label>\n";
 				}
 				echo "<br />";
@@ -241,7 +241,7 @@
 									<?php } ?>
 										value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
 									<?php echo trim( $price->Description ); ?>
-									(<?php echo convertToMoney( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ); ?>
+									(<?php echo convert_to_money( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $incVat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ); ?>
 									)
 								</option>
 							<?php } ?>
@@ -268,7 +268,7 @@
 					     " value=\"" . $subEvent->EventID . "\"> " .
 					     $subEvent->Description .
 					     ( $hideSubEventDateInfo ? '' : ' (' . date( 'd/m H:i', strtotime( $subEvent->StartDate ) ) . ' - ' . date( 'd/m H:i', strtotime( $subEvent->EndDate ) ) . ') ' ) .
-					     ( $s > 0 ? " <i class=\"priceLabel\">" . convertToMoney( $s ) . '</i>' : '' ) .
+					     ( $s > 0 ? " <i class=\"priceLabel\">" . convert_to_money( $s ) . '</i>' : '' ) .
 					     "</label>\n";
 				}
 				echo "<br />";

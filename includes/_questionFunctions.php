@@ -44,7 +44,7 @@ function renderQuestion( $question ) {
 
 // QuestionTypeID 5
 function renderNoteQuestion( $question ) {
-	echo "<label><h3 class=\"inputLabel noteQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convertToMoney( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
+	echo "<label><h3 class=\"inputLabel noteQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
 	echo "<div class=\"inputHolder\">";
 	echo "<textarea placeholder=\"" . wp_strip_all_tags( $question->QuestionText ) . "\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_note\" data-type=\"note\" onchange=\"eduBookingView.UpdatePrice();\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " resizable=\"resizable\" class=\"questionNoteField\" rows=\"3\">" . $question->Answers->EventBookingAnswer->DefaultAnswerText . "</textarea>";
 	echo "</div></label>";
@@ -60,7 +60,7 @@ function renderCheckBoxQuestion( $question ) {
 			echo "<input type=\"checkbox\" class=\"questionCheck\" data-type=\"check\" data-price=\"" . $q->Price . "\" onchange=\"eduBookingView.UpdatePrice();\" name=\"question_" . $question->QuestionID . "_check\"" . ( $q->DefaultAlternative == 1 ? " checked=\"checked\"" : "" ) . "" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " value=\"" . $q->AnswerID . "\" /> ";
 			echo $q->AnswerText;
 			if ( $q->Price > 0 ) {
-				echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+				echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 			}
 			echo "</div>";
 			echo "</label>";
@@ -72,7 +72,7 @@ function renderCheckBoxQuestion( $question ) {
 		echo "<input type=\"checkbox\" class=\"questionCheck\" data-type=\"check\" data-price=\"" . $q->Price . "\" onchange=\"eduBookingView.UpdatePrice();\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " name=\"question_" . $question->QuestionID . "_check\"" . ( $q->DefaultAlternative == 1 ? " checked=\"checked\"" : "" ) . " value=\"" . $q->AnswerID . "\" /> ";
 		echo $q->AnswerText;
 		if ( $q->Price > 0 ) {
-			echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+			echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 		}
 		echo "</div>";
 		echo "</label>";
@@ -83,7 +83,7 @@ function renderCheckBoxQuestion( $question ) {
 function renderDateQuestion( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
-	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convertToMoney( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );
+	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );
 	echo "</div>";
 	echo "<div class=\"inputHolder\">";
 	echo "<input type=\"date\" class=\"questionDate\" data-type=\"date\" onchange=\"eduBookingView.UpdatePrice();\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_date\" />";
@@ -107,7 +107,7 @@ function renderDropListQuestion( $question ) {
 			echo "<option value=\"" . $q->AnswerID . "\"" . ( $q->DefaultAlternative == 1 ? " selected=\"selected\"" : "" ) . " data-type=\"dropdown\" data-price=\"" . $q->Price . "\">";
 			echo $q->AnswerText;
 			if ( $q->Price > 0 ) {
-				echo " (" . convertToMoney( $q->Price ) . ")";
+				echo " (" . convert_to_money( $q->Price ) . ")";
 			}
 			echo "</option>";
 		}
@@ -116,7 +116,7 @@ function renderDropListQuestion( $question ) {
 		echo "<option value=\"" . $q->AnswerID . "\"" . ( $q->DefaultAlternative == 1 ? " selected=\"selected\"" : "" ) . " data-type=\"dropdown\" data-price=\"" . $q->Price . "\">";
 		echo $q->AnswerText;
 		if ( $q->Price > 0 ) {
-			echo " (" . convertToMoney( $q->Price ) . ")";
+			echo " (" . convert_to_money( $q->Price ) . ")";
 		}
 		echo "</option>";
 	}
@@ -133,7 +133,7 @@ function renderNumberQuestion( $question ) {
 	echo "<div class=\"inputHolder\">";
 	echo "<input type=\"number\" class=\"questionText\" onchange=\"eduBookingView.UpdatePrice();\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\" min=\"0\" data-type=\"number\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_number\" placeholder=\"" . __( "Quantity", 'eduadmin-booking' ) . "\" />";
 	if ( $question->Answers->EventBookingAnswer->Price > 0 ) {
-		echo " <i class=\"priceLabel\">(" . sprintf( __( '%1$s / pcs', 'eduadmin-booking' ), convertToMoney( $question->Answers->EventBookingAnswer->Price ) ) . ")</i>";
+		echo " <i class=\"priceLabel\">(" . sprintf( __( '%1$s / pcs', 'eduadmin-booking' ), convert_to_money( $question->Answers->EventBookingAnswer->Price ) ) . ")</i>";
 	}
 	echo "</div>";
 	echo "</label>";
@@ -141,7 +141,7 @@ function renderNumberQuestion( $question ) {
 
 function renderInfoText( $question ) {
 	if ( trim( $question->Answers->EventBookingAnswer->AnswerText ) != "" ) {
-		echo "<h3 class=\"inputLabel questionInfoQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convertToMoney( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
+		echo "<h3 class=\"inputLabel questionInfoQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
 		echo "<div class=\"questionInfoText\" data-type=\"infotext\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\">";
 		echo $question->Answers->EventBookingAnswer->AnswerText;
 		echo "</div>";
@@ -159,7 +159,7 @@ function renderRadioQuestion( $question, $display ) {
 				echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
 				echo $q->AnswerText;
 				if ( $q->Price > 0 ) {
-					echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+					echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 				}
 				echo "</div>";
 				echo "</label>";
@@ -171,7 +171,7 @@ function renderRadioQuestion( $question, $display ) {
 			echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
 			echo $q->AnswerText;
 			if ( $q->Price > 0 ) {
-				echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+				echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 			}
 			echo "</div>";
 			echo "</label>";
@@ -184,7 +184,7 @@ function renderRadioQuestion( $question, $display ) {
 				echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
 				echo $q->AnswerText;
 				if ( $q->Price > 0 ) {
-					echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+					echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 				}
 				echo "</div>";
 				echo "</label>";
@@ -196,7 +196,7 @@ function renderRadioQuestion( $question, $display ) {
 			echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
 			echo $q->AnswerText;
 			if ( $q->Price > 0 ) {
-				echo " <i class=\"priceLabel\">(" . convertToMoney( $q->Price ) . ")</i>";
+				echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
 			}
 			echo "</div>";
 			echo "</label>";
@@ -208,7 +208,7 @@ function renderRadioQuestion( $question, $display ) {
 function renderTextQuestion( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
-	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convertToMoney( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );
+	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );
 	echo "</div>";
 	echo "<div class=\"inputHolder\">";
 	echo "<input type=\"text\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " onchange=\"eduBookingView.UpdatePrice();\" data-type=\"text\" class=\"questionText\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_text\" />";

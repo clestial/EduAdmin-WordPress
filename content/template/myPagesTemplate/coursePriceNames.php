@@ -53,7 +53,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 		<h3><?php esc_html_e( 'Prices', 'eduadmin-booking' ); ?></h3>
 		<?php
 		foreach ( $edo as $price ) {
-			echo esc_html( sprintf( '%1$s: %2$s', $price['PriceNameDescription'], convertToMoney( $price['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) );
+			echo esc_html( sprintf( '%1$s: %2$s', $price['PriceNameDescription'], convert_to_money( $price['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) );
 			echo '<br />';
 		}
 		?>

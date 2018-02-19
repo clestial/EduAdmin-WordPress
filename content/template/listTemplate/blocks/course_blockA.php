@@ -1,13 +1,13 @@
 <div class="objectItem" data-objectid="<?php echo $object["CourseTemplateId"]; ?>">
 	<?php if ( $showImages && ! empty( $object["ImageUrl"] ) ) { ?>
 		<div class="objectImage"
-		     onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_getQueryString(); ?>';"
+		     onclick="location.href = '<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_get_query_string(); ?>';"
 		     style="background-image: url('<?php echo $object["ImageUrl"]; ?>');"></div>
 	<?php } ?>
 	<div class="objectInfoHolder">
 		<div class="objectName">
-			<a href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_getQueryString(); ?>"><?php
-				echo htmlentities( getUTF8( $name ) );
+			<a href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_get_query_string(); ?>"><?php
+				echo htmlentities( get_utf8( $name ) );
 				?></a>
 		</div>
 		<div class="objectDescription"><?php
@@ -48,7 +48,7 @@
 			if ( $showEventPrice && ! empty( $prices ) ) {
 				ksort( $prices );
 				$cheapest = current( $prices );
-				echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convertToMoney( $cheapest["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
+				echo "<div class=\"priceInfo\">" . sprintf( __( 'From %1$s', 'eduadmin-booking' ), convert_to_money( $cheapest["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ) . "</div> ";
 			}
 
 			if ( $object["Days"] > 0 ) {
@@ -65,7 +65,7 @@
 	<div class="objectBook">
 		<?php if ( $showReadMoreBtn ) : ?>
 			<a class="readMoreButton cta-btn"
-			   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_getQueryString(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
+			   href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object["CourseTemplateId"]; ?>/<?php echo edu_get_query_string(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
 		<?php endif; ?>
 	</div>
 </div>

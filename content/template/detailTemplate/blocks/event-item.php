@@ -22,7 +22,7 @@ if ( ! empty( $ev['EventDates'] ) ) {
      class="eventItem<?php echo( $show_more > 0 && $i >= $show_more ? ' showMoreHidden' : '' ); ?>">
 	<div class="eventDate<?php echo esc_attr( $group_by_city_class ); ?>">
 		<?php
-		echo isset( $event_dates[ $ev['EventId'] ] ) ? GetLogicalDateGroups( $event_dates[ $ev['EventId'] ] ) : GetOldStartEndDisplayDate( $ev['StartDate'], $ev['EndDate'] );
+		echo isset( $event_dates[ $ev['EventId'] ] ) ? get_logical_date_groups( $event_dates[ $ev['EventId'] ] ) : get_old_start_end_display_date( $ev['StartDate'], $ev['EndDate'] );
 		?>
 		<?php
 		echo ! isset( $event_dates[ $ev['EventId'] ] ) || 1 === count( $event_dates[ $ev['EventId'] ] ) ? '<span class="eventTime">, ' . esc_html( date( 'H:i', strtotime( $ev['StartDate'] ) ) ) . ' - ' . esc_html( date( 'H:i', strtotime( $ev['EndDate'] ) ) ) . '</span>' : '';
@@ -41,7 +41,7 @@ if ( ! empty( $ev['EventDates'] ) ) {
 	<div class="eventStatus<?php echo esc_attr( $group_by_city_class ); ?>">
 		<?php
 		$spots_left = $ev['ParticipantNumberLeft'];
-		echo '<span class="spotsLeftInfo">' . esc_html( getSpotsLeft( $spots_left, $ev['MaxParticipantNumber'], $spot_left_option, $spot_settings, $always_few_spots ) ) . '</span>';
+		echo '<span class="spotsLeftInfo">' . esc_html( get_spots_left( $spots_left, $ev['MaxParticipantNumber'], $spot_left_option, $spot_settings, $always_few_spots ) ) . '</span>';
 		?>
 	</div>
 	<div class="eventBook<?php echo esc_attr( $group_by_city_class ); ?>">
@@ -49,7 +49,7 @@ if ( ! empty( $ev['EventDates'] ) ) {
 		if ( 0 === $ev['MaxParticipantNumber'] || $spots_left > 0 ) {
 			?>
 			<a class="bookButton book-link cta-btn"
-			   href="<?php echo $base_url; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/?eid=<?php echo $ev['EventId']; ?><?php echo edu_getQueryString( '&', array( 'eid' ) ); ?>"
+			   href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/?eid=<?php echo $ev['EventId']; ?><?php echo edu_get_query_string( '&', array( 'eid' ) ); ?>"
 			><?php esc_html_e( 'Book', 'eduadmin-booking' ); ?></a>
 			<?php
 		} else {
@@ -59,7 +59,7 @@ if ( ! empty( $ev['EventDates'] ) ) {
 			if ( $allow_interest_reg_event && false !== $event_interest_page ) {
 				?>
 				<a class="inquiry-link"
-				   href="<?php echo $base_url; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/interest/?eid=<?php echo $ev['EventId']; ?><?php echo edu_getQueryString( '&', array( 'eid' ) ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
+				   href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/interest/?eid=<?php echo $ev['EventId']; ?><?php echo edu_get_query_string( '&', array( 'eid' ) ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
 				<?php
 			}
 			?>

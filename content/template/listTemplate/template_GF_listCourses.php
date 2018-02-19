@@ -77,8 +77,8 @@ if ( ! empty( $courses ) ) {
 ?>
 	<tr class="GFObjectItem" data-objectid="<?php echo $object['CourseTemplateId']; ?>">
 		<td class="GFObjectName">
-			<a href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object['CourseTemplateId']; ?>/<?php echo edu_getQueryString(); ?>"><?php
-				echo htmlentities( getUTF8( $name ) );
+			<a href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object['CourseTemplateId']; ?>/<?php echo edu_get_query_string(); ?>"><?php
+				echo htmlentities( get_utf8( $name ) );
 			?></a>
 		</td>
 
@@ -93,20 +93,20 @@ if ( ! empty( $courses ) ) {
 
 
 				echo isset( $eventCities[ 'Stockholm' ] ) ?
-					'<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Stockholm' ]['StartDate'], $eventCities[ 'Stockholm' ]['EndDate'], true ) . '</td>' : '<td></td>';
+					'<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Stockholm' ]['StartDate'], $eventCities[ 'Stockholm' ]['EndDate'], true ) . '</td>' : '<td></td>';
 
 				echo isset( $eventCities[ 'Göteborg' ] ) ?
-					'<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Göteborg' ]['StartDate'], $eventCities[ 'Göteborg' ]['EndDate'], true ) . '</td>' : '<td></td>';
+					'<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Göteborg' ]['StartDate'], $eventCities[ 'Göteborg' ]['EndDate'], true ) . '</td>' : '<td></td>';
 
 				echo isset( $eventCities[ 'Växjö' ] ) ?
-					'<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Växjö' ]['StartDate'], $eventCities[ 'Växjö' ]['EndDate'], true ) . '</td>' : '<td></td>';
+					'<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Växjö' ]['StartDate'], $eventCities[ 'Växjö' ]['EndDate'], true ) . '</td>' : '<td></td>';
 
 				if ( isset( $eventCities[ 'Malmö' ] ) ) {
-					echo '<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Malmö' ]['StartDate'], $eventCities[ 'Malmö' ]['EndDate'], true ) . '</td>';
+					echo '<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Malmö' ]['StartDate'], $eventCities[ 'Malmö' ]['EndDate'], true ) . '</td>';
 				} elseif ( isset( $eventCities[ 'Kristianstad' ] ) ) {
-					echo '<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Kristianstad' ]['StartDate'], $eventCities[ 'Kristianstad' ]['EndDate'], true ) . '</td>';
+					echo '<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Kristianstad' ]['StartDate'], $eventCities[ 'Kristianstad' ]['EndDate'], true ) . '</td>';
 				} elseif ( isset( $eventCities[ 'Sundsvall' ] ) ) {
-					echo '<td>' . $days . GetOldStartEndDisplayDate( $eventCities[ 'Sundsvall' ]['StartDate'], $eventCities[ 'Sundsvall' ]['EndDate'], true ) . '</td>';
+					echo '<td>' . $days . get_old_start_end_display_date( $eventCities[ 'Sundsvall' ]['StartDate'], $eventCities[ 'Sundsvall' ]['EndDate'], true ) . '</td>';
 				} else {
 					echo '<td></td>';
 				}
@@ -115,7 +115,7 @@ if ( ! empty( $courses ) ) {
 			}
 		?>
 		<td class="GFObjectBook">
-			<a class="readMoreButton" href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_getQueryString(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
+			<a class="readMoreButton" href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object->ObjectID; ?>/<?php echo edu_get_query_string(); ?>"><?php _e( "Read more", 'eduadmin-booking' ); ?></a>
 		</td>
 	</tr>
 <?php

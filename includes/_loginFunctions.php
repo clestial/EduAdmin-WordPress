@@ -39,7 +39,7 @@ function logoutUser() {
 	EDU()->session->regenerate_id( true );
 	unset( $_COOKIE['eduadmin-loginUser'] );
 	setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
-	wp_redirect( $baseUrl . edu_getQueryString() );
+	wp_redirect( $baseUrl . edu_get_query_string() );
 	EDU()->stop_timer( $t );
 	exit();
 }

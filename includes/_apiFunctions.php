@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $key
+ *
+ * @return bool|\stdClass
+ */
 function edu_decrypt_api_key( $key ) {
 	$decrypted = explode( '|', base64_decode( $key ) );
 	if ( 2 === count( $decrypted ) ) {

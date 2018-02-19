@@ -165,13 +165,13 @@ function eduadmin_settings_init() {
 function eduadmin_frontend_content() {
 	$t            = EDU()->start_timer( __METHOD__ );
 	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
-	wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
+	wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, date_version( $styleVersion ) );
 	$customcss = get_option( 'eduadmin-style', '' );
 	wp_enqueue_style( 'eduadmin_frontend_style' );
 	wp_add_inline_style( 'eduadmin_frontend_style', $customcss );
 
 	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/educlient/edu.apiclient.js' );
-	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
+	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
 	wp_localize_script( 'eduadmin_apiclient_script', 'wp_edu',
 	                    array(
 		                    'BaseUrl'        => home_url(),
@@ -182,7 +182,7 @@ function eduadmin_frontend_content() {
 	wp_enqueue_script( 'eduadmin_apiclient_script', false, array( 'jquery' ) );
 
 	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );
-	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
+	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
 	wp_enqueue_script( 'eduadmin_frontend_script', false, array( 'jquery' ) );
 	EDU()->stop_timer( $t );
 }
@@ -190,11 +190,11 @@ function eduadmin_frontend_content() {
 function eduadmin_backend_content() {
 	$t            = EDU()->start_timer( __METHOD__ );
 	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
-	wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, dateVersion( $styleVersion ) );
+	wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, date_version( $styleVersion ) );
 	wp_enqueue_style( 'eduadmin_admin_style' );
 
 	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/adminjs.js' );
-	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, dateVersion( $scriptVersion ) );
+	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
 	wp_enqueue_script( 'eduadmin_admin_script', false, array( 'jquery' ) );
 	EDU()->stop_timer( $t );
 }

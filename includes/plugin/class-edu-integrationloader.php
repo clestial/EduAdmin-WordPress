@@ -1,6 +1,9 @@
 <?php
 
 class EDU_IntegrationLoader {
+	/**
+	 * @var \EDU_Integration[]|array
+	 */
 	public $integrations = array();
 
 	public function __construct() {

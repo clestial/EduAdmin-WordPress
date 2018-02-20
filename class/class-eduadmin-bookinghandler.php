@@ -170,7 +170,7 @@ class EduAdminBookingHandler {
 			}
 
 			if ( 0 === $customer->CustomerID ) {
-				die( "Kunde inte skapa kundposten" );
+				die( 'Kunde inte skapa kundposten' );
 			} else {
 				$so = new XSorting();
 				$s  = new XSort( 'SortIndex', 'ASC' );

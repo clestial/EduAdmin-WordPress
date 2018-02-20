@@ -1,5 +1,5 @@
 <div class="checkEmailForm">
-	<input type="hidden" name="edu-login-ver" value="<?php echo esc_attr( wp_create_nonce( 'edu-profile-login' ) ); ?>" />
+	<input type="hidden" name="edu-login-ver" value="<?php echo esc_attr( wp_create_nonce( 'edu-profile-login' ) ); ?>"/>
 	<input type="hidden" name="eduformloginaction" value="checkEmail"/>
 	<?php
 	$selected_login_field = get_option( 'eduadmin-loginField', 'Email' );
@@ -36,6 +36,6 @@
 			?>" placeholder="<?php echo esc_attr( $login_label ); ?>" value="<?php echo esc_attr( sanitize_text_field( $_POST['eduadminloginEmail'] ) ); ?>"/>
 		</div>
 	</label>
-	<input type="submit" class="bookingLoginButton cta-btn"<?php echo( 'CivicRegistrationNumber' === $selected_login_field && 'true' === get_option( 'eduadmin-validateCivicRegNo', false ) ? ' onclick="if(!eduBookingView.ValidateCivicRegNo()) { alert(\'' . __( 'Please enter a valid swedish civic registration number.', 'eduadmin-booking' ) . '\'); return false; }"' : '' ); ?>
+	<input type="submit" class="bookingLoginButton cta-btn"<?php echo( 'CivicRegistrationNumber' === $selected_login_field && 'true' === get_option( 'eduadmin-validateCivicRegNo', false ) ? ' onclick="if(!eduBookingView.ValidateCivicRegNo()) { alert(\'' . esc_js( __( 'Please enter a valid swedish civic registration number.', 'eduadmin-booking' ) ) . '\'); return false; }"' : '' ); ?>
 			value="<?php echo esc_attr__( 'Continue', 'eduadmin-booking' ); ?>"/>
 </div>

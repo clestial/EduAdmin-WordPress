@@ -42,8 +42,8 @@ abstract class EDU_Integration {
 		$t = EDU()->start_timer( __METHOD__ );
 		?>
 		<tr valign="top">
-			<th scope="row"><label
-						for="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"><?php echo wp_kses_post( $field['title'] ); ?></label>
+			<th scope="row">
+				<label for="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"><?php echo wp_kses_post( $field['title'] ); ?></label>
 			</th>
 			<td>
 				<fieldset>
@@ -57,7 +57,7 @@ abstract class EDU_Integration {
 							$this->render_text_box( $key, $field );
 							break;
 						default: // Unhandled field types
-							echo '<pre id="' . esc_attr( $this->get_field_key( $key ) ) . '">' . print_r( $field, true ) . '</pre>';
+							EDU()->write_debug( $field );
 							break;
 					}
 					?>
@@ -76,13 +76,9 @@ abstract class EDU_Integration {
 		$t = EDU()->start_timer( __METHOD__ );
 		?>
 		<label>
-			<input
-					type="checkbox"
-					name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
-					id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
+			<input type="checkbox" name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>" id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
 				<?php checked( $this->get_option( $key ), '1' ); ?>
-					value="1"
-			/>
+					value="1"/>
 			<?php echo esc_html( $field['description'] ); ?>
 		</label>
 		<?php
@@ -127,14 +123,7 @@ abstract class EDU_Integration {
 	private function render_text_box( $key, $field ) {
 		$t = EDU()->start_timer( __METHOD__ );
 		?>
-		<input
-				class="regular-text"
-				type="<?php echo esc_attr( $field['type'] ); ?>"
-				name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
-				id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>"
-				placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>"
-				value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"
-		/>
+		<input class="regular-text" type="<?php echo esc_attr( $field['type'] ); ?>" name="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>" id="<?php echo esc_attr( $this->get_field_key( $key ) ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $this->get_option( $key ) ); ?>"/>
 		<p class="description"><?php echo esc_html( $field['description'] ); ?></p>
 		<?php
 		EDU()->stop_timer( $t );
@@ -142,21 +131,25 @@ abstract class EDU_Integration {
 
 	public function save_options() {
 		$t = EDU()->start_timer( __METHOD__ );
-		$this->init_settings();
+		if ( wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
+			$this->init_settings();
 
-		$post_data = $this->get_post_data();
-		$fields    = $this->get_form_fields();
+			$post_data = $this->get_post_data();
+			$fields    = $this->get_form_fields();
 
-		foreach ( $fields as $key => $field ) {
-			try {
-				$this->settings[ $key ] = $this->get_field_value( $key, $post_data );
-			} catch ( Exception $e ) {
-				// Ignore problems with saving options.
+			foreach ( $fields as $key => $field ) {
+				try {
+					$this->settings[ $key ] = $this->get_field_value( $key, $post_data );
+				} catch ( Exception $e ) {
+					// Ignore problems with saving options.
+				}
 			}
-		}
-		EDU()->stop_timer( $t );
+			EDU()->stop_timer( $t );
 
-		return update_option( $this->get_option_key(), $this->settings );
+			return update_option( $this->get_option_key(), $this->settings );
+		}
+
+		return false;
 	}
 
 	private function get_post_data() {

@@ -1,8 +1,8 @@
 <?php
-$user            = EDU()->session['eduadmin-loginUser'];
-$contact         = $user->Contact;
-$customer        = $user->Customer;
-$invoiceCustomer = $user->Customer->BillingInfo[0];
+$user             = EDU()->session['eduadmin-loginUser'];
+$contact          = $user->Contact;
+$customer         = $user->Customer;
+$invoice_customer = $user->Customer->BillingInfo[0];
 
 if ( ! empty( $_POST['eduaction'] ) && wp_verify_nonce( $_POST['edu-profile-nonce'], 'edu-save-profile' ) && 'saveInfo' === sanitize_text_field( $_POST['eduaction'] ) ) {
 	$patch_customer               = new stdClass();
@@ -92,44 +92,44 @@ if ( ! empty( $_POST['eduaction'] ) && wp_verify_nonce( $_POST['edu-profile-nonc
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Customer name', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceName" placeholder="<?php echo esc_attr__( 'Customer name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->CustomerName ); ?>"/>
+					<input type="text" name="customerInvoiceName" placeholder="<?php echo esc_attr__( 'Customer name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->CustomerName ); ?>"/>
 				</div>
 			</label>
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Address', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceAddress" placeholder="<?php echo esc_attr__( 'Address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->Address ); ?>"/>
+					<input type="text" name="customerInvoiceAddress" placeholder="<?php echo esc_attr__( 'Address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->Address ); ?>"/>
 				</div>
 			</label>
 
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Postal code', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceZip" placeholder="<?php echo esc_attr__( 'Postal code', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->Zip ); ?>"/>
+					<input type="text" name="customerInvoiceZip" placeholder="<?php echo esc_attr__( 'Postal code', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->Zip ); ?>"/>
 				</div>
 			</label>
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Postal city', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceCity" placeholder="<?php echo esc_attr__( 'Postal city', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->City ); ?>"/>
+					<input type="text" name="customerInvoiceCity" placeholder="<?php echo esc_attr__( 'Postal city', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->City ); ?>"/>
 				</div>
 			</label>
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Org.No.', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceOrgNr" placeholder="<?php echo esc_attr__( 'Org.No.', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->OrganisationNumber ); ?>"/>
+					<input type="text" name="customerInvoiceOrgNr" placeholder="<?php echo esc_attr__( 'Org.No.', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->OrganisationNumber ); ?>"/>
 				</div>
 			</label>
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Invoice e-mail address', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerInvoiceEmail" placeholder="<?php echo esc_attr__( 'Invoice e-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->Email ); ?>"/>
+					<input type="text" name="customerInvoiceEmail" placeholder="<?php echo esc_attr__( 'Invoice e-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->Email ); ?>"/>
 				</div>
 			</label>
 			<label>
 				<div class="inputLabel"><?php esc_html_e( 'Invoice reference', 'eduadmin-booking' ); ?></div>
 				<div class="inputHolder">
-					<input type="text" name="customerReference" placeholder="<?php echo esc_attr__( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoiceCustomer->SellerReference ); ?>"/>
+					<input type="text" name="customerReference" placeholder="<?php echo esc_attr__( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $invoice_customer->SellerReference ); ?>"/>
 				</div>
 			</label>
 		</div>
@@ -160,7 +160,7 @@ if ( ! empty( $_POST['eduaction'] ) && wp_verify_nonce( $_POST['edu-profile-nonc
 					<input type="text" name="contactEmail" readonly required placeholder="<?php echo esc_attr__( 'E-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->Email ); ?>"/>
 				</div>
 			</label>
-			<a href="<?php echo $base_url; ?>/profile/changepassword"><?php esc_html_e( 'Change password', 'eduadmin-booking' ); ?></a>
+			<a href="<?php echo esc_url( $base_url . '/profile/changepassword' ); ?>"><?php esc_html_e( 'Change password', 'eduadmin-booking' ); ?></a>
 		</div>
 		<button class="profileSaveButton cta-btn"><?php esc_html_e( 'Save', 'eduadmin-booking' ); ?></button>
 	</form>

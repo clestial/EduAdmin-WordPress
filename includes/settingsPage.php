@@ -17,7 +17,7 @@ function edu_render_settings_page() {
 	}
 	?>
 	<div class="eduadmin wrap">
-		<h2><?php echo sprintf( __( "EduAdmin settings - %s", 'eduadmin-booking' ), __( "Api authentication", 'eduadmin-booking' ) ); ?></h2>
+		<h2><?php echo esc_html( sprintf( __( 'EduAdmin settings - %s', 'eduadmin-booking' ), __( 'Api authentication', 'eduadmin-booking' ) ) ); ?></h2>
 
 		<form method="post" action="options.php">
 			<?php settings_fields( 'eduadmin-credentials' ); ?>
@@ -25,15 +25,15 @@ function edu_render_settings_page() {
 			<input type="hidden" name="eduadmin-credentials_have_changed" value="true"/>
 			<div class="block">
 				<p>
-					<?php echo __( "Enter the provided Api Key to connect to EduAdmin", 'eduadmin-booking' ); ?>
+					<?php echo esc_html__( 'Enter the provided Api Key to connect to EduAdmin', 'eduadmin-booking' ); ?>
 				</p>
 				<p>
-					<?php echo sprintf( __( "You can get these details by contacting %s", 'eduadmin-booking' ), sprintf( "<a href=\"http://support.multinet.se\" target=\"_blank\">%s</a>", __( "our support", 'eduadmin-booking' ) ) ); ?>
+					<?php echo wp_kses( sprintf( __( 'You can get these details by contacting %s', 'eduadmin-booking' ), sprintf( '<a href="http://support.multinet.se" target="_blank">%s</a>', __( 'our support', 'eduadmin-booking' ) ) ), wp_kses_allowed_html( 'post' ) ); ?>
 				</p>
-				<input type="text" readonly class="form-control api_hash" name="eduadmin-api-key" id="eduadmin-api-key" value="<?php echo get_option( 'eduadmin-api-key' ); ?>" placeholder="<?php esc_attr_e( "Api key for WordPress plugin", 'eduadmin-booking' ); ?>"/>
-				<span id="edu-unlockButton" title="<?php esc_attr_e( "Click here to unlock the Api Authentication-fields", 'eduadmin-booking' ); ?>" class="dashicons dashicons-lock" onclick="EduAdmin.UnlockApiAuthentication();"></span>
+				<input type="text" readonly class="form-control api_hash" name="eduadmin-api-key" id="eduadmin-api-key" value="<?php echo esc_attr( get_option( 'eduadmin-api-key' ) ); ?>" placeholder="<?php esc_attr_e( 'Api key for WordPress plugin', 'eduadmin-booking' ); ?>"/>
+				<span id="edu-unlockButton" title="<?php esc_attr_e( 'Click here to unlock the Api Authentication-fields', 'eduadmin-booking' ); ?>" class="dashicons dashicons-lock" onclick="EduAdmin.UnlockApiAuthentication();"></span>
 				<p class="submit">
-					<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__( "Save settings", 'eduadmin-booking' ); ?>"/>
+					<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo esc_attr__( 'Save settings', 'eduadmin-booking' ); ?>"/>
 				</p>
 			</div>
 		</form>

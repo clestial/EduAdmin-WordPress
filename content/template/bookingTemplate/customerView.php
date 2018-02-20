@@ -1,3 +1,10 @@
+<?php
+if ( ! empty( $customer->BillingInfo ) ) {
+	$billing_customer = $customer->BillingInfo[0];
+} else {
+	$billing_customer = new EduAdmin_Data_BillingInfo();
+}
+?>
 <div class="customerView">
 	<h2><?php esc_html_e( 'Customer information', 'eduadmin-booking' ); ?></h2>
 	<label>
@@ -61,7 +68,7 @@
 					<?php esc_html_e( 'Customer name', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoiceName" placeholder="<?php esc_attr_e( 'Customer name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->BillingInfo->CustomerName ); ?>"/>
+					<input type="text" name="invoiceName" placeholder="<?php esc_attr_e( 'Customer name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->CustomerName ); ?>"/>
 				</div>
 			</label>
 			<label>
@@ -69,7 +76,7 @@
 					<?php esc_html_e( 'Address 1', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoiceAddress1" placeholder="<?php esc_attr_e( 'Address 1', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->BillingInfo->Address ); ?>"/>
+					<input type="text" name="invoiceAddress1" placeholder="<?php esc_attr_e( 'Address 1', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->Address ); ?>"/>
 				</div>
 			</label>
 			<label>
@@ -77,7 +84,7 @@
 					<?php esc_html_e( 'Address 2', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoiceAddress2" placeholder="<?php esc_attr_e( 'Address 2', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->BillingInfo->Address2 ); ?>"/>
+					<input type="text" name="invoiceAddress2" placeholder="<?php esc_attr_e( 'Address 2', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->Address2 ); ?>"/>
 				</div>
 			</label>
 			<label>
@@ -85,7 +92,7 @@
 					<?php esc_html_e( 'Postal code', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoicePostalCode" placeholder="<?php esc_attr_e( 'Postal code', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->BillingInfo->Zip ); ?>"/>
+					<input type="text" name="invoicePostalCode" placeholder="<?php esc_attr_e( 'Postal code', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->Zip ); ?>"/>
 				</div>
 			</label>
 			<label>
@@ -93,7 +100,7 @@
 					<?php esc_html_e( 'Postal city', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoicePostalCity" placeholder="<?php esc_attr_e( 'Postal city', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->BillingInfo->City ); ?>"/>
+					<input type="text" name="invoicePostalCity" placeholder="<?php esc_attr_e( 'Postal city', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->City ); ?>"/>
 				</div>
 			</label>
 		</div>
@@ -103,7 +110,7 @@
 					<?php esc_html_e( 'Invoice e-mail address', 'eduadmin-booking' ); ?>
 				</div>
 				<div class="inputHolder">
-					<input type="text" name="invoiceEmail" placeholder="<?php esc_attr_e( 'Invoice e-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer_invoice_email ); ?>"/>
+					<input type="text" name="invoiceEmail" placeholder="<?php esc_attr_e( 'Invoice e-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->Email ); ?>"/>
 				</div>
 			</label>
 		<?php } ?>
@@ -112,7 +119,7 @@
 				<?php esc_html_e( 'Invoice reference', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<input type="text" name="invoiceReference" placeholder="<?php esc_attr_e( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $customer->CustomerReference ); ?>"/>
+				<input type="text" name="invoiceReference" placeholder="<?php esc_attr_e( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->SellerReference ); ?>"/>
 			</div>
 		</label>        <label>
 			<div class="inputLabel">
@@ -136,10 +143,10 @@
 	$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 	$db = array();
-	if ( isset( $customer ) && isset( $customer->CustomerID ) ) {
-		if ( $customer->CustomerID != 0 ) {
+	if ( isset( $customer ) && isset( $customer->CustomerId ) ) {
+		if ( 0 !== $customer->CustomerId ) {
 			$fo = new XFiltering();
-			$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
+			$f  = new XFilter( 'CustomerID', '=', $customer->CustomerId );
 			$fo->AddItem( $f );
 			$db = EDU()->api->GetCustomerAttribute( EDU()->get_token(), '', $fo->ToString() );
 		}
@@ -148,7 +155,7 @@
 	foreach ( $contactAttributes as $attr ) {
 		$data = null;
 		foreach ( $db as $d ) {
-			if ( $d->AttributeID == $attr->AttributeID ) {
+			if ( $d->AttributeID === $attr->AttributeID ) {
 				switch ( $d->AttributeTypeID ) {
 					case 1:
 						$data = $d->AttributeChecked;
@@ -167,7 +174,7 @@
 	}
 	if ( ! $no_invoice_free_events || $first_price->Price > 0 ) {
 		?>
-		<label<?php echo $force_show_invoice_information ? ' style="display: none;"' : '' ?>>
+		<label<?php echo $force_show_invoice_information ? ' style="display: none;"' : ''; ?>>
 			<div class="inputHolder alsoInvoiceCustomer">
 				<label class="inline-checkbox" for="alsoInvoiceCustomer">
 					<input type="checkbox" id="alsoInvoiceCustomer" name="alsoInvoiceCustomer" value="true" onchange="eduBookingView.UpdateInvoiceCustomer(this);"

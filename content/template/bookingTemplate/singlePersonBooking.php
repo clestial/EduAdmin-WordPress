@@ -262,7 +262,7 @@ if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 
 				break;
 			}
 		}
-		renderAttribute( $attr, false, "", $data );
+		render_attribute( $attr, false, "", $data );
 	}
 
 	$so = new XSorting();
@@ -304,7 +304,7 @@ if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 
 				break;
 			}
 		}
-		renderAttribute( $attr, false, "", $data );
+		render_attribute( $attr, false, "", $data );
 	}
 
 	$so = new XSorting();
@@ -338,7 +338,7 @@ if ( ! $noInvoiceFreeEvents || ( $noInvoiceFreeEvents && $firstPrice->Price > 0 
 				break;
 			}
 		}
-		renderAttribute( $attr, false, "contact", $data );
+		render_attribute( $attr, false, "contact", $data );
 	}
 	?>
 	<div class="participantItem contactPerson">

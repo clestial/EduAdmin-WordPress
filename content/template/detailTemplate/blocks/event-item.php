@@ -18,13 +18,10 @@ if ( ! empty( $ev['EventDates'] ) ) {
 }
 
 ?>
-<div data-groupid="eduev<?php echo( $group_by_city ? '-' . $ev['City'] : '' ); ?>"
-     class="eventItem<?php echo( $show_more > 0 && $i >= $show_more ? ' showMoreHidden' : '' ); ?>">
+<div data-groupid="eduev<?php echo( $group_by_city ? '-' . esc_attr( $ev['City'] ) : '' ); ?>" class="eventItem<?php echo( $show_more > 0 && $i >= $show_more ? ' showMoreHidden' : '' ); ?>">
 	<div class="eventDate<?php echo esc_attr( $group_by_city_class ); ?>">
 		<?php
-		echo isset( $event_dates[ $ev['EventId'] ] ) ? get_logical_date_groups( $event_dates[ $ev['EventId'] ] ) : get_old_start_end_display_date( $ev['StartDate'], $ev['EndDate'] );
-		?>
-		<?php
+		echo isset( $event_dates[ $ev['EventId'] ] ) ? wp_kses( get_logical_date_groups( $event_dates[ $ev['EventId'] ] ), wp_kses_allowed_html( 'post' ) ) : wp_kses( get_old_start_end_display_date( $ev['StartDate'], $ev['EndDate'] ), wp_kses_allowed_html( 'post' ) );
 		echo ! isset( $event_dates[ $ev['EventId'] ] ) || 1 === count( $event_dates[ $ev['EventId'] ] ) ? '<span class="eventTime">, ' . esc_html( date( 'H:i', strtotime( $ev['StartDate'] ) ) ) . ' - ' . esc_html( date( 'H:i', strtotime( $ev['EndDate'] ) ) ) . '</span>' : '';
 		?>
 	</div>
@@ -33,7 +30,7 @@ if ( ! empty( $ev['EventDates'] ) ) {
 			<?php
 			echo esc_html( $ev['City'] );
 			if ( $show_event_venue && ! empty( $ev['AddressName'] ) ) {
-				echo '<span class="venueInfo">, ' . esc_html( $ev['AddressName'] ) . '</span>';
+				echo '<span class="venueInfo">' . esc_html( edu_output_event_venue( $ev['AddressName'], null, ', ' ) ) . '</span>';
 			}
 			?>
 		</div>
@@ -48,18 +45,12 @@ if ( ! empty( $ev['EventDates'] ) ) {
 		<?php
 		if ( 0 === $ev['MaxParticipantNumber'] || $spots_left > 0 ) {
 			?>
-			<a class="bookButton book-link cta-btn"
-			   href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/?eid=<?php echo $ev['EventId']; ?><?php echo edu_get_query_string( '&', array( 'eid' ) ); ?>"
-			><?php esc_html_e( 'Book', 'eduadmin-booking' ); ?></a>
+			<a class="bookButton book-link cta-btn" href="<?php echo esc_url( $base_url . '/' . make_slugs( $name ) . '__' . $selected_course['CourseTemplateId'] . '/book/?eid=' . $ev['EventId'] . edu_get_query_string( '&', array( 'eid' ) ) ); ?>"><?php esc_html_e( 'Book', 'eduadmin-booking' ); ?></a>
 			<?php
 		} else {
-			?>
-			<?php
-
 			if ( $allow_interest_reg_event && false !== $event_interest_page ) {
 				?>
-				<a class="inquiry-link"
-				   href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/book/interest/?eid=<?php echo $ev['EventId']; ?><?php echo edu_get_query_string( '&', array( 'eid' ) ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
+				<a class="inquiry-link" href="<?php echo esc_url( $base_url . '/' . make_slugs( $name ) . '__' . $selected_course['CourseTemplateId'] . '/book/interest/?eid=' . $ev['EventId'] . edu_get_query_string( '&', array( 'eid' ) ) ); ?>"><?php esc_html_e( 'Inquiry', 'eduadmin-booking' ); ?></a>
 				<?php
 			}
 			?>

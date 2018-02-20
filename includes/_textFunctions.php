@@ -62,6 +62,18 @@ function edu_get_percent_from_values( $current_value, $max_value ) {
 	return edu_get_percent_class( $percent );
 }
 
+function edu_output_event_venue( $address_name = null, $city = null, $prefix = null ) {
+	$parts = array();
+	if ( ! empty( $address_name ) ) {
+		$parts[] = $address_name;
+	}
+	if ( ! empty( $city ) ) {
+		$parts[] = $city;
+	}
+
+	return $prefix . join( ', ', $parts );
+}
+
 function edu_get_percent_class( $percent ) {
 	if ( $percent >= 100 ) {
 		return 'percent100';

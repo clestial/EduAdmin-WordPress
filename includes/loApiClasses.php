@@ -70,12 +70,12 @@ class XFiltering {
 		foreach ( $this->filterItems as $filter ) {
 			$xml .= '<Filter>';
 			$xml .= '<FilterName>' . $filter->FilterName . '</FilterName>';
-			$xml .= '<FilterCondition>' . str_replace( Array(
-				                                           "<",
-				                                           ">",
-			                                           ), Array(
-				                                           "&lt;",
-				                                           "&gt;",
+			$xml .= '<FilterCondition>' . str_replace( array(
+				                                           '<',
+				                                           '>',
+			                                           ), array(
+				                                           '&lt;',
+				                                           '&gt;',
 			                                           ), $filter->FilterCondition ) . '</FilterCondition>';
 			$xml .= '<FilterValue>' . $filter->FilterValue . '</FilterValue>';
 			$xml .= '</Filter>';

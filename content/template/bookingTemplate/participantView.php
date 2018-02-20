@@ -86,7 +86,7 @@
 						break;
 					}
 				}
-				renderAttribute( $attr, false, "contact", $data );
+				render_attribute( $attr, false, "contact", $data );
 			}
 
 			?>
@@ -215,7 +215,7 @@
 			$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
 
 			foreach ( $contactAttributes as $attr ) {
-				renderAttribute( $attr, true );
+				render_attribute( $attr, true );
 			}
 
 			?>

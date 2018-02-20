@@ -1,68 +1,69 @@
 <?php
-defined( 'ABSPATH' ) or die( 'This plugin must be run within the scope of WordPress.' );
+defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 
-include_once( "pluginSettings.php" );
-include_once( "settingsPage.php" );
-include_once( "generalSettings.php" );
-include_once( "listSettings.php" );
+require_once 'pluginSettings.php';
+require_once 'settingsPage.php';
+require_once 'generalSettings.php';
+require_once 'listSettings.php';
 
-include_once( "detailSettings.php" );
-include_once( "bookingSettings.php" );
-include_once( "styleSettings.php" );
+require_once 'detailSettings.php';
+require_once 'bookingSettings.php';
+require_once 'styleSettings.php';
 
 add_action( 'admin_init', 'eduadmin_settings_init' );
 add_action( 'admin_menu', 'eduadmin_backend_menu' );
 add_action( 'admin_enqueue_scripts', 'eduadmin_backend_content' );
 add_action( 'wp_enqueue_scripts', 'eduadmin_frontend_content', PHP_INT_MAX );
 add_action( 'add_meta_boxes', 'eduadmin_shortcode_metabox' );
-add_action( 'wp_footer', 'eduadmin_printJavascript' );
+add_action( 'wp_footer', 'eduadmin_print_javascript' );
 
-function eduadmin_page_title( $title, $sep = "|" ) {
+function eduadmin_page_title( $title, $sep = '|' ) {
 	$t = EDU()->start_timer( __METHOD__ );
 	global $wp;
 
-	if ( $sep == null || empty( $sep ) ) {
-		$sep = "|";
+	if ( empty( $sep ) ) {
+		$sep = '|';
 	}
 
-	if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars["courseId"] ) ) {
-		$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"] );
+	if ( isset( $wp ) && isset( $wp->query_vars ) && isset( $wp->query_vars['courseId'] ) ) {
+		$edo = get_transient( 'eduadmin-courseTemplate_' . $wp->query_vars['courseId'] );
 		if ( ! $edo ) {
 			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
-				intval( $wp->query_vars["courseId"] ),
+				intval( $wp->query_vars['courseId'] ),
 				null,
-				"CustomFields"
+				'CustomFields'
 			);
-			set_transient( 'eduadmin-courseTemplate_' . $wp->query_vars["courseId"], $edo, 6 * HOUR_IN_SECONDS );
+			set_transient( 'eduadmin-courseTemplate_' . $wp->query_vars['courseId'], $edo, 6 * HOUR_IN_SECONDS );
 		}
 
-		$selectedCourse = false;
-		$id             = $edo["CourseTemplateId"];
-		if ( $id == $wp->query_vars["courseId"] ) {
-			$selectedCourse = $edo;
+		$selected_course = false;
+
+		$id = $edo['CourseTemplateId'];
+		if ( $id === $wp->query_vars['courseId'] ) {
+			$selected_course = $edo;
 		}
 
-		if ( $selectedCourse != false ) {
-			$titleField = get_option( 'eduadmin-pageTitleField', 'PublicName' );
-			if ( stristr( $titleField, "attr_" ) !== false ) {
-				$attrid = substr( $titleField, 5 );
-				foreach ( $selectedCourse["CustomFields"] as $cf ) {
-					if ( $cf["CustomFieldId"] == $attrid ) {
-						$value = $cf["CustomFieldValue"];
+		if ( false !== $selected_course ) {
+			$title_field = get_option( 'eduadmin-pageTitleField', 'PublicName' );
+			if ( stristr( $title_field, 'attr_' ) !== false ) {
+				$attrid = substr( $title_field, 5 );
+				foreach ( $selected_course['CustomFields'] as $cf ) {
+					if ( $cf['CustomFieldId'] === $attrid ) {
+						$value = $cf['CustomFieldValue'];
 						break;
 					}
 				}
 
 				if ( ! empty( $value ) && stristr( $title, $value ) === false ) {
-					$title = $value . " " . $sep . " " . $title;
+					$title = $value . ' ' . $sep . ' ' . $title;
 				} else {
-					$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
+					$title = $selected_course['CourseName'] . ' ' . $sep . ' ' . $title;
 				}
 			} else {
-				if ( ! empty( $selectedCourse[ $titleField ] ) && stristr( $title, $selectedCourse[ $titleField ] ) === false ) {
-					$title = $selectedCourse[ $titleField ] . " " . $sep . " " . $title;
+				if ( ! empty( $selected_course[ $title_field ] ) && stristr( $title, $selected_course[ $title_field ] ) === false ) {
+					$title = $selected_course[ $title_field ] . ' ' . $sep . ' ' . $title;
 				} else {
-					$title = $selectedCourse["CourseName"] . " " . $sep . " " . $title;
+					$title = $selected_course['CourseName'] . ' ' . $sep . ' ' . $title;
 				}
 			}
 		}
@@ -163,15 +164,16 @@ function eduadmin_settings_init() {
 }
 
 function eduadmin_frontend_content() {
-	$t            = EDU()->start_timer( __METHOD__ );
-	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
-	wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, date_version( $styleVersion ) );
+	$t = EDU()->start_timer( __METHOD__ );
+
+	$style_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/frontendstyle.css' );
+	wp_register_style( 'eduadmin_frontend_style', plugins_url( 'content/style/frontendstyle.css', dirname( __FILE__ ) ), false, date_version( $style_version ) );
 	$customcss = get_option( 'eduadmin-style', '' );
 	wp_enqueue_style( 'eduadmin_frontend_style' );
 	wp_add_inline_style( 'eduadmin_frontend_style', $customcss );
 
-	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/educlient/edu.apiclient.js' );
-	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
+	$script_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/educlient/edu.apiclient.js' );
+	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, date_version( $script_version ) );
 	wp_localize_script( 'eduadmin_apiclient_script', 'wp_edu',
 	                    array(
 		                    'BaseUrl'        => home_url(),
@@ -181,20 +183,20 @@ function eduadmin_frontend_content() {
 	                    ) );
 	wp_enqueue_script( 'eduadmin_apiclient_script', false, array( 'jquery' ) );
 
-	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );
-	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
+	$script_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );
+	wp_register_script( 'eduadmin_frontend_script', plugins_url( 'content/script/frontendjs.js', dirname( __FILE__ ) ), false, date_version( $script_version ) );
 	wp_enqueue_script( 'eduadmin_frontend_script', false, array( 'jquery' ) );
 	EDU()->stop_timer( $t );
 }
 
 function eduadmin_backend_content() {
-	$t            = EDU()->start_timer( __METHOD__ );
-	$styleVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
-	wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, date_version( $styleVersion ) );
+	$t             = EDU()->start_timer( __METHOD__ );
+	$style_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/style/adminstyle.css' );
+	wp_register_style( 'eduadmin_admin_style', plugins_url( 'content/style/adminstyle.css', dirname( __FILE__ ) ), false, date_version( $style_version ) );
 	wp_enqueue_style( 'eduadmin_admin_style' );
 
-	$scriptVersion = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/adminjs.js' );
-	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, date_version( $scriptVersion ) );
+	$script_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/adminjs.js' );
+	wp_register_script( 'eduadmin_admin_script', plugins_url( 'content/script/adminjs.js', dirname( __FILE__ ) ), false, date_version( $script_version ) );
 	wp_enqueue_script( 'eduadmin_admin_script', false, array( 'jquery' ) );
 	EDU()->stop_timer( $t );
 }
@@ -221,23 +223,23 @@ function eduadmin_shortcode_metabox() {
 
 function eduadmin_create_metabox() {
 	$t = EDU()->start_timer( __METHOD__ );
-	include_once( "_metaBox.php" );
+	include_once '_metaBox.php';
 	EDU()->stop_timer( $t );
 }
 
-function eduadmin_RewriteJavaScript( $script ) {
+function eduadmin_rewrite_javascript( $script ) {
 	$t = EDU()->start_timer( __METHOD__ );
 
-	if ( isset( $_REQUEST['edu-thankyou'] ) ) {
-		if ( stripos( $script, "$" ) !== false ) {
-			$bookingInfo = EDUAPI()->OData->Bookings->GetItem(
-				intval( $_REQUEST['edu-thankyou'] ),
+	if ( ! empty( $_GET['edu-thankyou'] ) && is_numeric( $_GET['edu-thankyou'] ) ) {
+		if ( stripos( $script, '$' ) !== false ) {
+			$booking_info = EDUAPI()->OData->Bookings->GetItem(
+				intval( $_GET['edu-thankyou'] ),
 				null,
-				"Customer,ContactPerson,Participants"
+				'Customer,ContactPerson,Participants'
 			);
 
-			$eventInfo = EDUAPI()->OData->Events->GetItem(
-				$bookingInfo["EventId"]
+			$event_info = EDUAPI()->OData->Events->GetItem(
+				$booking_info['EventId']
 			);
 
 			$script = str_replace(
@@ -258,20 +260,20 @@ function eduadmin_RewriteJavaScript( $script ) {
 					'$notes$',
 				),
 				array(
-					esc_js( $bookingInfo["BookingId"] ), // $bookingno$
-					esc_js( $eventInfo["CourseName"] ), // $productname$
-					esc_js( $bookingInfo["TotalPriceIncVat"] ), // $totalsum$
-					esc_js( $bookingInfo["NumberOfParticipants"] ), // $participants$
-					esc_js( $eventInfo["StartDate"] ), // $startdate$
-					esc_js( $eventInfo["EndDate"] ), // $enddate$
-					esc_js( $bookingInfo["EventId"] ), // $eventid$
-					esc_js( $eventInfo["EventName"] ), // $eventdescription$
-					esc_js( $bookingInfo["Customer"]["CustomerId"] ), // $customerid$
-					esc_js( $bookingInfo["ContactPerson"]["PersonId"] ), // $customercontactid$
-					esc_js( $bookingInfo["Created"] ), // $created$
-					esc_js( $bookingInfo["Paid"] ), // $paid$
-					esc_js( $eventInfo["CourseTemplateId"] ), // $objectid$
-					esc_js( $bookingInfo["Notes"] ), // $notes$
+					esc_js( $booking_info['BookingId'] ), // $bookingno$
+					esc_js( $event_info['CourseName'] ), // $productname$
+					esc_js( $booking_info['TotalPriceIncVat'] ), // $totalsum$
+					esc_js( $booking_info['NumberOfParticipants'] ), // $participants$
+					esc_js( $event_info['StartDate'] ), // $startdate$
+					esc_js( $event_info['EndDate'] ), // $enddate$
+					esc_js( $booking_info['EventId'] ), // $eventid$
+					esc_js( $event_info['EventName'] ), // $eventdescription$
+					esc_js( $booking_info['Customer']['CustomerId'] ), // $customerid$
+					esc_js( $booking_info['ContactPerson']['PersonId'] ), // $customercontactid$
+					esc_js( $booking_info['Created'] ), // $created$
+					esc_js( $booking_info['Paid'] ), // $paid$
+					esc_js( $event_info['CourseTemplateId'] ), // $objectid$
+					esc_js( $booking_info['Notes'] ), // $notes$
 				),
 				$script
 			);
@@ -285,13 +287,15 @@ function eduadmin_RewriteJavaScript( $script ) {
 	return '';
 }
 
-function eduadmin_printJavascript() {
+function eduadmin_print_javascript() {
 	$t = EDU()->start_timer( __METHOD__ );
-	if ( trim( get_option( 'eduadmin-javascript', '' ) ) != '' && isset( EDU()->session['eduadmin-printJS'] ) ) {
+	if ( ! empty( trim( get_option( 'eduadmin-javascript', '' ) ) ) && isset( EDU()->session['eduadmin-printJS'] ) ) {
 		$str    = "<script type=\"text/javascript\">\n";
 		$script = get_option( 'eduadmin-javascript' );
-		$str    .= eduadmin_RewriteJavaScript( $script );
-		$str    .= "\n</script>";
+
+		$str .= eduadmin_rewrite_javascript( $script );
+		$str .= "\n</script>";
+
 		unset( EDU()->session['eduadmin-printJS'] );
 		echo $str;
 	}

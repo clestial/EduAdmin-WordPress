@@ -25,7 +25,7 @@
 			$lastQuestionId = -1;
 			foreach ( $groupedQuestions as $question ) {
 				if ( $lastQuestionId != $question->QuestionID ) {
-					renderQuestion( $question );
+					render_question( $question );
 				}
 
 				$lastQuestionId = $question->QuestionID;

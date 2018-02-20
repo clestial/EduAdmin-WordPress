@@ -1,49 +1,49 @@
 <?php
 // Render ALL the types
-function renderQuestion( $question ) {
+function render_question( $question ) {
 	$t = EDU()->start_timer( __METHOD__ );
 	switch ( $question->QuestionTypeID ) {
 		case 1: // Text-fråga
-			renderTextQuestion( $question );
+			edu_render_text_question( $question );
 			break;
 		case 2: // Checkbox-fråga
-			renderCheckBoxQuestion( $question );
+			edu_render_checkbox_question( $question );
 			break;
 		case 3: // Radio - Vertikal
-			renderRadioQuestion( $question, 'vertical' );
+			edu_render_radio_question( $question, 'vertical' );
 			break;
 		case 4: // Nummerfråga
-			renderNumberQuestion( $question );
+			edu_render_number_question( $question );
 			break;
 		case 5: // Anteckningar
-			renderNoteQuestion( $question );
+			edu_render_note_question( $question );
 			break;
 		case 6: // Infotext - hel rad
-			renderInfoText( $question );
+			edu_render_info_text( $question );
 			break;
 		case 7: // Radbrytning
 			break;
 		case 8: // Datum-fråga
-			renderDateQuestion( $question );
+			edu_render_date_question( $question );
 			break;
 		case 9: // Infotext - halv rad
-			renderInfoText( $question );
+			edu_render_info_text( $question );
 			break;
 		case 10: // Radio - horisontell
-			renderRadioQuestion( $question, 'horizontal' );
+			edu_render_radio_question( $question, 'horizontal' );
 			break;
 		case 11: // Droplist-fråga
-			renderDropListQuestion( $question );
+			edu_render_drop_list_question( $question );
 			break;
 		default:
-			echo "<xmp>" . print_r( $question, true ) . "</xmp>";
+			EDU()->write_debug( $question );
 			break;
 	}
 	EDU()->stop_timer( $t );
 }
 
 // QuestionTypeID 5
-function renderNoteQuestion( $question ) {
+function edu_render_note_question( $question ) {
 	echo "<label><h3 class=\"inputLabel noteQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
 	echo "<div class=\"inputHolder\">";
 	echo "<textarea placeholder=\"" . wp_strip_all_tags( $question->QuestionText ) . "\" name=\"question_" . $question->Answers->EventBookingAnswer->AnswerID . "_note\" data-type=\"note\" onchange=\"eduBookingView.UpdatePrice();\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " resizable=\"resizable\" class=\"questionNoteField\" rows=\"3\">" . $question->Answers->EventBookingAnswer->DefaultAnswerText . "</textarea>";
@@ -51,7 +51,7 @@ function renderNoteQuestion( $question ) {
 }
 
 // QuestionTypeID 2
-function renderCheckBoxQuestion( $question ) {
+function edu_render_checkbox_question( $question ) {
 	echo "<h3 class=\"inputLabel checkBoxQuestion noHide\">" . $question->QuestionText . "</h3>";
 	if ( is_array( $question->Answers->EventBookingAnswer ) ) {
 		foreach ( $question->Answers->EventBookingAnswer as $q ) {
@@ -80,7 +80,7 @@ function renderCheckBoxQuestion( $question ) {
 }
 
 // QuestionTypeID 8
-function renderDateQuestion( $question ) {
+function edu_render_date_question( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
 	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );
@@ -95,7 +95,7 @@ function renderDateQuestion( $question ) {
 }
 
 // QuestionTypeID 11
-function renderDropListQuestion( $question ) {
+function edu_render_drop_list_question( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
 	echo $question->QuestionText;
@@ -125,7 +125,7 @@ function renderDropListQuestion( $question ) {
 	echo "</label>";
 }
 
-function renderNumberQuestion( $question ) {
+function edu_render_number_question( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
 	echo $question->QuestionText;
@@ -139,7 +139,7 @@ function renderNumberQuestion( $question ) {
 	echo "</label>";
 }
 
-function renderInfoText( $question ) {
+function edu_render_info_text( $question ) {
 	if ( trim( $question->Answers->EventBookingAnswer->AnswerText ) != "" ) {
 		echo "<h3 class=\"inputLabel questionInfoQuestion\">" . $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" ) . "</h3>";
 		echo "<div class=\"questionInfoText\" data-type=\"infotext\" data-price=\"" . $question->Answers->EventBookingAnswer->Price . "\">";
@@ -149,7 +149,7 @@ function renderInfoText( $question ) {
 	// Hittade inget sätt att fylla i info-text-fält för ett tillfälle.
 }
 
-function renderRadioQuestion( $question, $display ) {
+function edu_render_radio_question( $question, $display ) {
 	echo "<h3 class=\"inputLabel radioQuestion\">" . $question->QuestionText . "</h3>";
 	if ( $display == 'vertical' ) {
 		if ( is_array( $question->Answers->EventBookingAnswer ) ) {
@@ -205,7 +205,7 @@ function renderRadioQuestion( $question, $display ) {
 }
 
 // QuestionTypeID 1
-function renderTextQuestion( $question ) {
+function edu_render_text_question( $question ) {
 	echo "<label>";
 	echo "<div class=\"inputLabel noHide\">";
 	echo $question->QuestionText . ( $question->Answers->EventBookingAnswer->Price > 0 ? " <i class=\"priceLabel\">(" . convert_to_money( $question->Answers->EventBookingAnswer->Price ) . ")</i>" : "" );

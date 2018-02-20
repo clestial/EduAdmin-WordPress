@@ -71,13 +71,10 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 			$user->Customer                      = json_decode( $c2 );
 			EDU()->session['eduadmin-loginUser'] = $user;
 		} else {
-			EDU()->session['needsLogin']         = true;
-			EDU()->session['checkEmail']         = true;
-			EDU()->session['eduadminLoginError'] = __( 'Could not find any users with that info.', 'eduadmin-booking' );
+			EDU()->session['needsLogin'] = true;
+			EDU()->session['checkEmail'] = true;
+			//EDU()->session['eduadminLoginError'] = __( 'Could not find any users with that info.', 'eduadmin-booking' );
 		}
 		die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
-	} elseif ( 'forgot' === $_POST['eduformloginaction'] ) {
-		$success                                  = sendForgottenPassword( sanitize_text_field( $_POST['eduadminloginEmail'] ) );
-		EDU()->session['eduadmin-forgotPassSent'] = $success;
 	}
 }

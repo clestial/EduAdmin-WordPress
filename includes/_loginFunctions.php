@@ -1,37 +1,36 @@
 <?php
-function sendForgottenPassword( $loginValue ) {
-	$t    = EDU()->start_timer( __METHOD__ );
-	$ccId = 0;
+function edu_send_forgotten_password( $login_value ) {
+	$t     = EDU()->start_timer( __METHOD__ );
+	$cc_id = 0;
 
-	$loginField = get_option( 'eduadmin-loginField', 'Email' );
+	$login_field = get_option( 'eduadmin-loginField', 'Email' );
 
 	$cc = EDUAPI()->OData->Persons->Search(
 		null,
-		"$loginField eq '" . sanitize_text_field( $loginValue ) . "' and CanLogin"
+		"$login_field eq '" . sanitize_text_field( $login_value ) . '\' and CanLogin'
 	);
 
-	if ( $cc["@odata.count"] == 1 ) {
-		$ccId = current( $cc["value"] )["PersonId"];
+	if ( 1 === $cc['@odata.count'] ) {
+		$cc_id = current( $cc['value'] )['PersonId'];
 	}
 
-	if ( $ccId > 0 && ! empty( current( $cc["value"] )["Email"] ) ) {
-		$sent = EDUAPI()->REST->Person->SendResetPasswordEmailById( $ccId );
+	if ( $cc_id > 0 && ! empty( current( $cc['value'] )['Email'] ) ) {
+		$sent = EDUAPI()->REST->Person->SendResetPasswordEmailById( $cc_id );
 		EDU()->stop_timer( $t );
-		EDU()->__writeDebug( $sent );
 
-		return $sent["EmailSent"];
+		return $sent['EmailSent'];
 	}
 	EDU()->stop_timer( $t );
 
 	return false;
 }
 
-function logoutUser() {
+function edu_logout_user() {
 	$t    = EDU()->start_timer( __METHOD__ );
 	$surl = get_home_url();
 	$cat  = get_option( 'eduadmin-rewriteBaseUrl' );
 
-	$baseUrl = $surl . '/' . $cat;
+	$base_url = $surl . '/' . $cat;
 
 	unset( EDU()->session['eduadmin-loginUser'] );
 	unset( EDU()->session['needsLogin'] );
@@ -39,7 +38,7 @@ function logoutUser() {
 	EDU()->session->regenerate_id( true );
 	unset( $_COOKIE['eduadmin-loginUser'] );
 	setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
-	wp_redirect( $baseUrl . edu_get_query_string() );
+	wp_redirect( $base_url . edu_get_query_string() );
 	EDU()->stop_timer( $t );
 	exit();
 }
@@ -61,22 +60,23 @@ add_action(
 
 			$cat = get_option( 'eduadmin-rewriteBaseUrl' );
 
-			if ( stristr( $_SERVER['REQUEST_URI'], "/$cat/profile/logout" ) !== false ) {
-				logoutUser();
+			if ( false !== stristr( $_SERVER['REQUEST_URI'], "/$cat/profile/logout" ) ) {
+				edu_logout_user();
 			}
 
 			/* BACKEND FUNCTIONS FOR FORMS */
-			if ( isset( $_POST['eduformloginaction'] ) ) {
+			if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty( $_POST['eduformloginaction'] ) ) {
 				$act = sanitize_text_field( $_POST['eduformloginaction'] );
 				if ( isset( $_POST['eduadminloginEmail'] ) ) {
 					switch ( $act ) {
-						case "forgot":
-							$success                                  = sendForgottenPassword( $_POST['eduadminloginEmail'] );
+						case 'forgot':
+							$success = edu_send_forgotten_password( $_POST['eduadminloginEmail'] );
+
 							EDU()->session['eduadmin-forgotPassSent'] = $success;
 							break;
 					}
 				} else {
-					EDU()->session['eduadminLoginError'] = __( "You have to provide your login credentials.", 'eduadmin-booking' );
+					EDU()->session['eduadminLoginError'] = __( 'You have to provide your login credentials.', 'eduadmin-booking' );
 				}
 			}
 		}

@@ -16,7 +16,12 @@ matrix:
 before_install:
   - phpenv config-rm xdebug.ini
 before_script:
-  - composer install
+  - git clone --depth=1 -q https://github.com/Seravo/wordpress-test-template wp-tests
+  - bash wp-tests/bin/install-wp-tests.sh test root '' localhost $WP_VERSION
+
+script:
+  - cd wp-tests/spec && bundle exec rspec test.rb && cd .. && cd .. && phpunit
+
 deploy:
   - provider: script
     skip_cleanup: true

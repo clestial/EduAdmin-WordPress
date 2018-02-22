@@ -7,8 +7,7 @@
 			<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="text" readonly class="contactFirstName first-name" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/>
-			<input type="text" readonly class="contactLastName last-name" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
+			<input type="text" readonly class="contactFirstName first-name" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/><input type="text" readonly class="contactLastName last-name" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<label>
@@ -51,17 +50,16 @@
 				<?php esc_html_e( 'Price name', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" required onchange="eduBookingView.UpdatePrice();">
+				<select name="contactPriceName" class="edudropdown participantPriceName edu-pricename" data-required="true" onchange="eduBookingView.UpdatePrice();">
 					<option data-price="0" value=""><?php esc_html_e( 'Choose price', 'eduadmin-booking' ); ?></option>
-					<?php foreach ( $prices as $price ) { ?>
-						<option data-price="<?php echo esc_attr( $price->Price ); ?>" date-discountpercent="<?php echo esc_attr( $price->DiscountPercent ); ?>" data-pricelnkid="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>" data-maxparticipants="<?php echo esc_attr( $price->MaxPriceNameParticipantNr ); ?>" data-currentparticipants="<?php echo esc_attr( $price->ParticipantNr ); ?>"
-							<?php if ( $price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr ) { ?>
+					<?php foreach ( $unique_prices as $price ) { ?>
+						<option data-price="<?php echo esc_attr( $price['Price'] ); ?>" date-discountpercent="<?php echo esc_attr( $price['DiscountPercent'] ); ?>" data-maxparticipants="<?php echo esc_attr( $price['MaxParticipantNumber'] ); ?>" data-currentparticipants="<?php echo esc_attr( $price['NumberOfParticipants'] ); ?>"
+							<?php if ( $price['MaxParticipantNumber'] > 0 && $price['NumberOfParticipants'] >= $price['MaxParticipantNumber'] ) { ?>
 								disabled
 							<?php } ?>
-								value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
-							<?php echo trim( $price->Description ); ?>
-							(<?php echo convert_to_money( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . " " . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ); ?>
-							)
+								value="<?php echo esc_attr( $price['PriceNameId'] ); ?>">
+							<?php echo esc_html( $price['PriceNameDescription'] ); ?>
+							(<?php echo esc_html( convert_to_money( $price['Price'], get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>)
 						</option>
 					<?php } ?>
 				</select>
@@ -88,7 +86,7 @@
 			echo ' value="' . esc_attr( $sub_event['SessionId'] ) . '"> ';
 			echo esc_html( wp_strip_all_tags( $sub_event['SessionName'] ) );
 			echo esc_html( $hide_sub_event_date_info ? '' : ' (' . date( 'd/m H:i', strtotime( $sub_event['StartDate'] ) ) . ' - ' . date( 'd/m H:i', strtotime( $sub_event['EndDate'] ) ) . ') ' );
-			echo( $s > 0 ? '&nbsp;<i class="priceLabel">' . esc_html( convert_to_money( $s ) ) . '</i>' : '' );
+			echo( intval( $s ) > 0 ? '&nbsp;<i class="priceLabel">' . esc_html( convert_to_money( $s ) ) . '</i>' : '' );
 			echo "</label>\n";
 		}
 		echo '<br />';

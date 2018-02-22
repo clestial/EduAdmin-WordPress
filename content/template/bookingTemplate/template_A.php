@@ -12,7 +12,6 @@ if ( ! $api_key || empty( $api_key ) ) {
 		do_action( 'eduadmin-processbooking', $ebi );
 		do_action( 'eduadmin-bookingcompleted', $ebi );
 	} else {
-		EDU()->write_debug( $selected_course );
 		$contact  = new CustomerContact();
 		$customer = new Customer();
 
@@ -42,16 +41,13 @@ if ( ! $api_key || empty( $api_key ) ) {
 		}
 
 		$unique_prices = array();
-		foreach ( $prices as $price ) {
-			$unique_prices[ $price->Description ] = $price;
+
+		foreach ( $event['PriceNames'] as $price ) {
+			$unique_prices[ $price['PriceNameDescription'] ] = $price;
 		}
+
 		// PriceNameVat
 		$first_price = current( $unique_prices );
-
-		$se_price   = array();
-		foreach ( $sub_prices as $sp ) {
-			$se_price[ $sp->OccationID ][] = $sp;
-		}
 
 		$hide_sub_event_date_info = get_option( 'eduadmin-hideSubEventDateTime', false );
 		?>
@@ -176,7 +172,10 @@ if ( ! $api_key || empty( $api_key ) ) {
 						<div class="confirmTermsHolder">
 							<label>
 								<input type="checkbox" id="confirmTerms" name="confirmTerms" value="agree"/>
-								<?php echo wp_kses( sprintf( __( 'I agree to the %1$sTerms and Conditions%2$s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ), wp_kses_allowed_html( 'post' ) ); ?>
+								<?php
+								/* translators: 1: Start of link 2: End of link */
+								echo wp_kses( sprintf( __( 'I agree to the %1$sTerms and Conditions%2$s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ), wp_kses_allowed_html( 'post' ) );
+								?>
 							</label>
 						</div>
 					<?php endif; ?>
@@ -223,11 +222,11 @@ if ( ! $api_key || empty( $api_key ) ) {
 
 		$discount_value = 0.0;
 		if ( 0 !== $participant_discount_percent ) {
-			$discount_value = ( $participant_discount_percent / 100 ) * $first_price->Price;
+			$discount_value = ( $participant_discount_percent / 100 ) * $first_price['Price'];
 		}
 		?>
 		<script type="text/javascript">
-			var pricePerParticipant = <?php echo esc_js( round( $first_price->Price - $discount_value, 2 ) ); ?>;
+			var pricePerParticipant = <?php echo esc_js( round( $first_price['Price'] - $discount_value, 2 ) ); ?>;
 			var discountPerParticipant = <?php echo esc_js( round( $participant_discount_percent / 100, 2 ) ); ?>;
 			var totalPriceDiscountPercent = <?php echo esc_js( $discount_percent ); ?>;
 			var currency = '<?php echo esc_js( get_option( 'eduadmin-currency', 'SEK' ) ); ?>';

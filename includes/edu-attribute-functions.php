@@ -24,15 +24,6 @@ function render_attribute( $attribute, $multiple = false, $suffix = '', $data = 
 		case 'Textarea': // Anteckningsfält
 			render_textarea_field( $attribute, $multiple, $suffix, $data );
 			break;
-		case 'Date': // Datumfält
-			//render_date_field($attribute, $multiple, $suffix, $data);
-			break;
-		case 'Html': // HTML
-			//renderTextAreaField($attribute, $multiple, $suffix, $data);
-			break;
-		case 'CheckboxList': // Checkboxlista
-			//renderCheckboxListField($attribute, $multiple, $suffix, $data);
-			break;
 		default:
 			render_debug_attribute( $attribute );
 			break;

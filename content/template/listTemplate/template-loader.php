@@ -5,16 +5,6 @@ $edl = $levels;
 
 $filter_courses = array();
 
-if ( ! empty( $attributes['subject'] ) ) {
-	foreach ( $eds as $subject ) {
-		if ( $subject->SubjectName === $attributes['subject'] ) {
-			if ( ! in_array( $subject->ObjectID, $filter_courses ) ) {
-				$filter_courses[] = $subject->ObjectID;
-			}
-		}
-	}
-}
-
 $category_id = null;
 if ( ! empty( $attributes['category'] ) ) {
 	$category_id = $attributes['category'];

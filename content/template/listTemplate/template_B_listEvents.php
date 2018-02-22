@@ -16,7 +16,7 @@ foreach ( $events as $event ) {
 	if ( ! empty( $event['EventDates'] ) ) {
 		$event_dates[ $event['EventId'] ] = $event['EventDates'];
 	}
-	include 'blocks/event_blockB.php';
+	include 'blocks/event-block-b.php';
 	$current_events++;
 }
 ?>

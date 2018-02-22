@@ -6,7 +6,7 @@ include 'list-courses.php';
 		<?php
 
 		foreach ( $courses as $object ) {
-			include 'blocks/course_block.php';
+			include 'blocks/course-block.php';
 			if ( $showEventsWithEventsOnly && empty( $object["Events"] ) ) {
 				continue;
 			}
@@ -14,7 +14,7 @@ include 'list-courses.php';
 			if ( $showEventsWithoutEventsOnly && ! empty( $object["Events"] ) ) {
 				continue;
 			}
-			include 'blocks/course_blockB.php';
+			include 'blocks/course-block-b.php';
 		}
 		?>
 	</div>

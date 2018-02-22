@@ -37,6 +37,7 @@ rm -fR $PROJECT_ROOT/.git
 rm -fR $PROJECT_ROOT/wp-tests
 rm -fR $PROJECT_ROOT/vendor
 rm -fR $PROJECT_ROOT/bin
+rm -fR $PROJECT_ROOT/node_modules
 
 # Make sure we are in the project root
 cd $PROJECT_ROOT

@@ -17,7 +17,7 @@ foreach ( $events as $event ) {
 		$event_dates[ $event['EventId'] ] = $event['EventDates'];
 	}
 
-	include 'blocks/event_blockA.php';
+	include 'blocks/event-block-a.php';
 	$current_events++;
 }
 ?>

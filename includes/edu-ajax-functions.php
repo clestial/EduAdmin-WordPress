@@ -271,7 +271,7 @@ function edu_api_listview_eventlist_template_A( $data, $request ) {
 			$event_dates[ $event['EventId'] ] = $event['EventDates'];
 		}
 
-		include EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockA.php';
+		include EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event-block-a.php';
 		$current_events++;
 	}
 }
@@ -338,7 +338,7 @@ function edu_api_listview_eventlist_template_B( $data, $request ) {
 			$event_dates[ $event['EventId'] ] = $event['EventDates'];
 		}
 
-		include EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event_blockB.php';
+		include EDUADMIN_PLUGIN_PATH . '/content/template/listTemplate/blocks/event-block-b.php';
 		$current_events++;
 	}
 }

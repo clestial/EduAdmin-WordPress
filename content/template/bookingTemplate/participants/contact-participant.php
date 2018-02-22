@@ -7,7 +7,8 @@
 			<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="text" readonly class="contactFirstName first-name" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/><input type="text" readonly class="contactLastName last-name" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
+			<input type="text" readonly class="contactFirstName first-name" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/>
+			<input type="text" readonly class="contactLastName last-name" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<label>

@@ -1,7 +1,7 @@
 <div class="participantItem template" style="display: none;">
 	<h3>
 		<?php esc_html_e( 'Participant', 'eduadmin-booking' ); ?>
-		<div class="removeParticipant" onclick="eduBookingView.RemoveParticipant(this);"><?php esc_html_e( "Remove", 'eduadmin-booking' ); ?></div>
+		<div class="removeParticipant" onclick="eduBookingView.RemoveParticipant(this);"><?php esc_html_e( 'Remove', 'eduadmin-booking' ); ?></div>
 	</h3>
 	<label>
 		<div class="inputLabel">

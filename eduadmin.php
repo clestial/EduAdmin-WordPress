@@ -469,7 +469,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		}
 	);
 
-	add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin-booking.php',
+	add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin.php',
 		function( $current_plugin_metadata, $new_plugin_metadata ) {
 			if ( ! empty( $new_plugin_metadata->upgrade_notice ) && strlen( trim( $new_plugin_metadata->upgrade_notice ) ) > 0 ) {
 				echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . esc_html__( 'Important Upgrade Notice', 'eduadmin-booking' ) . ':</strong> ';

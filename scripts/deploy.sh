@@ -18,7 +18,7 @@ fi
 
 PLUGIN="eduadmin-booking"
 PROJECT_ROOT=$TRAVIS_BUILD_DIR
-VERSION="$(cat $PROJECT_ROOT/eduadmin-booking.php | grep Version: | head -1 | cut -d: -f2 | tr -d '[[:space:]]')"
+VERSION="$(cat $PROJECT_ROOT/eduadmin.php | grep Version: | head -1 | cut -d: -f2 | tr -d '[[:space:]]')"
 
 echo "Version: $VERSION of $PLUGIN"
 

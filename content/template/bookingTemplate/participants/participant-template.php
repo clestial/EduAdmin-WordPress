@@ -8,7 +8,8 @@
 			<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="text" class="participantFirstName first-name" name="participantFirstName[]" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/><input type="text" class="participantLastName last-name" name="participantLastName[]" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
+			<input type="text" class="participantFirstName first-name" name="participantFirstName[]" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/>
+			<input type="text" class="participantLastName last-name" name="participantLastName[]" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<label>
@@ -64,7 +65,7 @@
 				<?php esc_html_e( 'Price name', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<select name="participantPriceName[]" required class="edudropdown participantPriceName edu-pricename" onchange="eduBookingView.UpdatePrice();">
+				<select name="participantPriceName[]" data-required="true" class="edudropdown participantPriceName edu-pricename" onchange="eduBookingView.UpdatePrice();">
 					<option data-price="0" value=""><?php esc_html_e( 'Choose price', 'eduadmin-booking' ); ?></option>
 					<?php foreach ( $prices as $price ) { ?>
 						<option data-price="<?php echo esc_attr( $price->Price ); ?>" date-discountpercent="<?php echo esc_attr( $price->DiscountPercent ); ?>" data-pricelnkid="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>" data-maxparticipants="<?php echo esc_attr( $price->MaxPriceNameParticipantNr ); ?>" data-currentparticipants="<?php echo esc_attr( $price->ParticipantNr ); ?>"

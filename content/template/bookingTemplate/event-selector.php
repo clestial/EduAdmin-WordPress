@@ -33,4 +33,3 @@ else :
 	echo esc_html( edu_output_event_venue( $event['AddressName'], $event['City'], ', ' ) );
 	echo '</div>';
 endif;
-?>

@@ -36,7 +36,7 @@ if ( ! empty( $_POST['eduaction'] ) && wp_verify_nonce( $_POST['edu-profile-nonc
 <div class="eduadmin">
 	<?php
 	$tab = 'profile';
-	require_once 'login_tab_header.php';
+	require_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'My profile', 'eduadmin-booking' ); ?></h2>
 	<form action="" method="POST">
@@ -164,5 +164,5 @@ if ( ! empty( $_POST['eduaction'] ) && wp_verify_nonce( $_POST['edu-profile-nonc
 		</div>
 		<button class="profileSaveButton cta-btn"><?php esc_html_e( 'Save', 'eduadmin-booking' ); ?></button>
 	</form>
-	<?php require_once 'login_tab_footer.php'; ?>
+	<?php require_once 'login-tab-footer.php'; ?>
 </div>

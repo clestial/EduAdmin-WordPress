@@ -1,7 +1,7 @@
 <?php
 
-class EduAdminAPIController {
-	var $namespace;
+class EduAdmin_APIController {
+	public $namespace;
 
 	public function __construct() {
 		$this->namespace = 'edu/v1';

@@ -1,6 +1,6 @@
 <?php
 
-class EduAdminBookingInfo {
+class EduAdmin_BookingInfo {
 	/**
 	 * @var EventBookingV2
 	 */

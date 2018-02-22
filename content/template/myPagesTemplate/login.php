@@ -10,17 +10,17 @@ if ( ! empty( EDU()->session['eduadmin-loginUser'] ) && ! empty( EDU()->session[
 	} elseif ( isset( $q['edu-bookings'] ) ) {
 		include_once 'bookings.php';
 	} elseif ( isset( $q['edu-limiteddiscount'] ) ) {
-		include_once 'limitedDiscount.php';
+		include_once 'limited-discount.php';
 	} elseif ( isset( $q['edu-certificates'] ) ) {
 		include_once 'certificates.php';
 	} elseif ( isset( $q['edu-password'] ) ) {
-		include_once 'changePassword.php';
+		include_once 'change-password.php';
 	}
 } else {
 	if ( isset( $q['edu-login'] ) ) {
-		include_once 'loginPage.php';
+		include_once 'login-page.php';
 	} else {
-		include_once 'loginPage.php';
+		include_once 'login-page.php';
 	}
 }
 

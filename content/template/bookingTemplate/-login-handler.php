@@ -65,9 +65,9 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 
 			$user                                = new stdClass();
 			$user->NewCustomer                   = true;
-			$c1                                  = json_encode( $contact );
+			$c1                                  = wp_json_encode( $contact );
 			$user->Contact                       = json_decode( $c1 );
-			$c2                                  = json_encode( $customer );
+			$c2                                  = wp_json_encode( $customer );
 			$user->Customer                      = json_decode( $c2 );
 			EDU()->session['eduadmin-loginUser'] = $user;
 		} else {

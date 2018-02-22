@@ -58,15 +58,12 @@
 			</div>
 			<div class="search-box">
 				<div class="search-item search-text">
-					<input class="edu-searchTextBox" type="search" name="searchCourses" results="10"
-					       autosave="edu-course-search_<?php echo session_id(); ?>"
-					       placeholder="<?php esc_attr_e( 'Search courses', 'eduadmin-booking' ); ?>"<?php if ( isset( $_POST['searchCourses'] ) ) { // Input var okay.
+					<input class="edu-searchTextBox" type="search" name="searchCourses" results="10" autosave="edu-course-search_<?php echo session_id(); ?>" placeholder="<?php esc_attr_e( 'Search courses', 'eduadmin-booking' ); ?>"<?php if ( isset( $_POST['searchCourses'] ) ) { // Input var okay.
 						echo ' value="' . esc_attr( sanitize_text_field( wp_unslash( $_POST['searchCourses'] ) ) ) . '"'; // Input var okay.
 					} ?> />
 				</div>
 				<div class="search-item search-button">
-					<input type="submit" class="searchButton"
-					       value="<?php esc_attr_e( 'Search', 'eduadmin-booking' ); ?>"/>
+					<input type="submit" class="searchButton" value="<?php esc_attr_e( 'Search', 'eduadmin-booking' ); ?>"/>
 				</div>
 			</div>
 		</div>
@@ -84,4 +81,5 @@
 		}
 		?>
 	</form>
-<?php }
+	<?php
+}

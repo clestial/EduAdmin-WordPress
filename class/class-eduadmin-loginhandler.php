@@ -3,7 +3,7 @@
 /**
  * Class EduAdminLoginHandler
  */
-class EduAdminLoginHandler {
+class EduAdmin_LoginHandler {
 	/**
 	 * EduAdminLoginHandler constructor.
 	 */

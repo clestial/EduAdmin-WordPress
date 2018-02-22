@@ -7,12 +7,12 @@ if ( ! $api_key || empty( $api_key ) ) {
 	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
 	include_once 'course-info.php';
-
 	if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 		$ebi = $GLOBALS['edubookinginfo'];
 		do_action( 'eduadmin-processbooking', $ebi );
 		do_action( 'eduadmin-bookingcompleted', $ebi );
 	} else {
+		EDU()->write_debug( $selected_course );
 		$contact  = new CustomerContact();
 		$customer = new Customer();
 
@@ -41,28 +41,6 @@ if ( ! $api_key || empty( $api_key ) ) {
 			}
 		}
 
-		$occ_ids   = array();
-		$occ_ids[] = -1;
-		if ( empty( $_REQUEST['eid'] ) ) {
-			foreach ( $events as $ev ) {
-				$occ_ids[] = $ev['EventId'];
-			}
-		} else {
-			$occ_ids[] = $event['EventId'];
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ',', $occ_ids ) );
-		$ft->AddItem( $f );
-
-		$st = new XSorting();
-		$s  = new XSort( 'Price', 'ASC' );
-		$st->AddItem( $s );
-
-		$prices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-
 		$unique_prices = array();
 		foreach ( $prices as $price ) {
 			$unique_prices[ $price->Description ] = $price;
@@ -70,32 +48,6 @@ if ( ! $api_key || empty( $api_key ) ) {
 		// PriceNameVat
 		$first_price = current( $unique_prices );
 
-		$st = new XSorting();
-		$s  = new XSort( 'StartDate', 'ASC' );
-		$st->AddItem( $s );
-		$s = new XSort( 'EndDate', 'ASC' );
-		$st->AddItem( $s );
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'ParentEventID', '=', $event['EventId'] );
-		$ft->AddItem( $f );
-		$sub_events = EDU()->api->GetSubEvent( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-		$occ_ids    = array();
-		foreach ( $sub_events as $se ) {
-			$occ_ids[] = $se->OccasionID;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ',', $occ_ids ) );
-		$ft->AddItem( $f );
-
-		$st = new XSorting();
-		$s  = new XSort( 'Price', 'ASC' );
-		$st->AddItem( $s );
-
-		$sub_prices = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
 		$se_price   = array();
 		foreach ( $sub_prices as $sp ) {
 			$se_price[ $sp->OccationID ][] = $sp;
@@ -159,17 +111,17 @@ if ( ! $api_key || empty( $api_key ) ) {
 				$show_invoice_email             = isset( $attributes['hideinvoiceemailfield'] ) ? false === $attributes['hideinvoiceemailfield'] : false === get_option( 'eduadmin-hideInvoiceEmailField', false );
 				$force_show_invoice_information = isset( $attributes['showinvoiceinformation'] ) ? false === $attributes['showinvoiceinformation'] : true === get_option( 'eduadmin-showInvoiceInformation', false );
 				if ( $single_person_booking ) {
-					include_once 'singlePersonBooking.php';
+					include_once 'single-person-booking.php';
 				} else {
 					$field_order = get_option( 'eduadmin-fieldOrder', 'contact_customer' );
 					if ( 'contact_customer' === $field_order ) {
-						include_once 'contactView.php';
-						include_once 'customerView.php';
+						include_once 'contact-view.php';
+						include_once 'customer-view.php';
 					} elseif ( 'customer_contact' === $field_order ) {
-						include_once 'customerView.php';
-						include_once 'contactView.php';
+						include_once 'customer-view.php';
+						include_once 'contact-view.php';
 					}
-					include_once 'participantView.php';
+					include_once 'participant-view.php';
 				}
 				?>
 				<?php if ( 'selectWholeEvent' === get_option( 'eduadmin-selectPricename', 'firstPublic' ) ) : ?>
@@ -192,7 +144,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 					</div>
 				<?php endif; ?>
 
-				<?php include_once 'questionView.php'; ?>
+				<?php include_once 'question-view.php'; ?>
 
 				<?php if ( get_option( 'eduadmin-allowDiscountCode', false ) ) : ?>
 					<div class="discountView">
@@ -216,15 +168,10 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php
 				$use_limited_discount = get_option( 'eduadmin-useLimitedDiscount', false );
 				if ( $use_limited_discount ) {
-					include_once 'limitedDiscountView.php';
+					include_once 'limited-discount-view.php';
 				}
 				?>
 				<div class="submitView">
-					<div class="sumTotal">
-						<?php esc_html_e( 'Total sum:', 'eduadmin-booking' ); ?>
-						<span id="sumValue" class="sumValue"></span>
-					</div>
-
 					<?php if ( get_option( 'eduadmin-useBookingTermsCheckbox', false ) && $link = get_option( 'eduadmin-bookingTermsLink', '' ) ): ?>
 						<div class="confirmTermsHolder">
 							<label>
@@ -233,10 +180,14 @@ if ( ! $api_key || empty( $api_key ) ) {
 							</label>
 						</div>
 					<?php endif; ?>
+					<div class="sumTotal">
+						<?php esc_html_e( 'Total sum:', 'eduadmin-booking' ); ?>
+						<span id="sumValue" class="sumValue"></span>
+					</div>
 					<?php if ( 0 !== $event['ParticipantNumberLeft'] ) : ?>
 						<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>"/>
 					<?php else : ?>
-						<div class="bookButton cta-btn cta-disabled">
+						<div class="bookButton neutral-btn cta-disabled">
 							<?php esc_html_e( 'No free spots left on this event', 'eduadmin-booking' ); ?>
 						</div>
 					<?php endif; ?>

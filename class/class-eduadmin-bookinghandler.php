@@ -1,6 +1,6 @@
 <?php
 
-class EduAdminBookingHandler {
+class EduAdmin_BookingHandler {
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'process_booking' ) );
 	}
@@ -34,7 +34,7 @@ class EduAdminBookingHandler {
 
 			$_contact = EDU()->api->GetCustomerContactV2( EDU()->get_token(), '', $filter->ToString(), false )[0];
 
-			$ebi                       = new EduAdminBookingInfo( $event_booking, $_customer, $_contact );
+			$ebi                       = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 			$GLOBALS['edubookinginfo'] = $ebi;
 
 			do_action( 'eduadmin-checkpaymentplugins', $ebi );
@@ -491,10 +491,10 @@ class EduAdminBookingHandler {
 				}
 
 				$jsEncContact = json_encode( $contact );
-				@$user->Contact = json_decode( $jsEncContact );
+				$user->Contact = json_decode( $jsEncContact );
 
 				$jsEncCustomer = json_encode( $customer );
-				@$user->Customer = json_decode( $jsEncCustomer );
+				$user->Customer = json_decode( $jsEncCustomer );
 				EDU()->session['eduadmin-loginUser'] = $user;
 
 				$booking_info = array(

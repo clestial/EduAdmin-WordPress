@@ -10,7 +10,7 @@ $certificates = EDUAPI()->OData->Persons->GetItem( $contact->PersonId,
 <div class="eduadmin">
 	<?php
 	$tab = 'certificates';
-	include_once 'login_tab_header.php';
+	include_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'Certificates', 'eduadmin-booking' ); ?></h2>
 	<table class="myCertificationsTable">

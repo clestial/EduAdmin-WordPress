@@ -7,7 +7,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
 	include_once 'course-info.php';
-	include_once '__loginHandler.php';
+	include_once '-login-handler.php';
 	?>
 	<div class="eduadmin loginForm">
 		<form action="<?php echo( isset( $_REQUEST['eid'] ) ? '?eid=' . esc_attr( sanitize_text_field( $_REQUEST['eid'] ) ) : '' ); ?>" method="post">
@@ -20,10 +20,10 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php require_once 'event-selector.php'; ?>
 				<?php
 				if ( ! isset( EDU()->session['checkEmail'] ) ) {
-					include_once '__checkEmail.php';
+					include_once '-check-email.php';
 				} elseif ( isset( EDU()->session['checkEmail'] ) ) {
 					if ( isset( EDU()->session['needsLogin'] ) && true === EDU()->session['needsLogin'] ) {
-						include_once '__loginForm.php';
+						include_once '-login-form.php';
 					} else {
 						unset( EDU()->session['checkEmail'] );
 						unset( EDU()->session['needsLogin'] );

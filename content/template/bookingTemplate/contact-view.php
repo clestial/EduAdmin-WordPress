@@ -45,7 +45,7 @@ $__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonI
 				<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" required name="contactCivReg" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->CivicRegistrationNumber ); ?>"/>
+				<input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" <?php echo( 'CivicRegistrationNumber' === $selected_login_field ? 'required' : '' ); ?> name="contactCivReg" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->CivicRegistrationNumber ); ?>"/>
 			</div>
 		</label>
 	<?php } ?>

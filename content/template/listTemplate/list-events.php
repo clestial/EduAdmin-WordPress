@@ -157,20 +157,4 @@ $spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 $alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 $spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 ?>
-<div class="eventListTable"
-     data-eduwidget="listview-eventlist"
-     data-template="<?php echo @esc_attr( str_replace( "template_", "", $attributes['template'] ) ); ?>"
-     data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
-     data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
-     data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
-     data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
-     data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"
-     data-search="<?php echo @esc_attr( sanitize_text_field( $_REQUEST['searchCourses'] ) ); ?>"
-     data-numberofevents="<?php echo @esc_attr( $attributes['numberofevents'] ); ?>"
-     data-orderby="<?php echo @esc_attr( $attributes['orderby'] ); ?>"
-     data-order="<?php echo @esc_attr( $attributes['order'] ); ?>"
-     data-showmore="<?php echo @esc_attr( $attributes['showmore'] ); ?>"
-     data-showcity="<?php echo @esc_attr( $attributes['showcity'] ); ?>"
-     data-showbookbtn="<?php echo @esc_attr( $attributes['showbookbtn'] ); ?>"
-     data-showreadmorebtn="<?php echo @esc_attr( $attributes['showreadmorebtn'] ); ?>"
->
+<div class="eventListTable" data-eduwidget="listview-eventlist" data-template="<?php echo esc_attr( str_replace( 'template_', '', $attributes['template'] ) ); ?>" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-search="<?php echo esc_attr( sanitize_text_field( $_REQUEST['searchCourses'] ) ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>" data-orderby="<?php echo esc_attr( $attributes['orderby'] ); ?>" data-order="<?php echo esc_attr( $attributes['order'] ); ?>" data-showmore="<?php echo esc_attr( $attributes['showmore'] ); ?>" data-showcity="<?php echo esc_attr( $attributes['showcity'] ); ?>" data-showbookbtn="<?php echo esc_attr( $attributes['showbookbtn'] ); ?>" data-showreadmorebtn="<?php echo esc_attr( $attributes['showreadmorebtn'] ); ?>">

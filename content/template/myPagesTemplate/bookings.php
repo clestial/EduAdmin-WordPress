@@ -7,7 +7,7 @@ $customer = $user->Customer;
 <div class="eduadmin">
 	<?php
 	$tab = 'bookings';
-	require_once 'login_tab_header.php';
+	require_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'Reservations', 'eduadmin-booking' ); ?></h2>
 	<?php
@@ -94,5 +94,5 @@ $customer = $user->Customer;
 		}
 		?>
 	</table>
-	<?php require_once 'login_tab_footer.php'; ?>
+	<?php require_once 'login-tab-footer.php'; ?>
 </div>

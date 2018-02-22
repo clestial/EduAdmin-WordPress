@@ -1,6 +1,6 @@
 <?php
 ob_start();
-include( "list-courses.php" );
+include 'list-courses.php';
 
 if ( ! empty( $courses ) ) {
 	?>

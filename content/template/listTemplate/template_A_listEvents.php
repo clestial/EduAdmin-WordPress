@@ -1,11 +1,11 @@
 <?php
 ob_start();
 include( "list-events.php" );
-$numberOfEvents = $attributes['numberofevents'];
-$currentEvents  = 0;
+$number_of_events = $attributes['numberofevents'];
+$current_events  = 0;
 
 foreach ( $events as $event ) {
-	if ( $numberOfEvents != null && $numberOfEvents > 0 && $currentEvents >= $numberOfEvents ) {
+	if ( $number_of_events != null && $number_of_events > 0 && $current_events >= $number_of_events ) {
 		break;
 	}
 	$name      = $event["EventName"];
@@ -17,8 +17,8 @@ foreach ( $events as $event ) {
 		$eventDates[ $event["EventId"] ] = $event["EventDates"];
 	}
 
-	include( 'blocks/event_blockA.php' );
-	$currentEvents++;
+	include 'blocks/event_blockA.php';
+	$current_events++;
 }
 ?>
 	</div><!-- /eventlist -->

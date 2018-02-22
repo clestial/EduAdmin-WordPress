@@ -5,7 +5,7 @@ include( "list-courses.php" );
 	<div class="course-holder tmpl_A"><?php
 if ( ! empty( $courses ) ) {
 	foreach ( $courses as $object ) {
-		include( 'blocks/course_block.php' );
+		include 'blocks/course_block.php';
 		if ( $showEventsWithEventsOnly && empty( $object["Events"] ) ) {
 			continue;
 		}
@@ -13,7 +13,7 @@ if ( ! empty( $courses ) ) {
 		if ( $showEventsWithoutEventsOnly && ! empty( $object["Events"] ) ) {
 			continue;
 		}
-		include( 'blocks/course_blockA.php' );
+		include 'blocks/course_blockA.php';
 	}
 } else {
 	?>

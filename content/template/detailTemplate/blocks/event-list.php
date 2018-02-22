@@ -11,19 +11,9 @@ $event_interest_page      = get_option( 'eduadmin-interestEventPage' );
 $allow_interest_reg_event = get_option( 'eduadmin-allowInterestRegEvent', false );
 $show_more                = ! empty( $attributes['showmore'] ) ? $attributes['showmore'] : -1;
 ?>
-<div class="event-table eventDays"
-     data-eduwidget="eventlist"
-     data-objectid="<?php echo esc_attr( $selected_course["CourseTemplateId"] ); ?>"
-     data-spotsleft="<?php echo esc_attr( $spot_left_option ); ?>"
-     data-spotsettings="<?php echo esc_attr( $spot_settings ); ?>"
-     data-fewspots="<?php echo esc_attr( $always_few_spots ); ?>"
-     data-showmore="<?php echo esc_attr( $show_more ); ?>"
-     data-groupbycity="<?php echo esc_attr($group_by_city); ?>"
-     data-fetchmonths="<?php echo esc_attr($fetch_months); ?>"
+<div class="event-table eventDays" data-eduwidget="eventlist" data-objectid="<?php echo esc_attr( $selected_course["CourseTemplateId"] ); ?>" data-spotsleft="<?php echo esc_attr( $spot_left_option ); ?>" data-spotsettings="<?php echo esc_attr( $spot_settings ); ?>" data-fewspots="<?php echo esc_attr( $always_few_spots ); ?>" data-showmore="<?php echo esc_attr( $show_more ); ?>" data-groupbycity="<?php echo esc_attr( $group_by_city ); ?>" data-fetchmonths="<?php echo esc_attr( $fetch_months ); ?>"
 	<?php echo( isset( $_GET['eid'] ) ? ' data-eid="' . intval( $_GET['eid'] ) . '"' : '' ); ?>
-	 data-showvenue="<?php echo esc_attr( $show_event_venue ); ?>"
-	 data-eventinquiry="<?php echo esc_attr( $allow_interest_reg_event ); ?>"
->
+		data-showvenue="<?php echo esc_attr( $show_event_venue ); ?>" data-eventinquiry="<?php echo esc_attr( $allow_interest_reg_event ); ?>">
 	<?php
 	$i = 0;
 	if ( ! empty( $prices ) ) {
@@ -46,7 +36,7 @@ $show_more                = ! empty( $attributes['showmore'] ) ? $attributes['sh
 		<?php
 	}
 	if ( $has_hidden_dates ) {
-		echo '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . ( $group_by_city ? '-' . esc_attr( $ev['City'] ) : '' ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
+		echo '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . esc_attr( $group_by_city ? '-' . $ev['City'] : '' ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
 	}
 	?>
 </div>

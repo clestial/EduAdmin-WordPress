@@ -1,14 +1,14 @@
 <?php
 defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 
-require_once 'pluginSettings.php';
-require_once 'settingsPage.php';
-require_once 'generalSettings.php';
-require_once 'listSettings.php';
+require_once 'plugin-settings.php';
+require_once 'settings-page.php';
+require_once 'general-settings.php';
+require_once 'list-settings.php';
 
-require_once 'detailSettings.php';
-require_once 'bookingSettings.php';
-require_once 'styleSettings.php';
+require_once 'detail-settings.php';
+require_once 'booking-settings.php';
+require_once 'style-settings.php';
 
 add_action( 'admin_init', 'eduadmin_settings_init' );
 add_action( 'admin_menu', 'eduadmin_backend_menu' );
@@ -223,7 +223,7 @@ function eduadmin_shortcode_metabox() {
 
 function eduadmin_create_metabox() {
 	$t = EDU()->start_timer( __METHOD__ );
-	include_once '_metaBox.php';
+	include_once 'edu-meta-box.php';
 	EDU()->stop_timer( $t );
 }
 

@@ -1,6 +1,6 @@
 <?php
 ob_start();
-include( "list-events.php" );
+include 'list-events.php';
 $numberOfEvents = $attributes['numberofevents'];
 $currentEvents  = 0;
 
@@ -16,11 +16,12 @@ foreach ( $events as $event ) {
 	if ( ! empty( $event["EventDates"] ) ) {
 		$eventDates[ $event["EventId"] ] = $event["EventDates"];
 	}
-	include( 'blocks/event_blockB.php' );
+	include 'blocks/event_blockB.php';
 	$currentEvents++;
 }
 ?>
-	</div><!-- /eventlist --><?php
+	</div><!-- /eventlist -->
+<?php
 $out = ob_get_clean();
 
 return $out;

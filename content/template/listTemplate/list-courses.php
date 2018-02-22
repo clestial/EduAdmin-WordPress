@@ -136,12 +136,4 @@ $showDescr      = get_option( 'eduadmin-showCourseDescription', true );
 $showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
 $currency       = get_option( 'eduadmin-currency', 'SEK' );
 ?>
-<div class="eduadmin-courselistoptions"
-     data-subject="<?php echo @esc_attr( $attributes['subject'] ); ?>"
-     data-subjectid="<?php echo @esc_attr( $attributes['subjectid'] ); ?>"
-     data-category="<?php echo @esc_attr( $attributes['category'] ); ?>"
-     data-city="<?php echo @esc_attr( $attributes['city'] ); ?>"
-     data-courselevel="<?php echo @esc_attr( $attributes['courselevel'] ); ?>"
-     data-search="<?php echo @esc_attr( $_REQUEST['searchCourses'] ); ?>"
-     data-numberofevents="<?php echo @esc_attr( $attributes['numberofevents'] ); ?>"
-></div>
+<div class="eduadmin-courselistoptions" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-search="<?php echo esc_attr( $_REQUEST['searchCourses'] ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"></div>

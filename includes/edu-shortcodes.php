@@ -134,7 +134,7 @@ function eduadmin_get_course_public_pricename( $attributes ) {
 	}
 	EDU()->stop_timer( $t );
 
-	return include_once EDUADMIN_PLUGIN_PATH . '/content/template/myPagesTemplate/coursePriceNames.php';
+	return include_once EDUADMIN_PLUGIN_PATH . '/content/template/myPagesTemplate/course-price-names.php';
 }
 
 function edu_no_index() {
@@ -170,7 +170,7 @@ function eduadmin_get_booking_view( $attributes ) {
 	if ( empty( get_option( 'eduadmin-useLogin', false ) ) || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->PersonId ) && 0 !== EDU()->session['eduadmin-loginUser']->Contact->PersonId ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
 		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/' . $attributes['template'] . '.php';
 	} else {
-		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/loginView.php';
+		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/login-view.php';
 	}
 	EDU()->stop_timer( $t );
 

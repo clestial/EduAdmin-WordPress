@@ -39,18 +39,18 @@ if ( ! empty( $attributes['mode'] ) ) {
 
 if ( null !== $customMode ) {
 	if ( 'event' === $customMode ) {
-		$str = include( $attributes['template'] . '_listEvents.php' );
+		$str = include $attributes['template'] . '_listEvents.php';
 		echo $str;
-	} else if ( 'course' === $customMode ) {
-		$str = include( $attributes['template'] . '_listCourses.php' );
+	} elseif ( 'course' === $customMode ) {
+		$str = include $attributes['template'] . '_listCourses.php';
 		echo $str;
 	}
 } else {
 	if ( $showEvents ) {
-		$str = include( $attributes['template'] . '_listEvents.php' );
+		$str = include $attributes['template'] . '_listEvents.php';
 		echo $str;
-	} else if ( ! $showEvents ) {
-		$str = include( $attributes['template'] . '_listCourses.php' );
+	} elseif ( ! $showEvents ) {
+		$str = include $attributes['template'] . '_listCourses.php';
 		echo $str;
 	}
 }

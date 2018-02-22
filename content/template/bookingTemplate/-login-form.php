@@ -32,7 +32,7 @@
 	<label>
 		<div class="loginLabel"><?php esc_html_e( 'Password', 'eduadmin-booking' ); ?></div>
 		<div class="loginInput">
-			<input type="password" autocomplete="off" name="eduadminpassword" required title="<?php echo esc_attr__( 'Please enter your password here', 'eduadmin-booking' ); ?>" placeholder="<?php echo esc_attr__( 'Password', 'eduadmin-booking' ); ?>"/>
+			<input type="password" autocomplete="off" autofocus="autofocus" name="eduadminpassword" required title="<?php echo esc_attr__( 'Please enter your password here', 'eduadmin-booking' ); ?>" placeholder="<?php echo esc_attr__( 'Password', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<?php

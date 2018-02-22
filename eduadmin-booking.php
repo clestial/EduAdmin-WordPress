@@ -57,15 +57,15 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 */
 		private $token = null;
 		/**
-		 * @var EduAdminBookingHandler
+		 * @var EduAdmin_BookingHandler
 		 */
 		public $booking_handler = null;
 		/**
-		 * @var \EduAdminLoginHandler
+		 * @var \EduAdmin_LoginHandler
 		 */
 		public $login_handler = null;
 		/**
-		 * @var \EduAdminAPIController
+		 * @var \EduAdmin_APIController
 		 */
 		public $rest_controller = null;
 		/**
@@ -225,7 +225,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			$this->session = WP_Session::get_instance();
 
 			include_once 'includes/loApiClasses.php';
-			include_once 'includes/_apiFunctions.php';
+			include_once 'includes/edu-api-functions.php';
 			include_once 'class/class-eduadmin-bookinginfo.php';
 			include_once 'class/class-eduadmin-bookinghandler.php';
 			include_once 'class/class-eduadmin-loginhandler.php';
@@ -239,21 +239,21 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			}
 			$this->api = new EduAdminClient( $this->version );
 
-			include_once 'includes/_options.php';
-			include_once 'includes/_ajaxFunctions.php';
-			include_once 'includes/_rewrites.php';
-			include_once 'includes/_shortcodes.php';
+			include_once 'includes/edu-options.php';
+			include_once 'includes/edu-ajax-functions.php';
+			include_once 'includes/edu-rewrites.php';
+			include_once 'includes/edu-shortcodes.php';
 
-			include_once 'includes/_questionFunctions.php';
-			include_once 'includes/_attributeFunctions.php';
-			include_once 'includes/_textFunctions.php';
-			include_once 'includes/_loginFunctions.php';
+			include_once 'includes/edu-question-functions.php';
+			include_once 'includes/edu-attribute-functions.php';
+			include_once 'includes/edu-text-functions.php';
+			include_once 'includes/edu-login-functions.php';
 
-			include_once 'class/controller-eduadmin-api.php';
+			include_once 'class/class-eduadmin-apicontroller.php';
 
-			$this->rest_controller = new EduAdminAPIController();
-			$this->booking_handler = new EduAdminBookingHandler();
-			$this->login_handler   = new EduAdminLoginHandler();
+			$this->rest_controller = new EduAdmin_APIController();
+			$this->booking_handler = new EduAdmin_BookingHandler();
+			$this->login_handler   = new EduAdmin_LoginHandler();
 			$this->stop_timer( $t );
 		}
 
@@ -469,7 +469,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		}
 	);
 
-	add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin.php',
+	add_action( 'in_plugin_update_message-eduadmin-booking/eduadmin-booking.php',
 		function( $current_plugin_metadata, $new_plugin_metadata ) {
 			if ( ! empty( $new_plugin_metadata->upgrade_notice ) && strlen( trim( $new_plugin_metadata->upgrade_notice ) ) > 0 ) {
 				echo '<p style="background-color: #d54e21; padding: 10px; color: #f9f9f9; margin-top: 10px"><strong>' . esc_html__( 'Important Upgrade Notice', 'eduadmin-booking' ) . ':</strong> ';

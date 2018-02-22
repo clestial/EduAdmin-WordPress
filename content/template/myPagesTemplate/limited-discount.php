@@ -8,7 +8,7 @@ $currency = get_option( 'eduadmin-currency', 'SEK' );
 <div class="eduadmin">
 	<?php
 	$tab = 'limitedDiscount';
-	require_once 'login_tab_header.php';
+	require_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'Discount Cards', 'eduadmin-booking' ); ?></h2>
 	<?php
@@ -46,5 +46,5 @@ $currency = get_option( 'eduadmin-currency', 'SEK' );
 		}
 		?>
 	</table>
-	<?php require_once 'login_tab_footer.php'; ?>
+	<?php require_once 'login-tab-footer.php'; ?>
 </div>

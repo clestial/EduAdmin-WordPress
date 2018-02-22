@@ -47,12 +47,6 @@
 	<?php } ?>
 	<?php
 
-	$contact_custom_fields = EDUAPI()->OData->CustomFields->Search(
-		null,
-		'ShowOnWeb and CustomFieldOwner eq \'Person\'',
-		'Alternatives'
-	)['value'];
-
 	foreach ( $contact_custom_fields as $attr ) {
 		render_attribute( $attr, true );
 	}
@@ -102,7 +96,11 @@
 			echo( intval( $s ) > 0 ? '&nbsp;<i class="priceLabel">' . esc_html( convert_to_money( $s ) ) . '</i>' : '' );
 			echo "</label>\n";
 		}
-		echo "<br />";
+		echo '<br />';
+	}
+
+	foreach ( $participant_questions as $question ) {
+		render_question( $question, true, 'participant' );
 	}
 	?>
 </div>

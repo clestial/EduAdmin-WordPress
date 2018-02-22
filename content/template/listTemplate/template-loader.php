@@ -3,53 +3,53 @@ $eds = $subjects;
 
 $edl = $levels;
 
-$filterCourses = array();
+$filter_courses = array();
 
 if ( ! empty( $attributes['subject'] ) ) {
 	foreach ( $eds as $subject ) {
 		if ( $subject->SubjectName === $attributes['subject'] ) {
-			if ( ! in_array( $subject->ObjectID, $filterCourses ) ) {
-				$filterCourses[] = $subject->ObjectID;
+			if ( ! in_array( $subject->ObjectID, $filter_courses ) ) {
+				$filter_courses[] = $subject->ObjectID;
 			}
 		}
 	}
 }
 
-$categoryID = null;
+$category_id = null;
 if ( ! empty( $attributes['category'] ) ) {
-	$categoryID = $attributes['category'];
+	$category_id = $attributes['category'];
 }
 
-$showImages = get_option( 'eduadmin-showCourseImage', true );
+$show_images = get_option( 'eduadmin-showCourseImage', true );
 
-$customOrderBy      = null;
-$customOrderByOrder = null;
+$custom_order_by      = null;
+$custom_order_by_order = null;
 if ( ! empty( $attributes['orderby'] ) ) {
-	$customOrderBy = $attributes['orderby'];
+	$custom_order_by = $attributes['orderby'];
 }
 
 if ( ! empty( $attributes['order'] ) ) {
-	$customOrderByOrder = $attributes['order'];
+	$custom_order_by_order = $attributes['order'];
 }
 
-$customMode = null;
+$custom_mode = null;
 if ( ! empty( $attributes['mode'] ) ) {
-	$customMode = $attributes['mode'];
+	$custom_mode = $attributes['mode'];
 }
 
-if ( null !== $customMode ) {
-	if ( 'event' === $customMode ) {
+if ( null !== $custom_mode ) {
+	if ( 'event' === $custom_mode ) {
 		$str = include $attributes['template'] . '_listEvents.php';
 		echo $str;
-	} elseif ( 'course' === $customMode ) {
+	} elseif ( 'course' === $custom_mode ) {
 		$str = include $attributes['template'] . '_listCourses.php';
 		echo $str;
 	}
 } else {
-	if ( $showEvents ) {
+	if ( $show_events ) {
 		$str = include $attributes['template'] . '_listEvents.php';
 		echo $str;
-	} elseif ( ! $showEvents ) {
+	} elseif ( ! $show_events ) {
 		$str = include $attributes['template'] . '_listCourses.php';
 		echo $str;
 	}

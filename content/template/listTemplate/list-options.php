@@ -1,16 +1,16 @@
 <?php
-$allowLocationSearch = get_option( 'eduadmin-allowLocationSearch', true );
-$allowSubjectSearch  = get_option( 'eduadmin-allowSubjectSearch', false );
-$allowCategorySearch = get_option( 'eduadmin-allowCategorySearch', false );
-$allowLevelSearch    = get_option( 'eduadmin-allowLevelSearch', false );
+$allow_location_search = get_option( 'eduadmin-allowLocationSearch', true );
+$allow_subject_search  = get_option( 'eduadmin-allowSubjectSearch', false );
+$allow_category_search = get_option( 'eduadmin-allowCategorySearch', false );
+$allow_level_search    = get_option( 'eduadmin-allowLevelSearch', false );
 
-$showSearch      = $attributes['showsearch'];
-$showMoreNumber  = $attributes['showmore'];
-$showCity        = $attributes['showcity'];
-$showBookBtn     = $attributes['showbookbtn'];
-$showReadMoreBtn = $attributes['showreadmorebtn'];
+$show_search        = $attributes['showsearch'];
+$show_more_number   = $attributes['showmore'];
+$show_city          = $attributes['showcity'];
+$show_book_btn      = $attributes['showbookbtn'];
+$show_read_more_btn = $attributes['showreadmorebtn'];
 
-$searchVisible = $showSearch == true || ( $attributes['hidesearch'] == false || $attributes['hidesearch'] == null );
+$search_visible = $show_search == true || ( $attributes['hidesearch'] == false || $attributes['hidesearch'] == null );
 
 $subjects = get_transient( 'eduadmin-subjects' );
 if ( ! $subjects ) {
@@ -23,10 +23,10 @@ if ( ! $subjects ) {
 	set_transient( 'eduadmin-subjects', $subjects, DAY_IN_SECONDS );
 }
 
-$distinctSubjects = array();
+$distinct_subjects = array();
 foreach ( $subjects as $subj ) {
-	if ( ! key_exists( $subj['SubjectId'], $distinctSubjects ) ) {
-		$distinctSubjects[ $subj['SubjectId'] ] = $subj['SubjectName'];
+	if ( ! key_exists( $subj['SubjectId'], $distinct_subjects ) ) {
+		$distinct_subjects[ $subj['SubjectId'] ] = $subj['SubjectName'];
 	}
 }
 
@@ -39,7 +39,7 @@ if ( ! $addresses ) {
 	set_transient( 'eduadmin-locations', $addresses, DAY_IN_SECONDS );
 }
 
-$showEvents = get_option( 'eduadmin-showEventsInList', false );
+$show_events = get_option( 'eduadmin-showEventsInList', false );
 
 $categories = get_transient( 'eduadmin-categories' );
 if ( ! $categories ) {

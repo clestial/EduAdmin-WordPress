@@ -4,7 +4,7 @@ global $wp_query;
 $api_key = get_option( 'eduadmin-api-key' );
 
 if ( ! $api_key || empty( $api_key ) ) {
-	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
 	include 'list-options.php';
 	?>

@@ -177,14 +177,14 @@ function get_spots_left( $free_spots, $max_spots, $spot_option = 'exactNumbers',
 						if ( $free_spots <= $max && $free_spots >= $min ) {
 							EDU()->stop_timer( $t );
 
-							/* translators: 1: Number of spots */
+							/* translators: 1: Number of spots (range) */
 
 							return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
 						}
 					} elseif ( stripos( $line, '+' ) > -1 ) {
 						EDU()->stop_timer( $t );
 
-						/* translators: 1: Number of spots */
+						/* translators: 1: Number of spots (range) */
 
 						return sprintf( __( '%1$s spots left', 'eduadmin-booking' ), $line );
 					}

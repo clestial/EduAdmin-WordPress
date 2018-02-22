@@ -76,5 +76,3 @@ $questions = EDUAPI()->REST->Event->BookingQuestions( $event['EventId'], true );
 
 $booking_questions     = $questions['BookingQuestions'];
 $participant_questions = $questions['ParticipantQuestions'];
-
-EDU()->write_debug( $questions );

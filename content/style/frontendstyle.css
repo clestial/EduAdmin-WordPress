@@ -341,7 +341,13 @@ h1.courseTitle:hover,
 	margin: 0 0 24px 0;
 }
 
-.eduadmin .inputHolder input[required] {
+.eduadmin .inputHolder input[required],
+.eduadmin .inputHolder input[data-required="true"],
+.eduadmin .inputHolder textarea[required],
+.eduadmin .inputHolder textarea[data-required="true"],
+.eduadmin .inputHolder select[required],
+.eduadmin .inputHolder select[data-required="true"]
+{
 	background-color: #feffcc;
 }
 

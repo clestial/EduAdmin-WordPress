@@ -16,9 +16,9 @@ class EduAdminToken {
 	 * @var integer|null
 	 */
 	public $ExpiresIn = null;
-	public $UserName = null;
-	public $Issued = null;
-	public $Expires = null;
+	public $UserName  = null;
+	public $Issued    = null;
+	public $Expires   = null;
 
 	/**
 	 * EduAdminToken constructor.
@@ -30,12 +30,24 @@ class EduAdminToken {
 			die( 'Could not deserialize the token' );
 		}
 
-		$this->AccessToken = $obj['access_token'];
-		$this->TokenType   = $obj['token_type'];
-		$this->ExpiresIn   = $obj['expires_in'];
-		$this->UserName    = $obj['userName'];
-		$this->Issued      = strtotime( $obj['.issued'] );
-		$this->Expires     = strtotime( $obj['.expires'] );
+		if ( ! empty( $obj['access_token'] ) ) {
+			$this->AccessToken = $obj['access_token'];
+		}
+		if ( ! empty( $obj['token_type'] ) ) {
+			$this->TokenType = $obj['token_type'];
+		}
+		if ( ! empty( $obj['expires_in'] ) ) {
+			$this->ExpiresIn = $obj['expires_in'];
+		}
+		if ( ! empty( $obj['userName'] ) ) {
+			$this->UserName = $obj['userName'];
+		}
+		if ( ! empty( $obj['.issued'] ) ) {
+			$this->Issued = strtotime( $obj['.issued'] );
+		}
+		if ( ! empty( $obj['.expires'] ) ) {
+			$this->Expires = strtotime( $obj['.expires'] );
+		}
 	}
 
 	/**

@@ -24,6 +24,14 @@ function render_attribute( $attribute, $multiple = false, $suffix = '', $data = 
 		case 'Textarea': // Anteckningsfält
 			render_textarea_field( $attribute, $multiple, $suffix, $data );
 			break;
+		case 'Date':
+			render_date_field( $attribute, $multiple, $suffix, $data );
+			break;
+		case 'CheckboxList':
+			//render_checkbox_list_field( $attribute, $multiple, $suffix, $data );
+			break;
+		case 'Html':
+			break;
 		default:
 			render_debug_attribute( $attribute );
 			break;
@@ -59,7 +67,7 @@ function render_date_field( $attribute, $multiple, $suffix, $data ) {
 	echo '<label><div class="inputLabel">';
 	echo wp_kses( $attribute['CustomFieldName'], wp_kses_allowed_html( 'post' ) );
 	echo '</div><div class="inputHolder">';
-	echo '<input type="date" placeholder="' . esc_attr( wp_strip_all_tags( $attribute['CustomFieldName'] ) ) . '" name="edu-attr_' . esc_attr( $attribute['CustomFieldId'] . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" />';
+	echo '<input type="date" placeholder="' . esc_attr( wp_strip_all_tags( $attribute['CustomFieldName'] ) ) . '" name="edu-attr_' . esc_attr( $attribute['CustomFieldId'] . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" value="' . esc_attr( $data ) . '" />';
 	echo '</div></label>';
 }
 
@@ -84,9 +92,9 @@ function render_select_field( $attribute, $multiple, $suffix, $data ) {
 }
 
 function render_checkbox_list_field( $attribute, $multiple, $suffix, $data ) {
-	echo '<div class="inputLabel">';
+	echo '<div class="inputLabel"><label>';
 	echo wp_kses( $attribute['CustomFieldName'], wp_kses_allowed_html( 'post' ) );
-	echo '</div><div class="inputHolder">';
+	echo '</label></div><div class="inputHolder">';
 	foreach ( $attribute['CustomFieldAlternatives'] as $val ) {
 		echo "\t<label><input" . ( ! empty( $data ) && $data === $val['CustomFieldAlternativeId'] ? ' checked="checked"' : '' ) . ' type="checkbox" name="edu-attr_' . esc_attr( $attribute['CustomFieldId'] . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" value="' . esc_attr( $val['CustomFieldAlternativeId'] ) . '">' . esc_html( $val['CustomFieldAlternativeValue'] ) . "</label>\n";
 	}

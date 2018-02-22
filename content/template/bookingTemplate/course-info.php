@@ -20,7 +20,7 @@ if ( ! $edo ) {
 		' and StartDate le ' . date( 'c', strtotime( 'now 23:59:59 +' . $fetch_months . ' months' ) ) .
 		' and EndDate ge ' . date( 'c', strtotime( 'now' ) ) .
 		';' .
-		'$expand=PriceNames($filter=PublicPriceName),EventDates' .
+		'$expand=PriceNames($filter=PublicPriceName),EventDates,Sessions($expand=PriceNames($filter=PublicPriceName;)),PaymentMethods' .
 		';' .
 		'$orderby=' . ( $group_by_city ? 'City asc,' : '' ) . 'StartDate asc' .
 		';';
@@ -51,14 +51,7 @@ if ( $edo ) {
 	$selected_course = $edo;
 }
 
-if ( ! $selected_course ) {
-	?>
-	<script>history.go(-1);</script>
-	<?php
-	die();
-}
-
-if ( 0 === count( $selected_course['Events'] ) ) {
+if ( ! $selected_course || 0 === count( $selected_course['Events'] ) ) {
 	?>
 	<script>history.go(-1);</script>
 	<?php

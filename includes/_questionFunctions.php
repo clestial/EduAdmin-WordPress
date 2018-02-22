@@ -131,7 +131,7 @@ function edu_render_number_question( $question ) {
 	echo esc_html( wp_strip_all_tags( $question->QuestionText ) );
 	echo '</div>';
 	echo '<div class="inputHolder">';
-	echo '<input type="number" class="questionText" onchange="eduBookingView.UpdatePrice();"' . ( $question->Mandatory ? ' required="required"' : '' ) . ' data-price="' . esc_attr( $question->Answers->EventBookingAnswer->Price ) . '" min="0" data-type="number" name="question_' . esc_attr( $question->Answers->EventBookingAnswer->AnswerID . '_number' ) . '" placeholder="' . esc_attr__( 'Quantity', 'eduadmin-booking' ) . '\" />';
+	echo '<input type="number" class="questionText" onchange="eduBookingView.UpdatePrice();"' . ( $question->Mandatory ? ' required="required"' : '' ) . ' data-price="' . esc_attr( $question->Answers->EventBookingAnswer->Price ) . '" min="0" data-type="number" name="question_' . esc_attr( $question->Answers->EventBookingAnswer->AnswerID . '_number' ) . '" placeholder="' . esc_attr__( 'Quantity', 'eduadmin-booking' ) . '" />';
 	if ( $question->Answers->EventBookingAnswer->Price > 0 ) {
 		echo ' <i class="priceLabel">(' . esc_html( sprintf( __( '%1$s / pcs', 'eduadmin-booking' ), convert_to_money( $question->Answers->EventBookingAnswer->Price ) ) ) . ')</i>';
 	}
@@ -179,24 +179,24 @@ function edu_render_radio_question( $question, $display ) {
 	} elseif ( 'horizontal' === $display ) {
 		if ( is_array( $question->Answers->EventBookingAnswer ) ) {
 			foreach ( $question->Answers->EventBookingAnswer as $q ) {
-				echo "<label class=\"questionRadioHorizontal\">";
-				echo "<div class=\"inputHolder\">";
-				echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
+				echo '<label class="questionRadioHorizontal">';
+				echo '<div class="inputHolder">';
+				echo '<input type="radio" class="questionRadio" data-type="radio"' . ( $question->Mandatory ? ' required="required"' : '' ) . ' data-price="' . esc_attr( $q->Price ) . '" name="question_' . esc_attr( $question->QuestionID . '_radio' ) . '" value="' . esc_attr( $q->AnswerID ) . '" /> ';
 				echo esc_html( wp_strip_all_tags( $q->AnswerText ) );
 				if ( $q->Price > 0 ) {
-					echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
+					echo ' <i class="priceLabel">(' . esc_html( convert_to_money( $q->Price ) ) . ')</i>';
 				}
 				echo '</div>';
 				echo '</label>';
 			}
 		} elseif ( is_object( $question->Answers->EventBookingAnswer ) ) {
 			$q = $question->Answers->EventBookingAnswer;
-			echo "<label class=\"questionRadioHorizontal\">";
-			echo "<div class=\"inputHolder\">";
-			echo "<input type=\"radio\" class=\"questionRadio\" data-type=\"radio\"" . ( $question->Mandatory ? " required=\"required\"" : "" ) . " data-price=\"" . $q->Price . "\" name=\"question_" . $question->QuestionID . "_radio\" value=\"" . $q->AnswerID . "\" /> ";
+			echo '<label class="questionRadioHorizontal">';
+			echo '<div class="inputHolder">';
+			echo '<input type="radio" class="questionRadio" data-type="radio"' . ( $question->Mandatory ? ' required="required"' : '' ) . ' data-price="' . esc_attr( $q->Price ) . '" name="question_' . esc_attr( $question->QuestionID . '_radio' ) . '" value="' . esc_attr( $q->AnswerID ) . '" /> ';
 			echo esc_html( wp_strip_all_tags( $q->AnswerText ) );
 			if ( $q->Price > 0 ) {
-				echo " <i class=\"priceLabel\">(" . convert_to_money( $q->Price ) . ")</i>";
+				echo ' <i class="priceLabel">(' . esc_html( convert_to_money( $q->Price ) ) . ')</i>';
 			}
 			echo '</div>';
 			echo '</label>';

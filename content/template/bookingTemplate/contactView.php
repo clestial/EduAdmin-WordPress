@@ -49,7 +49,9 @@ $__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonI
 			</div>
 		</label>
 	<?php } ?>
-	<?php if ( get_option( 'eduadmin-useLogin', false ) && ! $contact->CanLogin ) { ?>
+	<?php
+	if ( get_option( 'eduadmin-useLogin', false ) && ! $contact->CanLogin ) {
+		?>
 		<label>
 			<div class="inputLabel">
 				<?php esc_html_e( 'Please enter a password', 'eduadmin-booking' ); ?>
@@ -61,46 +63,31 @@ $__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonI
 		<?php
 	}
 
-	$so = new XSorting();
-	$s  = new XSort( 'SortIndex', 'ASC' );
-	$so->AddItem( $s );
+	$contact_custom_fields = EDUAPI()->OData->CustomFields->Search(
+		null,
+		'ShowOnWeb and CustomFieldOwner eq \'Person\'',
+		'Alternatives'
+	)['value'];
 
-	$fo = new XFiltering();
-	$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-	$fo->AddItem( $f );
-	$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
-	$fo->AddItem( $f );
-	$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
-
-	$db = array();
-	if ( isset( $contact ) && isset( $contact->PersonId ) ) {
-		if ( 0 !== $contact->PersonId ) {
-			$fo = new XFiltering();
-			$f  = new XFilter( 'CustomerContactID', '=', $contact->PersonId );
-			$fo->AddItem( $f );
-			$db = EDU()->api->GetCustomerContactAttribute( EDU()->get_token(), '', $fo->ToString() );
-		}
-	}
-
-	foreach ( $contactAttributes as $attr ) {
+	foreach ( $contact_custom_fields as $custom_field ) {
 		$data = null;
-		foreach ( $db as $d ) {
-			if ( $d->AttributeID === $attr->AttributeID ) {
-				switch ( $d->AttributeTypeID ) {
-					case 1:
-						$data = $d->AttributeChecked;
+		foreach ( $contact->CustomFields as $cf ) {
+			if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
+				switch ( $cf->CustomFieldType ) {
+					case 'Checkbox':
+						$data = $cf->CustomFieldChecked;
 						break;
-					case 5:
-						$data = $d->AttributeAlternative->AttributeAlternativeID;
+					case 'Dropdown':
+						$data = $cf->CustomFieldAlternativeId;
 						break;
 					default:
-						$data = $d->AttributeValue;
+						$data = $cf->CustomFieldValue;
 						break;
 				}
 				break;
 			}
 		}
-		render_attribute( $attr, false, '', $data );
+		render_attribute( $custom_field, false, '', $data );
 	}
 
 	?>

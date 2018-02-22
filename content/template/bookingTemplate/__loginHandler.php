@@ -5,43 +5,43 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 		$selected_login_field        = get_option( 'eduadmin-loginField', 'Email' );
 		$allow_customer_registration = get_option( 'eduadmin-allowCustomerRegistration', true );
 
-		$f = new XFilter( $selected_login_field, '=', trim( sanitize_text_field( $_POST['eduadminloginEmail'] ) ) );
-		$ft->AddItem( $f );
+		$login_field = get_option( 'eduadmin-loginField', 'Email' );
 
-		$f = new XFilter( 'Disabled', '=', false );
-		$ft->AddItem( $f );
+		$possible_persons = EDUAPI()->OData->Persons->Search(
+			null,
+			"$login_field eq '" . sanitize_text_field( wp_unslash( $_POST['eduadminloginEmail'] ) ) . '\'', // Input var okay.
+			'CustomFields($filter=ShowOnWeb;)'
+		)['value'];
 
-		$matching_contacts           = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), true );
 		EDU()->session['needsLogin'] = false;
 		EDU()->session['checkEmail'] = true;
-		if ( ! empty( $matching_contacts ) ) {
-			foreach ( $matching_contacts as $con ) {
-				if ( 1 === $con->CanLogin ) {
+		if ( ! empty( $possible_persons ) ) {
+			foreach ( $possible_persons as $con ) {
+				if ( true === $con['CanLogin'] ) {
 					EDU()->session['needsLogin'] = true;
 					break;
 				}
 			}
 		}
 
-		if ( count( $matching_contacts ) >= 1 ) {
-			$con = $matching_contacts[0];
-			if ( 1 === $con->CanLogin ) {
+		if ( count( $possible_persons ) >= 1 ) {
+			$con = $possible_persons[0];
+			if ( true === $con['CanLogin'] ) {
 				EDU()->session['needsLogin'] = true;
-				die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
+				//die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
 			}
 			EDU()->session['needsLogin'] = false;
-			$filter                      = new XFiltering();
-			$f                           = new XFilter( 'CustomerID', '=', $con->CustomerID );
-			$filter->AddItem( $f );
-			$f = new XFilter( 'Disabled', '=', false );
-			$filter->AddItem( $f );
-			$customers = EDU()->api->GetCustomer( EDU()->get_token(), '', $filter->ToString(), true );
-			if ( 1 === count( $customers ) ) {
-				$customer                            = $customers[0];
+
+			$customer = EDUAPI()->OData->Customers->GetItem(
+				$con['CustomerId'],
+				null,
+				'BillingInfo,CustomFields($filter=ShowOnWeb;)'
+			);
+			if ( ! empty( $customer ) ) {
 				$user                                = new stdClass();
-				$c1                                  = json_encode( $con );
+				$c1                                  = wp_json_encode( $con );
 				$user->Contact                       = json_decode( $c1 );
-				$c2                                  = json_encode( $customer );
+				$c2                                  = wp_json_encode( $customer );
 				$user->Customer                      = json_decode( $c2 );
 				EDU()->session['eduadmin-loginUser'] = $user;
 			} else {
@@ -50,18 +50,18 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 		}
 
 		if ( $allow_customer_registration && empty( $matching_contacts ) ) {
-			$contact              = new CustomerContact();
+			$contact              = new EduAdmin_Data_Person();
 			$selected_login_field = get_option( 'eduadmin-loginField', 'Email' );
 			switch ( $selected_login_field ) {
 				case 'Email':
-					$contact->Email = sanitize_email( $_POST['eduadminloginEmail'] );
+					$contact['Email'] = sanitize_email( $_POST['eduadminloginEmail'] );
 					break;
 				case 'CivicRegistrationNumber':
-					$contact->CivicRegistrationNumber = sanitize_text_field( $_POST['eduadminloginEmail'] );
+					$contact['CivicRegistrationNumber'] = sanitize_text_field( $_POST['eduadminloginEmail'] );
 					break;
 			}
 
-			$customer = new Customer();
+			$customer = new EduAdmin_Data_Customer();
 
 			$user                                = new stdClass();
 			$user->NewCustomer                   = true;
@@ -73,8 +73,7 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 		} else {
 			EDU()->session['needsLogin'] = true;
 			EDU()->session['checkEmail'] = true;
-			//EDU()->session['eduadminLoginError'] = __( 'Could not find any users with that info.', 'eduadmin-booking' );
 		}
-		die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
+		//die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
 	}
 }

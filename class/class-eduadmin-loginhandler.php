@@ -24,7 +24,8 @@ class EduAdminLoginHandler {
 
 				$possible_persons = EDUAPI()->OData->Persons->Search(
 					'PersonId',
-					"CanLogin and $login_field eq '" . sanitize_text_field( wp_unslash( $_POST['eduadminloginEmail'] ) ) . '\'' // Input var okay.
+					"CanLogin and $login_field eq '" . sanitize_text_field( wp_unslash( $_POST['eduadminloginEmail'] ) ) . '\'', // Input var okay.
+					'CustomFields($filter=ShowOnWeb;)'
 				)['value'];
 
 				if ( 1 === count( $possible_persons ) ) {
@@ -35,7 +36,9 @@ class EduAdminLoginHandler {
 
 					if ( 200 === $login_result['@curl']['http_code'] ) {
 						$contact = EDUAPI()->OData->Persons->GetItem(
-							$login_result['PersonId']
+							$login_result['PersonId'],
+							null,
+							'CustomFields($filter=ShowOnWeb;)'
 						);
 
 						unset( $contact['@odata.context'] );
@@ -44,16 +47,16 @@ class EduAdminLoginHandler {
 						$customer = EDUAPI()->OData->Customers->GetItem(
 							$login_result['CustomerId'],
 							null,
-							'BillingInfo'
+							'BillingInfo,CustomFields($filter=ShowOnWeb;)'
 						);
 
 						unset( $customer['@odata.context'] );
 						unset( $customer['@curl'] );
 
 						$user           = new stdClass();
-						$c1             = json_encode( $contact );
+						$c1             = wp_json_encode( $contact );
 						$user->Contact  = json_decode( $c1 );
-						$c2             = json_encode( $customer );
+						$c2             = wp_json_encode( $customer );
 						$user->Customer = json_decode( $c2 );
 
 						EDU()->session['eduadmin-loginUser'] = $user;

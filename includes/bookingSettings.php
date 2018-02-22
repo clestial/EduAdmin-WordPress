@@ -12,79 +12,79 @@ function edu_render_booking_settings_page() {
 				if ( empty( EDUAPI()->api_token ) ) {
 					add_action( 'admin_notices', array( 'EduAdmin', 'SetupWarning' ) );
 				} else {
-					?>
-					<h3><?php echo esc_html__( "Default customer group", 'eduadmin-booking' ); ?></h3>                <?php
-				$cg = EDUAPI()->OData->CustomerGroups->Search(
-					"CustomerGroupId,ParentCustomerGroupId,CustomerGroupName",
-					"PublicGroup",
-					null,
-					"ParentCustomerGroupId"
-				);
+					echo '<h3>' . esc_html__( 'Default customer group', 'eduadmin-booking' ) . '</h3>';
+					$cg = EDUAPI()->OData->CustomerGroups->Search(
+						'CustomerGroupId,ParentCustomerGroupId,CustomerGroupName',
+						'PublicGroup',
+						null,
+						'ParentCustomerGroupId'
+					);
 
-				$parent = array();
-				foreach ( $cg["value"] as $i => $v ) {
-					$parent[ $i ] = $v["ParentCustomerGroupId"];
-				}
-
-				array_multisort( $parent, SORT_ASC, $cg["value"] );
-
-				$levelStack = array();
-				foreach ( $cg["value"] as $g ) {
-					$levelStack[ $g["ParentCustomerGroupId"] ][] = $g;
-				}
-
-				$depth = 0;
-
-				function edu_writeOptions( $g, $array, $depth, $selectedOption ) {
-					echo
-						"<option value=\"" . $g["CustomerGroupId"] . "\"" . ( $selectedOption == $g["CustomerGroupId"] ? " selected=\"selected\"" : "" ) . ">" .
-						str_repeat( '&nbsp;', $depth * 4 ) .
-						$g["CustomerGroupName"] .
-						"</option>\n";
-					if ( array_key_exists( $g["CustomerGroupId"], $array ) ) {
-						$depth++;
-						foreach ( $array[ $g["CustomerGroupId"] ] as $ng ) {
-							edu_writeOptions( $ng, $array, $depth, $selectedOption );
-						}
-						$depth--;
+					$parent = array();
+					foreach ( $cg['value'] as $i => $v ) {
+						$parent[ $i ] = $v['ParentCustomerGroupId'];
 					}
-				}
 
-				?>
-					<select required name="eduadmin-customerGroupId" title="<?php esc_attr_e( "Select customer group", 'eduadmin-booking' ); ?>">
-						<option value=""><?php esc_html_e( "Select customer group", 'eduadmin-booking' ); ?></option>
-						<?php
-						$root           = $levelStack['0'];
-						$selectedOption = get_option( 'eduadmin-customerGroupId', null );
-						foreach ( $root as $g ) {
-							edu_writeOptions( $g, $levelStack, $depth, $selectedOption );
+					array_multisort( $parent, SORT_ASC, $cg['value'] );
+
+					$level_stack = array();
+					foreach ( $cg['value'] as $g ) {
+						$level_stack[ $g['ParentCustomerGroupId'] ][] = $g;
+					}
+
+					$depth = 0;
+
+					function edu_write_options( $g, $array, $depth, $selected_option ) {
+						echo
+							'<option value="' . esc_attr( $g['CustomerGroupId'] ) . '"' . ( intval( $selected_option ) === intval( $g['CustomerGroupId'] ) ? ' selected="selected"' : '' ) . '>' .
+							str_repeat( '&nbsp;', $depth * 4 ) .
+							esc_html( wp_strip_all_tags( $g['CustomerGroupName'] ) ) .
+							"</option>\n";
+						if ( array_key_exists( $g['CustomerGroupId'], $array ) ) {
+							$depth++;
+							foreach ( $array[ $g['CustomerGroupId'] ] as $ng ) {
+								edu_write_options( $ng, $array, $depth, $selected_option );
+							}
+							$depth--;
 						}
-						?></select>                    <br/>                    <br/>                    <label>
+					}
+
+					?>
+					<select required name="eduadmin-customerGroupId" title="<?php esc_attr_e( 'Select customer group', 'eduadmin-booking' ); ?>">
+						<option value=""><?php esc_html_e( 'Select customer group', 'eduadmin-booking' ); ?></option>
+						<?php
+						$root            = $level_stack['0'];
+						$selected_option = get_option( 'eduadmin-customerGroupId', null );
+						foreach ( $root as $g ) {
+							edu_write_options( $g, $level_stack, $depth, $selected_option );
+						}
+						?>
+					</select><br/><br/>                    <label>
 						<input type="checkbox" name="eduadmin-useLogin"
-							<?php echo( get_option( "eduadmin-useLogin", false ) ? " checked=\"checked\"" : "" ); ?>
+							<?php echo( get_option( 'eduadmin-useLogin', false ) ? ' checked="checked"' : '' ); ?>
 								onchange="EduAdmin.ToggleVisibility(this.checked, '.eduadmin-forceLogin');"/>
-						<?php _e( "Use login", 'eduadmin-booking' ); ?>
+						<?php esc_html_e( 'Use login', 'eduadmin-booking' ); ?>
 					</label>                    <br/>
-					<div class="eduadmin-forceLogin"<?php echo( get_option( "eduadmin-useLogin", false ) ? " style=\"display: block;\"" : " style=\"display: none;\"" ); ?>>
+					<div class="eduadmin-forceLogin"<?php echo( get_option( 'eduadmin-useLogin', false ) ? ' style="display: block;"' : ' style="display: none;"' ); ?>>
 						<label>
 							<input type="checkbox" name="eduadmin-allowCustomerRegistration"
-								<?php echo get_option( "eduadmin-allowCustomerRegistration", true ) ? " checked=\"checked\"" : ""; ?>
+								<?php echo get_option( 'eduadmin-allowCustomerRegistration', true ) ? ' checked="checked"' : ''; ?>
 							/>
-							<?php esc_html_e( "Allow customer registration", 'eduadmin-booking' ); ?>
+							<?php esc_html_e( 'Allow customer registration', 'eduadmin-booking' ); ?>
 						</label>
-					</div>                    <br/>                    <label>
-						<?php esc_html_e( "Login field", 'eduadmin-booking' ); ?>
-						<?php $selectedLoginField = get_option( 'eduadmin-loginField', 'Email' ); ?>
+					</div><br/><label>
+						<?php esc_html_e( 'Login field', 'eduadmin-booking' ); ?>
+						<?php $selected_login_field = get_option( 'eduadmin-loginField', 'Email' ); ?>
 						<select name="eduadmin-loginField">
-							<option<?php echo( $selectedLoginField === "Email" ? " selected=\"selected\"" : "" ); ?>
-									value="Email"><?php esc_html_e( "E-mail address", 'eduadmin-booking' ); ?></option>
-							<option<?php echo( $selectedLoginField === "CivicRegistrationNumber" ? " selected=\"selected\"" : "" ); ?>
+							<option<?php echo( 'Email' === $selected_login_field ? ' selected="selected"' : '' ); ?>
+									value="Email"><?php esc_html_e( 'E-mail address', 'eduadmin-booking' ); ?></option>
+							<option<?php echo( 'CivicRegistrationNumber' === $selected_login_field ? " selected=\"selected\"" : "" ); ?>
 									value="CivicRegistrationNumber"><?php esc_html_e( "Civic Registration Number", 'eduadmin-booking' ); ?></option>
 							<!--<option value="CustomerNumber"><?php esc_html_e( "Customer number", 'eduadmin-booking' ); ?></option>-->
 							<!-- To be enabled when it works in the API -->
 						</select>
 					</label>
-					<h3><?php _e( "Booking form settings", 'eduadmin-booking' ); ?></h3>                <?php
+					<h3><?php esc_html_e( "Booking form settings", 'eduadmin-booking' ); ?></h3>                <?php
 				$singlePersonBooking = get_option( 'eduadmin-singlePersonBooking', false );
 				?>                    <label>
 						<input type="checkbox" name="eduadmin-singlePersonBooking"<?php echo( $singlePersonBooking === "true" ? " checked=\"checked\"" : "" ); ?>

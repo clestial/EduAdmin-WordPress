@@ -167,7 +167,7 @@ function eduadmin_get_booking_view( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-bookingview'
 	);
-	if ( false === get_option( 'eduadmin-useLogin', false ) || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->PersonId ) && 0 !== EDU()->session['eduadmin-loginUser']->Contact->PersonId ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
+	if ( empty( get_option( 'eduadmin-useLogin', false ) ) || ( isset( EDU()->session['eduadmin-loginUser'] ) && ( ( isset( EDU()->session['eduadmin-loginUser']->Contact->PersonId ) && 0 !== EDU()->session['eduadmin-loginUser']->Contact->PersonId ) || isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) ) ) {
 		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/' . $attributes['template'] . '.php';
 	} else {
 		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/bookingTemplate/loginView.php';

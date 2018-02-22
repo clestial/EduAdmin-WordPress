@@ -16,7 +16,7 @@ if ( ! empty( $customer->BillingInfo ) ) {
 		</div>
 	</label>
 	<?php
-	if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price->Price > 0 ) ) {
+	if ( empty( $no_invoice_free_events ) || ( $no_invoice_free_events && $first_price->Price > 0 ) ) {
 		?>
 		<label>
 			<div class="inputLabel">
@@ -131,46 +131,32 @@ if ( ! empty( $customer->BillingInfo ) ) {
 		</label>
 		<?php
 	}
-	$so = new XSorting();
-	$s  = new XSort( 'SortIndex', 'ASC' );
-	$so->AddItem( $s );
 
-	$fo = new XFiltering();
-	$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-	$fo->AddItem( $f );
-	$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
-	$fo->AddItem( $f );
-	$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
+	$customer_custom_fields = EDUAPI()->OData->CustomFields->Search(
+		null,
+		'ShowOnWeb and CustomFieldOwner eq \'Customer\'',
+		'Alternatives'
+	)['value'];
 
-	$db = array();
-	if ( isset( $customer ) && isset( $customer->CustomerId ) ) {
-		if ( 0 !== $customer->CustomerId ) {
-			$fo = new XFiltering();
-			$f  = new XFilter( 'CustomerID', '=', $customer->CustomerId );
-			$fo->AddItem( $f );
-			$db = EDU()->api->GetCustomerAttribute( EDU()->get_token(), '', $fo->ToString() );
-		}
-	}
-
-	foreach ( $contactAttributes as $attr ) {
+	foreach ( $customer_custom_fields as $custom_field ) {
 		$data = null;
-		foreach ( $db as $d ) {
-			if ( $d->AttributeID === $attr->AttributeID ) {
-				switch ( $d->AttributeTypeID ) {
-					case 1:
-						$data = $d->AttributeChecked;
+		foreach ( $customer->CustomFields as $cf ) {
+			if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
+				switch ( $cf->CustomFieldType ) {
+					case 'Checkbox':
+						$data = $cf->CustomFieldChecked;
 						break;
-					case 5:
-						$data = $d->AttributeAlternative->AttributeAlternativeID;
+					case 'Dropdown':
+						$data = $cf->CustomFieldAlternativeId;
 						break;
 					default:
-						$data = $d->AttributeValue;
+						$data = $cf->CustomFieldValue;
 						break;
 				}
 				break;
 			}
 		}
-		render_attribute( $attr, false, '', $data );
+		render_attribute( $custom_field, false, '', $data );
 	}
 	if ( ! $no_invoice_free_events || $first_price->Price > 0 ) {
 		?>

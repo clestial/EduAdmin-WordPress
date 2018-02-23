@@ -439,12 +439,12 @@ function edu_api_eventlist() {
 
 	$last_city = '';
 
-	$show_more          = ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
-	$spot_left_option   = $_POST['spotsleft'];
-	$always_few_spots   = $_POST['fewspots'];
-	$show_event_venue   = $_POST['showvenue'];
-	$spot_settings      = $_POST['spotsettings'];
-	$show_event_inquiry = ! empty( $_POST['eventinquiry'] ) && 'true' === $_POST['eventinquiry'];
+	$show_more                = ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
+	$spot_left_option         = $_POST['spotsleft'];
+	$always_few_spots         = $_POST['fewspots'];
+	$show_event_venue         = $_POST['showvenue'];
+	$spot_settings            = $_POST['spotsettings'];
+	$allow_interest_reg_event = ! empty( $_POST['eventinquiry'] ) && 'true' === $_POST['eventinquiry'];
 
 	echo '<div class="eduadmin"><div class="event-table eventDays">';
 	$i                = 0;
@@ -471,7 +471,7 @@ function edu_api_eventlist() {
 				'spotsettings',
 			);
 
-			include( EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php' );
+			include EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php';
 			$last_city = $ev['City'];
 			$i++;
 		}
@@ -480,7 +480,7 @@ function edu_api_eventlist() {
 		echo '<div class="noDatesAvailable"><i>' . esc_html__( 'No available dates for the selected course', 'eduadmin-booking' ) . '</i></div>';
 	}
 	if ( $has_hidden_dates ) {
-		echo '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . ( $group_by_city ? '-' . esc_attr( $last_city ) : '' ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
+		echo '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . esc_attr( $group_by_city ? '-' . $last_city : '' ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
 	}
 	echo '</div></div>';
 

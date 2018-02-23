@@ -116,10 +116,10 @@ if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] 
 			$descr = strip_tags( $object[ $descr_field ] );
 		}
 
-		$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
-		$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+		$name_match  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+		$descr_match = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
-		return ( $nameMatch || $descrMatch );
+		return ( $name_match || $descr_match );
 	} );
 }
 

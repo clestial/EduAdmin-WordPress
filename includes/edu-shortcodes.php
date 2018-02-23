@@ -70,7 +70,7 @@ function eduadmin_get_event_interest( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-eventinterest'
 	);
-	$str        = include EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interestRegEvent.php';
+	$str        = include EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interest-reg-event.php';
 	EDU()->stop_timer( $t );
 
 	return $str;
@@ -303,13 +303,10 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$ret_str .= join( ', ', $subject_names );
 			}
 			if ( isset( $attributes['courselevel'] ) ) {
-				$ft = new XFiltering();
-				$f  = new XFilter( 'ObjectID', '=', $selected_course['CourseTemplateId'] );
-				$ft->AddItem( $f );
-				$course_level = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
+				$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseTemplateId'] );
 
 				if ( ! empty( $course_level ) ) {
-					$ret_str .= $course_level[0]->Name;
+					$ret_str .= $course_level['Name'];
 				}
 			}
 			if ( isset( $attributes['courseattributeid'] ) ) {

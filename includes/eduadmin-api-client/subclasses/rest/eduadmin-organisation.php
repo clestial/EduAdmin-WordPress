@@ -10,6 +10,6 @@ class EduAdmin_REST_Organisation extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function GetOrganisation() {
-		return parent::GET( '', array(), get_called_class() . '|' . __FUNCTION__ );
+		return parent::GET( '/', array(), get_called_class() . '|' . __FUNCTION__ );
 	}
 }

@@ -57,7 +57,7 @@ function eduadmin_get_object_interest( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-objectinterest'
 	);
-	$str        = include EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interestRegObject.php';
+	$str        = include EDUADMIN_PLUGIN_PATH . '/content/template/interestRegTemplate/interest-reg-object.php';
 	EDU()->stop_timer( $t );
 
 	return $str;

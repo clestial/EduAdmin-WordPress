@@ -82,7 +82,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	 */
 	public function Create( $booking_data ) {
 		return parent::POST(
-			'',
+			'/',
 			$booking_data,
 			get_called_class() . '|' . __FUNCTION__
 		);

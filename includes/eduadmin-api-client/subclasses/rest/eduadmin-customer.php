@@ -12,7 +12,7 @@ class EduAdmin_REST_Customer extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function Create( $customer ) {
-		return parent::POST( '',
+		return parent::POST( '/',
 			$customer,
 			get_called_class() . '|' . __FUNCTION__
 		);

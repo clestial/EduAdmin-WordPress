@@ -4,10 +4,10 @@ global $wp_query;
 $api_key = get_option( 'eduadmin-api-key' );
 
 if ( ! $api_key || empty( $api_key ) ) {
-	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
-	if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-event-interest' ) && isset( $_POST['act'] ) && 'eventInquiry' === sanitize_text_field( $_POST['act'] ) ) {
-		include_once 'send-event-inquiry.php';
+	if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-object-interest' ) && isset( $_POST['act'] ) && 'objectInquiry' === sanitize_text_field( $_POST['act'] ) ) {
+		include_once 'send-object-inquiry.php';
 	}
 
 	$course_id = $wp_query->query_vars['courseId'];
@@ -16,7 +16,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 		$edo = EDUAPI()->OData->CourseTemplates->GetItem(
 			$course_id,
 			null,
-			'Subjects,Events($filter=EventId eq ' . intval( $_REQUEST['eid'] ) . ';),CustomFields'
+			'Subjects,Events,CustomFields'
 		);
 		set_transient( 'eduadmin-object_' . $course_id, $edo, 10 );
 	}
@@ -35,47 +35,23 @@ if ( ! $api_key || empty( $api_key ) ) {
 		die();
 	}
 
-	$events = $selected_course['Events'];
-
-	if ( empty( $events ) ) {
-		?>
-		<script>history.go(-1);</script>
-		<?php
-		die();
-	}
-
-	$event = $events[0];
-
 	?>
 	<div class="eduadmin">
-		<a href="../../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
+		<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
 		<div class="title">
 			<?php if ( ! empty( $selected_course['ImageUrl'] ) ) : ?>
 				<img src="<?php echo esc_url( $selected_course['ImageUrl'] ); ?>" class="courseImage"/>
 			<?php endif; ?>
 			<h1 class="courseTitle"><?php echo esc_html( $name ); ?> - <?php esc_html_e( 'Inquiry', 'eduadmin-booking' ); ?></h1>
 		</div>
-		<?php
-		echo '<div class="dateInfo">' . wp_kses_post( get_old_start_end_display_date( $event['StartDate'], $event['EndDate'] ) ) . ', ';
-		echo esc_html( date( 'H:i', strtotime( $event['StartDate'] ) ) );
-		?>
-		-
-		<?php
-		echo esc_html( date( 'H:i', strtotime( $event['EndDate'] ) ) );
-
-		echo esc_html( edu_output_event_venue( $event['AddressName'], $event['City'], '&nbsp;' ) );
-
-		echo '</div>';
-		?>
 		<hr/>
 		<div class="textblock">
 			<?php esc_html_e( 'Please fill out the form below to send a inquiry to us about this course.', 'eduadmin-booking' ); ?>
 			<hr/>
 			<form action="" method="POST">
-				<input type="hidden" name="edu-interest-nonce" value="<?php echo esc_attr( wp_create_nonce( 'edu-event-interest' ) ); ?>" />
+				<input type="hidden" name="edu-interest-nonce" value="<?php echo esc_attr( wp_create_nonce( 'edu-object-interest' ) ); ?>"/>
 				<input type="hidden" name="objectid" value="<?php echo esc_attr( $selected_course['CourseTemplateId'] ); ?>"/>
-				<input type="hidden" name="eventid" value="<?php echo esc_attr( $event['EventId'] ); ?>"/>
-				<input type="hidden" name="act" value="eventInquiry"/>
+				<input type="hidden" name="act" value="objectInquiry"/>
 				<input type="hidden" name="email"/>
 				<label>
 					<div class="inputLabel"><?php esc_html_e( 'Customer name', 'eduadmin-booking' ); ?> *</div>
@@ -111,7 +87,8 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<label>
 					<div class="inputLabel"><?php esc_html_e( 'Notes', 'eduadmin-booking' ); ?></div>
 					<div class="inputHolder">
-						<textarea name="edu-notes" placeholder="<?php esc_attr_e( 'Notes', 'eduadmin-booking' ); ?>"></textarea>
+					<textarea name="edu-notes" placeholder="<?php esc_attr_e( 'Notes', 'eduadmin-booking' ); ?>">
+					</textarea>
 					</div>
 				</label>
 				<?php if ( get_option( 'eduadmin-singlePersonBooking', false ) ) { ?>
@@ -124,6 +101,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 						</div>
 					</label>
 				<?php } ?>
+
 				<input type="submit" class="bookButton cta-btn" value="<?php esc_attr_e( 'Send inquiry', 'eduadmin-booking' ); ?>"/>
 			</form>
 		</div>

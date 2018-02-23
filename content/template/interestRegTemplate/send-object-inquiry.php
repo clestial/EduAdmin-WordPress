@@ -1,5 +1,5 @@
 <?php
-if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-event-interest' ) ) {
+if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-object-interest' ) ) {
 	$required_fields   = array();
 	$required_fields[] = 'edu-companyName';
 
@@ -10,7 +10,7 @@ if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-event-interest' ) ) {
 		}
 	}
 
-	if ( ! empty( $_POST['email'] ) ) { // Input var okay
+	if ( ! empty( $_REQUEST['email'] ) ) {
 		exit( 500 );
 	}
 
@@ -21,7 +21,6 @@ if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-event-interest' ) ) {
 	} else {
 		$inquiry                       = new EduAdmin_Data_InterestRegistrationBasic();
 		$inquiry->CourseTemplateId     = intval( $_POST['objectid'] ); // Input var okay
-		$inquiry->EventId              = intval( $_POST['eventid'] ); // Input var okay
 		$inquiry->NumberOfParticipants = intval( $_POST['edu-participants'] ); // Input var okay
 		$inquiry->CompanyName          = sanitize_text_field( $_POST['edu-companyName'] ); // Input var okay
 		$inquiry->FirstName            = sanitize_text_field( $_POST['edu-contactFirstName'] ); // Input var okay

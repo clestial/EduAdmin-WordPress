@@ -12,7 +12,7 @@ class EduAdmin_REST_InterestRegistration extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function CreateBasic( $basic ) {
-		return parent::POST( 'CreateBasic',
+		return parent::POST( '/CreateBasic',
 			$basic,
 			get_called_class() . '|' . __FUNCTION__
 		);
@@ -24,7 +24,7 @@ class EduAdmin_REST_InterestRegistration extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function CreateComplete( $complete ) {
-		return parent::POST( 'CreateComplete',
+		return parent::POST( '/CreateComplete',
 			$complete,
 			get_called_class() . '|' . __FUNCTION__
 		);

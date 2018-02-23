@@ -43,7 +43,7 @@ class EduAdmin_REST_Person extends EduAdminRESTClient {
 	 * @return mixed
 	 */
 	public function Login( $login ) {
-		return parent::POST( 'Login',
+		return parent::POST( '/Login',
 			$login,
 			get_called_class() . '|' . __FUNCTION__
 		);

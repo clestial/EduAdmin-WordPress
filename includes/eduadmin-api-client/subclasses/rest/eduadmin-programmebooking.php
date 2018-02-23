@@ -13,7 +13,7 @@ class EduAdmin_REST_ProgrammeBooking extends EduAdminRESTClient {
 	 */
 	public function Book( $programme_booking ) {
 		return parent::POST(
-			'',
+			'/',
 			$programme_booking,
 			get_called_class() . '|' . __FUNCTION__
 		);

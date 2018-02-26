@@ -10,6 +10,11 @@ class EduAdmin_BookingHandler {
 			$single_person_booking = get_option( 'eduadmin-singlePersonBooking', false );
 			$event_customer_lnk_id = 0;
 
+			EDU()->write_debug( $_POST );
+			die();
+
+			return;
+
 			if ( $single_person_booking ) {
 				$booking_info = $this->book_single_participant();
 			} else {
@@ -40,7 +45,7 @@ class EduAdmin_BookingHandler {
 			do_action( 'eduadmin-checkpaymentplugins', $ebi );
 
 			if ( ! $ebi->NoRedirect ) {
-				wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $event_customer_lnk_id );
+				//wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $event_customer_lnk_id );
 				exit();
 			}
 		}
@@ -490,11 +495,11 @@ class EduAdmin_BookingHandler {
 					$user = new stdClass;
 				}
 
-				$jsEncContact = json_encode( $contact );
+				$jsEncContact  = json_encode( $contact );
 				$user->Contact = json_decode( $jsEncContact );
 
-				$jsEncCustomer = json_encode( $customer );
-				$user->Customer = json_decode( $jsEncCustomer );
+				$jsEncCustomer                       = json_encode( $customer );
+				$user->Customer                      = json_decode( $jsEncCustomer );
 				EDU()->session['eduadmin-loginUser'] = $user;
 
 				$booking_info = array(

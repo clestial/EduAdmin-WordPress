@@ -248,12 +248,9 @@ var eduBookingView = {
 	ValidateDiscountCode: function () {
 		edu.apiclient.CheckCouponCode(
 			jQuery('#edu-discountCode').val(),
-			jQuery('.validateDiscount').data('objectid'),
-			jQuery('.validateDiscount').data('categoryid'),
+			jQuery('.validateDiscount').data('eventid'),
 			function (data) {
 				if (data) {
-					jQuery('#edu-discountCodeID').val(data.CouponID);
-					eduBookingView.DiscountPercent = data.DiscountPercent;
 					eduBookingView.UpdatePrice();
 				} else {
 					// Invalid code
@@ -292,7 +289,7 @@ var eduBookingView = {
 		];
 
 		if (ShouldValidateCivRegNo && !eduBookingView.ValidateCivicRegNo()) {
-			return false
+			return false;
 		}
 
 
@@ -310,7 +307,7 @@ var eduBookingView = {
 			contact = 1;
 		}
 
-		if (participants.length + contact == 0) {
+		if ((participants.length + contact) == 0) {
 			var noPartWarning = document.getElementById('edu-warning-no-participants');
 			if (noPartWarning) {
 				noPartWarning.style.display = 'block';

@@ -76,7 +76,7 @@ function edu_render_drop_list_question( $question, $multiple, $suffix ) {
 	echo esc_html( wp_strip_all_tags( $question['QuestionText'] ) );
 	echo '</div>';
 	echo '<div class="inputHolder">';
-	echo '<select class="questionDropdown" onchange="eduBookingView.UpdatePrice();"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' name="question_' . esc_attr( $question->QuestionID . '_dropdown' ) . ( $multiple ? '[]' : '' ) . '">';
+	echo '<select class="questionDropdown" onchange="eduBookingView.UpdatePrice();"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' name="question_' . esc_attr( md5( $question['QuestionText'] ) . '_dropdown' . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '">';
 	foreach ( $question['Alternatives'] as $q ) {
 		echo '<option value="' . esc_attr( $q['AnswerId'] ) . '"' . ( $q['Selected'] ? ' selected="selected"' : '' ) . ' data-type="dropdown" data-price="' . esc_attr( $q['Price'] ) . '">';
 		echo esc_html( wp_strip_all_tags( $q['AnswerText'] ) );

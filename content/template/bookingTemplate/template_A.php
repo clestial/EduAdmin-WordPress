@@ -25,19 +25,6 @@ if ( ! $api_key || empty( $api_key ) ) {
 			$user     = EDU()->session['eduadmin-loginUser'];
 			$contact  = $user->Contact;
 			$customer = $user->Customer;
-			if ( isset( $customer->CustomerId ) ) {
-				$f  = new XFiltering();
-				$ft = new XFilter( 'CustomerID', '=', $customer->CustomerId );
-				$f->AddItem( $ft );
-				$extra_info = EDU()->api->GetCustomerExtraInfo( EDU()->get_token(), '', $f->ToString() );
-				foreach ( $extra_info as $info ) {
-					if ( 'DiscountPercent' === $info->Key && ! empty( $info->Value ) ) {
-						$discount_percent = (double) $info->Value;
-					} elseif ( 'ParticipantDiscountPercent' === $info->Key && ! empty( $info->Value ) ) {
-						$participant_discount_percent = (double) $info->Value;
-					}
-				}
-			}
 		}
 
 		$unique_prices = array();
@@ -55,7 +42,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 		<div class="eduadmin booking-page">
 			<form action="" method="post">
 				<input type="hidden" name="act" value="bookCourse"/>
-				<input type="hidden" name="edu-valid-form" value="<?php esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>"/>
+				<input type="hidden" name="edu-valid-form" value="<?php echo esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>"/>
 				<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
 
 				<div class="title">
@@ -150,7 +137,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 							</div>
 							<div class="inputHolder">
 								<input type="text" name="edu-discountCode" id="edu-discountCode" class="discount-box" placeholder="<?php esc_attr__( 'Discount code', 'eduadmin-booking' ); ?>"/>
-								<button class="validateDiscount neutral-btn" data-categoryid="<?php echo esc_attr( $selected_course['CategoryId'] ); ?>" data-objectid="<?php echo esc_attr( $selected_course['CourseTemplateId'] ); ?>" onclick="eduBookingView.ValidateDiscountCode(); return false;">
+								<button class="validateDiscount neutral-btn" data-eventid="<?php echo esc_attr( $event['EventId'] ); ?>" data-objectid="<?php echo esc_attr( $selected_course['CourseTemplateId'] ); ?>" onclick="eduBookingView.ValidateDiscountCode(); return false;">
 									<?php esc_html_e( 'Validate', 'eduadmin-booking' ); ?>
 								</button>
 								<input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>

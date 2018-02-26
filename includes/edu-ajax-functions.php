@@ -95,7 +95,7 @@ function edu_api_listview_eventlist() {
 		$filters[] = 'CategoryId eq ' . intval( sanitize_text_field( $_POST['category'] ) );
 	}
 
-	if ( ! empty( $_POST['city'] ) ) {
+	if ( ! empty( $_POST['city'] ) && is_numeric( $_POST['city'] ) ) {
 		$filters[] = 'Events/any(e:e/LocationId eq ' . intval( $_POST['city'] ) . ')';
 	}
 
@@ -108,7 +108,7 @@ function edu_api_listview_eventlist() {
 	}
 
 	if ( ! empty( $_POST['courselevel'] ) ) {
-		$filters[] = 'EducationLevelId eq ' . intval( sanitize_text_field( $_POST['courselevel'] ) );
+		$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_POST['courselevel'] ) );
 	}
 
 	$sort_order = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
@@ -437,6 +437,13 @@ function edu_api_eventlist() {
 		}
 	}
 
+	if ( ! empty( $_POST['city'] ) && ! is_numeric( $_POST['city'] ) ) {
+		$_city  = $_POST['city'];
+		$events = array_filter( $events, function( $_event ) use ( $_city ) {
+			return $_event['City'] === $_city;
+		} );
+	}
+
 	$last_city = '';
 
 	$show_more                = ! empty( $_POST['showmore'] ) ? $_POST['showmore'] : -1;
@@ -445,6 +452,7 @@ function edu_api_eventlist() {
 	$show_event_venue         = $_POST['showvenue'];
 	$spot_settings            = $_POST['spotsettings'];
 	$allow_interest_reg_event = ! empty( $_POST['eventinquiry'] ) && 'true' === $_POST['eventinquiry'];
+	$event_interest_page      = get_option( 'eduadmin-interestEventPage' );
 
 	echo '<div class="eduadmin"><div class="event-table eventDays">';
 	$i                = 0;

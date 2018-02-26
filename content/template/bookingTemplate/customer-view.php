@@ -121,7 +121,8 @@ if ( ! empty( $customer->BillingInfo ) ) {
 			<div class="inputHolder">
 				<input type="text" name="invoiceReference" placeholder="<?php esc_attr_e( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->SellerReference ); ?>"/>
 			</div>
-		</label>        <label>
+		</label>
+		<label>
 			<div class="inputLabel">
 				<?php esc_html_e( 'Purchase order number', 'eduadmin-booking' ); ?>
 			</div>
@@ -135,7 +136,7 @@ if ( ! empty( $customer->BillingInfo ) ) {
 	$customer_custom_fields = EDUAPI()->OData->CustomFields->Search(
 		null,
 		'ShowOnWeb and CustomFieldOwner eq \'Customer\'',
-		'Alternatives'
+		'CustomFieldAlternatives'
 	)['value'];
 
 	foreach ( $customer_custom_fields as $custom_field ) {

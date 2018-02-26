@@ -21,8 +21,7 @@ if ( ! empty( $customer->CustomerId ) && ! empty( $contact->PersonId ) && $event
 							<?php endif; ?>
 								value="<?php echo esc_attr( $card['VoucherId'] ); ?>"/>
 						<?php echo esc_html( $card['Description'] ); ?>&nbsp;
-						<i>(<?php echo esc_html( sprintf( _n( 'Valid for %s participant', 'Valid for %s participants', $card['ValidForNumberOfParticipants'], 'eduadmin-booking' ), $card['ValidForNumberOfParticipants'] ) ); ?>
-							)</i>
+						<i>(<?php echo esc_html( sprintf( _n( 'Valid for %s participant', 'Valid for %s participants', $card['ValidForNumberOfParticipants'], 'eduadmin-booking' ), $card['ValidForNumberOfParticipants'] ) ); ?>)</i>
 					</label>
 					<?php
 				}

@@ -237,10 +237,45 @@ function eduadmin_get_detailinfo( $attributes ) {
 	} else {
 		$edo = get_transient( 'eduadmin-object_' . $course_id );
 		if ( ! $edo ) {
+			$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
+			if ( ! is_numeric( $fetch_months ) ) {
+				$fetch_months = 6;
+			}
+
+			$expands = array();
+
+			$expands['Subjects']   = '';
+			$expands['Categories'] = '';
+			$expands['PriceNames'] = '$filter=PublicPriceName;';
+			$expands['Events']     =
+				'$filter=' .
+				'HasPublicPriceName' .
+				' and StatusId eq 1' .
+				' and CustomerId eq null' .
+				' and LastApplicationDate ge ' . date( 'c' ) .
+				' and StartDate le ' . date( 'c', strtotime( 'now 23:59:59 +' . $fetch_months . ' months' ) ) .
+				' and EndDate ge ' . date( 'c', strtotime( 'now' ) ) .
+				';' .
+				'$expand=PriceNames($filter=PublicPriceName),EventDates,Sessions($expand=PriceNames($filter=PublicPriceName;)),PaymentMethods' .
+				';' .
+				'$orderby=StartDate asc' .
+				';';
+
+			$expands['CustomFields'] = '$filter=ShowOnWeb';
+
+			$expand_arr = array();
+			foreach ( $expands as $key => $value ) {
+				if ( empty( $value ) ) {
+					$expand_arr[] = $key;
+				} else {
+					$expand_arr[] = $key . '(' . $value . ')';
+				}
+			}
+
 			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
 				$course_id,
 				null,
-				'Subjects,Events,CustomFields'
+				join( ',', $expand_arr )
 			);
 			set_transient( 'eduadmin-object_' . $course_id, $edo, 10 );
 		}
@@ -255,6 +290,8 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 			return 'Course with ID ' . $course_id . ' could not be found.';
 		} else {
+			$inc_vat = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
+
 			if ( isset( $attributes['coursename'] ) ) {
 				$ret_str .= $selected_course['InternalCourseName'];
 			}
@@ -303,7 +340,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$ret_str .= join( ', ', $subject_names );
 			}
 			if ( isset( $attributes['courselevel'] ) ) {
-				$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseTemplateId'] );
+				$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseLevelId'] );
 
 				if ( ! empty( $course_level ) ) {
 					$ret_str .= $course_level['Name'];
@@ -311,154 +348,44 @@ function eduadmin_get_detailinfo( $attributes ) {
 			}
 			if ( isset( $attributes['courseattributeid'] ) ) {
 				$attrid = $attributes['courseattributeid'];
-				$ft     = new XFiltering();
-				$f      = new XFilter( 'ObjectID', '=', $selected_course['CourseTemplateId'] );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'AttributeID', '=', $attrid );
-				$ft->AddItem( $f );
 
 				foreach ( $selected_course['CustomFields'] as $cf ) {
 					if ( $cf['CustomFieldId'] === $attrid ) {
+						switch ( $cf['CustomFieldType'] ) {
+							case 'Text':
+							case 'Html':
+							case 'Textarea':
+								$ret_str .= wp_kses_post( $cf['CustomFieldValue'] );
+								break;
+							case 'Dropdown':
+								$ret_str .= wp_kses_post( $cf['CustomFieldAlternativeValue'] );
+								break;
+						}
+						break;
 					}
-				}
-
-				$objAttr = EDU()->api->GetObjectAttribute( EDU()->get_token(), '', $ft->ToString() );
-				if ( ! empty( $objAttr ) ) {
-					$attr = $objAttr[0];
-					switch ( $attr->AttributeTypeID ) {
-						case 5:
-							$value = $attr->AttributeAlternative;
-							break;
-						default:
-							$value = $attr->AttributeValue;
-							break;
-					}
-					$ret_str .= $value;
 				}
 			}
 
 			if ( isset( $attributes['courseprice'] ) ) {
-				$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
-				if ( ! is_numeric( $fetch_months ) ) {
-					$fetch_months = 6;
+				$events = $selected_course['Events'];
+				$prices = array();
+
+				foreach ( $selected_course['PriceNames'] as $pn ) {
+					$prices[ $pn['PriceNameId'] ] = $pn;
 				}
-
-				$ft = new XFiltering();
-				$f  = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetch_months . ' months' ) ) );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'PeriodEnd', '>=', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'StatusID', '=', '1' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'ObjectID', '=', $selected_course['CourseTemplateId'] );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'LastApplicationDate', '>=', date( 'Y-m-d H:i:s' ) );
-				$ft->AddItem( $f );
-
-				if ( ! empty( $attributes['courseeventlistfiltercity'] ) ) {
-					$f = new XFilter( 'City', '=', $attributes['courseeventlistfiltercity'] );
-					$ft->AddItem( $f );
-				}
-
-				$st            = new XSorting();
-				$group_by_city = get_option( 'eduadmin-groupEventsByCity', false );
-				if ( $group_by_city ) {
-					$s = new XSort( 'City', 'ASC' );
-					$st->AddItem( $s );
-				}
-				$s = new XSort( 'PeriodStart', 'ASC' );
-				$st->AddItem( $s );
-
-				$events = EDU()->api->GetEvent(
-					EDU()->get_token(),
-					$st->ToString(),
-					$ft->ToString()
-				);
-
-				$occ_ids = array();
-
-				$occ_ids[] = -1;
 
 				foreach ( $events as $e ) {
-					$occ_ids[] = $e->OccationID;
-				}
-
-				$ft = new XFiltering();
-				$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'ObjectID', 'IN', $selected_course['CourseTemplateId'] );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'OccationID', 'IN', join( ',', $occ_ids ) );
-				$ft->AddItem( $f );
-
-				$st = new XSorting();
-				$s  = new XSort( 'Price', 'ASC' );
-				$st->AddItem( $s );
-
-				$inc_vat = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
-
-				$prices        = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-				$unique_prices = array();
-				foreach ( $prices as $price ) {
-					$unique_prices[ $price->Description ] = $price;
-				}
-
-				if ( 0 === count( $unique_prices ) ) {
-					$filtering = new XFiltering();
-					$f         = new XFilter( 'ObjectID', '=', $selected_course['CourseTemplateId'] );
-					$filtering->AddItem( $f );
-
-					$f = new XFilter( 'PublicPriceName', '=', 'True' );
-					$filtering->AddItem( $f );
-
-					$sorting         = new XSorting();
-					$custom_order    = null;
-					$custom_order_by = null;
-					if ( ! empty( $attributes['order'] ) ) {
-						$custom_order = $attributes['order'];
-					}
-
-					if ( ! empty( $attributes['orderby'] ) ) {
-						$custom_order_by = $attributes['orderby'];
-					}
-
-					if ( null !== $custom_order_by ) {
-						$orderby   = explode( ' ', $custom_order_by );
-						$sortorder = explode( ' ', $custom_order );
-						foreach ( $orderby as $od => $v ) {
-							if ( isset( $sortorder[ $od ] ) ) {
-								$or = $sortorder[ $od ];
-							} else {
-								$or = 'asc';
-							}
-
-							$s = new XSort( $v, $or );
-							$sorting->AddItem( $s );
-						}
-					} else {
-						$s = new XSort( 'PriceNameID', null !== $custom_order ? $custom_order : 'asc' );
-						$sorting->AddItem( $s );
-					}
-
-					$edo = get_transient( 'eduadmin-objectpublicpricename_' . $selected_course['CourseTemplateId'] );
-					if ( ! $edo ) {
-						$edo = EDU()->api->GetObjectPriceName( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
-						set_transient( 'eduadmin-objectpublicpricename_' . $selected_course['CourseTemplateId'], $edo, 10 );
-					}
-
-					foreach ( $edo as $price ) {
-						$unique_prices[ $price->Description ] = $price;
+					foreach ( $e['PriceNames'] as $pn ) {
+						$prices[ $pn['PriceNameId'] ] = $pn;
 					}
 				}
 
 				$currency = get_option( 'eduadmin-currency', 'SEK' );
-				if ( 1 === count( $unique_prices ) ) {
-					$ret_str .= esc_html( convert_to_money( current( $unique_prices )->Price, $currency ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "\n";
+				if ( 1 === count( $prices ) ) {
+					$ret_str .= esc_html( convert_to_money( current( $prices )['Price'], $currency ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "\n";
 				} else {
-					foreach ( $unique_prices as $price ) {
-						$ret_str .= esc_html( sprintf( '%1$s: %2$s', $price->Description, convert_to_money( $price->Price, $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "<br />\n";
+					foreach ( $prices as $price ) {
+						$ret_str .= esc_html( sprintf( '%1$s: %2$s', $price['PriceNameDescription'], convert_to_money( $price['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "<br />\n";
 					}
 				}
 			}
@@ -496,38 +423,18 @@ function eduadmin_get_detailinfo( $attributes ) {
 			}
 
 			if ( isset( $attributes['courseeventlist'] ) ) {
-				$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
-				if ( ! is_numeric( $fetch_months ) ) {
-					$fetch_months = 6;
-				}
-
-				$ft = new XFiltering();
-				$f  = new XFilter( 'PeriodStart', '<=', date( 'Y-m-d 23:59:59', strtotime( 'now +' . $fetch_months . ' months' ) ) );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'PeriodEnd', '>=', date( 'Y-m-d H:i:s', strtotime( 'now' ) ) );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'StatusID', '=', '1' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'ObjectID', '=', $selected_course['CourseTemplateId'] );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'LastApplicationDate', '>=', date( 'Y-m-d H:i:s' ) );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'CustomerID', '=', '0' );
-				$ft->AddItem( $f );
+				$events = $selected_course['Events'];
 
 				if ( ! empty( $attributes['courseeventlistfiltercity'] ) ) {
-					$f = new XFilter( 'City', '=', $attributes['courseeventlistfiltercity'] );
-					$ft->AddItem( $f );
+					$_city  = $attributes['courseeventlistfiltercity'];
+					$events = array_filter( $events, function( $_event ) use ( $_city ) {
+						return $_event['City'] === $_city;
+					} );
 				}
 
-				$st                  = new XSorting();
 				$group_by_city       = get_option( 'eduadmin-groupEventsByCity', false );
 				$group_by_city_class = '';
 				if ( $group_by_city ) {
-					$s = new XSort( 'City', 'ASC' );
-					$st->AddItem( $s );
 					$group_by_city_class = ' noCity';
 				}
 
@@ -552,65 +459,9 @@ function eduadmin_get_detailinfo( $attributes ) {
 						}
 
 						$s = new XSort( $v, $or );
-						$st->AddItem( $s );
 					}
 				} else {
 					$s = new XSort( 'PeriodStart', 'ASC' );
-					$st->AddItem( $s );
-				}
-
-				$events = EDU()->api->GetEvent(
-					EDU()->get_token(),
-					$st->ToString(),
-					$ft->ToString()
-				);
-
-				$occ_ids   = array();
-				$occ_ids[] = -1;
-
-				$event_ids   = array();
-				$event_ids[] = -1;
-
-				foreach ( $events as $e ) {
-					$occ_ids[]   = $e->OccationID;
-					$event_ids[] = $e->EventID;
-				}
-
-				$ft = new XFiltering();
-				$f  = new XFilter( 'EventID', 'IN', join( ',', $event_ids ) );
-				$ft->AddItem( $f );
-
-				$event_days = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-				$event_dates = array();
-				foreach ( $event_days as $ed ) {
-					$event_dates[ $ed->EventID ][] = $ed;
-				}
-
-				$ft = new XFiltering();
-				$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'OccationID', 'IN', join( ',', $occ_ids ) );
-				$ft->AddItem( $f );
-
-				$st = new XSorting();
-				$s  = new XSort( 'Price', 'ASC' );
-				$st->AddItem( $s );
-
-				$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-				set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
-
-				if ( ! empty( $pricenames ) ) {
-					$events = array_filter( $events, function( $object ) {
-						$pn = get_transient( 'eduadmin-publicpricenames' );
-						foreach ( $pn as $subj ) {
-							if ( $object->OccationID === $subj->OccationID ) {
-								return true;
-							}
-						}
-
-						return false;
-					} );
 				}
 
 				$surl = get_home_url();
@@ -626,21 +477,28 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$base_url = $surl . '/' . $cat;
 				$name     = ( ! empty( $selected_course['CourseName'] ) ? $selected_course['CourseName'] : $selected_course['InternalCourseName'] );
 
-				$ret_str .= '<div class="eduadmin"><div class="event-table eventDays" data-eduwidget="eventlist" ' .
-				            'data-objectid="' . esc_attr( $selected_course['CourseTemplateId'] ) .
-				            '" data-spotsleft="' . esc_attr( $spot_left_option ) .
-				            '" data-showmore="' . esc_attr( $show_more ) .
-				            '" data-groupbycity="' . esc_attr( $group_by_city ) . '"' .
-				            '" data-spotsettings="' . esc_attr( $spot_settings ) . '"' .
-				            '" data-fewspots="' . esc_attr( $always_few_spots ) . '"' .
-				            ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . esc_attr( $attributes['courseeventlistfiltercity'] ) . '"' : '' ) .
-				            ' data-fetchmonths="' . esc_attr( $fetch_months ) . '"' .
-				            ( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ) .
-				            ' data-order="' . esc_attr( $custom_order_by ) . '"' .
-				            ' data-orderby="' . esc_attr( $custom_order_by_order ) . '"' .
-				            ' data-showvenue="' . esc_attr( get_option( 'eduadmin-showEventVenueName', false ) ) . '"' .
-				            ' data-eventinquiry="' . esc_attr( get_option( 'eduadmin-allowInterestRegEvent', false ) ) . '"' .
-				            '>';
+				$object_interest_page      = get_option( 'eduadmin-interestObjectPage' );
+				$allow_interest_reg_object = get_option( 'eduadmin-allowInterestRegObject', false );
+
+				$event_interest_page      = get_option( 'eduadmin-interestEventPage' );
+				$allow_interest_reg_event = get_option( 'eduadmin-allowInterestRegEvent', false );
+
+				$ret_str .= '<div class="eduadmin">';
+				$ret_str .= '<div class="event-table eventDays" data-eduwidget="eventlist" ';
+				$ret_str .= 'data-objectid="' . esc_attr( $selected_course['CourseTemplateId'] );
+				$ret_str .= '" data-spotsleft="' . esc_attr( $spot_left_option );
+				$ret_str .= '" data-showmore="' . esc_attr( $show_more );
+				$ret_str .= '" data-groupbycity="' . esc_attr( $group_by_city ) . '"';
+				$ret_str .= '" data-spotsettings="' . esc_attr( $spot_settings ) . '"';
+				$ret_str .= '" data-fewspots="' . esc_attr( $always_few_spots ) . '"';
+				$ret_str .= ( ! empty( $attributes['courseeventlistfiltercity'] ) ? ' data-city="' . esc_attr( $attributes['courseeventlistfiltercity'] ) . '"' : '' );
+				$ret_str .= ' data-fetchmonths="' . esc_attr( $fetch_months ) . '"';
+				$ret_str .= ( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' );
+				$ret_str .= ' data-order="' . esc_attr( $custom_order_by ) . '"';
+				$ret_str .= ' data-orderby="' . esc_attr( $custom_order_by_order ) . '"';
+				$ret_str .= ' data-showvenue="' . esc_attr( get_option( 'eduadmin-showEventVenueName', false ) ) . '"';
+				$ret_str .= ' data-eventinquiry="' . esc_attr( get_option( 'eduadmin-allowInterestRegEvent', false ) ) . '"';
+				$ret_str .= '>';
 
 				$i                = 0;
 				$has_hidden_dates = false;
@@ -649,10 +507,10 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$event_interest_page = get_option( 'eduadmin-interestEventPage' );
 
 				foreach ( $events as $ev ) {
-					$spots_left = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
+					$spots_left = $ev['ParticipantNumberLeft'];
 
 					if ( ! empty( $_REQUEST['eid'] ) ) {
-						if ( $ev->EventID !== intval( $_REQUEST['eid'] ) ) {
+						if ( $ev['EventId'] !== intval( $_REQUEST['eid'] ) ) {
 							continue;
 						}
 					}
@@ -661,14 +519,14 @@ function eduadmin_get_detailinfo( $attributes ) {
 					include EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/blocks/event-item.php';
 					$ret_str .= ob_get_clean();
 
-					$last_city = $ev->City;
+					$last_city = $ev['City'];
 					$i++;
 				}
 				if ( empty( $events ) ) {
 					$ret_str .= '<div class="noDatesAvailable"><i>' . esc_html__( 'No available dates for the selected course', 'eduadmin-booking' ) . '</i></div>';
 				}
 				if ( $has_hidden_dates ) {
-					$ret_str .= '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . ( $group_by_city ? '-' . $ev->City : '' ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
+					$ret_str .= '<div class="eventShowMore"><a class="neutral-btn" href="javascript://" onclick="eduDetailView.ShowAllEvents(\'eduev' . esc_attr( ( $group_by_city ? '-' . $last_city : '' ) ) . '\', this);">' . esc_html__( 'Show all events', 'eduadmin-booking' ) . '</a></div>';
 				}
 				$ret_str .= '</div></div>';
 			}

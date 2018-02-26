@@ -5,12 +5,12 @@ if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-object-interest' ) ) {
 
 	$missing_fields = false;
 	foreach ( $required_fields as $field ) {
-		if ( empty( $_REQUEST[ $field ] ) ) {
+		if ( empty( $_POST[ $field ] ) ) {
 			$missing_fields = true;
 		}
 	}
 
-	if ( ! empty( $_REQUEST['email'] ) ) {
+	if ( ! empty( $_POST['email'] ) ) {
 		exit( 500 );
 	}
 

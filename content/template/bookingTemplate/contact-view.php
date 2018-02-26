@@ -66,7 +66,7 @@ $__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonI
 	$contact_custom_fields = EDUAPI()->OData->CustomFields->Search(
 		null,
 		'ShowOnWeb and CustomFieldOwner eq \'Person\'',
-		'Alternatives'
+		'CustomFieldAlternatives'
 	)['value'];
 
 	foreach ( $contact_custom_fields as $custom_field ) {

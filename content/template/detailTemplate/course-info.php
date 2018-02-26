@@ -72,8 +72,8 @@ foreach ( $events as $e ) {
 }
 
 $course_level = get_transient( 'eduadmin-courseLevel-' . $selected_course['CourseTemplateId'] );
-if ( ! $course_level && null !== $selected_course['EducationLevelId'] ) {
-	$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['EducationLevelId'] );
+if ( ! $course_level && null !== $selected_course['CourseLevelId'] ) {
+	$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseLevelId'] );
 	set_transient( 'eduadmin-courseLevel-' . $selected_course['CourseTemplateId'], $course_level, HOUR_IN_SECONDS );
 }
 

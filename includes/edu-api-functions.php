@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:disable WordPress.NamingConventions,Squiz
 /**
  * @param $key
  *
@@ -29,16 +29,6 @@ function edu_get_timers() {
 			}
 			echo '<!-- EduAdmin Total: ' . esc_html( round( $total_value * 1000, 2 ) ) . "ms -->\n";
 			echo "<!-- /EduAdmin Booking API - Timers -->\n";
-		}
-		if ( ! empty( EDU()->api->timers ) ) {
-			echo "<!-- EduAdmin Booking Class - Timers -->\n";
-			$total_value = 0;
-			foreach ( EDU()->api->timers as $timer => $value ) {
-				echo '<!-- ' . esc_html( $timer ) . ': ' . esc_html( round( $value * 1000, 2 ) ) . "ms -->\n";
-				$total_value += $value;
-			}
-			echo '<!-- EduAdmin Total: ' . esc_html( round( $total_value * 1000, 2 ) ) . "ms -->\n";
-			echo "<!-- /EduAdmin Booking Class - Timers -->\n";
 		}
 
 		do_action( 'eduadmin_showtimers' );

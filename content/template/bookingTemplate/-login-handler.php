@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions,Squiz
 if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty( $_POST['eduformloginaction'] ) ) {
 	if ( 'checkEmail' === $_POST['eduformloginaction'] && ! empty( $_POST['eduadminloginEmail'] ) ) {
 		$ft                          = new XFiltering();
@@ -28,6 +29,7 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 			$con = $possible_persons[0];
 			if ( true === $con['CanLogin'] ) {
 				EDU()->session['needsLogin'] = true;
+
 				return;
 			} else {
 				EDU()->session['needsLogin'] = false;

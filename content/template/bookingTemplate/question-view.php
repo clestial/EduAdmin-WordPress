@@ -1,8 +1,6 @@
 <div class="questionPanel">
 	<?php
-	if ( isset( $_REQUEST['eid'] ) ) {
-		// VatPercent EventBookingAnswer
-
+	if ( ! empty( $_REQUEST['eid'] ) ) {
 		foreach ( $booking_questions as $question ) {
 			render_question( $question, false, 'booking' );
 		}

@@ -12,6 +12,8 @@ class EduAdmin_BookingHandler {
 
 			$booking_info = $single_person_booking ? $this->book_single_participant() : $this->book_multiple_participants();
 
+			EDU()->write_debug( $booking_info );
+
 			$event_booking = EDUAPI()->OData->Bookings->GetItem( $booking_info['BookingId'] );
 			$_customer     = EDUAPI()->OData->Customers->GetItem( $booking_info['CustomId'] );
 			$_contact      = EDUAPI()->OData->Persons->GetItem( $booking_info['ContactPersonId'] );
@@ -29,13 +31,12 @@ class EduAdmin_BookingHandler {
 		}
 	}
 
-	public function book_single_participant() {
+	private function get_single_participant_booking() {
 		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
-		$event_id = intval( $_REQUEST['eid'] );
-
+		$event_id     = intval( $_REQUEST['eid'] );
 		$booking_data = new EduAdmin_Data_BookingData();
 
 		$selected_match = get_option( 'eduadmin-customerMatching', 'name-zip-match' );
@@ -150,39 +151,42 @@ class EduAdmin_BookingHandler {
 
 		$booking_data->SendConfirmationEmail = $send_info;
 
-		EDU()->write_debug( $_POST );
-		echo '<hr />';
-		EDU()->write_debug( $booking_data, true );
+		return $booking_data;
+	}
+
+	public function check_single_participant_price() {
+		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$booking_data = $this->get_single_participant_booking();
 
 		$res = EDUAPI()->REST->Booking->CheckPrice( $booking_data );
 		EDU()->write_debug( $res );
+	}
 
-		die();
-
-		$booking    = EDUAPI()->REST->Booking->Create( $booking_data );
-		$booking_id = $booking['BookingId'];
-
-		EDU()->session['eduadmin-printJS'] = true;
-
-		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
-			$user = EDU()->session['eduadmin-loginUser'];
-		} else {
-			$user = new stdClass();
+	public function book_single_participant() {
+		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
 		}
 
-		$jsEncContact  = wp_json_encode( $contact );
-		$user->Contact = json_decode( $jsEncContact );
+		$booking_data = $this->get_single_participant_booking();
+		EDU()->write_debug($booking_data, true);
+		$booking      = EDUAPI()->REST->Booking->Create( $booking_data );
 
-		$jsEncCustomer  = wp_json_encode( $customer );
-		$user->Customer = json_decode( $jsEncCustomer );
+		EDU()->write_debug( $booking );
+die();
+		EDU()->session['eduadmin-printJS'] = true;
+
+		$user = EDU()->login_handler->get_login_user( $booking['ContactPersonId'], $booking['CustomerId'] );
 
 		EDU()->session['eduadmin-loginUser'] = $user;
 
 		$booking_info = array(
-			'BookingId'       => $booking_id,
-			'EventId'         => $event_id,
-			'CustomerId'      => $customer->CustomerID,
-			'ContactPersonId' => $contact->CustomerContactID,
+			'BookingId'       => $booking['BookingId'],
+			'EventId'         => $booking['EventId'],
+			'CustomerId'      => $booking['CustomerId'],
+			'ContactPersonId' => $booking['ContactPersonId'],
 		);
 
 		return $booking_info;

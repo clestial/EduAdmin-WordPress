@@ -9,19 +9,19 @@ function render_attribute( $attribute, $multiple = false, $suffix = '', $data = 
 	$t = EDU()->start_timer( __METHOD__ );
 
 	switch ( $attribute['CustomFieldType'] ) {
-		case 'Checkbox': // Checkbox
+		case 'Checkbox':
 			render_check_field( $attribute, $multiple, $suffix, $data );
 			break;
-		case 'Text': // Textfält
+		case 'Text':
 			render_text_field( $attribute, $multiple, $suffix, $data );
 			break;
-		case 'Numeric': // Nummerfält
+		case 'Numeric':
 			render_number_field( $attribute, $multiple, $suffix, $data );
 			break;
-		case 'Dropdown': // Dropdownlista
+		case 'Dropdown':
 			render_select_field( $attribute, $multiple, $suffix, $data );
 			break;
-		case 'Textarea': // Anteckningsfält
+		case 'Textarea':
 			render_textarea_field( $attribute, $multiple, $suffix, $data );
 			break;
 		case 'Date':

@@ -1,5 +1,6 @@
 <?php
 // phpcs:disable WordPress.NamingConventions
+
 /**
  * Class EduAdminLoginHandler
  */
@@ -35,33 +36,7 @@ class EduAdmin_LoginHandler {
 					);
 
 					if ( 200 === $login_result['@curl']['http_code'] ) {
-						$contact = EDUAPI()->OData->Persons->GetItem(
-							$login_result['PersonId'],
-							null,
-							'CustomFields($filter=ShowOnWeb;)'
-						);
-
-						unset( $contact['@odata.context'] );
-						unset( $contact['@curl'] );
-
-						$customer = EDUAPI()->OData->Customers->GetItem(
-							$login_result['CustomerId'],
-							null,
-							'BillingInfo,CustomFields($filter=ShowOnWeb;)'
-						);
-
-						unset( $customer['@odata.context'] );
-						unset( $customer['@curl'] );
-
-						$user           = new stdClass();
-						$c1             = wp_json_encode( $contact );
-						$user->Contact  = json_decode( $c1 );
-						$c2             = wp_json_encode( $customer );
-						$user->Customer = json_decode( $c2 );
-
-						EDU()->session['eduadmin-loginUser'] = $user;
-
-						setcookie( 'eduadmin_loginUser', wp_json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
+						$user = $this->get_login_user( $login_result['PersonId'], $login_result['CustomerId'] );
 					}
 				}
 
@@ -79,5 +54,37 @@ class EduAdmin_LoginHandler {
 				}
 			}
 		}
+	}
+
+	public function get_login_user( $personId, $customerId ) {
+		$contact = EDUAPI()->OData->Persons->GetItem(
+			$personId,
+			null,
+			'CustomFields($filter=ShowOnWeb;)'
+		);
+
+		unset( $contact['@odata.context'] );
+		unset( $contact['@curl'] );
+
+		$customer = EDUAPI()->OData->Customers->GetItem(
+			$customerId,
+			null,
+			'BillingInfo,CustomFields($filter=ShowOnWeb;)'
+		);
+
+		unset( $customer['@odata.context'] );
+		unset( $customer['@curl'] );
+
+		$user           = new stdClass();
+		$c1             = wp_json_encode( $contact );
+		$user->Contact  = json_decode( $c1 );
+		$c2             = wp_json_encode( $customer );
+		$user->Customer = json_decode( $c2 );
+
+		EDU()->session['eduadmin-loginUser'] = $user;
+
+		setcookie( 'eduadmin_loginUser', wp_json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
+
+		return $user;
 	}
 }

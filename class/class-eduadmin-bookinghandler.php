@@ -12,8 +12,6 @@ class EduAdmin_BookingHandler {
 
 			$booking_info = $single_person_booking ? $this->book_single_participant() : $this->book_multiple_participants();
 
-			EDU()->write_debug( $booking_info );
-
 			$event_booking = EDUAPI()->OData->Bookings->GetItem( $booking_info['BookingId'] );
 			$_customer     = EDUAPI()->OData->Customers->GetItem( $booking_info['CustomId'] );
 			$_contact      = EDUAPI()->OData->Persons->GetItem( $booking_info['ContactPersonId'] );
@@ -25,7 +23,7 @@ class EduAdmin_BookingHandler {
 			do_action( 'eduadmin-checkpaymentplugins', $ebi );
 
 			if ( ! $ebi->NoRedirect ) {
-				//wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $event_customer_lnk_id );
+				wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $booking_info['BookingId'] );
 				exit();
 			}
 		}
@@ -171,11 +169,9 @@ class EduAdmin_BookingHandler {
 		}
 
 		$booking_data = $this->get_single_participant_booking();
-		EDU()->write_debug($booking_data, true);
-		$booking      = EDUAPI()->REST->Booking->Create( $booking_data );
 
-		EDU()->write_debug( $booking );
-die();
+		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
+
 		EDU()->session['eduadmin-printJS'] = true;
 
 		$user = EDU()->login_handler->get_login_user( $booking['ContactPersonId'], $booking['CustomerId'] );

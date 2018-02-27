@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:disable WordPress.NamingConventions,Squiz
 /**
  * Class EduAdminToken
  */

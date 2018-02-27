@@ -28,9 +28,10 @@ if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty(
 			$con = $possible_persons[0];
 			if ( true === $con['CanLogin'] ) {
 				EDU()->session['needsLogin'] = true;
-				//die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
+				return;
+			} else {
+				EDU()->session['needsLogin'] = false;
 			}
-			EDU()->session['needsLogin'] = false;
 
 			$customer = EDUAPI()->OData->Customers->GetItem(
 				$con['CustomerId'],

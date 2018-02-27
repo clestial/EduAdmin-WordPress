@@ -1,5 +1,4 @@
 <?php
-// TODO: Get an unique identifier for questions with multiple alternatives (Dropdown / Radiobuttons)
 function render_question( $question, $multiple = false, $suffix = '' ) {
 	$t = EDU()->start_timer( __METHOD__ );
 	switch ( $question['QuestionType'] ) {
@@ -64,7 +63,7 @@ function edu_render_date_question( $question, $multiple, $suffix ) {
 	echo '<div class="inputHolder">';
 	echo '<input type="date" class="questionDate" data-type="date" onchange="eduBookingView.UpdatePrice();" data-price="' . esc_attr( $question['Price'] ) . '"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' name="question_' . esc_attr( $question['AnswerId'] . '_date' . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" />';
 	if ( $question['HasTimeField'] ) {
-		echo '<input type="time" onchange="eduBookingView.UpdatePrice();" class="questionTime"' . ( $question['Mandatory'] ? ' required="required"' : '' ) . ' name="question_' . esc_attr( $question['AnswerId'] . '_time' ) . ( $multiple ? '[]' : '' ) . '" />';
+		echo '<input type="time" onchange="eduBookingView.UpdatePrice();" class="questionTime"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' name="question_' . esc_attr( $question['AnswerId'] . '_time' ) . ( $multiple ? '[]' : '' ) . '" />';
 	}
 	echo '</div>';
 	echo '</label>';
@@ -121,7 +120,7 @@ function edu_render_radio_question( $question, $multiple, $suffix ) {
 	foreach ( $question['Alternatives'] as $q ) {
 		echo '<label class="questionRadioVertical">';
 		echo '<div class="inputHolder">';
-		echo '<input type="radio" class="questionRadio" data-type="radio"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' data-price="' . esc_attr( $q['Price'] ) . '" name="question_' . esc_attr( $question->QuestionID . '_radio' . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" value="' . esc_attr( $q['AnswerId'] ) . '" /> ';
+		echo '<input type="radio" class="questionRadio" data-type="radio"' . ( $question['Mandatory'] ? ' data-required="true"' : '' ) . ' data-price="' . esc_attr( $q['Price'] ) . '" name="question_' . esc_attr( $question['QuestionId'] . '_radio' . ( '' !== $suffix ? '-' . $suffix : '' ) . ( $multiple ? '[]' : '' ) ) . '" value="' . esc_attr( $q['AnswerId'] ) . '" /> ';
 		echo esc_html( wp_strip_all_tags( $q['AnswerText'] ) );
 		if ( ! empty( $q['Price'] ) ) {
 			echo ' <i class="priceLabel">(' . esc_html( convert_to_money( $q['Price'] ) ) . ')</i>';

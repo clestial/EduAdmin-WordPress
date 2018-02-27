@@ -87,7 +87,7 @@ foreach ( $expands as $key => $value ) {
 	if ( empty( $value ) ) {
 		$expand_arr[] = $key;
 	} else {
-		$expand_arr[] = $key . "(" . $value . ")";
+		$expand_arr[] = $key . '(' . $value . ')';
 	}
 }
 
@@ -101,10 +101,10 @@ $courses = $edo['value'];
 
 if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
 	$courses = array_filter( $courses, function( $object ) {
-		$name        = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
+		$name        = ( ! empty( $object['CourseName'] ) ? $object['CourseName'] : $object['InternalCourseName'] );
 		$descr_field = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 		$descr       = '';
-		if ( stripos( $descr_field, "attr_" ) !== false ) {
+		if ( stripos( $descr_field, 'attr_' ) !== false ) {
 			$attrId = intval( substr( $descr_field, 5 ) );
 			foreach ( $object['CustomFields'] as $custom_field ) {
 				if ( $attrId === $custom_field['CustomFieldId'] ) {

@@ -1,16 +1,16 @@
 <?php
-
+// phpcs:disable WordPress.NamingConventions
 class EduAdmin_BookingInfo {
 	/**
-	 * @var EventBookingV2
+	 * @var stdClass|object
 	 */
 	public $EventBooking;
 	/**
-	 * @var CustomerV3
+	 * @var stdClass|object
 	 */
 	public $Customer;
 	/**
-	 * @var CustomerContactV2
+	 * @var stdClass|object
 	 */
 	public $Contact;
 	/**

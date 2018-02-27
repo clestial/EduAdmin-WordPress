@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

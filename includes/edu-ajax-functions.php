@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions,Squiz
 defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 
 function edu_listview_courselist() {
@@ -460,7 +461,7 @@ function edu_api_eventlist() {
 	if ( ! empty( $prices ) ) {
 		foreach ( $events as $ev ) {
 			if ( isset( $_POST['eid'] ) ) {
-				if ( $ev['EventId'] !== $_POST['eid'] ) {
+				if ( $ev['EventId'] !== intval( $_POST['eid'] ) ) {
 					continue;
 				}
 			}

@@ -30,20 +30,20 @@ if ( ! empty( $ev['EventDates'] ) ) {
 			<?php
 			echo esc_html( $ev['City'] );
 			if ( $show_event_venue && ! empty( $ev['AddressName'] ) ) {
-				echo '<span class="venueInfo">' . esc_html( edu_output_event_venue( $ev['AddressName'], null, ', ' ) ) . '</span>';
+				echo '<span class="venueInfo">' . esc_html( edu_output_event_venue( array( $ev['AddressName'] ), ', ' ) ) . '</span>';
 			}
 			?>
 		</div>
 	<?php } ?>
 	<div class="eventStatus<?php echo esc_attr( $group_by_city_class ); ?>">
 		<?php
-		$spots_left = $ev['ParticipantNumberLeft'];
-		echo '<span class="spotsLeftInfo">' . esc_html( get_spots_left( $spots_left, $ev['MaxParticipantNumber'], $spot_left_option, $spot_settings, $always_few_spots ) ) . '</span>';
+		$spots_left = intval( $ev['ParticipantNumberLeft'] );
+		echo '<span class="spotsLeftInfo">' . esc_html( get_spots_left( $spots_left, intval( $ev['MaxParticipantNumber'] ), $spot_left_option, $spot_settings, $always_few_spots ) ) . '</span>';
 		?>
 	</div>
 	<div class="eventBook<?php echo esc_attr( $group_by_city_class ); ?>">
 		<?php
-		if ( 0 === $ev['MaxParticipantNumber'] || $spots_left > 0 ) {
+		if ( 0 === intval( $ev['MaxParticipantNumber'] ) || $spots_left > 0 ) {
 			?>
 			<a class="bookButton book-link cta-btn" href="<?php echo esc_url( $base_url . '/' . make_slugs( $name ) . '__' . $selected_course['CourseTemplateId'] . '/book/?eid=' . $ev['EventId'] . edu_get_query_string( '&', array( 'eid' ) ) ); ?>"><?php esc_html_e( 'Book', 'eduadmin-booking' ); ?></a>
 			<?php

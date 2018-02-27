@@ -1,11 +1,12 @@
 <?php
+// phpcs:disable WordPress.NamingConventions
 defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 define( 'EDUADMIN_PLUGIN_PATH', dirname( __FILE__ ) );
 defined( 'WP_SESSION_COOKIE' ) || define( 'WP_SESSION_COOKIE', 'eduadmin-cookie' );
 
 /*
  * Plugin Name:	EduAdmin Booking
- * Plugin URI:	http://www.eduadmin.se
+ * Plugin URI:	https://www.eduadmin.se
  * Description:	EduAdmin plugin to allow visitors to book courses at your website
  * Tags:	booking, participants, courses, events, eduadmin, lega online
  * Version:	2.0
@@ -135,8 +136,15 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		/**
 		 * @param stdClass|array|object|null $object
+		 * @param bool                       $as_json
 		 */
-		public function write_debug( $object ) {
+		public function write_debug( $object, $as_json = false ) {
+			if ( $as_json ) {
+				echo '<xmp>' . json_encode( $object, JSON_PRETTY_PRINT ) . '</xmp>';
+
+				return;
+			}
+
 			ob_start();
 			var_dump( $object );
 

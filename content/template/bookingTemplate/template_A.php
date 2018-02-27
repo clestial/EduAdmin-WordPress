@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.NamingConventions,Squiz
 ob_start();
 global $wp_query;
 $api_key = get_option( 'eduadmin-api-key' );
@@ -41,13 +42,13 @@ if ( ! $api_key || empty( $api_key ) ) {
 
 		<div class="eduadmin booking-page">
 			<form action="" method="post">
-				<input type="hidden" name="act" value="bookCourse"/>
-				<input type="hidden" name="edu-valid-form" value="<?php echo esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>"/>
+				<input type="hidden" name="act" value="bookCourse" />
+				<input type="hidden" name="edu-valid-form" value="<?php echo esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>" />
 				<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
 
 				<div class="title">
 					<?php if ( ! empty( $selected_course['ImageUrl'] ) ) : ?>
-						<img class="courseImage" src="<?php echo esc_url( $selected_course['ImageUrl'] ); ?>"/>
+						<img class="courseImage" src="<?php echo esc_url( $selected_course['ImageUrl'] ); ?>" />
 					<?php endif; ?>
 					<h1 class="courseTitle">
 						<?php echo esc_html( $name ); ?>
@@ -112,53 +113,30 @@ if ( ! $api_key || empty( $api_key ) ) {
 						<?php esc_html_e( 'Price name', 'eduadmin-booking' ); ?>
 						<select id="edu-pricename" name="edu-pricename" required class="edudropdown edu-pricename" onchange="eduBookingView.UpdatePrice();">
 							<option data-price="0" value=""><?php esc_html_e( 'Choose price', 'eduadmin-booking' ); ?></option>
-							<?php foreach ( $prices as $price ) : ?>
-								<option data-price="<?php echo esc_attr( $price->Price ); ?>" date-discountpercent="<?php echo esc_attr( $price->DiscountPercent ); ?>" data-pricelnkid="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>" data-maxparticipants="<?php echo esc_attr( $price->MaxPriceNameParticipantNr ); ?>" data-currentparticipants="<?php echo esc_attr( $price->ParticipantNr ); ?>"
-									<?php if ( $price->MaxPriceNameParticipantNr > 0 && $price->ParticipantNr >= $price->MaxPriceNameParticipantNr ) { ?>
+							<?php foreach ( $event['PriceNames'] as $price ) : ?>
+								<option data-price="<?php echo esc_attr( $price['Price'] ); ?>" date-discountpercent="<?php echo esc_attr( $price['DiscountPercent'] ); ?>" data-pricelnkid="<?php echo esc_attr( $price['PriceNameId'] ); ?>" data-maxparticipants="<?php echo esc_attr( $price['MaxParticipantNumber'] ); ?>" data-currentparticipants="<?php echo esc_attr( $price['NumberOfParticipants'] ); ?>"
+									<?php if ( ! empty( $price['MaxParticipantNumber'] ) && $price['NumberOfParticipants'] >= $price['MaxParticipantNumber'] ) { ?>
 										disabled
 									<?php } ?>
-										value="<?php echo esc_attr( $price->OccationPriceNameLnkID ); ?>">
-									<?php echo esc_html( $price->Description ); ?>
-									(<?php echo esc_html( convert_to_money( $price->Price, get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
+									value="<?php echo esc_attr( $price['PriceNameId'] ); ?>">
+									<?php echo esc_html( $price['PriceNameDescription'] ); ?>
+									(<?php echo esc_html( convert_to_money( $price['Price'], get_option( 'eduadmin-currency', 'SEK' ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ); ?>
 									)
 								</option>
 							<?php endforeach; ?>
 						</select>
 					</div>
 				<?php endif; ?>
-
-				<?php include_once 'question-view.php'; ?>
-
-				<?php if ( get_option( 'eduadmin-allowDiscountCode', false ) ) : ?>
-					<div class="discountView">
-						<label>
-							<div class="inputLabel">
-								<?php esc_html_e( 'Discount code', 'eduadmin-booking' ); ?>
-							</div>
-							<div class="inputHolder">
-								<input type="text" name="edu-discountCode" id="edu-discountCode" class="discount-box" placeholder="<?php esc_attr__( 'Discount code', 'eduadmin-booking' ); ?>"/>
-								<button class="validateDiscount neutral-btn" data-eventid="<?php echo esc_attr( $event['EventId'] ); ?>" data-objectid="<?php echo esc_attr( $selected_course['CourseTemplateId'] ); ?>" onclick="eduBookingView.ValidateDiscountCode(); return false;">
-									<?php esc_html_e( 'Validate', 'eduadmin-booking' ); ?>
-								</button>
-								<input type="hidden" name="edu-discountCodeID" id="edu-discountCodeID"/>
-							</div>
-						</label>
-						<div class="edu-modal warning" id="edu-warning-discount">
-							<?php esc_html_e( 'Invalid discount code, please check your code and try again.', 'eduadmin-booking' ); ?>
-						</div>
-					</div>
-				<?php endif; ?>
 				<?php
-				$use_limited_discount = get_option( 'eduadmin-useLimitedDiscount', false );
-				if ( $use_limited_discount ) {
-					include_once 'limited-discount-view.php';
-				}
+				include_once 'question-view.php';
+				include_once 'discount-code.php';
+				include_once 'limited-discount-view.php';
 				?>
 				<div class="submitView">
 					<?php if ( get_option( 'eduadmin-useBookingTermsCheckbox', false ) && $link = get_option( 'eduadmin-bookingTermsLink', '' ) ): ?>
 						<div class="confirmTermsHolder">
 							<label>
-								<input type="checkbox" id="confirmTerms" name="confirmTerms" value="agree"/>
+								<input type="checkbox" id="confirmTerms" name="confirmTerms" value="agree" />
 								<?php
 								/* translators: 1: Start of link 2: End of link */
 								echo wp_kses( sprintf( __( 'I agree to the %1$sTerms and Conditions%2$s', 'eduadmin-booking' ), '<a href="' . $link . '" target="_blank">', '</a>' ), wp_kses_allowed_html( 'post' ) );
@@ -171,7 +149,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 						<span id="sumValue" class="sumValue"></span>
 					</div>
 					<?php if ( 0 !== $event['ParticipantNumberLeft'] ) : ?>
-						<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>"/>
+						<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>" />
 					<?php else : ?>
 						<div class="bookButton neutral-btn cta-disabled">
 							<?php esc_html_e( 'No free spots left on this event', 'eduadmin-booking' ); ?>
@@ -223,7 +201,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				var title = document.title;
 				title = title.replace('<?php echo esc_js( $original_title ); ?>', '<?php echo esc_js( $new_title ); ?>');
 				document.title = title;
-				eduBookingView.MaxParticipants = <?php echo esc_js( $event['ParticipantNumberLeft'] ); ?>;
+				eduBookingView.MaxParticipants = <?php echo esc_js( intval( $event['ParticipantNumberLeft'] ) ); ?>;
 				<?php echo get_option( 'eduadmin-singlePersonBooking', false ) ? 'eduBookingView.SingleParticipant = true;' : ''; ?>
 				eduBookingView.AddParticipant();
 				eduBookingView.UpdatePrice();

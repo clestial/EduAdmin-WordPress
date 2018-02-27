@@ -14,7 +14,7 @@
 				-
 				<?php
 				echo esc_html( date( 'H:i', strtotime( $ev['EndDate'] ) ) );
-				echo esc_html( edu_output_event_venue( $ev['AddressName'], $ev['City'], ', ' ) );
+				echo esc_html( edu_output_event_venue( array( $ev['AddressName'], $ev['City'] ), ', ' ) );
 				?>
 			</option>
 		<?php endforeach; ?>
@@ -30,6 +30,6 @@ else :
 	-
 	<?php
 	echo esc_html( date( 'H:i', strtotime( $event['EndDate'] ) ) ) . '</span>';
-	echo esc_html( edu_output_event_venue( $event['AddressName'], $event['City'], ', ' ) );
+	echo esc_html( edu_output_event_venue( array( $event['AddressName'], $event['City'] ), ', ' ) );
 	echo '</div>';
 endif;

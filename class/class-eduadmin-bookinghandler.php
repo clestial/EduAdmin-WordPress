@@ -1,45 +1,23 @@
 <?php
 
+// phpcs:disable WordPress.NamingConventions,Squiz
 class EduAdmin_BookingHandler {
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'process_booking' ) );
 	}
 
 	public function process_booking() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && ! empty( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 			$single_person_booking = get_option( 'eduadmin-singlePersonBooking', false );
-			$event_customer_lnk_id = 0;
 
-			EDU()->write_debug( $_POST );
-			die();
+			$booking_info = $single_person_booking ? $this->book_single_participant() : $this->book_multiple_participants();
 
-			return;
+			$event_booking = EDUAPI()->OData->Bookings->GetItem( $booking_info['BookingId'] );
+			$_customer     = EDUAPI()->OData->Customers->GetItem( $booking_info['CustomId'] );
+			$_contact      = EDUAPI()->OData->Persons->GetItem( $booking_info['ContactPersonId'] );
 
-			if ( $single_person_booking ) {
-				$booking_info = $this->book_single_participant();
-			} else {
-				$booking_info = $this->book_multiple_participants();
-			}
+			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 
-			$filter = new XFiltering();
-			$f      = new XFilter( 'EventCustomerLnkID', '=', $booking_info['eventCustomerLnkId'] );
-			$filter->AddItem( $f );
-
-			$event_booking = EDU()->api->GetEventBookingV2( EDU()->get_token(), '', $filter->ToString() )[0];
-
-			$filter = new XFiltering();
-			$f      = new XFilter( 'CustomerID', '=', $booking_info['customerId'] );
-			$filter->AddItem( $f );
-
-			$_customer = EDU()->api->GetCustomerV3( EDU()->get_token(), '', $filter->ToString(), false )[0];
-
-			$filter = new XFiltering();
-			$f      = new XFilter( 'CustomerContactID', '=', $booking_info['contactId'] );
-			$filter->AddItem( $f );
-
-			$_contact = EDU()->api->GetCustomerContactV2( EDU()->get_token(), '', $filter->ToString(), false )[0];
-
-			$ebi                       = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 			$GLOBALS['edubookinginfo'] = $ebi;
 
 			do_action( 'eduadmin-checkpaymentplugins', $ebi );
@@ -55,362 +33,128 @@ class EduAdmin_BookingHandler {
 		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$event_id = intval( $_REQUEST['eid'] );
 
-			$customer = new CustomerV2();
-			$contact  = new CustomerContact();
+			$booking_data = new EduAdmin_Data_BookingData();
+
+			$selected_match = get_option( 'eduadmin-customerMatching', 'name-zip-match' );
+
+			if ( 'no-match' === $selected_match ) {
+				$booking_options                                 = new stdClass();
+				$booking_options['SkipDuplicateMatchOnCustomer'] = true;
+				$booking_options['SkipDuplicateMatchOnPersons']  = true;
+				$booking_data->Options                           = $booking_options;
+			}
+
+			$booking_data->EventId   = $event_id;
+			$booking_data->Reference = sanitize_text_field( $_POST['invoiceReference'] );
+
+			if ( 'selectWholeEvent' === get_option( 'eduadmin-selectPricename', 'firstPublic' ) ) {
+				if ( ! empty( $_POST['edu-pricename'] ) && is_numeric( $_POST['edu-pricename'] ) ) {
+					$booking_data->PriceNameId = intval( $_POST['edu-pricename'] );
+				}
+			}
+
+			if ( ! empty( $_POST['edu-limitedDiscountID'] ) ) {
+				$booking_data->VoucherId = intval( $_POST['edu-limitedDiscountID'] );
+			}
+
+			if ( ! empty( $_POST['edu-discountCode'] ) ) {
+				$booking_data->CouponCode = sanitize_text_field( $_POST['edu-discountCode'] );
+			}
+
+			$booking_data->Answers = $this->get_booking_questions();
+
+			$customer = new stdClass();
+			$contact  = new stdClass();
+
+			$contact->AddAsParticipant = true;
 
 			if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
-				$user                       = EDU()->session['eduadmin-loginUser'];
-				$contact->CustomerContactID = $user->Contact->PersonId;
-				$customer->CustomerID       = $user->Customer->CustomerId;
+				$user                 = EDU()->session['eduadmin-loginUser'];
+				$contact->PersonId    = $user->Contact->PersonId;
+				$customer->CustomerId = $user->Customer->CustomerId;
 			}
-			$first                     = trim( sanitize_text_field( $_POST['contactFirstName'] ) );
-			$last                      = trim( sanitize_text_field( $_POST['contactLastName'] ) );
+
+			$first                     = sanitize_text_field( $_POST['contactFirstName'] );
+			$last                      = sanitize_text_field( $_POST['contactLastName'] );
 			$customer->CustomerName    = $first . ' ' . $last;
-			$customer->CustomerGroupID = get_option( 'eduadmin-customerGroupId', null );
+			$customer->CustomerGroupId = intval( get_option( 'eduadmin-customerGroupId', null ) );
 			if ( isset( $_POST['contactCivRegNr'] ) ) {
-				$customer->InvoiceOrgnr = trim( sanitize_text_field( $_POST['contactCivRegNr'] ) );
+				$customer->OrganisationNumber = sanitize_text_field( $_POST['contactCivRegNr'] );
 			}
-			$customer->Address1          = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
-			$customer->Address2          = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
-			$customer->Zip               = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
-			$customer->City              = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
-			$customer->Phone             = trim( sanitize_text_field( $_POST['contactPhone'] ) );
-			$customer->Mobile            = trim( sanitize_text_field( $_POST['contactMobile'] ) );
-			$customer->Email             = sanitize_email( $_POST['contactEmail'] );
-			$customer->CustomerReference = trim( sanitize_text_field( $_POST['invoiceReference'] ) );
+			$customer->Address  = sanitize_text_field( $_POST['customerAddress1'] );
+			$customer->Address2 = sanitize_text_field( $_POST['customerAddress2'] );
+			$customer->Zip      = sanitize_text_field( $_POST['customerPostalCode'] );
+			$customer->City     = sanitize_text_field( $_POST['customerPostalCity'] );
+			$customer->Phone    = sanitize_text_field( $_POST['contactPhone'] );
+			$customer->Mobile   = sanitize_text_field( $_POST['contactMobile'] );
+			$customer->Email    = sanitize_email( $_POST['contactEmail'] );
 
 			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
+			$billing_info = new stdClass();
+
 			if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
-				$customer->InvoiceName     = $first . ' ' . $last;
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['customerAddress1'] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['customerAddress2'] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['customerPostalCode'] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['customerPostalCity'] ) );
+				$billing_info->CustomerName = $first . ' ' . $last;
+				$billing_info->Address      = sanitize_text_field( $_POST['customerAddress1'] );
+				$billing_info->Address2     = sanitize_text_field( $_POST['customerAddress2'] );
+				$billing_info->Zip          = sanitize_text_field( $_POST['customerPostalCode'] );
+				$billing_info->City         = sanitize_text_field( $_POST['customerPostalCity'] );
 			} else {
-				$customer->InvoiceName     = trim( sanitize_text_field( $_POST['invoiceName'] ) );
-				$customer->InvoiceAddress1 = trim( sanitize_text_field( $_POST['invoiceAddress1'] ) );
-				$customer->InvoiceAddress2 = trim( sanitize_text_field( $_POST['invoiceAddress2'] ) );
-				$customer->InvoiceZip      = trim( sanitize_text_field( $_POST['invoicePostalCode'] ) );
-				$customer->InvoiceCity     = trim( sanitize_text_field( $_POST['invoicePostalCity'] ) );
+				$billing_info->CustomerName = sanitize_text_field( $_POST['invoiceName'] );
+				$billing_info->Address      = sanitize_text_field( $_POST['invoiceAddress1'] );
+				$billing_info->Address2     = sanitize_text_field( $_POST['invoiceAddress2'] );
+				$billing_info->Zip          = sanitize_text_field( $_POST['invoicePostalCode'] );
+				$billing_info->City         = sanitize_text_field( $_POST['invoicePostalCity'] );
 			}
 
 			if ( ! empty( $customerInvoiceEmailAddress ) ) {
-				$customer->InvoiceEmail = $customerInvoiceEmailAddress;
+				$billing_info->Email = $customerInvoiceEmailAddress;
 			}
 
-			$selectedMatch = get_option( 'eduadmin-customerMatching', 'name-zip-match' );
-			if ( 'name-zip-match' === $selectedMatch ) {
-				$ft = new XFiltering();
-				if ( 0 === $customer->CustomerId ) {
-					if ( empty( $customer->InvoiceOrgnr ) ) {
-						$f = new XFilter( 'CustomerName', '=', $customer->CustomerName );
-						$ft->AddItem( $f );
-					} else {
-						$f = new XFilter( 'InvoiceOrgnr', '=', $customer->InvoiceOrgnr );
-						$ft->AddItem( $f );
-					}
-					$f = new XFilter( 'Zip', '=', str_replace( ' ', '', $customer->Zip ) );
-					$ft->AddItem( $f );
-				} else {
-					$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-					$ft->AddItem( $f );
-				}
-				$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
-				if ( empty( $matchingCustomer ) ) {
-					$customer->CustomerID = 0;
-					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[0];
-				} else {
-					$customer = $matchingCustomer[0];
-				}
-			} elseif ( 'name-zip-match-overwrite' === $selectedMatch ) {
-				$ft = new XFiltering();
-				if ( 0 === $customer->CustomerId ) {
-					if ( empty( $customer->InvoiceOrgnr ) ) {
-						$f = new XFilter( 'CustomerName', '=', $customer->CustomerName );
-						$ft->AddItem( $f );
-					} else {
-						$f = new XFilter( 'InvoiceOrgnr', '=', $customer->InvoiceOrgnr );
-						$ft->AddItem( $f );
-					}
-					$f = new XFilter( 'Zip', '=', str_replace( " ", "", $customer->Zip ) );
-					$ft->AddItem( $f );
-				} else {
-					$f = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-					$ft->AddItem( $f );
-				}
-				$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
-				if ( empty( $matchingCustomer ) ) {
-					$customer->CustomerID = 0;
-					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[0];
-				} else {
-					$customer->CustomerID = $matchingCustomer[0]->CustomerID;
-					EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-				}
-			} elseif ( 'no-match' === $selectedMatch ) {
-				$customer->CustomerID = 0;
-				$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-				$customer->CustomerID = $cres[0];
-			} elseif ( 'no-match-new-overwrite' === $selectedMatch ) {
-				if ( 0 === $contact->CustomerContactID ) {
-					$customer->CustomerID = 0;
-					$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					$customer->CustomerID = $cres[0];
-				} else {
-					$ft = new XFiltering();
-					$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-					$ft->AddItem( $f );
-					$matchingCustomer = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $ft->ToString(), false );
-					if ( empty( $matchingCustomer ) ) {
-						$customer->CustomerID = 0;
-						$cres                 = EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-						$customer->CustomerID = $cres[0];
-					} else {
-						$customer->CustomerID = $matchingCustomer[0]->CustomerID;
-						EDU()->api->SetCustomerV2( EDU()->get_token(), array( $customer ) );
-					}
-				}
-			}
+			$customer->BillingInfo = $billing_info;
 
-			if ( 0 === $customer->CustomerID ) {
-				die( 'Kunde inte skapa kundposten' );
-			} else {
-				$so = new XSorting();
-				$s  = new XSort( 'SortIndex', 'ASC' );
-				$so->AddItem( $s );
+			$customer->CustomFields = $this->get_customer_custom_fields();
 
-				$fo = new XFiltering();
-				$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-				$fo->AddItem( $f );
-				$f = new XFilter( 'AttributeOwnerTypeID', '=', 2 );
-				$fo->AddItem( $f );
-				$customerAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
-
-				$cmpArr = array();
-
-				foreach ( $customerAttributes as $attr ) {
-					$fieldId = 'edu-attr_' . $attr->AttributeID;
-					if ( isset( $_POST[ $fieldId ] ) ) {
-						$at              = new CustomerAttribute();
-						$at->CustomerID  = $customer->CustomerID;
-						$at->AttributeID = $attr->AttributeID;
-
-						switch ( $attr->AttributeTypeID ) {
-							case 1:
-								$at->AttributeChecked = true;
-								break;
-							case 5:
-								$alt                         = new AttributeAlternative();
-								$alt->AttributeAlternativeID = intval( $_POST[ $fieldId ] );
-								$at->AttributeAlternative[]  = $alt;
-								break;
-							default:
-								$at->AttributeValue = sanitize_text_field( $_POST[ $fieldId ] );
-								break;
-						}
-
-						$cmpArr[] = $at;
-					}
-				}
-
-				EDU()->api->SetCustomerAttribute( EDU()->get_token(), $cmpArr );
-			}
-
-			$contact->CustomerID = $customer->CustomerID;
+			$booking_data->Customer = $customer;
 
 			if ( ! empty( $_POST['contactFirstName'] ) ) {
-				$contact->ContactName = trim( sanitize_text_field( $_POST['contactFirstName'] ) ) . ';' . trim( sanitize_text_field( $_POST['contactLastName'] ) );
-				$contact->Phone       = trim( sanitize_text_field( $_POST['contactPhone'] ) );
-				$contact->Mobile      = trim( sanitize_text_field( $_POST['contactMobile'] ) );
-				$contact->Email       = sanitize_email( $_POST['contactEmail'] );
-				if ( isset( $_POST['contactCivReg'] ) ) {
-					$contact->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
-				}
-				if ( isset( $_POST['contactPass'] ) && ! empty( $_POST['contactPass'] ) ) {
-					$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
-				}
-				$contact->CanLogin    = 'true';
-				$contact->PublicGroup = 'true';
+				$contact->FirstName = sanitize_text_field( $_POST['contactFirstName'] );
+				$contact->LastName  = sanitize_text_field( $_POST['contactLastName'] );
+				$contact->Phone     = sanitize_text_field( $_POST['contactPhone'] );
+				$contact->Mobile    = sanitize_text_field( $_POST['contactMobile'] );
+				$contact->Email     = sanitize_email( $_POST['contactEmail'] );
 
-				$ft = new XFiltering();
-				$f  = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-				$ft->AddItem( $f );
-				if ( $contact->CustomerContactID == 0 ) {
-					$f = new XFilter( 'ContactName', '=', trim( str_replace( ';', ' ', $contact->ContactName ) ) );
-					$ft->AddItem( $f );
-
-					$selectedLoginField = get_option( 'eduadmin-loginField', 'Email' );
-
-					$f = new XFilter( $selectedLoginField, '=', $contact->{$selectedLoginField} );
-					$ft->AddItem( $f );
-				} else {
-					$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
-					$ft->AddItem( $f );
+				if ( ! empty( $_POST['contactCivReg'] ) ) {
+					$contact->CivicRegistrationNumber = sanitize_text_field( $_POST['contactCivReg'] );
 				}
-				$matchingContacts = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $ft->ToString(), false );
-				if ( empty( $matchingContacts ) ) {
-					$contact->CustomerContactID = 0;
-					$contact->CustomerContactID = EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) )[0];
-				} else {
-					if ( 'name-zip-match-overwrite' === $selectedMatch ) {
-						$contact->CustomerContactID = $matchingContacts[0]->CustomerContactID;
-						EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
-					} else {
-						$contact = $matchingContacts[0];
-						if ( ! empty( $_POST['contactPass'] ) && empty( $contact->Loginpass ) ) {
-							$contact->Loginpass = sanitize_text_field( $_POST['contactPass'] );
-							EDU()->api->SetCustomerContact( EDU()->get_token(), array( $contact ) );
-						}
-					}
+				if ( ! empty( $_POST['contactPass'] ) ) {
+					$contact->Password = sanitize_text_field( $_POST['contactPass'] );
 				}
 
-				$contact->ContactName = str_replace( ';', ' ', $contact->ContactName );
+				$contact->CanLogin     = true;
+				$contact->Answers      = $this->get_contact_questions();
+				$contact->CustomFields = $this->get_contact_custom_fields();
+				$contact->Sessions     = $this->get_contact_sessions();
 			}
 
-			if ( 0 !== $contact->CustomerContactID ) {
-				$so = new XSorting();
-				$s  = new XSort( 'SortIndex', 'ASC' );
-				$so->AddItem( $s );
+			$booking_data->ContactPerson = $contact;
 
-				$fo = new XFiltering();
-				$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-				$fo->AddItem( $f );
-				$f = new XFilter( 'AttributeOwnerTypeID', '=', 4 );
-				$fo->AddItem( $f );
-				$contactAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
+			$send_info = new stdClass();
 
-				$cmpArr = array();
+			$send_info->SendToParticipants    = true;
+			$send_info->SendToCustomer        = true;
+			$send_info->SendToCustomerContact = true;
 
-				foreach ( $contactAttributes as $attr ) {
-					$fieldId = 'edu-attr_' . $attr->AttributeID;
-					if ( isset( $_POST[ $fieldId ] ) ) {
-						$at                    = new CustomerContactAttribute();
-						$at->CustomerContactID = $contact->CustomerContactID;
-						$at->AttributeID       = $attr->AttributeID;
+			$booking_data->SendConfirmationEmail = $send_info;
 
-						switch ( $attr->AttributeTypeID ) {
-							case 1:
-								$at->AttributeChecked = true;
-								break;
-							case 5:
-								$alt                         = new AttributeAlternative();
-								$alt->AttributeAlternativeID = intval( $_POST[ $fieldId ] );
-								$at->AttributeAlternative[]  = $alt;
-								break;
-							default:
-								$at->AttributeValue = sanitize_text_field( $_POST[ $fieldId ] );
-								break;
-						}
+			EDU()->write_debug( $_POST );
+			echo '<hr />';
+			EDU()->write_debug( $booking_data, true );
 
-						$cmpArr[] = $at;
-					}
-				}
+			$res = EDUAPI()->REST->Booking->CheckPrice( $booking_data );
+			EDU()->write_debug( $res );
 
-				EDU()->api->SetCustomerContactAttributes( EDU()->get_token(), $cmpArr );
-			}
-
-			$personEmail = array();
-			if ( ! empty( $contact->Email ) && ! in_array( $contact->Email, $personEmail ) ) {
-				$personEmail[] = $contact->Email;
-			}
-
-			$st = new XSorting();
-			$s  = new XSort( 'StartDate', 'ASC' );
-			$st->AddItem( $s );
-			$s = new XSort( 'EndDate', 'ASC' );
-			$st->AddItem( $s );
-
-			$ft = new XFiltering();
-			$f  = new XFilter( 'ParentEventID', '=', $event_id );
-			$ft->AddItem( $f );
-			$subEvents = EDU()->api->GetSubEvent( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-
-			$pArr = array();
-
-			$so = new XSorting();
-			$s  = new XSort( 'SortIndex', 'ASC' );
-			$so->AddItem( $s );
-
-			$fo = new XFiltering();
-			$f  = new XFilter( 'ShowOnWeb', '=', 'true' );
-			$fo->AddItem( $f );
-			$f = new XFilter( 'AttributeOwnerTypeID', '=', 3 );
-			$fo->AddItem( $f );
-			$personAttributes = EDU()->api->GetAttribute( EDU()->get_token(), $so->ToString(), $fo->ToString() );
-
-			if ( $contact->CustomerContactID > 0 ) {
-				$person                                = new SubEventPerson();
-				$person->CustomerID                    = $customer->CustomerID;
-				$person->CustomerContactID             = $contact->CustomerContactID;
-				$person->PersonName                    = $contact->ContactName;
-				$person->PersonEmail                   = $contact->Email;
-				$person->PersonPhone                   = $contact->Phone;
-				$person->PersonMobile                  = $contact->Mobile;
-				$person->PersonCivicRegistrationNumber = $contact->CivicRegistrationNumber;
-				$ft                                    = new XFiltering();
-				$f                                     = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-				$ft->AddItem( $f );
-				$f = new XFilter( 'CustomerContactID', '=', $contact->CustomerContactID );
-				$ft->AddItem( $f );
-				$matchingPersons = EDU()->api->GetPerson( EDU()->get_token(), '', $ft->ToString(), false );
-				if ( ! empty( $matchingPersons ) ) {
-					$person = $matchingPersons[0];
-				}
-
-				$cmpArr = array();
-
-				foreach ( $personAttributes as $attr ) {
-					$fieldId = 'edu-attr_' . $attr->AttributeID . '-contact';
-					if ( isset( $_POST[ $fieldId ] ) ) {
-						$at              = new Attribute();
-						$at->AttributeID = $attr->AttributeID;
-
-						switch ( $attr->AttributeTypeID ) {
-							case 1:
-								//$at->AttributeChecked = true;
-								break;
-							case 5:
-								$alt                         = new AttributeAlternative();
-								$alt->AttributeAlternativeID = intval( $_POST[ $fieldId ] );
-								$at->AttributeAlternative[]  = $alt;
-								break;
-							default:
-								$at->AttributeValue = sanitize_text_field( $_POST[ $fieldId ] );
-								break;
-						}
-
-						$cmpArr[] = $at;
-					}
-				}
-
-				$person->Attribute = $cmpArr;
-
-				if ( isset( $_POST['contactCivReg'] ) ) {
-					$person->PersonCivicRegistrationNumber = trim( sanitize_text_field( $_POST['contactCivReg'] ) );
-				}
-
-				if ( isset( $_POST['contactPriceName'] ) ) {
-					$person->OccasionPriceNameLnkID = intval( $_POST['contactPriceName'] );
-				}
-				$person->SubEvents = array();
-				foreach ( $subEvents as $subEvent ) {
-					$fieldName = 'contactSubEvent_' . $subEvent->EventID;
-					if ( isset( $_POST[ $fieldName ] ) ) {
-						$fieldValue            = sanitize_text_field( $_POST[ $fieldName ] );
-						$subEventInfo          = new SubEventInfo();
-						$subEventInfo->EventID = $fieldValue;
-						$person->SubEvents[]   = $subEventInfo;
-					} elseif ( $subEvent->MandatoryParticipation ) {
-						$subEventInfo          = new SubEventInfo();
-						$subEventInfo->EventID = $subEvent->EventID;
-						$person->SubEvents[]   = $subEventInfo;
-					}
-				}
-
-				$pArr[] = $person;
-			}
+			die();
 
 			if ( ! empty( $pArr ) ) {
 				$bi                    = new BookingInfoSubEvent();
@@ -422,19 +166,6 @@ class EduAdmin_BookingHandler {
 					$bi->PurchaseOrderNumber = $purchaseOrderNumber;
 				}
 
-				if ( ! empty( $_POST['edu-limitedDiscountID'] ) ) {
-					$bi->LimitedDiscountID = intval( $_POST['edu-limitedDiscountID'] );
-				}
-
-				if ( ! empty( $_POST['edu-pricename'] ) ) {
-					$bi->OccasionPriceNameLnkID = intval( $_POST['edu-pricename'] );
-				}
-
-				if ( ! empty( $_POST['edu-discountCodeID'] ) && '0' !== $_POST['edu-discountCodeID'] ) {
-					$bi->CouponID = intval( $_POST['edu-discountCodeID'] );
-				}
-
-				$bi->CustomerReference = ( ! empty( $_POST['invoiceReference'] ) ? trim( sanitize_text_field( $_POST['invoiceReference'] ) ) : trim( str_replace( ';', ' ', $contact->ContactName ) ) );
 				$event_customer_lnk_id = EDU()->api->CreateSubEventBooking(
 					EDU()->get_token(),
 					$bi
@@ -492,21 +223,22 @@ class EduAdmin_BookingHandler {
 				if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 					$user = EDU()->session['eduadmin-loginUser'];
 				} else {
-					$user = new stdClass;
+					$user = new stdClass();
 				}
 
-				$jsEncContact  = json_encode( $contact );
+				$jsEncContact  = wp_json_encode( $contact );
 				$user->Contact = json_decode( $jsEncContact );
 
-				$jsEncCustomer                       = json_encode( $customer );
-				$user->Customer                      = json_decode( $jsEncCustomer );
+				$jsEncCustomer  = wp_json_encode( $customer );
+				$user->Customer = json_decode( $jsEncCustomer );
+
 				EDU()->session['eduadmin-loginUser'] = $user;
 
 				$booking_info = array(
-					'eventCustomerLnkId' => $event_customer_lnk_id,
-					'eventId'            => $event_id,
-					'customerId'         => $customer->CustomerID,
-					'contactId'          => $contact->CustomerContactID,
+					'BookingId'       => $event_customer_lnk_id,
+					'EventId'         => $event_id,
+					'CustomerId'      => $customer->CustomerID,
+					'ContactPersonId' => $contact->CustomerContactID,
 				);
 
 				return $booking_info;
@@ -1059,5 +791,175 @@ class EduAdmin_BookingHandler {
 		}
 
 		return null;
+	}
+
+	private function get_customer_custom_fields() {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$customer_custom_field_answers = array_filter( array_keys( $_POST ), function( $key ) {
+				if ( is_string( $key ) ) {
+					return edu_starts_with( $key, 'edu-attr_' ) && edu_ends_with( $key, '-customer' );
+				}
+
+				return false;
+			} );
+
+			$customer_answers = array();
+
+			foreach ( $customer_custom_field_answers as $key ) {
+				$custom_field_id = str_replace( array( 'edu-attr_', '-customer' ), '', $key );
+				if ( is_numeric( $custom_field_id ) ) {
+					$answer                   = new stdClass();
+					$answer->CustomFieldId    = intval( $custom_field_id );
+					$answer->CustomFieldValue = sanitize_text_field( $_POST[ $key ] );
+					$customer_answers[]       = $answer;
+				}
+			}
+
+			return $customer_answers;
+		}
+	}
+
+	private function get_contact_custom_fields() {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$customer_custom_field_answers = array_filter( array_keys( $_POST ), function( $key ) {
+				if ( is_string( $key ) ) {
+					return edu_starts_with( $key, 'edu-attr_' ) && edu_ends_with( $key, '-contact' );
+				}
+
+				return false;
+			} );
+
+			$customer_answers = array();
+
+			foreach ( $customer_custom_field_answers as $key ) {
+				$custom_field_id = str_replace( array( 'edu-attr_', '-contact' ), '', $key );
+				if ( is_numeric( $custom_field_id ) ) {
+					$answer                   = new stdClass();
+					$answer->CustomFieldId    = intval( $custom_field_id );
+					$answer->CustomFieldValue = sanitize_text_field( $_POST[ $key ] );
+					$customer_answers[]       = $answer;
+				}
+			}
+
+			return $customer_answers;
+		}
+	}
+
+	private function get_contact_sessions() {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$session_keys = array_filter( array_keys( $_POST ), function( $key ) {
+				if ( is_string( $key ) ) {
+					return edu_starts_with( $key, 'contactSubEvent_' );
+				}
+
+				return false;
+			} );
+
+			$sessions = array();
+
+			foreach ( $session_keys as $key ) {
+				$session_id = str_replace( array( 'contactSubEvent_' ), '', $key );
+				if ( is_numeric( $session_id ) ) {
+					$session            = new stdClass();
+					$session->SessionId = intval( $session_id );
+					$sessions[]         = $session;
+				}
+			}
+
+			return $sessions;
+		}
+	}
+
+	private function get_contact_questions() {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$contact_question_answers = array_filter( array_keys( $_POST ), function( $key ) {
+				if ( is_string( $key ) ) {
+					return edu_starts_with( $key, 'question_' ) && edu_ends_with( $key, '-contact' );
+				}
+
+				return false;
+			} );
+
+			$contact_qanswers = array();
+
+			foreach ( $contact_question_answers as $key ) {
+				$question_data = explode( '_', str_replace( array( 'question_', '-contact' ), '', $key ) );
+
+				$question_answer_id = $question_data[0];
+				$question_type      = $question_data[1];
+
+				$answer = $this->get_answer_data( $key, $question_answer_id, $question_type );
+
+				if ( null !== $answer->AnswerValue ) {
+					$contact_qanswers[] = $answer;
+				}
+			}
+
+			return $contact_qanswers;
+		}
+	}
+
+	private function get_answer_data( $key, $question_answer_id, $question_type ) {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$answer = new stdClass();
+			switch ( $question_type ) {
+				case 'dropdown':
+				case 'check':
+				case 'radio':
+					$question_answer_id = $_POST[ $key ];
+					$answer->AnswerId   = intval( $question_answer_id );
+					if ( 'check' === $question_type || 'radio' === $question_type ) {
+						$answer->AnswerValue = true;
+					} else {
+						$answer->AnswerValue = intval( $question_answer_id );
+					}
+					break;
+				default:
+					$answer->AnswerId = intval( $question_answer_id );
+					if ( 'note' === $question_type || 'text' === $question_type ) {
+						$answer->AnswerValue = $_POST[ $key ];
+					} elseif ( 'number' === $question_type ) {
+						$answer->AnswerValue = intval( $_POST[ $key ] );
+					} elseif ( 'date' === $question_type && ! empty( $_POST[ $key ] ) ) {
+						$answer->AnswerValue = date( 'c', strtotime( $_POST[ $key ] ) );
+					} else {
+						$answer->AnswerValue = null;
+					}
+
+					break;
+			}
+
+			return $answer;
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	private function get_booking_questions() {
+		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			$booking_question_answers = array_filter( array_keys( $_POST ), function( $key ) {
+				if ( is_string( $key ) ) {
+					return edu_starts_with( $key, 'question_' ) && edu_ends_with( $key, '-booking' );
+				}
+
+				return false;
+			} );
+
+			$booking_qanswers = array();
+			foreach ( $booking_question_answers as $key ) {
+				$question_data = explode( '_', str_replace( array( 'question_', '-booking' ), '', $key ) );
+
+				$question_answer_id = $question_data[0];
+				$question_type      = $question_data[1];
+
+				$answer = $this->get_answer_data( $key, $question_answer_id, $question_type );
+				if ( null !== $answer->AnswerValue ) {
+					$booking_qanswers[] = $answer;
+				}
+			}
+
+			return $booking_qanswers;
+		}
 	}
 }

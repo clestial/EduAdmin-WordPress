@@ -271,7 +271,6 @@ h1.courseTitle:hover,
 	}
 
 	.eduadmin.loginForm form .title .dateInfo {
-		padding: 72px 0;
 		text-align: left;
 	}
 
@@ -312,7 +311,6 @@ h1.courseTitle:hover,
 
 .eduadmin.booking-page form .title .dateInfo {
 	width: 100%;
-	padding: 48px 0 0;
 	text-align: center;
 	font-size: 1.2rem;
 	font-weight: 500;
@@ -467,10 +465,6 @@ h1.courseTitle:hover,
 }
 
 @media (min-width: 800px) {
-
-	.eduadmin.booking-page form .title .dateInfo {
-		padding: 48px 0 56px;
-	}
 
 	.eduadmin.booking-page form .title select.dateInfo {
 		padding: unset;

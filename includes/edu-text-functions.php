@@ -62,13 +62,16 @@ function edu_get_percent_from_values( $current_value, $max_value ) {
 	return edu_get_percent_class( $percent );
 }
 
-function edu_output_event_venue( $address_name = null, $city = null, $prefix = null ) {
-	$parts = array();
-	if ( ! empty( $address_name ) ) {
-		$parts[] = $address_name;
+function edu_output_event_venue( $parts, $prefix = null ) {
+	$empty = true;
+	foreach ( $parts as $part ) {
+		if ( ! empty( $part ) ) {
+			$empty = false;
+		}
 	}
-	if ( ! empty( $city ) ) {
-		$parts[] = $city;
+
+	if ( $empty ) {
+		return '';
 	}
 
 	return $prefix . join( ', ', $parts );
@@ -119,13 +122,13 @@ function edu_get_query_string( $prepend = '?', $remove_parameters = array() ) {
 
 function get_spots_left( $free_spots, $max_spots, $spot_option = 'exactNumbers', $spot_settings = "1-5\n5-10\n10+", $always_few_spots = 3 ) {
 	$t = EDU()->start_timer( __METHOD__ );
-	if ( 0 === $max_spots ) {
+	if ( 0 === intval( $max_spots ) ) {
 		EDU()->stop_timer( $t );
 
 		return __( 'Spots left', 'eduadmin-booking' );
 	}
 
-	if ( $free_spots <= 0 ) {
+	if ( intval( $free_spots ) <= 0 ) {
 		EDU()->stop_timer( $t );
 
 		return __( 'No spots left', 'eduadmin-booking' );
@@ -139,20 +142,20 @@ function get_spots_left( $free_spots, $max_spots, $spot_option = 'exactNumbers',
 
 			return sprintf( _n( '%1$s spot left', '%1$s spots left', $free_spots, 'eduadmin-booking' ), $free_spots );
 		case 'onlyText':
-			$few_spots_limit = $always_few_spots;
-			if ( $free_spots > ( $max_spots - $few_spots_limit ) ) {
+			$few_spots_limit = intval( $always_few_spots );
+			if ( intval( $free_spots ) > ( intval( $max_spots ) - $few_spots_limit ) ) {
 				EDU()->stop_timer( $t );
 
 				return __( 'Spots left', 'eduadmin-booking' );
-			} elseif ( $free_spots <= ( $max_spots - $few_spots_limit ) && 1 !== $free_spots ) {
+			} elseif ( intval( $free_spots ) <= ( intval( $max_spots ) - $few_spots_limit ) && 1 !== intval( $free_spots ) ) {
 				EDU()->stop_timer( $t );
 
 				return __( 'Few spots left', 'eduadmin-booking' );
-			} elseif ( 1 === $free_spots ) {
+			} elseif ( 1 === intval( $free_spots ) ) {
 				EDU()->stop_timer( $t );
 
 				return __( 'One spot left', 'eduadmin-booking' );
-			} elseif ( $free_spots <= 0 ) {
+			} elseif ( intval( $free_spots ) <= 0 ) {
 				EDU()->stop_timer( $t );
 
 				return __( 'No spots left', 'eduadmin-booking' );
@@ -172,9 +175,9 @@ function get_spots_left( $free_spots, $max_spots, $spot_option = 'exactNumbers',
 				foreach ( $lines as $line ) {
 					if ( stripos( $line, '-' ) > -1 ) {
 						$range = explode( '-', $line );
-						$min   = $range[0];
-						$max   = $range[1];
-						if ( $free_spots <= $max && $free_spots >= $min ) {
+						$min   = intval( $range[0] );
+						$max   = intval( $range[1] );
+						if ( intval( $free_spots ) <= $max && intval( $free_spots ) >= $min ) {
 							EDU()->stop_timer( $t );
 
 							/* translators: 1: Number of spots (range) */
@@ -198,7 +201,7 @@ function get_spots_left( $free_spots, $max_spots, $spot_option = 'exactNumbers',
 
 		case 'alwaysFewSpots':
 			$min_participants = $always_few_spots;
-			if ( ( $max_spots - $free_spots ) >= $min_participants ) {
+			if ( ( $max_spots - intval( $free_spots ) ) >= $min_participants ) {
 				EDU()->timers[ __METHOD__ ] = microtime( true ) - EDU()->timers[ __METHOD__ ];
 
 				return __( 'Few spots left', 'eduadmin-booking' );
@@ -1045,5 +1048,17 @@ if ( ! function_exists( 'remove_duplicates' ) ) {
 		EDU()->stop_timer( $t );
 
 		return $s_subject;
+	}
+}
+
+if ( ! function_exists( 'edu_starts_with' ) ) {
+	function edu_starts_with( $haystack, $needle ) {
+		return substr( $haystack, 0, strlen( $needle ) ) === $needle;
+	}
+}
+
+if ( ! function_exists( 'edu_ends_with' ) ) {
+	function edu_ends_with( $haystack, $needle ) {
+		return substr( $haystack, -strlen( $needle ) ) === $needle;
 	}
 }

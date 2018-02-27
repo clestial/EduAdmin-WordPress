@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:disable WordPress.NamingConventions
 class EduAdmin_APIController {
 	public $namespace;
 

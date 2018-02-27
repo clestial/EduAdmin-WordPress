@@ -16,7 +16,7 @@ if ( ! empty( $customer->BillingInfo ) ) {
 		</div>
 	</label>
 	<?php
-	if ( empty( $no_invoice_free_events ) || ( $no_invoice_free_events && $first_price->Price > 0 ) ) {
+	if ( empty( $no_invoice_free_events ) || ( $no_invoice_free_events && $first_price['Price'] > 0 ) ) {
 		?>
 		<label>
 			<div class="inputLabel">

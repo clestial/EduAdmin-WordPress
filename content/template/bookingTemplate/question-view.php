@@ -4,7 +4,7 @@
 		// VatPercent EventBookingAnswer
 
 		foreach ( $booking_questions as $question ) {
-			render_question( $question );
+			render_question( $question, false, 'booking' );
 		}
 	}
 	?>

@@ -40,7 +40,7 @@
 				<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<input type="text" class="contactCivReg" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>"/>
+				<input type="text" readonly class="contactCivReg" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>"/>
 			</div>
 		</label>
 	<?php } ?>
@@ -67,7 +67,6 @@
 		</label>
 	<?php } ?>
 	<?php
-	EDU()->write_debug( $event['Sessions'] );
 	if ( ! empty( $event['Sessions'] ) ) {
 		echo '<h4>' . esc_html__( 'Sub events', 'eduadmin-booking' ) . "</h4>\n";
 		foreach ( $event['Sessions'] as $sub_event ) {

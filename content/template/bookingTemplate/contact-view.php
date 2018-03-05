@@ -87,7 +87,7 @@ $__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonI
 				break;
 			}
 		}
-		render_attribute( $custom_field, false, '', $data );
+		render_attribute( $custom_field, false, 'contact', $data );
 	}
 
 	?>

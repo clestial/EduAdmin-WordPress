@@ -41,26 +41,26 @@ if ( $category_id > 0 ) {
 	$attributes['category'] = $category_id;
 }
 
-if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-category'] ) ) {
 	$filters[]              = "CategoryId eq " . intval( sanitize_text_field( $_REQUEST['eduadmin-category'] ) );
 	$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 }
 
-if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-city'] ) ) {
 	$filters[]          = 'Events/any(e:e/LocationId eq ' . intval( $_REQUEST['eduadmin-city'] ) . ')';
 	$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 }
 
-if ( isset( $attributes['subject'] ) && ! empty( $attributes['subject'] ) ) {
+if ( ! empty( $attributes['subject'] ) ) {
 	$filters[] = 'Subjects/any(s:s/SubjectName eq \'' . sanitize_text_field( $attributes['subject'] ) . '\')';
 }
 
-if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 	$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
 	$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 }
 
-if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-level'] ) ) {
 	$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 }
 
@@ -99,7 +99,7 @@ $edo     = EDUAPI()->OData->CourseTemplates->Search(
 );
 $courses = $edo['value'];
 
-if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
+if ( ! empty( $_REQUEST['searchCourses'] ) ) {
 	$courses = array_filter( $courses, function( $object ) {
 		$name        = ( ! empty( $object['CourseName'] ) ? $object['CourseName'] : $object['InternalCourseName'] );
 		$descr_field = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
@@ -157,4 +157,19 @@ $spot_left_option = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 $always_few_spots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 $spot_settings    = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 ?>
-<div class="eventListTable" data-eduwidget="listview-eventlist" data-template="<?php echo esc_attr( str_replace( 'template_', '', $attributes['template'] ) ); ?>" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-search="<?php echo esc_attr( sanitize_text_field( $_REQUEST['searchCourses'] ) ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>" data-orderby="<?php echo esc_attr( $attributes['orderby'] ); ?>" data-order="<?php echo esc_attr( $attributes['order'] ); ?>" data-showmore="<?php echo esc_attr( $attributes['showmore'] ); ?>" data-showcity="<?php echo esc_attr( $attributes['showcity'] ); ?>" data-showbookbtn="<?php echo esc_attr( $attributes['showbookbtn'] ); ?>" data-showreadmorebtn="<?php echo esc_attr( $attributes['showreadmorebtn'] ); ?>">
+<div class="eventListTable"
+	data-eduwidget="listview-eventlist"
+	data-template="<?php echo esc_attr( str_replace( 'template_', '', $attributes['template'] ) ); ?>"
+	data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>"
+	data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>"
+	data-category="<?php echo esc_attr( $attributes['category'] ); ?>"
+	data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>"
+	data-city="<?php echo esc_attr( $attributes['city'] ); ?>"
+	data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>"
+	data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"
+	data-orderby="<?php echo esc_attr( $attributes['orderby'] ); ?>"
+	data-order="<?php echo esc_attr( $attributes['order'] ); ?>"
+	data-showmore="<?php echo esc_attr( $attributes['showmore'] ); ?>"
+	data-showcity="<?php echo esc_attr( $attributes['showcity'] ); ?>"
+	data-showbookbtn="<?php echo esc_attr( $attributes['showbookbtn'] ); ?>"
+	data-showreadmorebtn="<?php echo esc_attr( $attributes['showreadmorebtn'] ); ?>">

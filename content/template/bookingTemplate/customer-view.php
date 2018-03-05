@@ -157,7 +157,7 @@ if ( ! empty( $customer->BillingInfo ) ) {
 				break;
 			}
 		}
-		render_attribute( $custom_field, false, '', $data );
+		render_attribute( $custom_field, false, 'customer', $data );
 	}
 	if ( ! $no_invoice_free_events || $first_price->Price > 0 ) {
 		?>

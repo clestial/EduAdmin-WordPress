@@ -458,7 +458,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		'wp_loaded',
 		function() {
 			$t = EDU()->start_timer( __METHOD__ );
-			if ( wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
+			if ( ! empty( $_POST['plugin-settings-nonce'] ) && wp_verify_nonce( $_POST['plugin-settings-nonce'], 'eduadmin-plugin-settings' ) ) {
 				if ( ! empty( $_POST['option_page'] ) && 'eduadmin-plugin-settings' === sanitize_text_field( $_POST['option_page'] ) ) { // Input var okay.
 					$integrations = EDU()->integrations->integrations;
 					foreach ( $integrations as $integration ) {

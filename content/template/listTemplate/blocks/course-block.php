@@ -19,5 +19,7 @@ foreach ( $events as $ev ) {
 ksort( $sorted_events );
 ksort( $event_cities );
 
+$descr_field = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
+
 $show_events_with_events_only    = $attributes['onlyevents'];
 $show_events_without_events_only = $attributes['onlyempty'];

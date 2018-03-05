@@ -48,7 +48,7 @@
 	<?php
 
 	foreach ( $contact_custom_fields as $attr ) {
-		render_attribute( $attr, true );
+		render_attribute( $attr, true, 'participant' );
 	}
 
 	?>

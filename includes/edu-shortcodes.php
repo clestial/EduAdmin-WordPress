@@ -37,6 +37,9 @@ function eduadmin_get_list_view( $attributes ) {
 			'showcity'        => true,
 			'showbookbtn'     => true,
 			'showreadmorebtn' => true,
+			'city'            => null,
+			'courselevel'     => null,
+			'searchCourse'    => null,
 			'filtercity'      => null,
 		),
 		normalize_empty_atts( $attributes ),
@@ -92,7 +95,9 @@ function eduadmin_get_detail_view( $attributes ) {
 	);
 	unset( EDU()->session['checkEmail'] );
 	unset( EDU()->session['needsLogin'] );
-	unset( EDU()->session['eduadmin-loginUser']->NewCustomer );
+	if ( isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) {
+		unset( EDU()->session['eduadmin-loginUser']->NewCustomer );
+	}
 
 	EDU()->session->regenerate_id( true );
 

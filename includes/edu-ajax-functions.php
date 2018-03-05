@@ -3,7 +3,12 @@
 defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
 
 function edu_listview_courselist() {
-	$fetch_months = intval( $_POST['fetchmonths'] );
+	if ( ! empty( $_POST['fetchmonths'] ) ) {
+		$fetch_months = intval( $_POST['fetchmonths'] );
+	} else {
+		$fetch_months = 6;
+	}
+
 	if ( ! is_numeric( $fetch_months ) || 0 === $fetch_months ) {
 		$fetch_months = 6;
 	}
@@ -62,7 +67,12 @@ function edu_listview_courselist() {
 function edu_api_listview_eventlist() {
 	header( 'Content-type: text/html; charset=UTF-8' );
 
-	$fetch_months = intval( $_POST['fetchmonths'] );
+	if ( ! empty( $_POST['fetchmonths'] ) ) {
+		$fetch_months = intval( $_POST['fetchmonths'] );
+	} else {
+		$fetch_months = 6;
+	}
+
 	if ( ! is_numeric( $fetch_months ) || 0 === $fetch_months ) {
 		$fetch_months = 6;
 	}

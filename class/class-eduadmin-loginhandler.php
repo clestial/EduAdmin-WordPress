@@ -13,7 +13,7 @@ class EduAdmin_LoginHandler {
 	}
 
 	public function process_login() {
-		if ( wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) ) {
+		if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) ) {
 			$surl     = get_home_url();
 			$cat      = get_option( 'eduadmin-rewriteBaseUrl' );
 			$base_url = $surl . '/' . $cat;

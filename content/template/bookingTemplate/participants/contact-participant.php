@@ -90,5 +90,9 @@
 		}
 		echo '<br />';
 	}
+
+	foreach ( $participant_questions as $question ) {
+		render_question( $question, true, 'contact' );
+	}
 	?>
 </div>

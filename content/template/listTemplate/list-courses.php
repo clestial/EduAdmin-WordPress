@@ -41,12 +41,12 @@ if ( $category_id > 0 ) {
 	$attributes['category'] = $category_id;
 }
 
-if ( isset( $_REQUEST['eduadmin-category'] ) && ! empty( $_REQUEST['eduadmin-category'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-category'] ) ) {
 	$filters[]              = 'CategoryId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-category'] ) );
 	$attributes['category'] = intval( $_REQUEST['eduadmin-category'] );
 }
 
-if ( isset( $_REQUEST['eduadmin-city'] ) && ! empty( $_REQUEST['eduadmin-city'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-city'] ) ) {
 	$filters[]          = 'Events/any(e:e/LocationId eq ' . intval( $_REQUEST['eduadmin-city'] ) . ')';
 	$attributes['city'] = intval( $_REQUEST['eduadmin-city'] );
 }
@@ -55,18 +55,18 @@ if ( isset( $attributes['subject'] ) && ! empty( $attributes['subject'] ) ) {
 	$filters[] = 'Subjects/any(s:s/SubjectName eq \'' . sanitize_text_field( $attributes['subject'] ) . '\')';
 }
 
-if ( isset( $_REQUEST['eduadmin-subject'] ) && ! empty( $_REQUEST['eduadmin-subject'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 	$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
 	$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );
 }
 
-if ( isset( $_REQUEST['eduadmin-level'] ) && ! empty( $_REQUEST['eduadmin-level'] ) ) {
+if ( ! empty( $_REQUEST['eduadmin-level'] ) ) {
 	$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 }
 
 $sort_order = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
 
-if ( $custom_order_by != null ) {
+if ( null !== $custom_order_by ) {
 	$orderby   = explode( ' ', $custom_order_by );
 	$sortorder = explode( ' ', $custom_order_by_order );
 	foreach ( $orderby as $od => $v ) {
@@ -87,7 +87,7 @@ foreach ( $expands as $key => $value ) {
 	if ( empty( $value ) ) {
 		$expand_arr[] = $key;
 	} else {
-		$expand_arr[] = $key . "(" . $value . ")";
+		$expand_arr[] = $key . '(' . $value . ')';
 	}
 }
 
@@ -99,15 +99,15 @@ $edo     = EDUAPI()->OData->CourseTemplates->Search(
 );
 $courses = $edo['value'];
 
-if ( isset( $_REQUEST['searchCourses'] ) && ! empty( $_REQUEST['searchCourses'] ) ) {
+if ( ! empty( $_REQUEST['searchCourses'] ) ) {
 	$courses = array_filter( $courses, function( $object ) {
-		$name        = ( ! empty( $object["CourseName"] ) ? $object["CourseName"] : $object["InternalCourseName"] );
+		$name        = ( ! empty( $object['CourseName'] ) ? $object['CourseName'] : $object['InternalCourseName'] );
 		$descr_field = get_option( 'eduadmin-layout-descriptionfield', 'CourseDescriptionShort' );
 		$descr       = '';
-		if ( stripos( $descr_field, "attr_" ) !== false ) {
-			$attrId = intval( substr( $descr_field, 5 ) );
+		if ( stripos( $descr_field, 'attr_' ) !== false ) {
+			$attr_id = intval( substr( $descr_field, 5 ) );
 			foreach ( $object['CustomFields'] as $custom_field ) {
-				if ( $attrId === $custom_field['CustomFieldId'] ) {
+				if ( $attr_id === $custom_field['CustomFieldId'] ) {
 					$descr = strip_tags( $custom_field['CustomFieldValue'] );
 					break;
 				}
@@ -136,4 +136,11 @@ $show_descr       = get_option( 'eduadmin-showCourseDescription', true );
 $show_event_venue = get_option( 'eduadmin-showEventVenueName', false );
 $currency         = get_option( 'eduadmin-currency', 'SEK' );
 ?>
-<div class="eduadmin-courselistoptions" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-search="<?php echo esc_attr( $_REQUEST['searchCourses'] ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"></div>
+<div class="eduadmin-courselistoptions"
+	data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>"
+	data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>"
+	data-category="<?php echo esc_attr( $attributes['category'] ); ?>"
+	data-city="<?php echo esc_attr( $attributes['city'] ); ?>"
+	data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>"
+	data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>"
+	data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"></div>

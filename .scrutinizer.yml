@@ -11,8 +11,6 @@ build:
 filter:
     dependency_paths:
         - wordpress/
-        - includes/loApiClient.php
-        - includes/loApiClasses.php
         - includes/eduadmin-api-client/
         - libraries/
     excluded_paths:

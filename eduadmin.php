@@ -50,10 +50,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 */
 		public $integrations = null;
 		/**
-		 * @var EduAdminClient
-		 */
-		public $api = null;
-		/**
 		 * @var string
 		 */
 		private $token = null;
@@ -177,45 +173,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			}
 		}
 
-		/**
-		 * @return mixed|null|string Returnerar en API-token från Lega Online
-		 */
-		public function get_token() {
-			$t       = $this->start_timer( __METHOD__ );
-			$api_key = get_option( 'eduadmin-api-key' );
-			if ( ! $api_key || empty( $api_key ) ) {
-				add_action( 'admin_notices', array( $this, 'setup_warning' ) );
-				$this->stop_timer( $t );
-
-				return '';
-			} else {
-				$key = edu_decrypt_api_key( $api_key );
-				if ( ! $key ) {
-					add_action( 'admin_notices', array( $this, 'setup_warning' ) );
-					$this->stop_timer( $t );
-
-					return '';
-				}
-
-				$edutoken = get_transient( 'eduadmin-token' );
-				if ( ! $edutoken ) {
-					$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
-					set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
-				} elseif ( false === get_transient( 'eduadmin-validatedToken_' . $edutoken ) ) {
-					$valid = $this->api->ValidateAuthToken( $edutoken );
-					if ( ! $valid ) {
-						$edutoken = $this->api->GetAuthToken( $key->UserId, $key->Hash );
-						set_transient( 'eduadmin-token', $edutoken, HOUR_IN_SECONDS );
-					}
-					set_transient( 'eduadmin-validatedToken_' . $edutoken, true, 10 * MINUTE_IN_SECONDS );
-				}
-				$this->token = $edutoken;
-				$this->stop_timer( $t );
-
-				return $this->token;
-			}
-		}
-
 		private function includes() {
 			$t = $this->start_timer( __METHOD__ );
 
@@ -232,7 +189,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 			$this->session = WP_Session::get_instance();
 
-			include_once 'includes/loApiClasses.php';
 			include_once 'includes/edu-api-functions.php';
 			include_once 'class/class-eduadmin-bookinginfo.php';
 			include_once 'class/class-eduadmin-bookinghandler.php';
@@ -240,12 +196,10 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 			include_once 'includes/plugin/class-edu-integration.php'; // Integration interface
 			include_once 'includes/plugin/class-edu-integrationloader.php'; // Integration loader
-			include_once 'includes/loApiClient.php';
 
 			if ( is_wp_error( $this->get_new_api_token() ) ) {
 				add_action( 'admin_notices', array( $this, 'setup_warning' ) );
 			}
-			$this->api = new EduAdminClient( $this->version );
 
 			include_once 'includes/edu-options.php';
 			include_once 'includes/edu-ajax-functions.php';

@@ -8,13 +8,13 @@ if ( ! $api_key || empty( $api_key ) ) {
 	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
 	include_once 'course-info.php';
-	if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
+	if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 		$ebi = $GLOBALS['edubookinginfo'];
 		do_action( 'eduadmin-processbooking', $ebi );
 		do_action( 'eduadmin-bookingcompleted', $ebi );
 	} else {
-		$contact  = new CustomerContact();
-		$customer = new Customer();
+		$contact  = new stdClass();
+		$customer = new stdClass();
 
 		$discount_percent             = 0.0;
 		$participant_discount_percent = 0.0;

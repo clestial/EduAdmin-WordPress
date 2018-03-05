@@ -1,6 +1,8 @@
 <?php
-$course_id = $wp_query->query_vars['courseId'];
-if ( ! $edo ) {
+$course_id     = $wp_query->query_vars['courseId'];
+$group_by_city = get_option( 'eduadmin-groupEventsByCity', false );
+
+if ( empty( $edo ) ) {
 	$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
 	if ( ! is_numeric( $fetch_months ) ) {
 		$fetch_months = 6;

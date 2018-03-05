@@ -232,7 +232,9 @@ class EduAdmin_BookingHandler {
 		$customer->City               = sanitize_text_field( $_POST['customerPostalCity'] );
 		$customer->Email              = sanitize_email( $_POST['customerEmail'] );
 
-		$purchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
+		if ( ! empty( $_POST['purchaseOrderNumber'] ) ) {
+			$booking_data->PurchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
+		}
 
 		$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 
@@ -538,9 +540,11 @@ class EduAdmin_BookingHandler {
 					$person->PriceNameId = intval( $_POST['participantPriceName'][ $key ] );
 				}
 
-				$person->Attribute = $cmpArr;
+				//$person->Attribute = $cmpArr;
 
-				foreach ( $subEvents as $subEvent ) {
+				$person->Sessions = $this->get_participant_sessions( $key );
+
+				/*foreach ( $subEvents as $subEvent ) {
 					$fieldName = 'participantSubEvent_' . $subEvent->EventID;
 					if ( isset( $_POST[ $fieldName ][ $key ] ) ) {
 						$fieldValue            = sanitize_text_field( $_POST[ $fieldName ][ $key ] );
@@ -552,12 +556,45 @@ class EduAdmin_BookingHandler {
 						$subEventInfo->EventID = $subEvent->EventID;
 						$person->SubEvents[]   = $subEventInfo;
 					}
-				}
+				}*/
 
 				$participants[] = $person;
 			}
 		}
 
 		return $participants;
+	}
+
+	private function get_participant_sessions( $index ) {
+		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$session_keys = array_filter( array_keys( $_POST ), function( $key ) {
+			if ( is_string( $key ) ) {
+				return edu_starts_with( $key, 'participantSubEvent_' );
+			}
+
+			return false;
+		} );
+
+		$sessions = array();
+
+		EDU()->write_debug( $session_keys );
+
+		foreach ( $session_keys as $key ) {
+			$session_id = str_replace( array( 'participantSubEvent_' ), '', $key );
+			if ( ! empty( $_POST[ $key ][ $index ] ) ) {
+				if ( is_numeric( $session_id ) ) {
+					$session            = new stdClass();
+					$session->SessionId = intval( $session_id );
+					$sessions[]         = $session;
+				}
+			}
+		}
+
+		EDU()->write_debug( $sessions );
+
+		return $sessions;
 	}
 }

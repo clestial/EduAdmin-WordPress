@@ -540,7 +540,9 @@ class EduAdmin_BookingHandler {
 					$person->PriceNameId = intval( $_POST['participantPriceName'][ $key ] );
 				}
 
-				//$person->Attribute = $cmpArr;
+				$person->CustomFields = $this->get_participant_custom_fields( $key );
+
+				$person->Answers = $this->get_participant_answers( $key );
 
 				$person->Sessions = $this->get_participant_sessions( $key );
 
@@ -551,14 +553,63 @@ class EduAdmin_BookingHandler {
 		return $participants;
 	}
 
+	private function get_participant_custom_fields( $index ) {
+		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$custom_field_keys = array_filter( array_keys( $_POST ), function( $key ) use ( $index ) {
+			if ( is_string( $key ) ) {
+				return edu_starts_with( $key, 'edu-attr_' ) && edu_ends_with( $key, '-participant_' . $index );
+			}
+
+			return false;
+		} );
+
+		$custom_fields = array();
+
+		foreach ( $custom_field_keys as $key ) {
+			$cf_data = explode( '_', str_replace( array( 'edu-attr_', '-participant' ), '', $key ) );
+
+			$field_id          = intval( $cf_data[0] );
+			$custom_field_type = $cf_data[1];
+			$participant_index = intval( $cf_data[2] );
+
+			if ( $index === $participant_index ) {
+				if ( ! empty( $_POST[ $key ] ) ) {
+					if ( is_numeric( $field_id ) ) {
+
+						$answer = $this->get_custom_field_data( $key, $field_id, $custom_field_type );
+
+						if ( null !== $answer->CustomFieldValue ) {
+							$custom_fields[] = $answer;
+						}
+					}
+				}
+			}
+		}
+
+		return $custom_fields;
+	}
+
+	private function get_participant_answers( $index ) {
+		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$answers = array();
+
+		return $answers;
+	}
+
 	private function get_participant_sessions( $index ) {
 		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
-		$session_keys = array_filter( array_keys( $_POST ), function( $key ) {
+		$session_keys = array_filter( array_keys( $_POST ), function( $key ) use ( $index ) {
 			if ( is_string( $key ) ) {
-				return edu_starts_with( $key, 'participantSubEvent_' );
+				return edu_starts_with( $key, 'participantSubEvent_' ) && edu_ends_with( $key, '_' . $index );
 			}
 
 			return false;

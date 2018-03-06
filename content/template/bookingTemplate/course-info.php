@@ -22,7 +22,7 @@ if ( empty( $edo ) ) {
 		' and StartDate le ' . date( 'c', strtotime( 'now 23:59:59 +' . $fetch_months . ' months' ) ) .
 		' and EndDate ge ' . date( 'c', strtotime( 'now' ) ) .
 		';' .
-		'$expand=PriceNames($filter=PublicPriceName),EventDates,Sessions($expand=PriceNames($filter=PublicPriceName;)),PaymentMethods' .
+		'$expand=PriceNames($filter=PublicPriceName),EventDates,Sessions($expand=PriceNames($filter=PublicPriceName;);$filter=HasPublicPriceName;),PaymentMethods' .
 		';' .
 		'$orderby=' . ( $group_by_city ? 'City asc,' : '' ) . 'StartDate asc' .
 		';';

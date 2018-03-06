@@ -272,12 +272,6 @@ class EduAdmin_BookingHandler {
 
 		$booking_data->Participants = $participants;
 
-		EDU()->write_debug( $_POST );
-		echo '<hr />';
-		EDU()->write_debug( $booking_data );
-
-		die();
-
 		return $booking_data;
 	}
 
@@ -593,6 +587,31 @@ class EduAdmin_BookingHandler {
 		}
 
 		$answers = array();
+
+		$question_answers = array_filter( array_keys( $_POST ), function( $key ) use ( $index ) {
+			if ( is_string( $key ) ) {
+				return edu_starts_with( $key, 'question_' ) && edu_ends_with( $key, '-participant_' . $index );
+			}
+
+			return false;
+		} );
+
+		foreach ( $question_answers as $key ) {
+			$question_data = explode( '_', str_replace( array( 'question_', '-participant' ), '', $key ) );
+
+			$question_answer_id = intval( $question_data[0] );
+			$question_type      = $question_data[1];
+
+			$question_participant_index = intval( $question_data[2] );
+
+			if ( $index === $question_participant_index && ! empty( $_POST[ $key ] ) && is_numeric( $question_answer_id ) ) {
+				$answer = $this->get_answer_data( $key, $question_answer_id, $question_type );
+
+				if ( null !== $answer->AnswerValue ) {
+					$answers[] = $answer;
+				}
+			}
+		}
 
 		return $answers;
 	}

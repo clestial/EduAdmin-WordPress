@@ -575,16 +575,11 @@ class EduAdmin_BookingHandler {
 			$custom_field_type = $cf_data[1];
 			$participant_index = intval( $cf_data[2] );
 
-			if ( $index === $participant_index ) {
-				if ( ! empty( $_POST[ $key ] ) ) {
-					if ( is_numeric( $field_id ) ) {
+			if ( $index === $participant_index && ! empty( $_POST[ $key ] ) && is_numeric( $field_id ) ) {
+				$answer = $this->get_custom_field_data( $key, $field_id, $custom_field_type );
 
-						$answer = $this->get_custom_field_data( $key, $field_id, $custom_field_type );
-
-						if ( null !== $answer->CustomFieldValue ) {
-							$custom_fields[] = $answer;
-						}
-					}
+				if ( null !== $answer->CustomFieldValue ) {
+					$custom_fields[] = $answer;
 				}
 			}
 		}

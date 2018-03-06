@@ -135,6 +135,10 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 * @param bool                       $as_json
 		 */
 		public function write_debug( $object, $as_json = false ) {
+			if ( is_null( $object ) ) {
+				return;
+			}
+
 			if ( $as_json ) {
 				echo '<xmp>' . json_encode( $object, JSON_PRETTY_PRINT ) . '</xmp>';
 
@@ -309,7 +313,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 				<p>
 					<?php
 					/* translators: 1: start of link 2: end of link */
-					echo esc_html( sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin-booking' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ) );
+					echo wp_kses_post( sprintf( __( 'Please complete the configuration: %1$sEduAdmin - Api Authentication%2$s', 'eduadmin-booking' ), '<a href="' . admin_url() . 'admin.php?page=eduadmin-settings">', '</a>' ) );
 					?>
 				</p>
 			</div>
@@ -353,12 +357,12 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		private function get_new_api_token() {
 			$new_key = get_option( 'eduadmin-newapi-key', null );
 
-			if ( null !== $new_key ) {
+			if ( null !== $new_key && ! empty( $new_key ) ) {
 				$key = edu_decrypt_api_key( $new_key );
 				EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
 			} else {
 				$old_key = get_option( 'eduadmin-api-key', null );
-				if ( null !== $old_key ) {
+				if ( null !== $old_key && ! empty( $old_key ) ) {
 					$key = edu_decrypt_api_key( $old_key );
 					EDUAPI()->SetCredentials( $key->UserId, $key->Hash );
 				} else {

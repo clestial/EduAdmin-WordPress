@@ -174,13 +174,16 @@ function eduadmin_frontend_content() {
 
 	$script_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/educlient/edu.apiclient.js' );
 	wp_register_script( 'eduadmin_apiclient_script', plugins_url( 'content/script/educlient/edu.apiclient.js', dirname( __FILE__ ) ), false, date_version( $script_version ) );
-	wp_localize_script( 'eduadmin_apiclient_script', 'wp_edu',
-	                    array(
-		                    'BaseUrl'        => home_url(),
-		                    'BaseUrlScripts' => plugins_url( 'content/script', dirname( __FILE__ ) ),
-		                    'CourseFolder'   => get_option( 'eduadmin-rewriteBaseUrl' ),
-		                    'AjaxUrl'        => rest_url( 'edu/v1' ),
-	                    ) );
+	wp_localize_script(
+		'eduadmin_apiclient_script',
+		'wp_edu',
+		array(
+			'BaseUrl'        => home_url(),
+			'BaseUrlScripts' => plugins_url( 'content/script', dirname( __FILE__ ) ),
+			'CourseFolder'   => get_option( 'eduadmin-rewriteBaseUrl' ),
+			'AjaxUrl'        => rest_url( 'edu/v1' ),
+		)
+	);
 	wp_enqueue_script( 'eduadmin_apiclient_script', false, array( 'jquery' ) );
 
 	$script_version = filemtime( EDUADMIN_PLUGIN_PATH . '/content/script/frontendjs.js' );

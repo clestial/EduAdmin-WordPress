@@ -30,7 +30,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_basic_booking_data( &$booking_data, $event_id ) {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -62,7 +62,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_single_participant_booking() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -138,7 +138,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_contact_person( &$contact ) {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 		if ( ! empty( $_POST['contactFirstName'] ) ) {
@@ -169,7 +169,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	public function check_single_participant_price() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -180,7 +180,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	public function book_single_participant() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -205,7 +205,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_multiple_participant_booking() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -276,7 +276,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	public function book_multiple_participants() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -301,7 +301,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_customer_custom_fields() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$customer_custom_field_answers = array_filter( array_keys( $_POST ), function( $key ) {
 				if ( is_string( $key ) ) {
 					return edu_starts_with( $key, 'edu-attr_' ) && edu_ends_with( $key, '-customer' );
@@ -330,7 +330,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_contact_custom_fields() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$customer_custom_field_answers = array_filter( array_keys( $_POST ), function( $key ) {
 				if ( is_string( $key ) ) {
 					return edu_starts_with( $key, 'edu-attr_' ) && edu_ends_with( $key, '-contact' );
@@ -359,7 +359,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_custom_field_data( $key, $custom_field_id, $custom_field_type ) {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$answer = new stdClass();
 			switch ( $custom_field_type ) {
 				case 'dropdown':
@@ -392,7 +392,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_contact_sessions() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$session_keys = array_filter( array_keys( $_POST ), function( $key ) {
 				if ( is_string( $key ) ) {
 					return edu_starts_with( $key, 'contactSubEvent_' );
@@ -417,7 +417,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_contact_questions() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$contact_question_answers = array_filter( array_keys( $_POST ), function( $key ) {
 				if ( is_string( $key ) ) {
 					return edu_starts_with( $key, 'question_' ) && edu_ends_with( $key, '-contact' );
@@ -446,7 +446,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_answer_data( $key, $question_answer_id, $question_type ) {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$answer = new stdClass();
 			switch ( $question_type ) {
 				case 'dropdown':
@@ -480,7 +480,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_booking_questions() {
-		if ( wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			$booking_question_answers = array_filter( array_keys( $_POST ), function( $key ) {
 				if ( is_string( $key ) ) {
 					return edu_starts_with( $key, 'question_' ) && edu_ends_with( $key, '-booking' );
@@ -507,7 +507,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_participant_data() {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -548,7 +548,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_participant_custom_fields( $index ) {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -582,7 +582,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_participant_answers( $index ) {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 
@@ -617,7 +617,7 @@ class EduAdmin_BookingHandler {
 	}
 
 	private function get_participant_sessions( $index ) {
-		if ( ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
 

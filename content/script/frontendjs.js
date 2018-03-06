@@ -22,6 +22,7 @@ var eduBookingView = {
 					requiredFields[index].setAttribute('required', '');
 					requiredFields[index].required = true;
 				}
+
 				holder.appendChild(cloned);
 			}
 			else {
@@ -351,9 +352,21 @@ var eduBookingView = {
 					}
 				}
 			}
+
+			var replaceFields = participant.querySelectorAll('[data-replace]');
+			for(var index = 0; index < replaceFields.length; index++) {
+				var replaceItems = replaceFields[index].attributes['data-replace'].value.split(',');
+				for(var x = 0; x < replaceItems.length; x++) {
+					var replaceItem = replaceItems[x].split('|');
+					var replaceTemplate = replaceFields[index].attributes['data-' + replaceItem[0] + '-template'].value;
+					replaceFields[index][replaceItem[0]] = replaceTemplate.replace('{{' + replaceItem[1] + '}}', (i + 1));
+				}
+			}
 		}
+
 		var bookBtn = document.getElementById('edu-book-btn');
 		//bookBtn.disabled = true;
+
 		return true;
 	},
 	ValidateCivicRegNo: function () {

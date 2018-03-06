@@ -2,7 +2,6 @@
 // phpcs:disable WordPress.NamingConventions,Squiz
 if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) && ! empty( $_POST['eduformloginaction'] ) ) {
 	if ( 'checkEmail' === $_POST['eduformloginaction'] && ! empty( $_POST['eduadminloginEmail'] ) ) {
-		$ft                          = new XFiltering();
 		$selected_login_field        = get_option( 'eduadmin-loginField', 'Email' );
 		$allow_customer_registration = get_option( 'eduadmin-allowCustomerRegistration', true );
 

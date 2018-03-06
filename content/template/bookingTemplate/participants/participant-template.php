@@ -85,8 +85,9 @@
 			}
 
 			echo '<label>';
-			echo '<input class="subEventCheckBox" data-price="' . esc_attr( $s ) . '" onchange=eduBookingView.UpdatePrice();" ';
-			echo 'name="participantSubEvent_' . esc_attr( $sub_event['SessionId'] ) . '[]" ';
+			echo '<input class="subEventCheckBox" data-price="' . esc_attr( $s ) . '" onchange=eduBookingView.UpdatePrice();" data-replace="name|index" ';
+			echo 'data-name-template="participantSubEvent_' . esc_attr( $sub_event['SessionId'] ) . '_{{index}}" ';
+			echo 'name="participantSubEvent_' . esc_attr( $sub_event['SessionId'] ) . '_-1" ';
 			echo 'type="checkbox"';
 			echo( $sub_event['SelectedByDefault'] || $sub_event['MandatoryParticipation'] ? ' checked="checked"' : '' );
 			echo( $sub_event['MandatoryParticipation'] ? ' disabled="disabled"' : '' );

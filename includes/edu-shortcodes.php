@@ -462,11 +462,7 @@ function eduadmin_get_detailinfo( $attributes ) {
 						} else {
 							$or = 'ASC';
 						}
-
-						$s = new XSort( $v, $or );
 					}
-				} else {
-					$s = new XSort( 'PeriodStart', 'ASC' );
 				}
 
 				$surl = get_home_url();

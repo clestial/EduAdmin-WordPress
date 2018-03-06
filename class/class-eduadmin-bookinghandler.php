@@ -544,20 +544,6 @@ class EduAdmin_BookingHandler {
 
 				$person->Sessions = $this->get_participant_sessions( $key );
 
-				/*foreach ( $subEvents as $subEvent ) {
-					$fieldName = 'participantSubEvent_' . $subEvent->EventID;
-					if ( isset( $_POST[ $fieldName ][ $key ] ) ) {
-						$fieldValue            = sanitize_text_field( $_POST[ $fieldName ][ $key ] );
-						$subEventInfo          = new SubEventInfo();
-						$subEventInfo->EventID = $fieldValue;
-						$person->SubEvents[]   = $subEventInfo;
-					} elseif ( $subEvent->MandatoryParticipation ) {
-						$subEventInfo          = new SubEventInfo();
-						$subEventInfo->EventID = $subEvent->EventID;
-						$person->SubEvents[]   = $subEventInfo;
-					}
-				}*/
-
 				$participants[] = $person;
 			}
 		}
@@ -580,20 +566,22 @@ class EduAdmin_BookingHandler {
 
 		$sessions = array();
 
-		EDU()->write_debug( $session_keys );
-
 		foreach ( $session_keys as $key ) {
-			$session_id = str_replace( array( 'participantSubEvent_' ), '', $key );
-			if ( ! empty( $_POST[ $key ][ $index ] ) ) {
-				if ( is_numeric( $session_id ) ) {
-					$session            = new stdClass();
-					$session->SessionId = intval( $session_id );
-					$sessions[]         = $session;
+			$session = explode( '_', str_replace( array( 'participantSubEvent_' ), '', $key ) );
+
+			$session_id        = intval( $session[0] );
+			$participant_index = intval( $session[1] );
+
+			if ( $index === $participant_index ) {
+				if ( ! empty( $_POST[ 'participantSubEvent_' . $session_id . '_' . $participant_index ] ) ) {
+					if ( is_numeric( $session_id ) ) {
+						$session            = new stdClass();
+						$session->SessionId = intval( $session_id );
+						$sessions[]         = $session;
+					}
 				}
 			}
 		}
-
-		EDU()->write_debug( $sessions );
 
 		return $sessions;
 	}

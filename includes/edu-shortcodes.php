@@ -372,12 +372,25 @@ function eduadmin_get_detailinfo( $attributes ) {
 			}
 
 			if ( isset( $attributes['courseprice'] ) ) {
-				$events = $selected_course['Events'];
 				$prices = array();
 
 				foreach ( $selected_course['PriceNames'] as $pn ) {
 					$prices[ $pn['PriceNameId'] ] = $pn;
 				}
+
+				$currency = get_option( 'eduadmin-currency', 'SEK' );
+				if ( 1 === count( $prices ) ) {
+					$ret_str .= esc_html( convert_to_money( current( $prices )['Price'], $currency ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "\n";
+				} else {
+					foreach ( $prices as $price ) {
+						$ret_str .= esc_html( sprintf( '%1$s: %2$s', $price['PriceNameDescription'], convert_to_money( $price['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) ) . "<br />\n";
+					}
+				}
+			}
+
+			if ( isset( $attributes['eventprice'] ) ) {
+				$events = $selected_course['Events'];
+				$prices = array();
 
 				foreach ( $events as $e ) {
 					foreach ( $e['PriceNames'] as $pn ) {
@@ -586,6 +599,51 @@ function eduadmin_get_login_view( $attributes ) {
 	return include_once EDUADMIN_PLUGIN_PATH . '/content/template/myPagesTemplate/login.php';
 }
 
+function eduadmin_get_programme_list( $attributes ) {
+	$attributes = shortcode_atts(
+		array(),
+		normalize_empty_atts( $attributes ),
+		'eduadmin-programmelist'
+	);
+
+	$programmes = EDUAPI()->OData->Programmes->Search(
+		null,
+		'ShowOnWeb',
+		'ProgrammeStarts($filter=HasPublicPriceName;),Courses($filter=ShowOnWeb;)'
+	);
+	EDU()->write_debug( $programmes );
+}
+
+function eduadmin_get_programme_details( $attributes ) {
+	$attributes = shortcode_atts(
+		array(
+			'programmeid' => null,
+		),
+		normalize_empty_atts( $attributes ),
+		'eduadmin-programmedetail'
+	);
+
+	if ( ! empty( $attributes['programmeid'] ) ) {
+		$programme = EDUAPI()->OData->Programmes->GetItem(
+			$attributes['programmeid'],
+			null,
+			'ProgrammeStarts($filter=HasPublicPriceName;),Courses($filter=ShowOnWeb;)'
+		);
+		EDU()->write_debug( $programme );
+	}
+}
+
+function eduadmin_get_programme_booking( $attributes ) {
+	$attributes = shortcode_atts(
+		array(
+			'programmeid'      => null,
+			'programmestartid' => null,
+		),
+		normalize_empty_atts( $attributes ),
+		'eduadmin-programmebooking'
+	);
+}
+
 if ( is_callable( 'add_shortcode' ) ) {
 	add_shortcode( 'eduadmin-listview', 'eduadmin_get_list_view' );
 	add_shortcode( 'eduadmin-detailview', 'eduadmin_get_detail_view' );
@@ -596,4 +654,8 @@ if ( is_callable( 'add_shortcode' ) ) {
 	add_shortcode( 'eduadmin-objectinterest', 'eduadmin_get_object_interest' );
 	add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
 	add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );
+
+	add_shortcode( 'eduadmin-programmelist', 'eduadmin_get_programme_list' );
+	add_shortcode( 'eduadmin-programmedetail', 'eduadmin_get_programme_details' );
+	add_shortcode( 'eduadmin-programmebooking', 'eduadmin_get_programme_booking' );
 }

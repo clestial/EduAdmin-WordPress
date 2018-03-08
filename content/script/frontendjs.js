@@ -57,137 +57,7 @@ var eduBookingView = {
 
 	},
 	UpdatePrice: function () {
-		var contactParticipant = document.getElementById('contactIsAlsoParticipant');
-		var contact = 0;
-		if (contactParticipant) {
-			if (contactParticipant.checked) {
-				contact = 1;
-			} else {
-				contact = 0;
-			}
-		}
-		eduBookingView.ContactAsParticipant();
-		eduBookingView.CurrentParticipants = (eduBookingView.SingleParticipant
-			? 1
-			: document.querySelectorAll('.eduadmin .participantItem:not(.template):not(.contactPerson)').length + contact);
-
-		var questions = document.querySelectorAll('.questionPanel [data-price]');
-
-		var questionPrice = 0.0;
-		for (var qi = 0; qi < questions.length; qi++) {
-			var question = questions[qi];
-			var price = parseFloat(question.dataset.price);
-			var qtype = question.dataset.type;
-			if (!isNaN(price)) {
-				switch (qtype) {
-					case "number":
-						if (question.value != '' && !isNaN(question.value) && parseInt(question.value) > 0) {
-							questionPrice += (price * parseInt(question.value));
-						} else {
-							question.value = '';
-						}
-						break;
-					case "text":
-						if (question.value != '') {
-							questionPrice += price;
-						}
-						break;
-					case "note":
-						if (question.value != '') {
-							questionPrice += price;
-						}
-						break;
-					case "radio":
-						if (question.checked) {
-							questionPrice += price;
-						}
-						break;
-					case "check":
-						if (question.checked) {
-							questionPrice += price;
-						}
-						break;
-					case "dropdown":
-						if (question.selected) {
-							questionPrice += price;
-						}
-						break;
-					case "infotext":
-						questionPrice += price;
-						break;
-					case "date":
-						if (question.value != '') {
-							questionPrice += price;
-						}
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		var priceObject = document.getElementById('sumValue');
-
-		var priceDdl = document.getElementById('edu-pricename');
-		if (priceDdl !== null) {
-			var selected = priceDdl.selectedOptions[0];
-			var ppp = 0.0;
-			if (selected !== null && undefined !== selected.attributes["data-price"]) {
-				ppp = parseFloat(selected.attributes["data-price"].value);
-			}
-			if (typeof window.discountPerParticipant !== 'undefined' && window.discountPerParticipant > 0) {
-				var dis = window.discountPerParticipant * ppp;
-				window.pricePerParticipant = ppp - dis;
-			} else {
-				window.pricePerParticipant = ppp;
-			}
-		}
-
-		if (priceObject && typeof window.pricePerParticipant !== 'undefined' && window.currency != '') {
-			var newPrice = 0.0;
-			var participantPriceNames = document.querySelectorAll('.participantItem:not(.template) .participantPriceName');
-			if (participantPriceNames.length > 0) {
-				var participants = eduBookingView.CurrentParticipants;
-				for (var i2 = 0; i2 < participants; i2++) {
-					if (window.discountPerParticipant !== undefined && window.discountPerParticipant > 0) {
-						var lpr = parseFloat(participantPriceNames[i2].selectedOptions[0].attributes['data-price'].value);
-						var disc1 = window.discountPerParticipant * lpr;
-						newPrice += lpr - disc1;
-					} else {
-						newPrice += parseFloat(participantPriceNames[i2].selectedOptions[0].attributes['data-price'].value);
-					}
-				}
-			} else {
-				newPrice = (eduBookingView.CurrentParticipants * window.pricePerParticipant);
-			}
-			if (!isNaN(questionPrice)) {
-				newPrice += questionPrice;
-			}
-
-			var subEventPrices = document.querySelectorAll('.eduadmin .participantItem:not(.template):not(.contactPerson) input.subEventCheckBox:checked');
-			if (subEventPrices.length > 0) {
-				for (var i3 = 0; i3 < subEventPrices.length; i3++) {
-					newPrice += parseFloat(subEventPrices[i3].attributes['data-price'].value);
-				}
-			}
-
-			if (eduBookingView.SingleParticipant || (contactParticipant && contactParticipant.checked)) {
-				subEventPrices = document.querySelectorAll('.eduadmin .participantItem.contactPerson:not(.template) input.subEventCheckBox:checked');
-				if (subEventPrices.length > 0) {
-					for (var i = 0; i < subEventPrices.length; i++) {
-						newPrice += parseFloat(subEventPrices[i].attributes['data-price'].value);
-					}
-				}
-			}
-
-			if (window.totalPriceDiscountPercent != 0 || eduBookingView.DiscountPercent != 0) {
-				var disc = ((window.totalPriceDiscountPercent + eduBookingView.DiscountPercent) / 100) * newPrice;
-				newPrice = newPrice - disc;
-			}
-
-			priceObject.innerHTML = numberWithSeparator(newPrice, ' ') + ' ' + window.currency + ' ' + window.vatText;
-		}
-
+		this.CheckPrice(true);
 	},
 	UpdateInvoiceCustomer: function (checkboxElem) {
 		var invoiceView = document.getElementById('invoiceView');
@@ -326,9 +196,9 @@ var eduBookingView = {
 			for (var f = 0; f < fields.length; f++) {
 				if (requiredFieldsToCreateParticipants.indexOf(fields[f].name) >= 0) {
 
-					if (fields[f].value.replace(/ /i, '') == '') {
+					if (fields[f].value.replace(/ /i, '') === '') {
 						/* Show missing participant-name warning */
-						if (fields[f].name == 'participantFirstName[]') {
+						if (fields[f].name === 'participantFirstName[]') {
 							var partWarning = document.getElementById('edu-warning-missing-participants');
 							if (partWarning) {
 								partWarning.style.display = 'block';
@@ -338,7 +208,7 @@ var eduBookingView = {
 								}, 5000);
 							}
 						}
-						else if (fields[f].name == 'participantCivReg[]') {
+						else if (fields[f].name === 'participantCivReg[]') {
 							var civicWarning = document.getElementById('edu-warning-missing-civicregno');
 							if (civicWarning) {
 								civicWarning.style.display = 'block';
@@ -369,6 +239,40 @@ var eduBookingView = {
 
 		return true;
 	},
+	CheckPrice: function(validate) {
+		if(undefined !== eduBookingView.PriceCheckThrottle) {
+			clearTimeout(eduBookingView.PriceCheckThrottle);
+		}
+		eduBookingView.PriceCheckThrottle = setTimeout(function() {
+			var validation = true;
+			if(validate) {
+				validation = eduBookingView.CheckValidation();
+			}
+			if(validation) {
+				var form = jQuery('#edu-booking-form').serialize();
+				form = form.replace('act=bookCourse', 'act=checkPrice');
+				jQuery.ajax({
+					type: 'POST',
+					url: '',
+					data: form,
+					success: function (data) {
+						var d = JSON.parse(data);
+						console.log(d);
+						if (d.hasOwnProperty('TotalPriceExVat')) {
+							jQuery('#sumValue').text(
+								numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
+								' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
+							)
+						}
+						if(d.hasOwnProperty('Message')) {
+
+						}
+					}
+				});
+			}
+		}, 100);
+	},
+	PriceCheckThrottle: null,
 	ValidateCivicRegNo: function () {
 
 		function __isValid(civRegField) {

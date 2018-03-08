@@ -50,6 +50,14 @@ and redo your own customization.
 - Adding page for certificates
 - Bumping major version, since we're using a brand new API
 - Removing default styles, it will now be emptied when you reset it. (To make sure that you don't have double CSS)
+- Making "Forgot password" into a "neutral-btn"
+- Making event separators a little bit bigger and bolder
+- `showmore` upgrade, available in `[eduadmin-detailinfo]` as attribute
+- Two column-template fixed to load templated event list.
+- Adding nonces to actions/forms
+- Customer, person and participant CustomFields on booking page
+- Fixed event inquiries to use the new API
+- Adding attribute `eventprice` to `[eduadmin-detailinfo]`
 
 ### 1.0.28
 - If no events are available, load public pricenames from course template

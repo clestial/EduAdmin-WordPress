@@ -41,7 +41,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 		?>
 
 		<div class="eduadmin booking-page">
-			<form action="" method="post">
+			<form action="" method="post" id="edu-booking-form">
 				<input type="hidden" name="act" value="bookCourse" />
 				<input type="hidden" name="edu-valid-form" value="<?php echo esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>" />
 				<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
@@ -197,6 +197,11 @@ if ( ! $api_key || empty( $api_key ) ) {
 			var currency = '<?php echo esc_js( get_option( 'eduadmin-currency', 'SEK' ) ); ?>';
 			var vatText = '<?php echo esc_js( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ); ?>';
 			var ShouldValidateCivRegNo = <?php echo esc_js( get_option( 'eduadmin-validateCivicRegNo', false ) ? 'true' : 'false' ); ?>;
+
+			var edu_vat = {
+				inc: '<?php echo esc_js( __( 'inc vat', 'eduadmin-booking' ) ); ?>',
+				ex: '<?php echo esc_js( __( 'ex vat', 'eduadmin-booking' ) ); ?>'
+			};
 			(function () {
 				var title = document.title;
 				title = title.replace('<?php echo esc_js( $original_title ); ?>', '<?php echo esc_js( $new_title ); ?>');
@@ -204,7 +209,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				eduBookingView.MaxParticipants = <?php echo esc_js( intval( $event['ParticipantNumberLeft'] ) ); ?>;
 				<?php echo get_option( 'eduadmin-singlePersonBooking', false ) ? 'eduBookingView.SingleParticipant = true;' : ''; ?>
 				eduBookingView.AddParticipant();
-				eduBookingView.UpdatePrice();
+				eduBookingView.CheckPrice(false);
 			})();
 		</script>
 		<?php

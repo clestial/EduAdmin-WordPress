@@ -4,6 +4,17 @@
 class EduAdmin_BookingHandler {
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'process_booking' ) );
+		add_action( 'wp_loaded', array( $this, 'check_price' ) );
+	}
+
+	public function check_price() {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && ! empty( $_POST['act'] ) && 'checkPrice' === sanitize_text_field( $_POST['act'] ) ) {
+			$single_person_booking = get_option( 'eduadmin-singlePersonBooking', false );
+
+			$price_info = $single_person_booking ? $this->check_single_participant() : $this->check_multiple_participants();
+			echo wp_json_encode( $price_info );
+			exit( 0 );
+		}
 	}
 
 	public function process_booking() {
@@ -24,7 +35,7 @@ class EduAdmin_BookingHandler {
 
 			if ( ! $ebi->NoRedirect ) {
 				wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $booking_info['BookingId'] );
-				exit();
+				exit( 0 );
 			}
 		}
 	}
@@ -141,28 +152,31 @@ class EduAdmin_BookingHandler {
 		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
-		if ( ! empty( $_POST['contactFirstName'] ) ) {
-			$contact->FirstName = sanitize_text_field( $_POST['contactFirstName'] );
-			$contact->LastName  = sanitize_text_field( $_POST['contactLastName'] );
-			$contact->Phone     = sanitize_text_field( $_POST['contactPhone'] );
-			$contact->Mobile    = sanitize_text_field( $_POST['contactMobile'] );
-			$contact->Email     = sanitize_email( $_POST['contactEmail'] );
 
-			if ( ! empty( $_POST['contactCivReg'] ) ) {
-				$contact->CivicRegistrationNumber = sanitize_text_field( $_POST['contactCivReg'] );
-			}
-			if ( ! empty( $_POST['contactPass'] ) ) {
-				$contact->Password = sanitize_text_field( $_POST['contactPass'] );
-			}
+		$contact->FirstName = sanitize_text_field( $_POST['contactFirstName'] );
+		$contact->LastName  = sanitize_text_field( $_POST['contactLastName'] );
+		$contact->Phone     = sanitize_text_field( $_POST['contactPhone'] );
+		$contact->Mobile    = sanitize_text_field( $_POST['contactMobile'] );
+		$contact->Email     = sanitize_email( $_POST['contactEmail'] );
 
-			$contact->CanLogin     = true;
-			$contact->Answers      = $this->get_contact_questions();
-			$contact->CustomFields = $this->get_contact_custom_fields();
-			$contact->Sessions     = $this->get_contact_sessions();
+		if ( ! empty( $_POST['contactCivReg'] ) ) {
+			$contact->CivicRegistrationNumber = sanitize_text_field( $_POST['contactCivReg'] );
+		}
+		if ( ! empty( $_POST['contactPass'] ) ) {
+			$contact->Password = sanitize_text_field( $_POST['contactPass'] );
+		}
 
-			if ( ! empty( $_POST['contactIsAlsoParticipant'] ) ) {
-				$contact->AddAsParticipant = true;
-			}
+		if ( ! empty( $_POST['contactPriceName'] ) ) {
+			$contact->PriceNameId = intval( $_POST['contactPriceName'] );
+		}
+
+		$contact->CanLogin     = true;
+		$contact->Answers      = $this->get_contact_questions();
+		$contact->CustomFields = $this->get_contact_custom_fields();
+		$contact->Sessions     = $this->get_contact_sessions();
+
+		if ( ! empty( $_POST['contactIsAlsoParticipant'] ) ) {
+			$contact->AddAsParticipant = true;
 		}
 
 		return $contact;
@@ -202,6 +216,16 @@ class EduAdmin_BookingHandler {
 		);
 
 		return $booking_info;
+	}
+
+	public function check_single_participant() {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$booking_data = $this->get_single_participant_booking();
+
+		return EDUAPI()->REST->Booking->CheckPrice( $booking_data );
 	}
 
 	private function get_multiple_participant_booking() {
@@ -298,6 +322,16 @@ class EduAdmin_BookingHandler {
 		);
 
 		return $booking_info;
+	}
+
+	public function check_multiple_participants() {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$booking_data = $this->get_multiple_participant_booking();
+
+		return EDUAPI()->REST->Booking->CheckPrice( $booking_data );
 	}
 
 	private function get_customer_custom_fields() {

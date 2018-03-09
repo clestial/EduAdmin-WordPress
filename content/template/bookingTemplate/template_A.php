@@ -13,8 +13,8 @@ if ( ! $api_key || empty( $api_key ) ) {
 		do_action( 'eduadmin-processbooking', $ebi );
 		do_action( 'eduadmin-bookingcompleted', $ebi );
 	} else {
-		$contact  = new stdClass();
-		$customer = new stdClass();
+		$contact  = new EduAdmin_Data_ContactPerson();
+		$customer = new EduAdmin_Data_Customer();
 
 		$discount_percent             = 0.0;
 		$participant_discount_percent = 0.0;

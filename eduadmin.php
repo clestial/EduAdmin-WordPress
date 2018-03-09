@@ -167,7 +167,6 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 					'TextDomain'  => 'Text Domain',
 					'DomainPath'  => 'Domain Path',
 					'Network'     => 'Network',
-					// Site Wide Only is deprecated in favor of Network.
 					'_sitewide'   => 'Site Wide Only',
 				);
 

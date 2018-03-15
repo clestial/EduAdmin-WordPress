@@ -20,7 +20,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer                    $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_MailAdvanced $mail
 	 *
 	 * @return mixed
@@ -34,7 +34,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer            $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_Mail $mail
 	 *
 	 * @return mixed
@@ -48,7 +48,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer                             $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_UnnamedParticipants[] $unnamed_participants
 	 *
 	 * @return mixed
@@ -62,7 +62,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer                                    $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_PatchBooking|stdClass|object $patch_booking
 	 *
 	 * @return mixed
@@ -102,7 +102,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer                                           $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_BookingParticipants|stdClass|object $booking_participants
 	 *
 	 * @return mixed
@@ -116,7 +116,7 @@ class EduAdmin_REST_Booking extends EduAdminRESTClient {
 	}
 
 	/**
-	 * @param integer                                                  $booking_id
+	 * @param integer $booking_id
 	 * @param EduAdmin_Data_ConvertUnnamedParticipants|stdClass|object $unnamed_participants
 	 *
 	 * @return mixed

@@ -14,10 +14,11 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 * @param int|null $top
 	 * @param int|null $skip
 	 * @param bool $count
+	 * @param bool $use_cache
 	 *
 	 * @return mixed
 	 */
-	public function Search( $select = null, $filter = null, $expand = null, $orderby = null, $top = null, $skip = null, $count = true ) {
+	public function Search( $select = null, $filter = null, $expand = null, $orderby = null, $top = null, $skip = null, $count = true, $use_cache = true ) {
 		$params = array();
 		if ( isset( $select ) && ! empty( $select ) ) {
 			$params['$select'] = $select;
@@ -37,7 +38,12 @@ class EduAdminODataClient extends EduAdminRESTClient {
 		if ( isset( $skip ) && ! empty( $skip ) ) {
 			$params['$skip'] = $skip;
 		}
-		$params['$count'] = $count ? 'true' : false;
+
+		if ( ! empty( $use_cache ) && ! $use_cache ) {
+			$params['cache'] = 'false';
+		}
+
+		$params['$count'] = $count ? 'true' : 'false';
 
 		return parent::GET( '', $params, get_called_class() . '|' . __FUNCTION__ );
 	}
@@ -46,16 +52,21 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 * @param int $id
 	 * @param string|null $select
 	 * @param string|null $expand
+	 * @param bool $use_cache
 	 *
 	 * @return mixed
 	 */
-	public function GetItem( $id, $select = null, $expand = null ) {
+	public function GetItem( $id, $select = null, $expand = null, $use_cache = true ) {
 		$params = array();
 		if ( isset( $select ) && ! empty( $select ) ) {
 			$params['$select'] = $select;
 		}
 		if ( isset( $expand ) && ! empty( $expand ) ) {
 			$params['$expand'] = $expand;
+		}
+
+		if ( ! empty( $use_cache ) && ! $use_cache ) {
+			$params['cache'] = 'false';
 		}
 
 		return parent::GET( "($id)", $params, get_called_class() . '|' . __FUNCTION__ );

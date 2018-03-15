@@ -23,9 +23,24 @@ class EduAdmin_BookingHandler {
 
 			$booking_info = $single_person_booking ? $this->book_single_participant() : $this->book_multiple_participants();
 
-			$event_booking = EDUAPI()->OData->Bookings->GetItem( $booking_info['BookingId'] );
-			$_customer     = EDUAPI()->OData->Customers->GetItem( $booking_info['CustomId'] );
-			$_contact      = EDUAPI()->OData->Persons->GetItem( $booking_info['ContactPersonId'] );
+			$event_booking = EDUAPI()->OData->Bookings->GetItem(
+				$booking_info['BookingId'],
+				null,
+				'OrderRows',
+				false
+			);
+			$_customer     = EDUAPI()->OData->Customers->GetItem(
+				$booking_info['CustomId'],
+				null,
+				null,
+				false
+			);
+			$_contact      = EDUAPI()->OData->Persons->GetItem(
+				$booking_info['ContactPersonId'],
+				null,
+				null,
+				false
+			);
 
 			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
 

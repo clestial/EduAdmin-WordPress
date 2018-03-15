@@ -22,7 +22,7 @@ defined( 'WP_SESSION_COOKIE' ) || define( 'WP_SESSION_COOKIE', 'eduadmin-cookie'
  */
 /*
 	EduAdmin Booking plugin
-	Copyright (C) 2015-2017 Chris Gårdenberg, MultiNet Interactive AB
+	Copyright (C) 2015-2018 Chris Gårdenberg, MultiNet Interactive AB
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by

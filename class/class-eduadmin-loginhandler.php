@@ -26,7 +26,12 @@ class EduAdmin_LoginHandler {
 				$possible_persons = EDUAPI()->OData->Persons->Search(
 					'PersonId',
 					"CanLogin and $login_field eq '" . sanitize_text_field( wp_unslash( $_POST['eduadminloginEmail'] ) ) . '\'', // Input var okay.
-					'CustomFields($filter=ShowOnWeb;)'
+					'CustomFields($filter=ShowOnWeb;)',
+					null,
+					null,
+					null,
+					null,
+					false
 				)['value'];
 
 				if ( 1 === count( $possible_persons ) ) {
@@ -60,7 +65,8 @@ class EduAdmin_LoginHandler {
 		$contact = EDUAPI()->OData->Persons->GetItem(
 			$personId,
 			null,
-			'CustomFields($filter=ShowOnWeb;)'
+			'CustomFields($filter=ShowOnWeb;)',
+			false
 		);
 
 		unset( $contact['@odata.context'] );
@@ -69,7 +75,8 @@ class EduAdmin_LoginHandler {
 		$customer = EDUAPI()->OData->Customers->GetItem(
 			$customerId,
 			null,
-			'BillingInfo,CustomFields($filter=ShowOnWeb;)'
+			'BillingInfo,CustomFields($filter=ShowOnWeb;)',
+			false
 		);
 
 		unset( $customer['@odata.context'] );

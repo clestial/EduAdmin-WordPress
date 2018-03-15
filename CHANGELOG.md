@@ -1,3 +1,10 @@
+### 1.0.26
+- Some more styles to some buttons
+- Making it easier to edit some templates
+- If there are no dates provided to the date-function, render an empty string instead of 01 January, 1970
+- Adding support for `showmore` in `[eduadmin-detailinfo]` as attribute
+- Bugfix: Don't load already loaded classes
+
 ### 1.0.25
 - Bugfix: Missing styles
 

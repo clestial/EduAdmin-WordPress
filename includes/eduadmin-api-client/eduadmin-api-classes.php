@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable WordPress.NamingConventions,Squiz
+
 /**
  * Class EduAdminToken
  */
@@ -16,9 +16,9 @@ class EduAdminToken {
 	 * @var integer|null
 	 */
 	public $ExpiresIn = null;
-	public $UserName  = null;
-	public $Issued    = null;
-	public $Expires   = null;
+	public $UserName = null;
+	public $Issued = null;
+	public $Expires = null;
 
 	/**
 	 * EduAdminToken constructor.

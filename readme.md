@@ -58,16 +58,10 @@ and redo your own customization.
 - Customer, person and participant CustomFields on booking page
 - Fixed event inquiries to use the new API
 - Adding attribute `eventprice` to `[eduadmin-detailinfo]`
+- Adding cache-break to the new API (OData endpoints)
 
 ### 1.0.28
 - If no events are available, load public pricenames from course template
 
 ### 1.0.27
 - Adding more fields to output when a booking is completed
-
-### 1.0.26
-- Some more styles to some buttons
-- Making it easier to edit some templates
-- If there are no dates provided to the date-function, render an empty string instead of 01 January, 1970
-- Adding support for `showmore` in `[eduadmin-detailinfo]` as attribute
-- Bugfix: Don't load already loaded classes

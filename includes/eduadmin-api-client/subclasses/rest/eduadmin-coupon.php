@@ -13,13 +13,13 @@ class EduAdmin_REST_Coupon extends EduAdminRESTClient {
 	 * @return bool|mixed
 	 */
 	public function IsValid( $event_id, $coupon_code ) {
-		return 'true' === parent::GET(
+		return parent::GET(
 			'/IsValid',
 			array(
 				'eventId'    => $event_id,
 				'couponCode' => $coupon_code,
 			),
 			get_called_class() . '|' . __FUNCTION__
-		)['response'];
+		);
 	}
 }

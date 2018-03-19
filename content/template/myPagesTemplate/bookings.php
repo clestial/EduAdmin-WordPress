@@ -15,7 +15,7 @@ $customer = $user->Customer;
 	$events = EDUAPI()->OData->Events->Search(
 		null,
 		'Bookings/any(b:b/Customer/CustomerId eq ' . $customer->CustomerId . ')',
-		'Bookings($expand=Participants;$filter=Customer/CustomerId eq ' . $customer->CustomerId . ';)'
+		'Bookings($expand=Participants;$filter=Customer/CustomerId eq ' . $customer->CustomerId . ' and NumberOfParticipants gt 0;)'
 	);
 
 	$bookings = array();

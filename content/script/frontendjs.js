@@ -114,6 +114,7 @@ var eduBookingView = {
 				this.AddedContactPerson = true;
 			}
 		}
+		this.UpdatePrice();
 	},
 	AddedContactPerson: false,
 	ValidateDiscountCode: function () {

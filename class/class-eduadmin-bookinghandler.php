@@ -23,6 +23,16 @@ class EduAdmin_BookingHandler {
 
 			$booking_info = $single_person_booking ? $this->book_single_participant() : $this->book_multiple_participants();
 
+			if ( ! empty( $booking_info['Errors'] ) ) {
+				add_filter( 'edu-booking-error', function( $errors ) use ( $booking_info ) {
+					foreach ( $booking_info['Errors'] as $error ) {
+						$errors[] = $error['ErrorText'] . '<br />' . wp_json_encode( $error['ErrorDetails'] );
+					}
+
+					return $errors;
+				}, 10, 1 );
+			}
+
 			$event_booking = EDUAPI()->OData->Bookings->GetItem(
 				$booking_info['BookingId'],
 				null,
@@ -30,7 +40,7 @@ class EduAdmin_BookingHandler {
 				false
 			);
 			$_customer     = EDUAPI()->OData->Customers->GetItem(
-				$booking_info['CustomId'],
+				$booking_info['CustomerId'],
 				null,
 				null,
 				false
@@ -197,17 +207,6 @@ class EduAdmin_BookingHandler {
 		return $contact;
 	}
 
-	public function check_single_participant_price() {
-		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
-			return null;
-		}
-
-		$booking_data = $this->get_single_participant_booking();
-
-		$res = EDUAPI()->REST->Booking->CheckPrice( $booking_data );
-		EDU()->write_debug( $res );
-	}
-
 	public function book_single_participant() {
 		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
@@ -216,6 +215,13 @@ class EduAdmin_BookingHandler {
 		$booking_data = $this->get_single_participant_booking();
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
+
+		if ( ! empty( $booking['Errors'] ) ) {
+			$error_list           = array();
+			$error_list['Errors'] = $booking['Errors'];
+
+			return $error_list;
+		}
 
 		EDU()->session['eduadmin-printJS'] = true;
 
@@ -322,6 +328,13 @@ class EduAdmin_BookingHandler {
 		$booking_data = $this->get_multiple_participant_booking();
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
+
+		if ( ! empty( $booking['Errors'] ) ) {
+			$error_list           = array();
+			$error_list['Errors'] = $booking['Errors'];
+
+			return $error_list;
+		}
 
 		EDU()->session['eduadmin-printJS'] = true;
 

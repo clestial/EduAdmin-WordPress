@@ -1,7 +1,7 @@
 <?php
 function edu_render_style_settings_page() {
 	EDU()->timers[ __METHOD__ ] = microtime( true );
-	if ( wp_verify_nonce( $_POST['style-settings-nonce'], 'eduadmin-style-settings' ) && isset( $_POST['resetStyle'] ) ) {
+	if ( ! empty( $_POST['style-settings-nonce'] ) && wp_verify_nonce( $_POST['style-settings-nonce'], 'eduadmin-style-settings' ) && isset( $_POST['resetStyle'] ) ) {
 		delete_option( 'eduadmin-style' );
 	}
 	?>
@@ -9,7 +9,7 @@ function edu_render_style_settings_page() {
 		<h2><?php echo sprintf( __( "EduAdmin settings - %s", 'eduadmin-booking' ), __( "Style", 'eduadmin-booking' ) ); ?></h2>
 
 		<form method="post" action="options.php">
-			<input type="hidden" name="style-settings-nonce" value="<?php echo esc_attr( wp_create_nonce( 'eduadmin-style-settings' ) ); ?>"/>
+			<input type="hidden" name="style-settings-nonce" value="<?php echo esc_attr( wp_create_nonce( 'eduadmin-style-settings' ) ); ?>" />
 			<?php settings_fields( 'eduadmin-style' ); ?>
 			<?php do_settings_sections( 'eduadmin-style' ); ?>
 			<div class="block">
@@ -22,8 +22,8 @@ function edu_render_style_settings_page() {
 				</textarea>
 
 				<p class="submit">
-					<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __( "Save settings", 'eduadmin-booking' ); ?>"/>
-					<input type="button" onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", 'eduadmin-booking' ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }" class="button button-secondary" value="<?php echo esc_attr__( "Reset styles", 'eduadmin-booking' ); ?>"/>
+					<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo __( "Save settings", 'eduadmin-booking' ); ?>" />
+					<input type="button" onclick="var c = confirm('<?php _e( "Are you sure you want to reset the style settings?", 'eduadmin-booking' ); ?>'); if (c) { var f = document.getElementById('resetForm').submit(); } else { return false; }" class="button button-secondary" value="<?php echo esc_attr__( "Reset styles", 'eduadmin-booking' ); ?>" />
 				</p>
 			</div>
 		</form>
@@ -48,7 +48,7 @@ function edu_render_style_settings_page() {
 			});
 		</script>
 		<form method="post" action="" id="resetForm">
-			<input type="hidden" name="resetStyle" value="1"/>
+			<input type="hidden" name="resetStyle" value="1" />
 		</form>
 	</div>
 	<?php

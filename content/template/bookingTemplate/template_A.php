@@ -11,7 +11,9 @@ if ( ! $api_key || empty( $api_key ) ) {
 	if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
 		$ebi = $GLOBALS['edubookinginfo'];
 		do_action( 'eduadmin-processbooking', $ebi );
-		do_action( 'eduadmin-bookingcompleted', $ebi );
+		do_action( 'eduadmin-bookingcompleted' );
+	} elseif ( ! empty( $_GET['edu-valid-form'] ) && wp_verify_nonce( $_GET['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_GET['act'] ) && 'paymentCompleted' === sanitize_text_field( $_GET['act'] ) ) {
+		do_action( 'eduadmin-bookingcompleted' );
 	} else {
 		$contact  = new EduAdmin_Data_ContactPerson();
 		$customer = new EduAdmin_Data_Customer();

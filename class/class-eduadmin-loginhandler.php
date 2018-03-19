@@ -62,6 +62,7 @@ class EduAdmin_LoginHandler {
 	}
 
 	public function get_login_user( $personId, $customerId ) {
+
 		$contact = EDUAPI()->OData->Persons->GetItem(
 			$personId,
 			null,

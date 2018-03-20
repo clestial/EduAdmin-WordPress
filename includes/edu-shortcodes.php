@@ -609,9 +609,17 @@ function eduadmin_get_programme_list( $attributes ) {
 	$programmes = EDUAPI()->OData->Programmes->Search(
 		null,
 		'ShowOnWeb',
-		'ProgrammeStarts($filter=HasPublicPriceName;),Courses($filter=ShowOnWeb;)'
+		'ProgrammeStarts(' .
+		'$filter=' .
+		'HasPublicPriceName' .
+		' and ApplicationOpenDate ge ' . date( 'c' ) .
+		' and EndDate le ' . date( 'c' ) .
+		';' .
+		'$orderby=' .
+		'StartDate),Courses($filter=ShowOnWeb;)'
 	);
-	EDU()->write_debug( $programmes );
+
+	include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/list.php';
 }
 
 function eduadmin_get_programme_details( $attributes ) {

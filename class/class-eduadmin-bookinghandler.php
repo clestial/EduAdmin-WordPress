@@ -281,7 +281,10 @@ class EduAdmin_BookingHandler {
 			$booking_data->PurchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
 		}
 
-		$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
+		$customerInvoiceEmailAddress = null;
+		if ( ! empty( $_POST['invoiceEmail'] ) ) {
+			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
+		}
 
 		$billing_info = new stdClass();
 

@@ -21,6 +21,23 @@
 	padding: 0 0 0 32px;
 }
 
+.eduadmin .programme-list-item, .eduadmin .programme-header {
+	border-bottom: 1px solid rgba(0,0,0,0.3);
+	padding-bottom: 1rem;
+	margin-bottom: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.eduadmin .programme-header {
+	display: none;
+}
+
+.eduadmin .programme-buttons a {
+	display: block;
+	text-align: center;
+}
+
 /* Link and Heading Resets */
 h1.courseTitle,
 h1.courseTitle:hover,
@@ -104,6 +121,17 @@ h1.courseTitle:hover,
 
 /* Desktop */
 @media (min-width: 800px) {
+	.eduadmin .programme-list-item, .eduadmin .programme-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.eduadmin .programme-list-item > div, .eduadmin .programme-header > div {
+		min-width: 25%;
+	}
+
 	.eduadmin .search-form .search-row .search-dropdowns {
 		flex-direction: row;
 		justify-content: space-between;

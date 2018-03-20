@@ -59,6 +59,8 @@ and redo your own customization.
 - Fixed event inquiries to use the new API
 - Adding attribute `eventprice` to `[eduadmin-detailinfo]`
 - Adding cache-break to the new API (OData endpoints)
+- Adding listview-shortcode for Programmes `[eduadmin-programmelist]`
+
 
 ### 1.0.28
 - If no events are available, load public pricenames from course template

@@ -221,16 +221,26 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 	$ret_str = '';
 
-	if ( empty( $attributes['courseid'] ) || $attributes['courseid'] <= 0 ) {
+	if ( empty( $attributes['courseid'] ) || str_replace( array(
+		                                                      '&#8221;',
+		                                                      '&#8243;',
+	                                                      ), '', $attributes['courseid'] ) <= 0 ) {
 		if ( isset( $wp_query->query_vars['courseId'] ) ) {
 			$course_id = $wp_query->query_vars['courseId'];
 		} else {
 			EDU()->stop_timer( $t );
 
-			return 'Missing courseId in attributes';
+			return 'Missing courseid in attributes';
 		}
 	} else {
-		$course_id = $attributes['courseid'];
+		$course_id = str_replace(
+			array(
+				'&#8221;',
+				'&#8243;',
+			),
+			'',
+			$attributes['courseid']
+		);
 	}
 
 	$api_key = get_option( 'eduadmin-api-key' );
@@ -240,13 +250,12 @@ function eduadmin_get_detailinfo( $attributes ) {
 
 		return 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
 	} else {
-		$edo = get_transient( 'eduadmin-object_' . $course_id );
+		$edo          = get_transient( 'eduadmin-object_' . $course_id . '_json' );
+		$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
+		if ( ! is_numeric( $fetch_months ) ) {
+			$fetch_months = 6;
+		}
 		if ( ! $edo ) {
-			$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
-			if ( ! is_numeric( $fetch_months ) ) {
-				$fetch_months = 6;
-			}
-
 			$expands = array();
 
 			$expands['Subjects']   = '';
@@ -277,25 +286,34 @@ function eduadmin_get_detailinfo( $attributes ) {
 				}
 			}
 
-			$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+			$edo = wp_json_encode( EDUAPI()->OData->CourseTemplates->GetItem(
 				$course_id,
 				null,
 				join( ',', $expand_arr )
-			);
-			set_transient( 'eduadmin-object_' . $course_id, $edo, 10 );
+			) );
+			set_transient( 'eduadmin-object_' . $course_id . '_json', $edo, 10 );
 		}
 
 		$selected_course = false;
-		if ( $edo ) {
-			$selected_course = $edo;
+
+		if ( ! empty( $edo ) ) {
+			$selected_course = json_decode( $edo, true );
 		}
 
-		if ( ! $selected_course ) {
+		if ( ! is_array( $selected_course ) ) {
 			EDU()->stop_timer( $t );
+			EDU()->write_debug( $attributes );
 
 			return 'Course with ID ' . $course_id . ' could not be found.';
 		} else {
-			$inc_vat = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
+			$getorg_json = get_transient( 'eduadmin-organisation_json' );
+			if ( ! $getorg_json ) {
+				$org = EDUAPI()->REST->Organisation->GetOrganisation();
+				set_transient( 'eduadmin-organisation_json', wp_json_encode( $org ), 10 );
+			} else {
+				$org = json_decode( $getorg_json, true );
+			}
+			$inc_vat = $org['PriceIncVat'];
 
 			if ( isset( $attributes['coursename'] ) ) {
 				$ret_str .= $selected_course['InternalCourseName'];
@@ -345,10 +363,11 @@ function eduadmin_get_detailinfo( $attributes ) {
 				$ret_str .= join( ', ', $subject_names );
 			}
 			if ( isset( $attributes['courselevel'] ) ) {
-				$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseLevelId'] );
-
-				if ( ! empty( $course_level ) ) {
-					$ret_str .= $course_level['Name'];
+				if ( ! empty( $selected_course['CourseLevelId'] ) ) {
+					$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseLevelId'] );
+					if ( ! empty( $course_level ) ) {
+						$ret_str .= $course_level['Name'];
+					}
 				}
 			}
 			if ( isset( $attributes['courseattributeid'] ) ) {
@@ -612,8 +631,8 @@ function eduadmin_get_programme_list( $attributes ) {
 		'ProgrammeStarts(' .
 		'$filter=' .
 		'HasPublicPriceName' .
-		' and ApplicationOpenDate ge ' . date( 'c' ) .
-		' and EndDate le ' . date( 'c' ) .
+		//' and ApplicationOpenDate ge ' . date( 'c' ) .
+		//' and EndDate le ' . date( 'c' ) .
 		';' .
 		'$orderby=' .
 		'StartDate),Courses($filter=ShowOnWeb;)'
@@ -631,11 +650,29 @@ function eduadmin_get_programme_details( $attributes ) {
 		'eduadmin-programmedetail'
 	);
 
-	if ( ! empty( $attributes['programmeid'] ) ) {
+	global $wp_query;
+
+	if ( ! empty( $wp_query->query_vars['edu_programme'] ) ) {
+		$exploded_id  = explode( '_', $wp_query->query_vars['edu_programme'] )[1];
+		$programme_id = $exploded_id;
+	} elseif ( ! empty( $attributes['programmeid'] ) ) {
+		$programme_id = $attributes['programmeid'];
+	} else {
+		$programme_id = null;
+	}
+
+	if ( ! empty( $programme_id ) ) {
 		$programme = EDUAPI()->OData->Programmes->GetItem(
-			$attributes['programmeid'],
+			$programme_id,
 			null,
-			'ProgrammeStarts($filter=HasPublicPriceName;),Courses($filter=ShowOnWeb;)'
+			'ProgrammeStarts(' .
+			'$filter=' .
+			'HasPublicPriceName' .
+			//' and ApplicationOpenDate ge ' . date( 'c' ) .
+			//' and EndDate le ' . date( 'c' ) .
+			';' .
+			'$orderby=' .
+			'StartDate),Courses($filter=ShowOnWeb;),PriceNames'
 		);
 		EDU()->write_debug( $programme );
 	}
@@ -663,7 +700,7 @@ if ( is_callable( 'add_shortcode' ) ) {
 	add_shortcode( 'eduadmin-eventinterest', 'eduadmin_get_event_interest' );
 	add_shortcode( 'eduadmin-coursepublicpricename', 'eduadmin_get_course_public_pricename' );
 
-	add_shortcode( 'eduadmin-programmelist', 'eduadmin_get_programme_list' );
-	add_shortcode( 'eduadmin-programmedetail', 'eduadmin_get_programme_details' );
-	add_shortcode( 'eduadmin-programmebooking', 'eduadmin_get_programme_booking' );
+	add_shortcode( 'eduadmin-programme-list', 'eduadmin_get_programme_list' );
+	add_shortcode( 'eduadmin-programme-detail', 'eduadmin_get_programme_details' );
+	add_shortcode( 'eduadmin-programme-book', 'eduadmin_get_programme_booking' );
 }

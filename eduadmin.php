@@ -66,6 +66,10 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		 */
 		public $rest_controller = null;
 		/**
+		 * @var \EduAdminRouter
+		 */
+		public $router = null;
+		/**
 		 * @var WP_Session
 		 */
 		public $session = null;
@@ -178,6 +182,9 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		private function includes() {
 			$t = $this->start_timer( __METHOD__ );
+			include_once 'class/class-eduadminrouter.php';
+			$this->router = new EduAdminRouter();
+			$this->router->init();
 
 			include_once 'includes/eduadmin-api-client/eduadmin-api-client.php';
 

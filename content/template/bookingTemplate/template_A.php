@@ -151,7 +151,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 						<span id="sumValue" class="sumValue"></span>
 					</div>
 					<?php if ( 0 !== $event['ParticipantNumberLeft'] ) : ?>
-						<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>" />
+						<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="eduBookingView.UpdatePrice(); var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>" />
 					<?php else : ?>
 						<div class="bookButton neutral-btn cta-disabled">
 							<?php esc_html_e( 'No free spots left on this event', 'eduadmin-booking' ); ?>

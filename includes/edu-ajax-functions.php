@@ -6,7 +6,7 @@ function edu_listview_courselist() {
 	if ( ! empty( $_POST['fetchmonths'] ) ) {
 		$fetch_months = intval( $_POST['fetchmonths'] );
 	} else {
-		$fetch_months = 6;
+		$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
 	}
 
 	if ( ! is_numeric( $fetch_months ) || 0 === $fetch_months ) {
@@ -70,35 +70,24 @@ function edu_api_listview_eventlist() {
 	if ( ! empty( $_POST['fetchmonths'] ) ) {
 		$fetch_months = intval( $_POST['fetchmonths'] );
 	} else {
-		$fetch_months = 6;
+		$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
 	}
 
 	if ( ! is_numeric( $fetch_months ) || 0 === $fetch_months ) {
 		$fetch_months = 6;
 	}
 
-	$filters = array();
-	$expands = array();
-	$sorting = array();
+	$filters       = array();
+	$event_filters = array();
+	$expands       = array();
+	$sorting       = array();
 
-	$expands['Subjects']   = '';
-	$expands['Categories'] = '';
-	$expands['PriceNames'] = '$filter=PublicPriceName';
-	$expands['Events']     =
-		'$filter=' .
-		'HasPublicPriceName' .
-		' and StatusId eq 1' .
-		' and CustomerId eq null' .
-		' and LastApplicationDate ge ' . date( 'c' ) .
-		' and StartDate le ' . date( 'c', strtotime( 'now 23:59:59 +' . $fetch_months . ' months' ) ) .
-		' and EndDate ge ' . date( 'c', strtotime( 'now' ) ) .
-		';' .
-		'$expand=PriceNames,EventDates' .
-		';' .
-		'$orderby=StartDate asc' .
-		';';
-
-	$expands['CustomFields'] = '$filter=ShowOnWeb';
+	$event_filters[] = 'HasPublicPriceName';
+	$event_filters[] = 'StatusId eq 1';
+	$event_filters[] = 'CustomerId eq null';
+	$event_filters[] = 'LastApplicationDate ge ' . date( 'c' );
+	$event_filters[] = 'StartDate le ' . date( 'c', strtotime( 'now 23:59:59 +' . $fetch_months . ' months' ) );
+	$event_filters[] = 'EndDate ge ' . date( 'c', strtotime( 'now' ) );
 
 	$filters[] = 'ShowOnWeb';
 
@@ -107,7 +96,8 @@ function edu_api_listview_eventlist() {
 	}
 
 	if ( ! empty( $_POST['city'] ) && is_numeric( $_POST['city'] ) ) {
-		$filters[] = 'Events/any(e:e/LocationId eq ' . intval( $_POST['city'] ) . ')';
+		$filters[]       = 'Events/any(e:e/LocationId eq ' . intval( $_POST['city'] ) . ')';
+		$event_filters[] = 'LocationId eq ' . intval( $_POST['city'] );
 	}
 
 	if ( ! empty( $_POST['subjectid'] ) ) {
@@ -121,6 +111,20 @@ function edu_api_listview_eventlist() {
 	if ( ! empty( $_POST['courselevel'] ) ) {
 		$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_POST['courselevel'] ) );
 	}
+
+	$expands['Subjects']   = '';
+	$expands['Categories'] = '';
+	$expands['PriceNames'] = '$filter=PublicPriceName';
+	$expands['Events']     =
+		'$filter=' .
+		join( ' and ', $event_filters ) .
+		';' .
+		'$expand=PriceNames,EventDates' .
+		';' .
+		'$orderby=StartDate asc' .
+		';';
+
+	$expands['CustomFields'] = '$filter=ShowOnWeb';
 
 	$sort_order = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
 

@@ -36,12 +36,12 @@ var eduBookingView = {
 				}
 			}
 		}
-		eduBookingView.UpdatePrice();
+		this.CheckPrice(false);
 	},
 	RemoveParticipant: function (obj) {
 		var participantHolder = document.getElementById('edu-participantHolder');
 		participantHolder.removeChild(obj.parentNode.parentNode);
-		eduBookingView.UpdatePrice();
+		this.CheckPrice(false);
 	},
 	SelectEvent: function (obj) {
 		var eventid = obj.value;
@@ -114,7 +114,7 @@ var eduBookingView = {
 				this.AddedContactPerson = true;
 			}
 		}
-		this.UpdatePrice();
+		this.CheckPrice(false);
 	},
 	AddedContactPerson: false,
 	ValidateDiscountCode: function () {
@@ -266,7 +266,6 @@ var eduBookingView = {
 							)
 						}
 						if(d.hasOwnProperty('Message')) {
-
 						}
 					}
 				});

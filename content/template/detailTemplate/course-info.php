@@ -1,8 +1,14 @@
 <?php
-$course_id           = $wp_query->query_vars['courseId'];
+if ( ! empty( $wp_query->query_vars['courseId'] ) ) {
+	$course_id = $wp_query->query_vars['courseId'];
+} elseif ( ! empty( $attributes['courseid'] ) ) {
+	$course_id = $attributes['courseid'];
+} else {
+	$course_id = null;
+}
 $group_by_city       = get_option( 'eduadmin-groupEventsByCity', false );
 $group_by_city_class = '';
-$edo                 = get_transient( 'eduadmin-object_' . $course_id );
+$edo                 = get_transient( 'eduadmin-object_' . $course_id . '_json' );
 if ( ! $edo ) {
 	$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
 	if ( ! is_numeric( $fetch_months ) ) {
@@ -39,19 +45,19 @@ if ( ! $edo ) {
 		}
 	}
 
-	$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+	$edo = wp_json_encode( EDUAPI()->OData->CourseTemplates->GetItem(
 		$course_id,
 		null,
 		join( ',', $expand_arr )
-	);
-	set_transient( 'eduadmin-object_' . $course_id, $edo, 10 );
+	) );
+	set_transient( 'eduadmin-object_' . $course_id . '_json', $edo, 10 );
 }
 
 $selected_course = false;
 $name            = '';
 if ( $edo ) {
-	$name            = ( ! empty( $edo['CourseName'] ) ? $edo['CourseName'] : $edo['InternalCourseName'] );
-	$selected_course = $edo;
+	$selected_course = json_decode( $edo, true );
+	$name            = ( ! empty( $selected_course['CourseName'] ) ? $selected_course['CourseName'] : $selected_course['InternalCourseName'] );
 }
 
 $surl     = get_home_url();
@@ -62,8 +68,10 @@ $events = $selected_course['Events'];
 
 $prices = array();
 
-foreach ( $selected_course['PriceNames'] as $pn ) {
-	$prices[ $pn['PriceNameId'] ] = $pn;
+if ( ! empty( $selected_course['PriceNames'] ) ) {
+	foreach ( $selected_course['PriceNames'] as $pn ) {
+		$prices[ $pn['PriceNameId'] ] = $pn;
+	}
 }
 
 foreach ( $events as $e ) {
@@ -73,7 +81,7 @@ foreach ( $events as $e ) {
 }
 
 $course_level = get_transient( 'eduadmin-courseLevel-' . $selected_course['CourseTemplateId'] );
-if ( ! $course_level && null !== $selected_course['CourseLevelId'] ) {
+if ( ! $course_level && ! empty( $selected_course['CourseLevelId'] ) ) {
 	$course_level = EDUAPI()->OData->CourseLevels->GetItem( $selected_course['CourseLevelId'] );
 	set_transient( 'eduadmin-courseLevel-' . $selected_course['CourseTemplateId'], $course_level, HOUR_IN_SECONDS );
 }

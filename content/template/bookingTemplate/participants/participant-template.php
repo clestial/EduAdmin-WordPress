@@ -8,7 +8,7 @@
 			<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="text" class="participantFirstName first-name" name="participantFirstName[]" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/><input type="text" class="participantLastName last-name" name="participantLastName[]" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
+			<input type="text" class="participantFirstName first-name" onchange="eduBookingView.CheckPrice(false);" name="participantFirstName[]" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>"/><input type="text" class="participantLastName last-name" onchange="eduBookingView.CheckPrice(false);" name="participantLastName[]" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<label>
@@ -16,7 +16,7 @@
 			<?php esc_html_e( 'E-mail address', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="email" name="participantEmail[]" placeholder="<?php esc_attr_e( 'E-mail address', 'eduadmin-booking' ); ?>"/>
+			<input type="email" name="participantEmail[]" onchange="eduBookingView.CheckPrice(false);" placeholder="<?php esc_attr_e( 'E-mail address', 'eduadmin-booking' ); ?>"/>
 		</div>
 	</label>
 	<label>

@@ -292,7 +292,7 @@ function get_range_from_days( $days, $short, $event, $show_days ) {
 		$ret   =
 			'<span class="edu-manyDays" title="' . esc_attr__( 'Show schedule', 'eduadmin-booking' ) . '" onclick="edu_openDatePopup(this);">' .
 			/* translators: 1: Number of days 2: Date range */
-			esc_html( sprintf( __( '%1$d days between %2$s', 'eduadmin-booking' ), count( $days ), get_start_end_display_date( $days[0], end( $days ), $short, $show_days ) ) ) .
+			wp_kses_post( sprintf( __( '%1$d days between %2$s', 'eduadmin-booking' ), count( $days ), get_start_end_display_date( $days[0], end( $days ), $short, $show_days ) ) ) .
 			'</span><div class="edu-DayPopup">
 <b>' . esc_html__( 'Schedule', 'eduadmin-booking' ) . '</b><br />
 ' . join( "<br />\n", $result ) . '

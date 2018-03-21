@@ -94,6 +94,9 @@ function eduadmin_settings_init() {
 	register_setting( 'eduadmin-rewrite', 'eduadmin-thankYouPage' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-interestObjectPage' );
 	register_setting( 'eduadmin-rewrite', 'eduadmin-interestEventPage' );
+	register_setting( 'eduadmin-rewrite', 'eduadmin-programme-list' );
+	register_setting( 'eduadmin-rewrite', 'eduadmin-programme-detail' );
+	register_setting( 'eduadmin-rewrite', 'eduadmin-programme-book' );
 
 	/* Booking settings */
 	register_setting( 'eduadmin-booking', 'eduadmin-useLogin' );

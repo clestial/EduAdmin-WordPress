@@ -55,6 +55,9 @@ abstract class EDU_Integration {
 							break;
 						case 'text':
 						case 'password':
+						case 'number':
+						case 'email':
+						case 'phone':
 							$this->render_text_box( $key, $field );
 							break;
 						default: // Unhandled field types

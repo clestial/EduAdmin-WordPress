@@ -10,8 +10,8 @@ $__block                 = ( $block_edit_if_logged_in && isset( $contact->Person
 		</div>
 		<div class="inputHolder"><input type="text"
 				<?php echo( $__block ? ' readonly' : '' ); ?>
-				required onchange="eduBookingView.ContactAsParticipant();" autocomplete="given-name" class="first-name" id="edu-contactFirstName" name="contactFirstName" placeholder="<?php esc_attr_e( 'Contact first name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->FirstName ); ?>" /><input type="text" <?php echo( $__block ? ' readonly' : '' ); ?>
-				required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" class="last-name" autocomplete="family-name" name="contactLastName" placeholder="<?php esc_attr_e( 'Contact surname', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->LastName ); ?>" />
+				required onchange="eduBookingView.ContactAsParticipant();" autocomplete="given-name" class="first-name" id="edu-contactFirstName" name="contactFirstName" placeholder="<?php esc_attr_e( 'Contact first name', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->FirstName ); ?>" /><input type="text" <?php echo( $__block ? ' readonly' : '' ); ?>
+				required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" class="last-name" autocomplete="family-name" name="contactLastName" placeholder="<?php esc_attr_e( 'Contact surname', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->LastName ); ?>" />
 		</div>
 	</label>
 	<label>
@@ -19,7 +19,7 @@ $__block                 = ( $block_edit_if_logged_in && isset( $contact->Person
 			<?php esc_html_e( 'E-mail address', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="email" id="edu-contactEmail" required name="contactEmail"<?php echo( $__block ? ' readonly' : '' ); ?> autocomplete="email" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'E-mail address', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->Email ); ?>" />
+			<input type="email" id="edu-contactEmail" required name="contactEmail"<?php echo( $__block ? ' readonly' : '' ); ?> autocomplete="email" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'E-mail address', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->Email ); ?>" />
 		</div>
 	</label>
 	<label>
@@ -27,7 +27,7 @@ $__block                 = ( $block_edit_if_logged_in && isset( $contact->Person
 			<?php esc_html_e( 'Phone number', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="tel" id="edu-contactPhone" name="contactPhone" autocomplete="tel" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Phone number', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->Phone ); ?>" />
+			<input type="tel" id="edu-contactPhone" name="contactPhone" autocomplete="tel" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Phone number', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->Phone ); ?>" />
 		</div>
 	</label>
 	<label>
@@ -35,7 +35,7 @@ $__block                 = ( $block_edit_if_logged_in && isset( $contact->Person
 			<?php esc_html_e( 'Mobile number', 'eduadmin-booking' ); ?>
 		</div>
 		<div class="inputHolder">
-			<input type="tel" id="edu-contactMobile" name="contactMobile" autocomplete="tel" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Mobile number', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->Mobile ); ?>" />
+			<input type="tel" id="edu-contactMobile" name="contactMobile" autocomplete="tel" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Mobile number', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->Mobile ); ?>" />
 		</div>
 	</label>
 	<?php $selected_login_field = get_option( 'eduadmin-loginField', 'Email' ); ?>
@@ -45,7 +45,7 @@ $__block                 = ( $block_edit_if_logged_in && isset( $contact->Person
 				<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" <?php echo( 'CivicRegistrationNumber' === $selected_login_field ? 'required' : '' ); ?> name="contactCivReg" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->CivicRegistrationNumber ); ?>" />
+				<input type="text" id="edu-contactCivReg" class="eduadmin-civicRegNo" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" <?php echo( 'CivicRegistrationNumber' === $selected_login_field ? 'required' : '' ); ?> name="contactCivReg" onchange="eduBookingView.ContactAsParticipant();" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" value="<?php echo @esc_attr( $contact->CivicRegistrationNumber ); ?>" />
 			</div>
 		</label>
 	<?php } ?>

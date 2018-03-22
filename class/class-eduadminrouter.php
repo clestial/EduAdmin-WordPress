@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die( 'This plugin must be run within the scope of WordPress.' );
+
 if ( ! class_exists( 'EduAdminRouter' ) ) {
 	class EduAdminRouter {
 		public function init() {

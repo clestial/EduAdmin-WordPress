@@ -379,14 +379,14 @@ function edu_api_eventlist() {
 		$custom_order_by_order = $_POST['order'];
 	}
 
-	$course_id = $object_id;
-	$edo       = get_transient( 'eduadmin-object_' . $course_id );
-	if ( ! $edo ) {
-		$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
-		if ( ! is_numeric( $fetch_months ) ) {
-			$fetch_months = 6;
-		}
+	$course_id    = $object_id;
+	$fetch_months = get_option( 'eduadmin-monthsToFetch', 6 );
+	if ( ! is_numeric( $fetch_months ) ) {
+		$fetch_months = 6;
+	}
 
+	$edo = get_transient( 'eduadmin-object_' . $course_id . '_json' );
+	if ( ! $edo ) {
 		$group_by_city = get_option( 'eduadmin-groupEventsByCity', false );
 
 		$expands = array();
@@ -419,19 +419,19 @@ function edu_api_eventlist() {
 			}
 		}
 
-		$edo = EDUAPI()->OData->CourseTemplates->GetItem(
+		$edo = wp_json_encode( EDUAPI()->OData->CourseTemplates->GetItem(
 			$course_id,
 			null,
 			join( ',', $expand_arr )
-		);
-		set_transient( 'eduadmin-object_' . $course_id, $edo, 10 );
+		) );
+		set_transient( 'eduadmin-object_' . $course_id . '_json', $edo, 10 );
 	}
 
 	$selected_course = false;
 	$name            = '';
 	if ( $edo ) {
-		$name            = ( ! empty( $edo['CourseName'] ) ? $edo['CourseName'] : $edo['InternalCourseName'] );
-		$selected_course = $edo;
+		$selected_course = json_decode( $edo, true );
+		$name            = ( ! empty( $selected_course['CourseName'] ) ? $selected_course['CourseName'] : $selected_course['InternalCourseName'] );
 	}
 
 	$surl     = get_home_url();

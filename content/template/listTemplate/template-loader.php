@@ -12,7 +12,7 @@ if ( ! empty( $attributes['category'] ) ) {
 
 $show_images = get_option( 'eduadmin-showCourseImage', true );
 
-$custom_order_by      = null;
+$custom_order_by       = null;
 $custom_order_by_order = null;
 if ( ! empty( $attributes['orderby'] ) ) {
 	$custom_order_by = $attributes['orderby'];

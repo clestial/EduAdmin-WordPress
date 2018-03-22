@@ -36,7 +36,7 @@
 				required autocomplete="off" title="<?php
 			/* translators: %s is the chosen field to use for login */
 			echo esc_attr( sprintf( __( 'Please enter your %s here', 'eduadmin-booking' ), $login_label ) );
-			?>" placeholder="<?php echo esc_attr( $login_label ); ?>" value="<?php echo esc_attr( $login_value ); ?>" />
+			?>" placeholder="<?php echo esc_attr( $login_label ); ?>" value="<?php echo @esc_attr( $login_value ); ?>" />
 		</div>
 	</label>
 	<input type="submit" class="bookingLoginButton cta-btn"<?php echo( 'CivicRegistrationNumber' === $selected_login_field && 'true' === get_option( 'eduadmin-validateCivicRegNo', false ) ? ' onclick="if(!eduBookingView.ValidateCivicRegNo()) { alert(\'' . esc_js( __( 'Please enter a valid swedish civic registration number.', 'eduadmin-booking' ) ) . '\'); return false; }"' : '' ); ?>

@@ -62,6 +62,7 @@ if ( ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 
 if ( ! empty( $_REQUEST['eduadmin-level'] ) ) {
 	$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
+	$attributes['courselevel'] = intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 }
 
 $sort_order = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
@@ -97,6 +98,8 @@ $edo     = EDUAPI()->OData->CourseTemplates->Search(
 	join( ',', $expand_arr ),
 	join( ',', $sorting )
 );
+
+#EDU()->write_debug($edo);
 $courses = $edo['value'];
 
 if ( ! empty( $_REQUEST['searchCourses'] ) ) {

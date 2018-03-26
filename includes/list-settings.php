@@ -157,9 +157,9 @@ function edu_render_list_settings_page() {
 										<td>
 											<select name="eduadmin-listSortOrder">
 												<option value="SortIndex"<?php echo( $sortOrder === "SortIndex" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Sort index", 'eduadmin-booking' ); ?></option>
-												<option value="PublicName"<?php echo( $sortOrder === "PublicName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Course name", 'eduadmin-booking' ); ?></option>
+												<option value="CourseName"<?php echo( $sortOrder === "CourseName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Course name", 'eduadmin-booking' ); ?></option>
 												<option value="CategoryName"<?php echo( $sortOrder === "CategoryName" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Category name", 'eduadmin-booking' ); ?></option>
-												<option value="ItemNr"<?php echo( $sortOrder === "ItemNr" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Item number", 'eduadmin-booking' ); ?></option>
+												<option value="EducationNumber"<?php echo( $sortOrder === "EducationNumber" ? " selected=\"selected\"" : "" ); ?>><?php _e( "Item number", 'eduadmin-booking' ); ?></option>
 											</select>
 										</td>
 									</tr>

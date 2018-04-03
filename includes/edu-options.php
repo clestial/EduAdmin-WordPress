@@ -44,7 +44,7 @@ function eduadmin_page_title( $title, $sep = '|' ) {
 		}
 
 		if ( false !== $selected_course ) {
-			$title_field = get_option( 'eduadmin-pageTitleField', 'PublicName' );
+			$title_field = get_option( 'eduadmin-pageTitleField', 'CourseName' );
 			if ( stristr( $title_field, 'attr_' ) !== false ) {
 				$attrid = substr( $title_field, 5 );
 				foreach ( $selected_course['CustomFields'] as $cf ) {

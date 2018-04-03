@@ -61,7 +61,7 @@ if ( ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 }
 
 if ( ! empty( $_REQUEST['eduadmin-level'] ) ) {
-	$filters[] = 'CourseLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
+	$filters[]                 = 'CourseLevelId eq ' . intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 	$attributes['courselevel'] = intval( sanitize_text_field( $_REQUEST['eduadmin-level'] ) );
 }
 
@@ -92,7 +92,7 @@ foreach ( $expands as $key => $value ) {
 	}
 }
 
-$edo     = EDUAPI()->OData->CourseTemplates->Search(
+$edo = EDUAPI()->OData->CourseTemplates->Search(
 	null,
 	join( ' and ', $filters ),
 	join( ',', $expand_arr ),
@@ -119,10 +119,10 @@ if ( ! empty( $_REQUEST['searchCourses'] ) ) {
 			$descr = strip_tags( $object[ $descr_field ] );
 		}
 
-		$nameMatch  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
-		$descrMatch = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+		$name_match  = stripos( $name, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
+		$descr_match = stripos( $descr, sanitize_text_field( $_REQUEST['searchCourses'] ) ) !== false;
 
-		return ( $nameMatch || $descrMatch );
+		return ( $name_match || $descr_match );
 	} );
 }
 
@@ -160,19 +160,4 @@ $spot_left_option = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
 $always_few_spots = get_option( 'eduadmin-alwaysFewSpots', '3' );
 $spot_settings    = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
 ?>
-<div class="eventListTable"
-	data-eduwidget="listview-eventlist"
-	data-template="<?php echo esc_attr( str_replace( 'template_', '', $attributes['template'] ) ); ?>"
-	data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>"
-	data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>"
-	data-category="<?php echo esc_attr( $attributes['category'] ); ?>"
-	data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>"
-	data-city="<?php echo esc_attr( $attributes['city'] ); ?>"
-	data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>"
-	data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"
-	data-orderby="<?php echo esc_attr( $attributes['orderby'] ); ?>"
-	data-order="<?php echo esc_attr( $attributes['order'] ); ?>"
-	data-showmore="<?php echo esc_attr( $attributes['showmore'] ); ?>"
-	data-showcity="<?php echo esc_attr( $attributes['showcity'] ); ?>"
-	data-showbookbtn="<?php echo esc_attr( $attributes['showbookbtn'] ); ?>"
-	data-showreadmorebtn="<?php echo esc_attr( $attributes['showreadmorebtn'] ); ?>">
+<div class="eventListTable" data-eduwidget="listview-eventlist" data-template="<?php echo esc_attr( str_replace( 'template_', '', $attributes['template'] ) ); ?>" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>" data-orderby="<?php echo esc_attr( $attributes['orderby'] ); ?>" data-order="<?php echo esc_attr( $attributes['order'] ); ?>" data-showmore="<?php echo esc_attr( $attributes['showmore'] ); ?>" data-showcity="<?php echo esc_attr( $attributes['showcity'] ); ?>" data-showbookbtn="<?php echo esc_attr( $attributes['showbookbtn'] ); ?>" data-showreadmorebtn="<?php echo esc_attr( $attributes['showreadmorebtn'] ); ?>">

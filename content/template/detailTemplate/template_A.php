@@ -1,383 +1,149 @@
 <?php
-	ob_start();
-	global $wp_query;
-	$apiKey = get_option( 'eduadmin-api-key' );
+ob_start();
+global $wp_query;
+$api_key = get_option( 'eduadmin-api-key' );
 
-	if ( ! $apiKey || empty( $apiKey ) ) {
-		echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
-	} else {
-		$edo = get_transient( 'eduadmin-listCourses' );
-		if ( ! $edo ) {
-			$filtering = new XFiltering();
-			$f         = new XFilter( 'ShowOnWeb', '=', 'true' );
-			$filtering->AddItem( $f );
-
-			$edo = EDU()->api->GetEducationObject( EDU()->get_token(), '', $filtering->ToString() );
-			set_transient( 'eduadmin-listCourses', $edo, 6 * HOUR_IN_SECONDS );
-		}
-
-		$surl    = get_home_url();
-		$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
-		$baseUrl = $surl . '/' . $cat;
-
-		$selectedCourse = false;
-		$name           = "";
-		foreach ( $edo as $object ) {
-			$name = ( ! empty( $object->PublicName ) ? $object->PublicName : $object->ObjectName );
-			$id   = $object->ObjectID;
-			if ( makeSlugs( $name ) == $wp_query->query_vars['courseSlug'] && $id == $wp_query->query_vars["courseId"] ) {
-				$selectedCourse = $object;
-				break;
-			}
-		}
-		if ( ! $selectedCourse ) {
-			?>
-            <script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
+if ( ! $api_key || empty( $api_key ) ) {
+	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
+} else {
+	include 'course-info.php';
+	if ( ! $selected_course ) {
+		?>
+		<script type="text/javascript">location.href = '<?php echo esc_url( $base_url ); ?>';</script>
+		<?php
+		exit( 200 );
+	}
+	?>
+	<div class="eduadmin">
+		<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
+		<div class="title">
+			<?php if ( ! empty( $selected_course['ImageUrl'] ) ) : ?>
+				<img src="<?php echo esc_url( $selected_course['ImageUrl'] ); ?>" class="courseImage"/>
+			<?php endif; ?>
+			<h1 class="courseTitle"><?php echo esc_html( $name ); ?>
+				<small class="courseLevel"><?php echo esc_html( null !== $course_level ? $course_level['Name'] : '' ); ?></small>
+			</h1>
+		</div>
+		<hr/>
+		<div class="textblock">
 			<?php
-			die();
-		}
+			if ( ! in_array( 'description', $hide_sections, true ) && ! empty( $selected_course['CourseDescription'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'Course description', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['CourseDescription'] );
+					?>
+				</div>
+			<?php } ?>
+			<?php
+			if ( ! in_array( 'goal', $hide_sections, true ) && ! empty( $selected_course['CourseGoal'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'Course goal', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['CourseGoal'] );
+					?>
+				</div>
+			<?php } ?>
+			<?php
+			if ( ! in_array( 'target', $hide_sections, true ) && ! empty( $selected_course['TargetGroup'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'Target group', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['TargetGroup'] );
+					?>
+				</div>
+			<?php } ?>
+			<?php
+			if ( ! in_array( 'prerequisites', $hide_sections, true ) && ! empty( $selected_course['Prerequisites'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'Prerequisites', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['Prerequisites'] );
+					?>
+				</div>
+			<?php } ?>
+			<?php
+			if ( ! in_array( 'after', $hide_sections, true ) && ! empty( $selected_course['CourseAfter'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'After the course', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['CourseAfter'] );
+					?>
+				</div>
+			<?php } ?>
+			<?php
+			if ( ! in_array( 'quote', $hide_sections, true ) && ! empty( $selected_course['Quote'] ) ) {
+				if ( $show_headers ) {
+					?>
+					<h3><?php esc_html_e( 'Quotes', 'eduadmin-booking' ); ?></h3>
+				<?php } ?>
+				<div>
+					<?php
+					echo wp_kses_post( $selected_course['Quote'] );
+					?>
+				</div>
+			<?php } ?>
+		</div>
+		<div class="eventInformation">
+			<?php
+			if ( ! in_array( 'time', $hide_sections, true ) && ! empty( $selected_course['StartTime'] ) && ! empty( $selected_course['EndTime'] ) ) {
+				?>
+				<h3><?php esc_html_e( 'Time', 'eduadmin-booking' ); ?></h3>
+				<?php
+				/* translators: 1: Number of days */
+				echo esc_html( ( $selected_course['Days'] > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selected_course['Days'], 'eduadmin-booking' ), $selected_course['Days'] ) . ', ' : '' ) . date( 'H:i', strtotime( $selected_course['StartTime'] ) ) . ' - ' . date( 'H:i', strtotime( $selected_course['EndTime'] ) ) );
+			}
 
-		$fetchMonths = get_option( 'eduadmin-monthsToFetch', 6 );
-		if ( ! is_numeric( $fetchMonths ) ) {
-			$fetchMonths = 6;
-		}
+			if ( ! in_array( 'price', $hide_sections, true ) && ! empty( $prices ) ) {
+				?>
+				<h3><?php esc_html_e( 'Price', 'eduadmin-booking' ); ?></h3>
+				<?php
+				$currency = get_option( 'eduadmin-currency', 'SEK' );
 
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PeriodStart', '<=', date( "Y-m-d 23:59:59", strtotime( 'now +' . $fetchMonths . ' months' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'PeriodEnd', '>=', date( "Y-m-d H:i:s", strtotime( 'now' ) ) );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ShowOnWeb', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'StatusID', '=', '1' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'LastApplicationDate', '>=', date( "Y-m-d H:i:s" ) );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'CustomerID', '=', '0' );
-		$ft->AddItem( $f );
-
-		$f = new XFilter( 'ParentEventID', '=', '0' );
-		$ft->AddItem( $f );
-
-		$st               = new XSorting();
-		$groupByCity      = get_option( 'eduadmin-groupEventsByCity', false );
-		$groupByCityClass = "";
-		if ( $groupByCity ) {
-			$s = new XSort( 'City', 'ASC' );
-			$st->AddItem( $s );
-			$groupByCityClass = " noCity";
-		}
-		$s = new XSort( 'PeriodStart', 'ASC' );
-		$st->AddItem( $s );
-
-		$events = EDU()->api->GetEvent(
-			EDU()->get_token(),
-			$st->ToString(),
-			$ft->ToString()
-		);
-
-		$occIds   = array();
-		$occIds[] = - 1;
-
-		$eventIds   = array();
-		$eventIds[] = - 1;
-
-		foreach ( $events as $e ) {
-			$occIds[]   = $e->OccationID;
-			$eventIds[] = $e->EventID;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'EventID', 'IN', join( ",", $eventIds ) );
-		$ft->AddItem( $f );
-
-		$eventDays = EDU()->api->GetEventDate( EDU()->get_token(), '', $ft->ToString() );
-
-		$eventDates = array();
-		foreach ( $eventDays as $ed ) {
-			$eventDates[ $ed->EventID ][] = $ed;
-		}
-
-		$ft = new XFiltering();
-		$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-		$ft->AddItem( $f );
-		$f = new XFilter( 'OccationID', 'IN', join( ",", $occIds ) );
-		$ft->AddItem( $f );
-		$pricenames = EDU()->api->GetPriceName( EDU()->get_token(), '', $ft->ToString() );
-		set_transient( 'eduadmin-publicpricenames', $pricenames, HOUR_IN_SECONDS );
-
-		if ( ! empty( $pricenames ) ) {
-			$events = array_filter( $events, function( $object ) {
-				$pn = get_transient( 'eduadmin-publicpricenames' );
-				foreach ( $pn as $subj ) {
-					if ( $object->OccationID == $subj->OccationID ) {
-						return true;
+				if ( 1 === count( $prices ) ) {
+					echo esc_html( sprintf( '%1$s %2$s', current( $prices )['PriceNameDescription'], convert_to_money( current( $prices )['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) );
+				} else {
+					foreach ( $prices as $up ) {
+						echo esc_html( sprintf( '%1$s %2$s', $up['PriceNameDescription'], convert_to_money( $up['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) ) );
+						?>
+						<br/>
+						<?php
 					}
 				}
+			}
+			?>
+		</div>
 
-				return false;
-			} );
-		}
-
-		$courseLevel = get_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID );
-		if ( ! $courseLevel ) {
-			$ft = new XFiltering();
-			$f  = new XFilter( 'ObjectID', '=', $selectedCourse->ObjectID );
-			$ft->AddItem( $f );
-			$courseLevel = EDU()->api->GetEducationLevelObject( EDU()->get_token(), '', $ft->ToString() );
-			set_transient( 'eduadmin-courseLevel-' . $selectedCourse->ObjectID, $courseLevel, HOUR_IN_SECONDS );
-		}
-
-		$lastCity = "";
-
-		$incVat = EDU()->api->GetAccountSetting( EDU()->get_token(), 'PriceIncVat' ) == "yes";
-
-		$showHeaders = get_option( 'eduadmin-showDetailHeaders', true );
-
-		$hideSections = array();
-		if ( isset( $attributes['hide'] ) ) {
-			$hideSections = explode( ',', $attributes['hide'] );
+		<?php
+		include 'blocks/event-list.php';
+		if ( $allow_interest_reg_object && false !== $object_interest_page ) {
+			?>
+			<br/>
+			<div class="inquiry">
+				<a class="inquiry-link" href="<?php echo esc_url( $base_url . '/' . make_slugs( $name ) . '__' . $selected_course['CourseTemplateId'] . '/interest/' . edu_get_query_string( '?' ) ); ?>"><?php esc_html_e( 'Send inquiry about this course', 'eduadmin-booking' ); ?></a>
+			</div>
+			<?php
 		}
 		?>
-        <div class="eduadmin">
-            <a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
-            <div class="title">
-	            <?php if ( ! empty( $selectedCourse->ImageUrl ) ) : ?>
-                    <img src="<?php echo $selectedCourse->ImageUrl; ?>" class="courseImage"/>
-	            <?php endif; ?>
-                <h1 class="courseTitle"><?php echo $name; ?>
-                    <small><?php echo( ! empty( $courseLevel ) ? $courseLevel[0]->Name : "" ); ?></small>
-                </h1>
-            </div>
-            <hr/>
-            <div class="textblock">
-	            <?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse->CourseDescription ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "Course description", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->CourseDescription;
-						?>
-                    </div>
-				<?php } ?>
-	            <?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse->CourseGoal ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "Course goal", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->CourseGoal;
-						?>
-                    </div>
-				<?php } ?>
-	            <?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse->TargetGroup ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "Target group", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->TargetGroup;
-						?>
-                    </div>
-				<?php } ?>
-	            <?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse->Prerequisites ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "Prerequisites", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->Prerequisites;
-						?>
-                    </div>
-				<?php } ?>
-	            <?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse->CourseAfter ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "After the course", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->CourseAfter;
-						?>
-                    </div>
-				<?php } ?>
-	            <?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse->Quote ) ) { ?>
-					<?php if ( $showHeaders ) { ?>
-                        <h3><?php _e( "Quotes", 'eduadmin-booking' ); ?></h3>
-					<?php } ?>
-                    <div>
-						<?php
-							echo $selectedCourse->Quote;
-						?>
-                    </div>
-				<?php } ?>
-            </div>
-            <div class="eventInformation">
-	            <?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse->StartTime ) && ! empty( $selectedCourse->EndTime ) ) { ?>
-                    <h3><?php _e( "Time", 'eduadmin-booking' ); ?></h3>
-					<?php
-		            echo ( $selectedCourse->Days > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse->Days, 'eduadmin-booking' ), $selectedCourse->Days ) . ', ' : '' ) . date( "H:i", strtotime( $selectedCourse->StartTime ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse->EndTime ) );
-					?>
-				<?php } ?>
-				<?php
-					$occIds   = Array();
-					$occIds[] = - 1;
-					foreach ( $events as $ev ) {
-						$occIds[] = $ev->OccationID;
-					}
+	</div>
+	<?php
+}
 
-					$ft = new XFiltering();
-					$f  = new XFilter( 'PublicPriceName', '=', 'true' );
-					$ft->AddItem( $f );
-					$f = new XFilter( 'ObjectID', 'IN', $selectedCourse->ObjectID );
-					$ft->AddItem( $f );
-					$f = new XFilter( 'OccationID', 'IN', join( ',', $occIds ) );
-					$ft->AddItem( $f );
+$out = ob_get_clean();
 
-					$st = new XSorting();
-					$s  = new XSort( 'Price', 'ASC' );
-					$st->AddItem( $s );
-
-					$prices       = EDU()->api->GetPriceName( EDU()->get_token(), $st->ToString(), $ft->ToString() );
-					$uniquePrices = Array();
-
-					foreach ( $prices as $price ) {
-						$uniquePrices[ $price->Description ] = $price;
-					}
-
-					if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
-						?>
-                        <h3><?php _e( "Price", 'eduadmin-booking' ); ?></h3>
-						<?php
-						$currency = get_option( 'eduadmin-currency', 'SEK' );
-						// PriceNameVat
-						foreach ( $uniquePrices as $price ) {
-							?>
-							<?php echo sprintf( '%1$s: %2$s', $price->Description, convertToMoney( $price->Price, $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
-                            <br/>
-							<?php
-						}
-					}
-				?>
-            </div>
-			<?php
-				$showEventVenue = get_option( 'eduadmin-showEventVenueName', false );
-				$spotLeftOption = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
-				$alwaysFewSpots = get_option( 'eduadmin-alwaysFewSpots', '3' );
-				$spotSettings   = get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" );
-
-				$objectInterestPage     = get_option( 'eduadmin-interestObjectPage' );
-				$allowInterestRegObject = get_option( 'eduadmin-allowInterestRegObject', false );
-
-				$eventInterestPage     = get_option( 'eduadmin-interestEventPage' );
-				$allowInterestRegEvent = get_option( 'eduadmin-allowInterestRegEvent', false );
-			?>
-            <div class="event-table eventDays"
-                 data-eduwidget="eventlist"
-                 data-objectid="<?php echo esc_attr( $selectedCourse->ObjectID ); ?>"
-                 data-spotsleft="<?php echo @esc_attr( $spotLeftOption ); ?>"
-                 data-spotsettings="<?php echo @esc_attr( $spotSettings ); ?>"
-                 data-fewspots="<?php echo @esc_attr( $alwaysFewSpots ); ?>"
-                 data-showmore="0"
-                 data-groupbycity="<?php echo $groupByCity; ?>"
-                 data-fetchmonths="<?php echo $fetchMonths; ?>"
-				<?php echo( isset( $_REQUEST['eid'] ) ? ' data-event="' . intval( $_REQUEST['eid'] ) . '"' : '' ); ?>
-                 data-showvenue="<?php echo @esc_attr( $showEventVenue ); ?>"
-                 data-eventinquiry="<?php echo @esc_attr( get_option( 'eduadmin-allowInterestRegEvent', false ) ); ?>"
-            >
-				<?php
-					$i = 0;
-					if ( ! empty( $prices ) ) {
-						foreach ( $events as $ev ) {
-							if ( $groupByCity && $lastCity != $ev->City ) {
-								$i = 0;
-								echo '<div class="eventSeparator">';
-								echo $ev->City;
-
-								echo '</div>';
-							}
-							if ( isset( $_REQUEST['eid'] ) ) {
-								if ( $ev->EventID != $_REQUEST['eid'] ) {
-									continue;
-								}
-							}
-							?>
-                            <div class="eventItem">
-                                <div class="eventDate<?php echo $groupByCityClass; ?>">
-									<?php echo isset( $eventDates[ $ev->EventID ] ) ? GetLogicalDateGroups( $eventDates[ $ev->EventID ] ) : GetOldStartEndDisplayDate( $ev->PeriodStart, $ev->PeriodEnd ); ?>
-									<?php echo( ! isset( $eventDates[ $ev->EventID ] ) || count( $eventDates[ $ev->EventID ] ) == 1 ? "<span class=\"eventTime\">, " . date( "H:i", strtotime( $ev->PeriodStart ) ) . ' - ' . date( "H:i", strtotime( $ev->PeriodEnd ) ) . "</span>" : "" ); ?>
-                                </div>
-								<?php if ( ! $groupByCity ) { ?>
-                                    <div class="eventCity">
-										<?php
-											echo $ev->City;
-											if ( $showEventVenue && ! empty( $ev->AddressName ) ) {
-												echo "<span class=\"venueInfo\">, " . $ev->AddressName . "</span>";
-											}
-										?>
-                                    </div>
-								<?php } ?>
-                                <div class="eventStatus<?php echo $groupByCityClass; ?>">
-									<?php
-										$spotsLeft = ( $ev->MaxParticipantNr - $ev->TotalParticipantNr );
-										echo "<span class=\"spotsLeftInfo\">" . getSpotsLeft( $spotsLeft, $ev->MaxParticipantNr, $spotLeftOption, $spotSettings, $alwaysFewSpots ) . "</span>";
-									?>
-                                </div>
-                                <div class="eventBook<?php echo $groupByCityClass; ?>">
-									<?php
-										if ( $ev->MaxParticipantNr == 0 || $spotsLeft > 0 ) {
-											?>
-                                            <a class="bookButton book-link cta-btn"
-                                               href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"
-                                            ><?php _e( "Book", 'eduadmin-booking' ); ?></a>
-											<?php
-										} else {
-											?>
-											<?php
-
-											if ( $allowInterestRegEvent && $eventInterestPage != false ) {
-												?>
-                                                <a class="inquiry-link"
-                                                   href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/book/interest/?eid=<?php echo $ev->EventID; ?><?php echo edu_getQueryString( "&" ); ?>"><?php _e( "Inquiry", 'eduadmin-booking' ); ?></a>
-												<?php
-											}
-											?>
-                                            <i class="fullBooked"><?php _e( "Full", 'eduadmin-booking' ); ?></i>
-										<?php } ?>
-                                </div>
-                            </div>
-							<?php
-							$lastCity = $ev->City;
-							$i ++;
-						}
-					}
-					if ( empty( $prices ) || empty( $events ) ) {
-						?>
-                        <div class="noDatesAvailable">
-                            <i><?php _e( "No available dates for the selected course", 'eduadmin-booking' ); ?></i>
-                        </div>
-						<?php
-					}
-				?>
-            </div>
-			<?php
-
-				if ( $allowInterestRegObject && $objectInterestPage != false ) {
-					?>
-                    <br/>
-                    <div class="inquiry">
-                        <a class="inquiry-link"
-                           href="<?php echo $baseUrl; ?>/<?php echo makeSlugs( $name ); ?>__<?php echo $object->ObjectID; ?>/interest/<?php echo edu_getQueryString( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
-                    </div>
-					<?php
-				}
-			?>
-        </div>
-		<?php
-	}
-
-	$out = ob_get_clean();
-	return $out;
+return $out;

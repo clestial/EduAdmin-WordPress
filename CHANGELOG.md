@@ -1,3 +1,27 @@
+### 1.0.26
+- Some more styles to some buttons
+- Making it easier to edit some templates
+- If there are no dates provided to the date-function, render an empty string instead of 01 January, 1970
+- Adding support for `showmore` in `[eduadmin-detailinfo]` as attribute
+- Bugfix: Don't load already loaded classes
+
+### 1.0.25
+- Bugfix: Missing styles
+
+### 1.0.24
+- Bugfix: Booking button gets disabled, and aborts the form post.. For some reason
+
+### [1.0.23]
+- Translations are wiped, so that 3rd-party plugins can translate the plugin better (and language packs for default phrases)
+- Adding first version of EduAdmin PHP API Client
+- Redoing how template blocks are rendered (now using a single template, instead of 3 separate to update)
+- Removed lots of the changelog to a separate file found at https://github.com/MultinetInteractive/EduAdmin-WordPress/blob/master/CHANGELOG.md
+
+### [1.0.22]
+- Disabling the book-button when the form is valid and the booking is under way
+- Fixes some styles to use `px` instead of `rem`
+- Adding `data-price` to the fields that were missing, that (for some reason) the price-calculation wanted
+
 ### [1.0.21]
 - Lots of design fixes and changes, to make the plugin more mobile friendly
 - Login widget bug fixed
@@ -457,6 +481,8 @@
 #### Added
 - Added inquiry support in course
 
+[1.0.23]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.22...v1.0.23
+[1.0.22]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.21...v1.0.22
 [1.0.21]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.20...v1.0.21
 [1.0.20]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.19...v1.0.20
 [1.0.19]: https://github.com/MultinetInteractive/EduAdmin-WordPress/compare/v1.0.18...v1.0.19

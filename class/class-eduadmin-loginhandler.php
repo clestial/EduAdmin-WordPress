@@ -1,62 +1,56 @@
 <?php
+// phpcs:disable WordPress.NamingConventions
 
-	class EduAdminLoginHandler {
-		/**
-		 * @var EduAdmin
-		 */
-		private $edu = null;
+/**
+ * Class EduAdminLoginHandler
+ */
+class EduAdmin_LoginHandler {
+	/**
+	 * EduAdminLoginHandler constructor.
+	 */
+	public function __construct() {
+		add_action( 'wp_loaded', array( $this, 'process_login' ) );
+	}
 
-		public function __construct( $_edu ) {
-			$this->edu = $_edu;
-			add_action( 'wp_loaded', array( $this, 'process_login' ) );
-		}
+	public function process_login() {
+		if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ver'], 'edu-profile-login' ) ) {
+			$surl     = get_home_url();
+			$cat      = get_option( 'eduadmin-rewriteBaseUrl' );
+			$base_url = $surl . '/' . $cat;
 
-		public function process_login() {
-			$surl    = get_home_url();
-			$cat     = get_option( 'eduadmin-rewriteBaseUrl' );
-			$baseUrl = $surl . '/' . $cat;
+			$regular_login = ! empty( $_POST['eduformloginaction'] ) && 'login' === sanitize_text_field( wp_unslash( $_POST['eduformloginaction'] ) ); // Input var okay.
 
-			$regularLogin = isset( $_POST['eduformloginaction'] ) && sanitize_text_field( $_POST['eduformloginaction'] ) == "login";
+			if ( ! empty( $_POST['eduadminloginEmail'] ) && ! empty( $_POST['eduadminpassword'] ) ) { // Input var okay.
+				$login_field = get_option( 'eduadmin-loginField', 'Email' );
 
-			if ( isset( $_POST['eduadminloginEmail'] ) && isset( $_POST['eduadminpassword'] ) && ! empty( $_POST['eduadminpassword'] ) ) {
-				$loginField = get_option( 'eduadmin-loginField', 'Email' );
+				$possible_persons = EDUAPI()->OData->Persons->Search(
+					'PersonId',
+					"CanLogin and $login_field eq '" . sanitize_text_field( wp_unslash( $_POST['eduadminloginEmail'] ) ) . '\'', // Input var okay.
+					'CustomFields($filter=ShowOnWeb;)',
+					null,
+					null,
+					null,
+					null,
+					false
+				)['value'];
 
-				$filter = new XFiltering();
-				$f      = new XFilter( $loginField, '=', sanitize_text_field( $_POST['eduadminloginEmail'] ) );
-				$filter->AddItem( $f );
-				$f = new XFilter( 'Loginpass', '=', sanitize_text_field( $_POST['eduadminpassword'] ) );
-				$filter->AddItem( $f );
-				$f = new XFilter( 'CanLogin', '=', true );
-				$filter->AddItem( $f );
-				$f = new XFilter( 'Disabled', '=', false );
-				$filter->AddItem( $f );
-				$cc = EDU()->api->GetCustomerContact( EDU()->get_token(), '', $filter->ToString(), true );
-				if ( count( $cc ) == 1 ) {
-					$contact = $cc[0];
-					$filter  = new XFiltering();
-					$f       = new XFilter( 'CustomerID', '=', $contact->CustomerID );
-					$filter->AddItem( $f );
-					$f = new XFilter( 'Disabled', '=', false );
-					$filter->AddItem( $f );
-					$customers = EDU()->api->GetCustomerV2( EDU()->get_token(), '', $filter->ToString(), true );
-					if ( count( $customers ) == 1 ) {
-						$customer                            = $customers[0];
-						$user                                = new stdClass;
-						$c1                                  = json_encode( $contact );
-						$user->Contact                       = json_decode( $c1 );
-						$c2                                  = json_encode( $customer );
-						$user->Customer                      = json_decode( $c2 );
-						EDU()->session['eduadmin-loginUser'] = $user;
-						setcookie( 'eduadmin_loginUser', json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
+				if ( 1 === count( $possible_persons ) ) {
+					$login_result = EDUAPI()->REST->Person->LoginById(
+						$possible_persons[0]['PersonId'],
+						sanitize_text_field( $_POST['eduadminpassword'] ) // Input var okay.
+					);
+
+					if ( 200 === $login_result['@curl']['http_code'] ) {
+						$user = $this->get_login_user( $login_result['PersonId'], $login_result['CustomerId'] );
 					}
 				}
 
-				if ( isset( $user ) ) {
-					if ( $regularLogin ) {
-						if ( isset( $_REQUEST['eduReturnUrl'] ) && ! empty( $_REQUEST['eduReturnUrl'] ) ) {
-							wp_redirect( esc_url_raw( $_REQUEST['eduReturnUrl'] ) );
+				if ( ! empty( $user ) ) {
+					if ( $regular_login ) {
+						if ( ! empty( $_POST['eduReturnUrl'] ) ) {
+							wp_safe_redirect( esc_url_raw( $_POST['eduReturnUrl'] ) ); // Input var okay.
 						} else {
-							wp_redirect( $baseUrl . "/profile/myprofile/" . edu_getQueryString() );
+							wp_safe_redirect( esc_url_raw( $base_url . '/profile/myprofile/' . edu_get_query_string() ) );
 						}
 						exit();
 					}
@@ -66,3 +60,39 @@
 			}
 		}
 	}
+
+	public function get_login_user( $personId, $customerId ) {
+
+		$contact = EDUAPI()->OData->Persons->GetItem(
+			$personId,
+			null,
+			'CustomFields($filter=ShowOnWeb;)',
+			false
+		);
+
+		unset( $contact['@odata.context'] );
+		unset( $contact['@curl'] );
+
+		$customer = EDUAPI()->OData->Customers->GetItem(
+			$customerId,
+			null,
+			'BillingInfo,CustomFields($filter=ShowOnWeb;)',
+			false
+		);
+
+		unset( $customer['@odata.context'] );
+		unset( $customer['@curl'] );
+
+		$user           = new stdClass();
+		$c1             = wp_json_encode( $contact );
+		$user->Contact  = json_decode( $c1 );
+		$c2             = wp_json_encode( $customer );
+		$user->Customer = json_decode( $c2 );
+
+		EDU()->session['eduadmin-loginUser'] = $user;
+
+		setcookie( 'eduadmin_loginUser', wp_json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
+
+		return $user;
+	}
+}

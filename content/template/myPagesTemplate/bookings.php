@@ -1,109 +1,98 @@
 <?php
-	$user     = EDU()->session['eduadmin-loginUser'];
-	$contact  = $user->Contact;
-	$customer = $user->Customer;
+$user     = EDU()->session['eduadmin-loginUser'];
+$contact  = $user->Contact;
+$customer = $user->Customer;
 
 ?>
 <div class="eduadmin">
 	<?php
-		$tab = "bookings";
-		include_once( "login_tab_header.php" );
+	$tab = 'bookings';
+	require_once 'login-tab-header.php';
 	?>
-    <h2><?php _e( "Reservations", 'eduadmin-booking' ); ?></h2>
+	<h2><?php esc_html_e( 'Reservations', 'eduadmin-booking' ); ?></h2>
 	<?php
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'CustomerID', '=', $customer->CustomerID );
-		$filtering->AddItem( $f );
-		$f = new XFilter( 'ParticipantNr', '>', 0 );
-		$filtering->AddItem( $f );
 
-		$sorting = new XSorting();
-		$s       = new XSort( 'Created', 'DESC' );
-		$sorting->AddItem( $s );
-		$bookings = EDU()->api->GetEventBooking( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
+	$events = EDUAPI()->OData->Events->Search(
+		null,
+		'Bookings/any(b:b/Customer/CustomerId eq ' . $customer->CustomerId . ')',
+		'Bookings($expand=Participants;$filter=Customer/CustomerId eq ' . $customer->CustomerId . ' and NumberOfParticipants gt 0;)'
+	);
 
-		$eclIds = array();
-		foreach ( $bookings as $book ) {
-			$eclIds[] = $book->EventCustomerLnkID;
+	$bookings = array();
+	foreach ( $events['value'] as $ev ) {
+		$_bookings = $ev['Bookings'];
+		foreach ( $_bookings as $booking ) {
+			unset( $ev['Bookings'] );
+			$booking['Event'] = $ev;
+
+			$bookings[ $booking['Created'] . '-' . $booking['BookingId'] ] = $booking;
 		}
+	}
 
-		$filtering = new XFiltering();
-		$f         = new XFilter( 'EventCustomerLnkID', 'IN', join( ',', $eclIds ) );
-		$filtering->AddItem( $f );
+	krsort( $bookings );
 
-		$f = new XFilter( 'Canceled', '=', 'false' );
-		$filtering->AddItem( $f );
-
-		$participants = EDU()->api->GetEventParticipantV2( EDU()->get_token(), $sorting->ToString(), $filtering->ToString() );
-
-		$partPerEvent = array();
-		foreach ( $participants as $p ) {
-			$partPerEvent[ $p->EventCustomerLnkID ][] = $p;
-		}
-
-		$currency = get_option( 'eduadmin-currency', 'SEK' );
+	$currency = get_option( 'eduadmin-currency', 'SEK' );
 	?>
-    <table class="myReservationsTable">
-        <tr>
-            <th align="left"><?php _e( "Booked", 'eduadmin-booking' ); ?></th>
-            <th align="left"><?php _e( "Course", 'eduadmin-booking' ); ?></th>
-            <th align="left"><?php _e( "Dates", 'eduadmin-booking' ); ?></th>
-            <th align="right"><?php _e( "Participants", 'eduadmin-booking' ); ?></th>
-            <th align="right"><?php _e( "Price", 'eduadmin-booking' ); ?></th>
-        </tr>
+	<table class="myReservationsTable">
+		<tr>
+			<th align="left"><?php esc_html_e( 'Booked', 'eduadmin-booking' ); ?></th>
+			<th align="left"><?php esc_html_e( 'Course', 'eduadmin-booking' ); ?></th>
+			<th align="left"><?php esc_html_e( 'Dates', 'eduadmin-booking' ); ?></th>
+			<th align="right"><?php esc_html_e( 'Participants', 'eduadmin-booking' ); ?></th>
+			<th align="right"><?php esc_html_e( 'Price', 'eduadmin-booking' ); ?></th>
+		</tr>
 		<?php
-			if ( empty( $bookings ) ) {
+		if ( empty( $bookings ) ) {
+			?>
+			<tr>
+				<td colspan="5" align="center"><i><?php esc_html_e( 'No courses booked', 'eduadmin-booking' ); ?></i>
+				</td>
+			</tr>
+			<?php
+		} else {
+			foreach ( $bookings as $book ) {
+				$name = $book['Event']['EventName'] !== $book['Event']['CourseName'] ? $book['Event']['EventName'] : $book['Event']['CourseName'];
+				if ( empty( $name ) ) {
+					$name = $book['Event']['InternalCourseName'];
+				}
 				?>
-                <tr>
-                    <td colspan="5" align="center"><i><?php _e( "No courses booked", 'eduadmin-booking' ); ?></i></td>
-                </tr>
+				<tr>
+					<td><?php echo get_display_date( $book['Created'], true ); ?></td>
+					<td><?php echo esc_html( $name ); ?></td>
+					<td><?php echo get_old_start_end_display_date( $book['Event']['StartDate'], $book['Event']['EndDate'], true ); ?></td>
+					<td align="right"><?php echo esc_html( $book['NumberOfParticipants'] ); ?></td>
+					<td align="right"><?php echo esc_html( convert_to_money( $book['TotalPriceIncVat'], $currency ) ); ?></td>
+				</tr>
 				<?php
-			} else {
-				foreach ( $bookings as $book ) {
-					if ( array_key_exists( $book->EventCustomerLnkID, $partPerEvent ) ) {
-						$book->Participants = $partPerEvent[ $book->EventCustomerLnkID ];
-					} else {
-						$book->Participants = array();
-					}
+				if ( ! empty( $book['Participants'] ) ) {
 					?>
-                    <tr>
-                        <td><?php echo getDisplayDate( $book->Created, true ); ?></td>
-                        <td><?php echo $book->EventDescription; ?></td>
-                        <td><?php echo GetOldStartEndDisplayDate( $book->PeriodStart, $book->PeriodEnd, true ); ?></td>
-                        <td align="right"><?php echo $book->ParticipantNr; ?></td>
-                        <td align="right"><?php echo convertToMoney( $book->TotalPrice, $currency ); ?></td>
-                    </tr>
-					<?php
-					if ( count( $book->Participants ) > 0 ) {
-						?>
-                        <tr class="edu-participants-row">
-                            <td colspan="5">
-                                <table class="edu-event-participantList">
-                                    <tr>
-                                        <th align="left"
-                                            class="edu-participantList-name"><?php _e( "Participant name", 'eduadmin-booking' ); ?></th>
-                                        <th align="center"
-                                            class="edu-participantList-arrived"><?php _e( "Arrived", 'eduadmin-booking' ); ?></th>
-                                        <th align="right"
-                                            class="edu-participantList-grade"><?php _e( "Grade", 'eduadmin-booking' ); ?></th>
-                                    </tr>
-									<?php
-										foreach ( $book->Participants as $participant ) {
-											?>
-                                            <tr>
-                                                <td align="left"><?php echo $participant->PersonName; ?></td>
-                                                <td align="center"><?php echo $participant->Arrived == "1" ? "&#9745;" : "&#9744;"; ?></td>
-                                                <td align="right"><?php echo( ! empty( $participant->GradeName ) ? $participant->GradeName : '<i>' . __( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
-                                            </tr>
-											<?php
-										}
+					<tr class="edu-participants-row">
+						<td colspan="5">
+							<table class="edu-event-participantList">
+								<tr>
+									<th align="left" class="edu-participantList-name"><?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?></th>
+									<th align="center" class="edu-participantList-arrived"><?php esc_html_e( 'Arrived', 'eduadmin-booking' ); ?></th>
+									<th align="right" class="edu-participantList-grade"><?php esc_html_e( 'Grade', 'eduadmin-booking' ); ?></th>
+								</tr>
+								<?php
+								foreach ( $book['Participants'] as $participant ) {
 									?>
-                                </table>
-                            </td>
-                        </tr>
-					<?php } ?>
-				<?php }
-			} ?>
-    </table>
-	<?php include_once( "login_tab_footer.php" ); ?>
+									<tr>
+										<td align="left"><?php echo esc_html( $participant['FirstName'] . ' ' . $participant['LastName'] ); ?></td>
+										<td align="center"><?php echo true === $participant['Arrived'] ? '&#9745;' : '&#9744;'; ?></td>
+										<td align="right"><?php echo( ! empty( $participant['GradeName'] ) ? esc_html( $participant['GradeName'] ) : '<i>' . esc_html__( 'Not graded', 'eduadmin-booking' ) . '</i>' ); ?></td>
+									</tr>
+									<?php
+								}
+								?>
+							</table>
+						</td>
+					</tr>
+					<?php
+				}
+			}
+		}
+		?>
+	</table>
+	<?php require_once 'login-tab-footer.php'; ?>
 </div>

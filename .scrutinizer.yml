@@ -11,7 +11,8 @@ build:
 filter:
     dependency_paths:
         - wordpress/
+        - includes/eduadmin-api-client/
+        - libraries/
     excluded_paths:
         - 'tests/*'
-        - 'languages/*'
-        - 'includes/loApiClient.php'
+        - scripts/

@@ -34,7 +34,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['CourseDescription'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['CourseDescription'] );
 					?>
 				</div>
 			<?php } ?>
@@ -46,7 +46,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['CourseGoal'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['CourseGoal'] );
 					?>
 				</div>
 			<?php } ?>
@@ -58,7 +58,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['TargetGroup'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['TargetGroup'] );
 					?>
 				</div>
 			<?php } ?>
@@ -70,7 +70,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['Prerequisites'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['Prerequisites'] );
 					?>
 				</div>
 			<?php } ?>
@@ -82,7 +82,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['CourseAfter'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['CourseAfter'] );
 					?>
 				</div>
 			<?php } ?>
@@ -94,7 +94,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				<?php } ?>
 				<div>
 					<?php
-					echo wp_kses( $selected_course['Quote'], wp_kses_allowed_html( 'post' ) );
+					echo wp_kses_post( $selected_course['Quote'] );
 					?>
 				</div>
 			<?php } ?>

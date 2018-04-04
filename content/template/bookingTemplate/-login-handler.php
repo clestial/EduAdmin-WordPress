@@ -25,8 +25,16 @@ if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ve
 		}
 
 		if ( count( $possible_persons ) >= 1 ) {
-			$con = $possible_persons[0];
-			if ( true === $con['CanLogin'] ) {
+			$contact = $possible_persons[0];
+			foreach ( $possible_persons as $con ) {
+				$contact = $con;
+				if ( true === $con['CanLogin'] ) {
+					EDU()->session['needsLogin'] = true;
+					break;
+				}
+			}
+
+			if ( true === $contact['CanLogin'] ) {
 				EDU()->session['needsLogin'] = true;
 
 				return;
@@ -35,13 +43,14 @@ if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ve
 			}
 
 			$customer = EDUAPI()->OData->Customers->GetItem(
-				$con['CustomerId'],
+				$contact['CustomerId'],
 				null,
 				'BillingInfo,CustomFields($filter=ShowOnWeb;)'
 			);
+
 			if ( ! empty( $customer ) ) {
 				$user                                = new stdClass();
-				$c1                                  = wp_json_encode( $con );
+				$c1                                  = wp_json_encode( $contact );
 				$user->Contact                       = json_decode( $c1 );
 				$c2                                  = wp_json_encode( $customer );
 				$user->Customer                      = json_decode( $c2 );
@@ -76,6 +85,5 @@ if ( ! empty( $_POST['edu-login-ver'] ) && wp_verify_nonce( $_POST['edu-login-ve
 			EDU()->session['needsLogin'] = true;
 			EDU()->session['checkEmail'] = true;
 		}
-		//die( "<script type=\"text/javascript\">location.href = './?eid=" . intval( $_REQUEST['eid'] ) . "';</script>" );
 	}
 }

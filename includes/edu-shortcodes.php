@@ -93,6 +93,8 @@ function eduadmin_get_detail_view( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-detailview'
 	);
+	EDU()->session['checkEmail'] = null;
+	EDU()->session['needsLogin'] = null;
 	unset( EDU()->session['checkEmail'] );
 	unset( EDU()->session['needsLogin'] );
 	if ( isset( EDU()->session['eduadmin-loginUser']->NewCustomer ) ) {

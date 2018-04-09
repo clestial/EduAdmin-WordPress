@@ -44,6 +44,13 @@ if ( ! class_exists( 'EduAdminRouter' ) ) {
 		}
 
 		public function register_routes() {
+			$this->register_programme_routes();
+			/*
+			 * Course template routes
+			 */
+		}
+
+		private function register_programme_routes() {
 			$programme_list_id   = get_option( 'eduadmin-programme-list' );
 			$programme_detail_id = get_option( 'eduadmin-programme-detail' );
 			$programme_book_id   = get_option( 'eduadmin-programme-book' );
@@ -69,9 +76,6 @@ if ( ! class_exists( 'EduAdminRouter' ) ) {
 				'index.php?page_id=' . $programme_book_id . '&edu_programme=$matches[1]',
 				'top'
 			);
-			/*
-			 * Course template routes
-			 */
 		}
 	}
 }

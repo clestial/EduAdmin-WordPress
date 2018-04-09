@@ -102,13 +102,13 @@ function eduadmin_get_detail_view( $attributes ) {
 	}
 
 	EDU()->session->regenerate_id( true );
-
-	if ( ! isset( $attributes['customtemplate'] ) || 1 !== $attributes['customtemplate'] ) {
+	if ( empty( $attributes['customtemplate'] ) || 1 !== intval( $attributes['customtemplate'] ) ) {
 		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/' . $attributes['template'] . '.php';
 		EDU()->stop_timer( $t );
 
 		return $str;
 	}
+
 	EDU()->stop_timer( $t );
 
 	return '';

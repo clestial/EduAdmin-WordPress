@@ -55,6 +55,10 @@ if ( ! empty( $attributes['subject'] ) ) {
 	$filters[] = 'Subjects/any(s:s/SubjectName eq \'' . sanitize_text_field( $attributes['subject'] ) . '\')';
 }
 
+if ( ! empty( $attributes['subjectid'] ) ) {
+	$filters[] = 'Subjects/any(s:s/SubjectId eq ' . intval( $attributes['subjectid'] ) . ')';
+}
+
 if ( ! empty( $_REQUEST['eduadmin-subject'] ) ) {
 	$filters[]               = 'Subjects/any(s:s/SubjectId eq ' . intval( $_REQUEST['eduadmin-subject'] ) . ')';
 	$attributes['subjectid'] = intval( $_REQUEST['eduadmin-subject'] );

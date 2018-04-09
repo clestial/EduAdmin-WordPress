@@ -47,6 +47,9 @@ and redo your own customization.
 
 == Changelog ==
 
+### 2.0.1 ###
+- chg: Better check against `customtemplate`
+
 ### 2.0 ###
 - add: Adding page for certificates
 - chg: Bumping major version, since we're using a brand new API

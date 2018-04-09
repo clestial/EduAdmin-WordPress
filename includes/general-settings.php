@@ -18,14 +18,14 @@ function edu_render_general_settings() {
 	}
 	?>
 	<div class="eduadmin wrap">
-		<h2><?php echo sprintf( __( "EduAdmin settings - %s", 'eduadmin-booking' ), __( "General", 'eduadmin-booking' ) ); ?></h2>
+		<h2><?php echo esc_html( sprintf( __( 'EduAdmin settings - %s', 'eduadmin-booking' ), __( 'General', 'eduadmin-booking' ) ) ); ?></h2>
 
 		<form method="post" action="options.php">
 			<?php settings_fields( 'eduadmin-rewrite' ); ?>
 			<?php do_settings_sections( 'eduadmin-rewrite' ); ?>
 			<div class="block">
-				<h3><?php _e( "General settings", 'eduadmin-booking' ); ?></h3>
-				<?php _e( "Availability text", 'eduadmin-booking' ); ?>
+				<h3><?php esc_html_e( 'General settings', 'eduadmin-booking' ); ?></h3>
+				<?php esc_html_e( 'Availability text', 'eduadmin-booking' ); ?>
 				<br />
 				<?php
 				$spotLeft = get_option( 'eduadmin-spotsLeft', 'exactNumbers' );
@@ -44,30 +44,30 @@ function edu_render_general_settings() {
 				<div class="eduadmin-spotsSettings">
 					<div id="eduadmin-intervalSetting">
 						<br />
-						<b><?php _e( "Interval settings", 'eduadmin-booking' ); ?></b>
+						<b><?php esc_html_e( "Interval settings", 'eduadmin-booking' ); ?></b>
 						<br />
-						<?php _e( "Insert one interval range per row (1-3, 4-10, 10+)", 'eduadmin-booking' ); ?>
+						<?php esc_html_e( "Insert one interval range per row (1-3, 4-10, 10+)", 'eduadmin-booking' ); ?>
 						<br />
 						<textarea name="eduadmin-spotsSettings" class="form-control" rows="5" cols="30"><?php echo get_option( 'eduadmin-spotsSettings', "1-5\n5-10\n10+" ); ?></textarea>
 					</div>
 					<div id="eduadmin-alwaysFewSpots">
 						<br />
-						<b><?php _e( "Number of participants before showing as \"Few spots left\"", 'eduadmin-booking' ); ?></b>
+						<b><?php esc_html_e( "Number of participants before showing as \"Few spots left\"", 'eduadmin-booking' ); ?></b>
 						<br />
 						<input type="number" name="eduadmin-alwaysFewSpots" value="<?php echo esc_attr( get_option( 'eduadmin-alwaysFewSpots', "3" ) ); ?>" />
 					</div>
 				</div>
 				<br />
-				<?php _e( "Number of months to fetch events for", 'eduadmin-booking' ); ?>
+				<?php esc_html_e( "Number of months to fetch events for", 'eduadmin-booking' ); ?>
 				<br />
 				<input type="number" name="eduadmin-monthsToFetch" value="<?php echo esc_attr( get_option( 'eduadmin-monthsToFetch', '6' ) ); ?>" /> <?php _e( "months", 'eduadmin-booking' ); ?>
 				<br />
 				<p class="submit">
 					<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( "Save settings", 'eduadmin-booking' ); ?>" />
 				</p>
-				<h3><?php _e( "Rewrite settings", 'eduadmin-booking' ); ?></h3>
+				<h3><?php esc_html_e( "Rewrite settings", 'eduadmin-booking' ); ?></h3>
 				<p>
-					<?php echo __( "Enter the URL you want to use with the application (please check that the URL does not exists)", 'eduadmin-booking' ); ?>
+					<?php echo esc_html__( "Enter the URL you want to use with the application (please check that the URL does not exists)", 'eduadmin-booking' ); ?>
 				</p>
 				<?php echo home_url(); ?>/<input style="width: 200px;" type="text" class="form-control folder" name="eduadmin-rewriteBaseUrl" id="eduadmin-rewriteBaseUrl" value="<?php echo esc_attr( get_option( 'eduadmin-rewriteBaseUrl' ) ); ?>" placeholder="<?php echo __( "URL", 'eduadmin-booking' ); ?>" />/
 				<?php
@@ -79,13 +79,13 @@ function edu_render_general_settings() {
 					}
 				}
 				?>
-				<h3><?php _e( 'Course templates', 'eduadmin-booking' ); ?></h3>
+				<h3><?php esc_html_e( 'Course templates', 'eduadmin-booking' ); ?></h3>
 				<table>
 					<tr>
-						<td><?php _e( "List view page", 'eduadmin-booking' ); ?></td>
+						<td><?php esc_html_e( 'List view page', 'eduadmin-booking' ); ?></td>
 						<td>
 							<select class="form-control" style="width: 300px;" name="eduadmin-listViewPage" id="eduadmin-listViewPage">
-								<option value="">-- <?php _e( "No page selected", 'eduadmin-booking' ); ?>--
+								<option value="">-- <?php esc_html_e( "No page selected", 'eduadmin-booking' ); ?>--
 								</option>
 								<?php
 								$listPage = get_option( 'eduadmin-listViewPage' );
@@ -251,7 +251,7 @@ function edu_render_general_settings() {
 					</tr>
 				</table>
 				<?php
-				$pages = get_pages();
+				$pages           = get_pages();
 				$programme_pages = array();
 				foreach ( $pages as $p ) {
 					if ( strstr( $p->post_content, '[eduadmin' ) ) {

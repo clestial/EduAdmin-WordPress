@@ -7,7 +7,12 @@ function edu_send_forgotten_password( $login_value ) {
 
 	$cc = EDUAPI()->OData->Persons->Search(
 		null,
-		"$login_field eq '" . sanitize_text_field( $login_value ) . '\' and CanLogin'
+		"$login_field eq '" . sanitize_text_field( $login_value ) . '\' and CanLogin',
+		null,
+		null,
+		null,
+		null,
+		true
 	);
 
 	if ( 1 === $cc['@odata.count'] ) {
@@ -37,7 +42,6 @@ function edu_logout_user() {
 	unset( EDU()->session['checkEmail'] );
 	EDU()->session->regenerate_id( true );
 	unset( $_COOKIE['eduadmin-loginUser'] );
-	setcookie( 'eduadmin_loginUser', '', time() - 3600, COOKIEPATH, COOKIE_DOMAIN );
 	wp_redirect( $base_url . edu_get_query_string() );
 	EDU()->stop_timer( $t );
 	exit();

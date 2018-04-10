@@ -118,37 +118,78 @@ class EduAdmin_BookingHandler {
 			$customer->CustomerId = $user->Customer->CustomerId;
 		}
 
-		$first                     = @sanitize_text_field( $_POST['contactFirstName'] );
-		$last                      = @sanitize_text_field( $_POST['contactLastName'] );
+		$first = '';
+		$last  = '';
+
+		if ( ! empty( $_POST['contactFirstName'] ) ) {
+			$first = sanitize_text_field( $_POST['contactFirstName'] );
+		}
+		if ( ! empty( $_POST['contactLastName'] ) ) {
+			$last = sanitize_text_field( $_POST['contactLastName'] );
+		}
+
 		$customer->CustomerName    = $first . ' ' . $last;
 		$customer->CustomerGroupId = intval( get_option( 'eduadmin-customerGroupId', null ) );
 		if ( ! empty( $_POST['contactCivRegNr'] ) ) {
-			$customer->OrganisationNumber = @sanitize_text_field( $_POST['contactCivRegNr'] );
+			$customer->OrganisationNumber = sanitize_text_field( $_POST['contactCivRegNr'] );
 		}
-		$customer->Address  = @sanitize_text_field( $_POST['customerAddress1'] );
-		$customer->Address2 = @sanitize_text_field( $_POST['customerAddress2'] );
-		$customer->Zip      = @sanitize_text_field( $_POST['customerPostalCode'] );
-		$customer->City     = @sanitize_text_field( $_POST['customerPostalCity'] );
-		$customer->Phone    = @sanitize_text_field( $_POST['contactPhone'] );
-		$customer->Mobile   = @sanitize_text_field( $_POST['contactMobile'] );
-		$customer->Email    = @sanitize_email( $_POST['contactEmail'] );
-
-		$customerInvoiceEmailAddress = @sanitize_email( $_POST['invoiceEmail'] );
+		if ( ! empty( $_POST['customerAddress1'] ) ) {
+			$customer->Address = sanitize_text_field( $_POST['customerAddress1'] );
+		}
+		if ( ! empty( $_POST['customerAddress2'] ) ) {
+			$customer->Address2 = sanitize_text_field( $_POST['customerAddress2'] );
+		}
+		if ( ! empty( $_POST['customerPostalCode'] ) ) {
+			$customer->Zip = sanitize_text_field( $_POST['customerPostalCode'] );
+		}
+		if ( ! empty( $_POST['customerPostalCity'] ) ) {
+			$customer->City = sanitize_text_field( $_POST['customerPostalCity'] );
+		}
+		if ( ! empty( $_POST['contactPhone'] ) ) {
+			$customer->Phone = sanitize_text_field( $_POST['contactPhone'] );
+		}
+		if ( ! empty( $_POST['contactMobile'] ) ) {
+			$customer->Mobile = sanitize_text_field( $_POST['contactMobile'] );
+		}
+		if ( ! empty( $_POST['contactEmail'] ) ) {
+			$customer->Email = sanitize_email( $_POST['contactEmail'] );
+		}
+		if ( ! empty( $_POST['invoiceEmail'] ) ) {
+			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
+		}
 
 		$billing_info = new stdClass();
 
 		if ( empty( $_POST['alsoInvoiceCustomer'] ) ) {
 			$billing_info->CustomerName = $first . ' ' . $last;
-			$billing_info->Address      = @sanitize_text_field( $_POST['customerAddress1'] );
-			$billing_info->Address2     = @sanitize_text_field( $_POST['customerAddress2'] );
-			$billing_info->Zip          = @sanitize_text_field( $_POST['customerPostalCode'] );
-			$billing_info->City         = @sanitize_text_field( $_POST['customerPostalCity'] );
+			if ( ! empty( $_POST['customerAddress1'] ) ) {
+				$billing_info->Address = sanitize_text_field( $_POST['customerAddress1'] );
+			}
+			if ( ! empty( $_POST['customerAddress2'] ) ) {
+				$billing_info->Address2 = sanitize_text_field( $_POST['customerAddress2'] );
+			}
+			if ( ! empty( $_POST['customerPostalCode'] ) ) {
+				$billing_info->Zip = sanitize_text_field( $_POST['customerPostalCode'] );
+			}
+			if ( ! empty( $_POST['customerPostalCity'] ) ) {
+				$billing_info->City = sanitize_text_field( $_POST['customerPostalCity'] );
+			}
 		} else {
-			$billing_info->CustomerName = @sanitize_text_field( $_POST['invoiceName'] );
-			$billing_info->Address      = @sanitize_text_field( $_POST['invoiceAddress1'] );
-			$billing_info->Address2     = @sanitize_text_field( $_POST['invoiceAddress2'] );
-			$billing_info->Zip          = @sanitize_text_field( $_POST['invoicePostalCode'] );
-			$billing_info->City         = @sanitize_text_field( $_POST['invoicePostalCity'] );
+			if ( ! empty( $_POST['invoiceName'] ) ) {
+				$billing_info->CustomerName = sanitize_text_field( $_POST['invoiceName'] );
+			}
+			if ( ! empty( $_POST['invoiceAddress1'] ) ) {
+				$billing_info->Address = sanitize_text_field( $_POST['invoiceAddress1'] );
+			}
+			if ( ! empty( $_POST['invoiceAddress2'] ) ) {
+				$billing_info->Address2 = sanitize_text_field( $_POST['invoiceAddress2'] );
+			}
+			if ( ! empty( $_POST['invoicePostalCode'] ) ) {
+				$billing_info->Zip = sanitize_text_field( $_POST['invoicePostalCode'] );
+			}
+			if ( ! empty( $_POST['invoicePostalCity'] ) ) {
+				$billing_info->City = sanitize_text_field( $_POST['invoicePostalCity'] );
+			}
 		}
 
 		if ( ! empty( $customerInvoiceEmailAddress ) ) {
@@ -178,21 +219,35 @@ class EduAdmin_BookingHandler {
 			return null;
 		}
 
-		$contact->FirstName = @sanitize_text_field( $_POST['contactFirstName'] );
-		$contact->LastName  = @sanitize_text_field( $_POST['contactLastName'] );
-		$contact->Phone     = @sanitize_text_field( $_POST['contactPhone'] );
-		$contact->Mobile    = @sanitize_text_field( $_POST['contactMobile'] );
-		$contact->Email     = @sanitize_email( $_POST['contactEmail'] );
+		if ( ! empty( $_POST['contactFirstName'] ) ) {
+			$contact->FirstName = sanitize_text_field( $_POST['contactFirstName'] );
+		}
+
+		if ( ! empty( $_POST['contactLastName'] ) ) {
+			$contact->LastName = sanitize_text_field( $_POST['contactLastName'] );
+		}
+
+		if ( ! empty( $_POST['contactPhone'] ) ) {
+			$contact->Phone = sanitize_text_field( $_POST['contactPhone'] );
+		}
+
+		if ( ! empty( $_POST['contactMobile'] ) ) {
+			$contact->Mobile = sanitize_text_field( $_POST['contactMobile'] );
+		}
+
+		if ( ! empty( $_POST['contactEmail'] ) ) {
+			$contact->Email = sanitize_email( $_POST['contactEmail'] );
+		}
 
 		if ( ! empty( $_POST['contactCivReg'] ) ) {
-			$contact->CivicRegistrationNumber = @sanitize_text_field( $_POST['contactCivReg'] );
+			$contact->CivicRegistrationNumber = sanitize_text_field( $_POST['contactCivReg'] );
 		}
 		if ( ! empty( $_POST['contactPass'] ) ) {
-			$contact->Password = @sanitize_text_field( $_POST['contactPass'] );
+			$contact->Password = sanitize_text_field( $_POST['contactPass'] );
 		}
 
 		if ( ! empty( $_POST['contactPriceName'] ) ) {
-			$contact->PriceNameId = @intval( $_POST['contactPriceName'] );
+			$contact->PriceNameId = intval( $_POST['contactPriceName'] );
 		}
 
 		$contact->CanLogin     = true;
@@ -268,41 +323,77 @@ class EduAdmin_BookingHandler {
 			$customer->CustomerId = $user->Customer->CustomerId;
 		}
 
-		$customer->CustomerName       = @sanitize_text_field( $_POST['customerName'] );
-		$customer->CustomerGroupId    = get_option( 'eduadmin-customerGroupId', null );
-		$customer->OrganisationNumber = @sanitize_text_field( $_POST['customerVatNo'] );
-		$customer->Address            = @sanitize_text_field( $_POST['customerAddress1'] );
-		$customer->Address2           = @sanitize_text_field( $_POST['customerAddress2'] );
-		$customer->Zip                = @sanitize_text_field( $_POST['customerPostalCode'] );
-		$customer->City               = @sanitize_text_field( $_POST['customerPostalCity'] );
-		$customer->Email              = @sanitize_email( $_POST['customerEmail'] );
+		if ( ! empty( $_POST['customerName'] ) ) {
+			$customer->CustomerName = sanitize_text_field( $_POST['customerName'] );
+		}
+		$customer->CustomerGroupId = get_option( 'eduadmin-customerGroupId', null );
+		if ( ! empty( $_POST['customerVatNo'] ) ) {
+			$customer->OrganisationNumber = sanitize_text_field( $_POST['customerVatNo'] );
+		}
+		if ( ! empty( $_POST['customerAddress1'] ) ) {
+			$customer->Address = sanitize_text_field( $_POST['customerAddress1'] );
+		}
+		if ( ! empty( $_POST['customerAddress2'] ) ) {
+			$customer->Address2 = sanitize_text_field( $_POST['customerAddress2'] );
+		}
+		if ( ! empty( $_POST['customerPostalCode'] ) ) {
+			$customer->Zip = sanitize_text_field( $_POST['customerPostalCode'] );
+		}
+		if ( ! empty( $_POST['customerPostalCity'] ) ) {
+			$customer->City = sanitize_text_field( $_POST['customerPostalCity'] );
+		}
+		if ( ! empty( $_POST['customerEmail'] ) ) {
+			$customer->Email = sanitize_email( $_POST['customerEmail'] );
+		}
 
 		if ( ! empty( $_POST['purchaseOrderNumber'] ) ) {
-			$booking_data->PurchaseOrderNumber = @sanitize_text_field( $_POST['purchaseOrderNumber'] );
+			$booking_data->PurchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
 		}
 
 		$customerInvoiceEmailAddress = null;
 		if ( ! empty( $_POST['invoiceEmail'] ) ) {
-			$customerInvoiceEmailAddress = @sanitize_email( $_POST['invoiceEmail'] );
+			$customerInvoiceEmailAddress = sanitize_email( $_POST['invoiceEmail'] );
 		}
 
 		$billing_info = new stdClass();
 
 		if ( ! isset( $_POST['alsoInvoiceCustomer'] ) ) {
-			$billing_info->CustomerName = @sanitize_text_field( $_POST['customerName'] );
-			$billing_info->Address      = @sanitize_text_field( $_POST['customerAddress1'] );
-			$billing_info->Address2     = @sanitize_text_field( $_POST['customerAddress2'] );
-			$billing_info->Zip          = @sanitize_text_field( $_POST['customerPostalCode'] );
-			$billing_info->City         = @sanitize_text_field( $_POST['customerPostalCity'] );
+			if ( ! empty( $_POST['customerName'] ) ) {
+				$billing_info->CustomerName = sanitize_text_field( $_POST['customerName'] );
+			}
+			if ( ! empty( $_POST['customerAddress1'] ) ) {
+				$billing_info->Address = sanitize_text_field( $_POST['customerAddress1'] );
+			}
+			if ( ! empty( $_POST['customerAddress2'] ) ) {
+				$billing_info->Address2 = sanitize_text_field( $_POST['customerAddress2'] );
+			}
+			if ( ! empty( $_POST['customerPostalCode'] ) ) {
+				$billing_info->Zip = sanitize_text_field( $_POST['customerPostalCode'] );
+			}
+			if ( ! empty( $_POST['customerPostalCity'] ) ) {
+				$billing_info->City = sanitize_text_field( $_POST['customerPostalCity'] );
+			}
 		} else {
-			$billing_info->CustomerName = @sanitize_text_field( $_POST['invoiceName'] );
-			$billing_info->Address      = @sanitize_text_field( $_POST['invoiceAddress1'] );
-			$billing_info->Address2     = @sanitize_text_field( $_POST['invoiceAddress2'] );
-			$billing_info->Zip          = @sanitize_text_field( $_POST['invoicePostalCode'] );
-			$billing_info->City         = @sanitize_text_field( $_POST['invoicePostalCity'] );
+			if ( ! empty( $_POST['invoiceName'] ) ) {
+				$billing_info->CustomerName = sanitize_text_field( $_POST['invoiceName'] );
+			}
+			if ( ! empty( $_POST['invoiceAddress1'] ) ) {
+				$billing_info->Address = sanitize_text_field( $_POST['invoiceAddress1'] );
+			}
+			if ( ! empty( $_POST['invoiceAddress2'] ) ) {
+				$billing_info->Address2 = sanitize_text_field( $_POST['invoiceAddress2'] );
+			}
+			if ( ! empty( $_POST['invoicePostalCode'] ) ) {
+				$billing_info->Zip = sanitize_text_field( $_POST['invoicePostalCode'] );
+			}
+			if ( ! empty( $_POST['invoicePostalCity'] ) ) {
+				$billing_info->City = sanitize_text_field( $_POST['invoicePostalCity'] );
+			}
 		}
 
-		$billing_info->SellerReference = @sanitize_text_field( $_POST['invoiceReference'] );
+		if ( ! empty( $_POST['invoiceReference'] ) ) {
+			$billing_info->SellerReference = sanitize_text_field( $_POST['invoiceReference'] );
+		}
 
 		$booking_data->Reference = $billing_info->SellerReference;
 
@@ -439,12 +530,12 @@ class EduAdmin_BookingHandler {
 					break;
 				default:
 					$answer->CustomFieldId = intval( $custom_field_id );
-					if ( 'note' === $custom_field_type || 'text' === $custom_field_type ) {
-						$answer->CustomFieldValue = @sanitize_text_field( $_POST[ $key ] );
-					} elseif ( 'number' === $custom_field_type ) {
-						$answer->CustomFieldValue = @intval( $_POST[ $key ] );
+					if ( ( 'note' === $custom_field_type || 'text' === $custom_field_type ) && ! empty( $_POST[ $key ] ) ) {
+						$answer->CustomFieldValue = sanitize_text_field( $_POST[ $key ] );
+					} elseif ( 'number' === $custom_field_type && ! empty( $_POST[ $key ] ) ) {
+						$answer->CustomFieldValue = intval( $_POST[ $key ] );
 					} elseif ( 'date' === $custom_field_type && ! empty( $_POST[ $key ] ) ) {
-						$answer->CustomFieldValue = @date( 'c', strtotime( $_POST[ $key ] ) );
+						$answer->CustomFieldValue = date( 'c', strtotime( $_POST[ $key ] ) );
 					} else {
 						$answer->CustomFieldValue = null;
 					}
@@ -527,12 +618,12 @@ class EduAdmin_BookingHandler {
 					break;
 				default:
 					$answer->AnswerId = intval( $question_answer_id );
-					if ( 'note' === $question_type || 'text' === $question_type ) {
-						$answer->AnswerValue = @sanitize_text_field( $_POST[ $key ] );
-					} elseif ( 'number' === $question_type ) {
-						$answer->AnswerValue = @intval( $_POST[ $key ] );
+					if ( ( 'note' === $question_type || 'text' === $question_type ) && ! empty( $_POST[ $key ] ) ) {
+						$answer->AnswerValue = sanitize_text_field( $_POST[ $key ] );
+					} elseif ( 'number' === $question_type && ! empty( $_POST[ $key ] ) ) {
+						$answer->AnswerValue = intval( $_POST[ $key ] );
 					} elseif ( 'date' === $question_type && ! empty( $_POST[ $key ] ) ) {
-						$answer->AnswerValue = @date( 'c', strtotime( $_POST[ $key ] ) );
+						$answer->AnswerValue = date( 'c', strtotime( $_POST[ $key ] ) );
 					} else {
 						$answer->AnswerValue = null;
 					}
@@ -585,18 +676,26 @@ class EduAdmin_BookingHandler {
 
 			if ( ! empty( $_POST['participantFirstName'][ $key ] ) ) {
 				$person            = new stdClass();
-				$person->FirstName = @sanitize_text_field( $_POST['participantFirstName'][ $key ] );
-				$person->LastName  = @sanitize_text_field( $_POST['participantLastName'][ $key ] );
-				$person->Email     = @sanitize_email( $_POST['participantEmail'][ $key ] );
-				$person->Phone     = @sanitize_text_field( $_POST['participantPhone'][ $key ] );
-				$person->Mobile    = @sanitize_text_field( $_POST['participantMobile'][ $key ] );
-
-				if ( isset( $_POST['participantCivReg'][ $key ] ) ) {
-					$person->CivicRegistrationNumber = @trim( sanitize_text_field( $_POST['participantCivReg'][ $key ] ) );
+				$person->FirstName = sanitize_text_field( $_POST['participantFirstName'][ $key ] );
+				if ( ! empty( $_POST['participantLastName'][ $key ] ) ) {
+					$person->LastName = sanitize_text_field( $_POST['participantLastName'][ $key ] );
+				}
+				if ( ! empty( $_POST['participantEmail'][ $key ] ) ) {
+					$person->Email = sanitize_email( $_POST['participantEmail'][ $key ] );
+				}
+				if ( ! empty( $_POST['participantPhone'][ $key ] ) ) {
+					$person->Phone = sanitize_text_field( $_POST['participantPhone'][ $key ] );
+				}
+				if ( ! empty( $_POST['participantMobile'][ $key ] ) ) {
+					$person->Mobile = sanitize_text_field( $_POST['participantMobile'][ $key ] );
 				}
 
-				if ( isset( $_POST['participantPriceName'][ $key ] ) ) {
-					$person->PriceNameId = @intval( $_POST['participantPriceName'][ $key ] );
+				if ( ! empty( $_POST['participantCivReg'][ $key ] ) ) {
+					$person->CivicRegistrationNumber = trim( sanitize_text_field( $_POST['participantCivReg'][ $key ] ) );
+				}
+
+				if ( ! empty( $_POST['participantPriceName'][ $key ] ) ) {
+					$person->PriceNameId = intval( $_POST['participantPriceName'][ $key ] );
 				}
 
 				$person->CustomFields = $this->get_participant_custom_fields( $key );

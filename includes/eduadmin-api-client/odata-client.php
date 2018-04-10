@@ -18,7 +18,7 @@ class EduAdminODataClient extends EduAdminRESTClient {
 	 *
 	 * @return mixed
 	 */
-	public function Search( $select = null, $filter = null, $expand = null, $orderby = null, $top = null, $skip = null, $count = true, $use_cache = true ) {
+	public function Search( $select = null, $filter = null, $expand = null, $orderby = null, $top = null, $skip = null, $count = false, $use_cache = true ) {
 		$params = array();
 		if ( isset( $select ) && ! empty( $select ) ) {
 			$params['$select'] = $select;

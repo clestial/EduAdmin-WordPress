@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0
+Stable tag: 2.0.1
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -12,7 +12,6 @@ EduAdmin plugin to allow visitors to book courses at your website. Requires EduA
 == Description ==
 
 Plugin that you connect to [EduAdmin](https://www.eduadmin.se) to enable booking on your website.
-Requires at least PHP 5.2 (with [SoapClient](http://php.net/manual/en/book.soap.php) installed and configured)
 
 [<img src="https://img.shields.io/wordpress/plugin/v/eduadmin-booking.svg" alt="Plugin version" />](https://wordpress.org/plugins/eduadmin-booking/)
 [<img src="https://img.shields.io/wordpress/plugin/dt/eduadmin-booking.svg" alt="Downloads" />](https://wordpress.org/plugins/eduadmin-booking/)
@@ -49,6 +48,12 @@ and redo your own customization.
 
 ### 2.0.1 ###
 - chg: Better check against `customtemplate`
+- add: Backend-function to fix old search/sort/display values to the new ones
+- fix: Stop setting cookies for while logging in (except the ones from WP_Session), should stop nginx from breaking.
+- chg: Validating all fields when you post a booking
+- chg: Removed `setcookie( 'eduadmin_loginUser' ...`, since it's not needed by the plugin.
+- chg: Fixed line breaks in interest registration in a textarea
+- add: Validate what fields are being sorted on (if it's even possible) in course and event lists
 
 ### 2.0 ###
 - add: Adding page for certificates

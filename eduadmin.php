@@ -199,6 +199,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 			$this->session = WP_Session::get_instance();
 
+			include_once 'includes/edu-column-functions.php';
 			include_once 'includes/edu-api-functions.php';
 			include_once 'class/class-eduadmin-bookinginfo.php';
 			include_once 'class/class-eduadmin-bookinghandler.php';

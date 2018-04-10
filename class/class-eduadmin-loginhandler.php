@@ -91,8 +91,6 @@ class EduAdmin_LoginHandler {
 
 		EDU()->session['eduadmin-loginUser'] = $user;
 
-		setcookie( 'eduadmin_loginUser', wp_json_encode( EDU()->session['eduadmin-loginUser']->Contact ), time() + 3600, COOKIEPATH, COOKIE_DOMAIN );
-
 		return $user;
 	}
 }

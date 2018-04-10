@@ -71,7 +71,7 @@ if ( ! empty( $_REQUEST['eduadmin-level'] ) ) {
 
 $sort_order = get_option( 'eduadmin-listSortOrder', 'SortIndex' );
 
-if ( $custom_order_by != null ) {
+if ( null !== $custom_order_by ) {
 	$orderby   = explode( ' ', $custom_order_by );
 	$sortorder = explode( ' ', $custom_order_by_order );
 	foreach ( $orderby as $od => $v ) {
@@ -80,12 +80,15 @@ if ( $custom_order_by != null ) {
 		} else {
 			$or = 'asc';
 		}
-
-		$sorting[] = $v . ' ' . strtolower( $or );
+		if ( edu_validate_column( 'course', $v ) !== false ) {
+			$sorting[] = $v . ' ' . strtolower( $or );
+		}
 	}
 }
 
-$sorting[] = $sort_order . ' asc';
+if ( edu_validate_column( 'course', $sort_order ) !== false ) {
+	$sorting[] = $sort_order . ' asc';
+}
 
 $expand_arr = array();
 foreach ( $expands as $key => $value ) {

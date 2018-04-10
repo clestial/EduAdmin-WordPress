@@ -6,7 +6,7 @@ $api_key = get_option( 'eduadmin-api-key' );
 if ( ! $api_key || empty( $api_key ) ) {
 	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
-	if ( wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-object-interest' ) && isset( $_POST['act'] ) && 'objectInquiry' === sanitize_text_field( $_POST['act'] ) ) {
+	if ( ! empty( $_POST['edu-interest-nonce'] ) && wp_verify_nonce( $_POST['edu-interest-nonce'], 'edu-object-interest' ) && isset( $_POST['act'] ) && 'objectInquiry' === sanitize_text_field( $_POST['act'] ) ) {
 		include_once 'send-object-inquiry.php';
 	}
 

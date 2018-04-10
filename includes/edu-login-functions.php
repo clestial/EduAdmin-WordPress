@@ -15,7 +15,7 @@ function edu_send_forgotten_password( $login_value ) {
 		true
 	);
 
-	if ( 1 === $cc['@odata.count'] ) {
+	if ( 1 === count( $cc['value'] ) ) {
 		$cc_id = current( $cc['value'] )['PersonId'];
 	}
 
@@ -84,4 +84,5 @@ add_action(
 				}
 			}
 		}
-	} );
+	}
+);

@@ -148,11 +148,15 @@ function edu_api_listview_eventlist() {
 				$or = 'asc';
 			}
 
-			$sorting[] = $v . ' ' . strtolower( $or );
+			if ( edu_validate_column( 'course', $v ) !== false ) {
+				$sorting[] = $v . ' ' . strtolower( $or );
+			}
 		}
 	}
 
-	$sorting[] = $sort_order . ' asc';
+	if ( edu_validate_column( 'course', $sort_order ) !== false ) {
+		$sorting[] = $sort_order . ' asc';
+	}
 
 	$expand_arr = array();
 	foreach ( $expands as $key => $value ) {

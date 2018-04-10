@@ -76,11 +76,14 @@ if ( null !== $custom_order_by ) {
 			$or = 'asc';
 		}
 
-		$sorting[] = $v . ' ' . strtolower( $or );
+		if ( edu_validate_column( 'course', $v ) !== false ) {
+			$sorting[] = $v . ' ' . strtolower( $or );
+		}
 	}
 }
-
-$sorting[] = $sort_order . ' asc';
+if ( edu_validate_column( 'course', $sort_order ) !== false ) {
+	$sorting[] = $sort_order . ' asc';
+}
 
 $expand_arr = array();
 foreach ( $expands as $key => $value ) {
@@ -136,11 +139,4 @@ $show_descr       = get_option( 'eduadmin-showCourseDescription', true );
 $show_event_venue = get_option( 'eduadmin-showEventVenueName', false );
 $currency         = get_option( 'eduadmin-currency', 'SEK' );
 ?>
-<div class="eduadmin-courselistoptions"
-	data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>"
-	data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>"
-	data-category="<?php echo esc_attr( $attributes['category'] ); ?>"
-	data-city="<?php echo esc_attr( $attributes['city'] ); ?>"
-	data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>"
-	data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>"
-	data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"></div>
+<div class="eduadmin-courselistoptions" data-subject="<?php echo esc_attr( $attributes['subject'] ); ?>" data-subjectid="<?php echo esc_attr( $attributes['subjectid'] ); ?>" data-category="<?php echo esc_attr( $attributes['category'] ); ?>" data-city="<?php echo esc_attr( $attributes['city'] ); ?>" data-courselevel="<?php echo esc_attr( $attributes['courselevel'] ); ?>" data-search="<?php echo esc_attr( ( ! empty( $_REQUEST['searchCourses'] ) ? sanitize_text_field( $_REQUEST['searchCourses'] ) : '' ) ); ?>" data-numberofevents="<?php echo esc_attr( $attributes['numberofevents'] ); ?>"></div>

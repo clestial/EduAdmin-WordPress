@@ -80,9 +80,9 @@ function eduadmin_get_event_interest( $attributes ) {
 }
 
 function eduadmin_get_detail_view( $attributes ) {
-	$t                 = EDU()->start_timer( __METHOD__ );
-	$selected_template = get_option( 'eduadmin-detailTemplate', 'template_A' );
-	$attributes        = shortcode_atts(
+	$t                           = EDU()->start_timer( __METHOD__ );
+	$selected_template           = get_option( 'eduadmin-detailTemplate', 'template_A' );
+	$attributes                  = shortcode_atts(
 		array(
 			'template'       => $selected_template,
 			'courseid'       => null,
@@ -102,13 +102,13 @@ function eduadmin_get_detail_view( $attributes ) {
 	}
 
 	EDU()->session->regenerate_id( true );
-
-	if ( ! isset( $attributes['customtemplate'] ) || 1 !== $attributes['customtemplate'] ) {
+	if ( empty( $attributes['customtemplate'] ) || 1 !== intval( $attributes['customtemplate'] ) ) {
 		$str = include_once EDUADMIN_PLUGIN_PATH . '/content/template/detailTemplate/' . $attributes['template'] . '.php';
 		EDU()->stop_timer( $t );
 
 		return $str;
 	}
+
 	EDU()->stop_timer( $t );
 
 	return '';
@@ -593,12 +593,11 @@ function eduadmin_get_login_widget( $attributes ) {
 	}
 	EDU()->stop_timer( $t );
 
-	return
-		'<div class="eduadminLogin" data-eduwidget="loginwidget"
+	return '<div class="eduadminLogin" data-eduwidget="loginwidget"
 	data-logintext="' . esc_attr( $attributes['logintext'] ) . '"
 	data-logouttext="' . esc_attr( $attributes['logouttext'] ) . '"
 	data-guesttext="' . esc_attr( $attributes['guesttext'] ) . '">' .
-		'</div>';
+	       '</div>';
 }
 
 function eduadmin_get_login_view( $attributes ) {
@@ -633,13 +632,12 @@ function eduadmin_get_programme_list( $attributes ) {
 		'ProgrammeStarts(' .
 		'$filter=' .
 		'HasPublicPriceName' .
-		//' and ApplicationOpenDate ge ' . date( 'c' ) .
-		//' and EndDate le ' . date( 'c' ) .
+		' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
+		' and StartDate ge ' . date( 'c' ) .
 		';' .
 		'$orderby=' .
-		'StartDate),Courses($filter=ShowOnWeb;)'
+		'StartDate),Courses'
 	);
-
 	include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/list.php';
 }
 
@@ -670,13 +668,14 @@ function eduadmin_get_programme_details( $attributes ) {
 			'ProgrammeStarts(' .
 			'$filter=' .
 			'HasPublicPriceName' .
-			//' and ApplicationOpenDate ge ' . date( 'c' ) .
-			//' and EndDate le ' . date( 'c' ) .
+			' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
+			' and StartDate ge ' . date( 'c' ) .
 			';' .
 			'$orderby=' .
-			'StartDate),Courses($filter=ShowOnWeb;),PriceNames'
+			'StartDate),Courses,PriceNames'
 		);
-		EDU()->write_debug( $programme );
+
+		include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/detail.php';
 	}
 }
 

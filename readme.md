@@ -46,6 +46,11 @@ and redo your own customization.
 
 == Changelog ==
 
+### 2.0.2 ###
+- fix: Adding check for nonces in interest-registration pages
+- fix: Checking count in password reset in a different way
+- add: When you activate/deactivate the plugin, all transients are now cleaned
+
 ### 2.0.1 ###
 - chg: Better check against `customtemplate`
 - add: Backend-function to fix old search/sort/display values to the new ones

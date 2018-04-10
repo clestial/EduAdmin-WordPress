@@ -9,7 +9,7 @@ defined( 'WP_SESSION_COOKIE' ) || define( 'WP_SESSION_COOKIE', 'eduadmin-cookie'
  * Plugin URI:	https://www.eduadmin.se
  * Description:	EduAdmin plugin to allow visitors to book courses at your website
  * Tags:	booking, participants, courses, events, eduadmin, lega online
- * Version:	2.0.1
+ * Version:	2.0.2
  * GitHub Plugin URI: multinetinteractive/eduadmin-wordpress
  * GitHub Plugin URI: https://github.com/multinetinteractive/eduadmin-wordpress
  * Requires at least: 4.7
@@ -245,7 +245,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 
 		private function init_hooks() {
 			$t = $this->start_timer( __METHOD__ );
-			register_activation_hook( __FILE__, 'eduadmin_activate_rewrite' );
+			register_activation_hook( __FILE__, array( $this, 'activate' ) );
 
 			add_action( 'after_switch_theme', array( $this, 'new_theme' ) );
 			add_action( 'init', array( $this, 'init' ) );
@@ -356,9 +356,39 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 			update_option( 'eduadmin-options_have_changed', true );
 		}
 
+		public function activate() {
+			global $wpdb;
+
+			$prefix     = esc_sql( 'eduadmin-' );
+			$options    = $wpdb->options;
+			$t          = esc_sql( "%transient%$prefix%" );
+			$sql        = $wpdb->prepare( "SELECT option_name FROM $options WHERE option_name LIKE '%s'", $t );
+			$transients = $wpdb->get_col( $sql );
+			foreach ( $transients as $transient ) {
+				$key = str_replace( '_transient_timeout_', '', $transient );
+				delete_transient( $key );
+			}
+
+			wp_cache_flush();
+			eduadmin_activate_rewrite();
+		}
+
 		public function deactivate() {
 			eduadmin_deactivate_rewrite();
 			wp_clear_scheduled_hook( 'eduadmin_call_home' );
+			global $wpdb;
+
+			$prefix     = esc_sql( 'eduadmin-' );
+			$options    = $wpdb->options;
+			$t          = esc_sql( "%transient%$prefix%" );
+			$sql        = $wpdb->prepare( "SELECT option_name FROM $options WHERE option_name LIKE '%s'", $t );
+			$transients = $wpdb->get_col( $sql );
+			foreach ( $transients as $transient ) {
+				$key = str_replace( '_transient_timeout_', '', $transient );
+				delete_transient( $key );
+			}
+
+			wp_cache_flush();
 		}
 
 		private function get_new_api_token() {

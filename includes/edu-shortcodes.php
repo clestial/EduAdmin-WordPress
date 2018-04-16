@@ -634,10 +634,12 @@ function eduadmin_get_programme_list( $attributes ) {
 		'HasPublicPriceName' .
 		' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
 		' and StartDate ge ' . date( 'c' ) .
+		//' and Courses/any()' .
 		';' .
 		'$orderby=' .
 		'StartDate),Courses'
 	);
+
 	include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/list.php';
 }
 
@@ -670,9 +672,14 @@ function eduadmin_get_programme_details( $attributes ) {
 			'HasPublicPriceName' .
 			' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
 			' and StartDate ge ' . date( 'c' ) .
+			//' and Courses/any()' .
 			';' .
 			'$orderby=' .
-			'StartDate),Courses,PriceNames'
+			'StartDate' .
+			';' .
+			'$expand=' .
+			'Courses,Events' .
+			'),Courses,PriceNames'
 		);
 
 		include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/detail.php';

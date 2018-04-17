@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -45,6 +45,14 @@ and redo your own customization.
 - LOTS of design changes, please update to a development server to see if anything breaks
 
 == Changelog ==
+
+### 2.0.2 ###
+- fix: Adding check for nonces in interest-registration pages
+- fix: Checking count in password reset in a different way
+- add: When you activate/deactivate the plugin, all transients are now cleaned
+- add: Programme start list in detail view
+- add: Save `customerId` and `personId` in hidden variables on booking page, so we won't lose logged in users if the session times out.
+- add: If we cannot find anything related to `[eduadmin` in the pages, show all pages.
 
 ### 2.0.1 ###
 - chg: Better check against `customtemplate`

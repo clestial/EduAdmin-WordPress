@@ -638,6 +638,7 @@ function eduadmin_get_programme_list( $attributes ) {
 		'$orderby=' .
 		'StartDate),Courses'
 	);
+
 	include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/list.php';
 }
 
@@ -672,7 +673,11 @@ function eduadmin_get_programme_details( $attributes ) {
 			' and StartDate ge ' . date( 'c' ) .
 			';' .
 			'$orderby=' .
-			'StartDate),Courses,PriceNames'
+			'StartDate' .
+			';' .
+			'$expand=' .
+			'Courses,Events' .
+			'),Courses,PriceNames'
 		);
 
 		include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/detail.php';

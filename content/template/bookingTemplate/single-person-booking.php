@@ -8,6 +8,12 @@ if ( ! empty( $customer->BillingInfo ) ) {
 } else {
 	$billing_customer = new EduAdmin_Data_BillingInfo();
 }
+if ( isset( $contact->PersonId ) && 0 !== $contact->PersonId ) {
+	echo '<input type="hidden" name="edu-contactId" value="' . esc_attr( $contact->PersonId ) . '" />';
+}
+if ( isset( $customer->CustomerId ) && 0 !== $customer->CustomerId ) {
+	echo '<input type="hidden" name="edu-customerId" value="' . esc_attr( $customer->CustomerId ) . '" />';
+}
 ?>
 <div class="contactView">
 	<h2><?php esc_html_e( 'Contact information', 'eduadmin-booking' ); ?></h2>

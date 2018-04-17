@@ -634,7 +634,6 @@ function eduadmin_get_programme_list( $attributes ) {
 		'HasPublicPriceName' .
 		' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
 		' and StartDate ge ' . date( 'c' ) .
-		//' and Courses/any()' .
 		';' .
 		'$orderby=' .
 		'StartDate),Courses'
@@ -672,7 +671,6 @@ function eduadmin_get_programme_details( $attributes ) {
 			'HasPublicPriceName' .
 			' and (ApplicationOpenDate le ' . date( 'c' ) . ' or ApplicationOpenDate eq null)' .
 			' and StartDate ge ' . date( 'c' ) .
-			//' and Courses/any()' .
 			';' .
 			'$orderby=' .
 			'StartDate' .

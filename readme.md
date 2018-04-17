@@ -50,6 +50,8 @@ and redo your own customization.
 - fix: Adding check for nonces in interest-registration pages
 - fix: Checking count in password reset in a different way
 - add: When you activate/deactivate the plugin, all transients are now cleaned
+- add: Programme start list in detail view
+- add: Save `customerId` and `personId` in hidden variables on booking page, so we won't lose logged in users if the session times out.
 
 ### 2.0.1 ###
 - chg: Better check against `customtemplate`

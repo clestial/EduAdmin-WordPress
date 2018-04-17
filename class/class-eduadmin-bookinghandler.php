@@ -118,6 +118,10 @@ class EduAdmin_BookingHandler {
 			$customer->CustomerId = $user->Customer->CustomerId;
 		}
 
+		if ( ! empty( $_POST['edu-customerId'] ) ) {
+			$customer->CustomerId = intval( $_POST['edu-customerId'] );
+		}
+
 		$first = '';
 		$last  = '';
 
@@ -219,6 +223,10 @@ class EduAdmin_BookingHandler {
 			return null;
 		}
 
+		if ( ! empty( $_POST['edu-contactId'] ) ) {
+			$contact->PersonId = intval( $_POST['edu-contactId'] );
+		}
+
 		if ( ! empty( $_POST['contactFirstName'] ) ) {
 			$contact->FirstName = sanitize_text_field( $_POST['contactFirstName'] );
 		}
@@ -250,7 +258,7 @@ class EduAdmin_BookingHandler {
 			$contact->PriceNameId = intval( $_POST['contactPriceName'] );
 		}
 
-		$contact->CanLogin     = true;
+		$contact->CanLogin     = get_option( 'eduadmin-useLogin', false );
 		$contact->Answers      = $this->get_contact_questions();
 		$contact->CustomFields = $this->get_contact_custom_fields();
 		$contact->Sessions     = $this->get_contact_sessions();
@@ -321,6 +329,10 @@ class EduAdmin_BookingHandler {
 			$user                 = EDU()->session['eduadmin-loginUser'];
 			$contact->PersonId    = $user->Contact->PersonId;
 			$customer->CustomerId = $user->Customer->CustomerId;
+		}
+
+		if ( ! empty( $_POST['edu-customerId'] ) ) {
+			$customer->CustomerId = intval( $_POST['edu-customerId'] );
 		}
 
 		if ( ! empty( $_POST['customerName'] ) ) {

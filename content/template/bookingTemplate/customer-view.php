@@ -5,6 +5,10 @@ if ( ! empty( $customer->BillingInfo ) ) {
 } else {
 	$billing_customer = new EduAdmin_Data_BillingInfo();
 }
+
+if ( isset( $customer->CustomerId ) && 0 !== $customer->CustomerId ) {
+	echo '<input type="hidden" name="edu-customerId" value="' . esc_attr( $customer->CustomerId ) . '" />';
+}
 ?>
 <div class="customerView">
 	<h2><?php esc_html_e( 'Customer information', 'eduadmin-booking' ); ?></h2>

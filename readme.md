@@ -52,6 +52,7 @@ and redo your own customization.
 - add: When you activate/deactivate the plugin, all transients are now cleaned
 - add: Programme start list in detail view
 - add: Save `customerId` and `personId` in hidden variables on booking page, so we won't lose logged in users if the session times out.
+- add: If we cannot find anything related to `[eduadmin` in the pages, show all pages.
 
 ### 2.0.1 ###
 - chg: Better check against `customtemplate`

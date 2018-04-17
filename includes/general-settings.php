@@ -78,6 +78,10 @@ function edu_render_general_settings() {
 						$eduPages[] = $p;
 					}
 				}
+
+				if ( 0 === count( $eduPages ) ) {
+					$eduPages = $pages;
+				}
 				?>
 				<h3><?php esc_html_e( 'Course templates', 'eduadmin-booking' ); ?></h3>
 				<table>
@@ -257,6 +261,10 @@ function edu_render_general_settings() {
 					if ( strstr( $p->post_content, '[eduadmin' ) ) {
 						$programme_pages[] = $p;
 					}
+				}
+
+				if ( 0 === count( $programme_pages ) ) {
+					$programme_pages = $pages;
 				}
 				?>
 				<h3><?php _e( 'Programmes', 'eduadmin-booking' ); ?></h3>

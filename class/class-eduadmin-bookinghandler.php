@@ -79,6 +79,14 @@ class EduAdmin_BookingHandler {
 			$booking_data->Options                         = $booking_options;
 		}
 
+		$send_info = new EduAdmin_Data_Mail();
+
+		$send_info->SendToParticipants    = true;
+		$send_info->SendToCustomer        = true;
+		$send_info->SendToCustomerContact = true;
+
+		$booking_data->SendConfirmationEmail = $send_info;
+
 		$booking_data->EventId   = $event_id;
 		$booking_data->Reference = sanitize_text_field( $_POST['invoiceReference'] );
 
@@ -206,14 +214,6 @@ class EduAdmin_BookingHandler {
 
 		$booking_data->Customer      = $customer;
 		$booking_data->ContactPerson = $this->get_contact_person( $contact );
-
-		$send_info = new EduAdmin_Data_Mail();
-
-		$send_info->SendToParticipants    = true;
-		$send_info->SendToCustomer        = true;
-		$send_info->SendToCustomerContact = true;
-
-		$booking_data->SendConfirmationEmail = $send_info;
 
 		return $booking_data;
 	}

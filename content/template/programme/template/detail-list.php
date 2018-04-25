@@ -20,12 +20,42 @@ foreach ( $grouped_programmes as $group => $grouped_programme ) {
 	foreach ( $grouped_programme as $programme_start ) {
 		echo '<tr>';
 		echo '<td>' . wp_kses_post( get_display_date( $programme_start['StartDate'] ) ) . '</td>';
-		echo '<td><i>Left intentionally empty</i></td>';
+		echo '<td>';
+
+		if ( 0 === count( $programme_start['Events'] ) ) {
+			echo '<i>' . esc_html__( 'No planned events', 'eduadmin-booking' ) . '</i>';
+		} else {
+			echo '<span class="edu-manyDays" onclick="edu_openDatePopup(this);">' . esc_html__( 'Show', 'eduadmin-booking' ) . '</span>';
+			echo '<div class="edu-DayPopup">';
+			echo esc_html( $programme['ProgrammeName'] );
+			echo ' - ';
+			echo wp_kses_post( get_display_date( $programme_start['StartDate'] ) );
+			echo '<a style="float: right;" href="javascript://" onclick="edu_closeDatePopup(event, this);">' . esc_html__( 'Close', 'eduadmin-booking' ) . '</a>';
+			echo '<div class="scrollable-full-height">';
+			$events_per_day = array();
+			foreach ( $programme_start['Events'] as $event ) {
+				$events_per_day[ date( 'Y-m-d', strtotime( $event['StartDate'] ) ) ][] = $event;
+			}
+
+			foreach ( $events_per_day as $day => $_events ) {
+				echo '<b>' . esc_html( $day ) . '</b><br />';
+				foreach ( $_events as $ev ) {
+					echo esc_html(
+						     date( 'H:i', strtotime( $ev['StartDate'] ) ) . '-' .
+						     date( 'H:i', strtotime( $ev['EndDate'] ) ) . ' ' .
+						     $ev['EventName']
+					     ) . '<br />';
+				}
+			}
+			echo '</div>';
+			echo '</div>';
+		}
+
+		echo '</td>';
 		echo '<td>' . esc_html( $programme_start['ParticipantNumberLeft'] > 0 ? __( 'Yes', 'eduadmin-booking' ) : __( 'No', 'eduadmin-booking' ) ) . '</td>';
 		echo '<td><a href="' . esc_url( get_home_url() . '/programmes/' . make_slugs( $programme['ProgrammeName'] ) . '_' . $programme['ProgrammeId'] . '/book/?id=' . $programme_start['ProgrammeStartId'] ) . '" class="submit-programme">' . esc_html__( 'Book', 'eduadmin-booking' ) . '</a></td>';
 		echo '</tr>';
 	}
 	echo '</table>';
 	echo '</div>';
-	EDU()->write_debug( $grouped_programme );
 }

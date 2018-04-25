@@ -46,6 +46,11 @@ and redo your own customization.
 
 == Changelog ==
 
+### 2.0.3 ###
+- add: Ability to view schedule of a programme
+- chg: Bugfix where confirmation emails weren't sent for multiple participant bookings
+- chg: Bugfix for 2 column detail template
+
 ### 2.0.2 ###
 - fix: Adding check for nonces in interest-registration pages
 - fix: Checking count in password reset in a different way

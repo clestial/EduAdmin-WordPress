@@ -796,3 +796,23 @@ h1.courseTitle:hover,
 .eduadmin .eduadmin-courselistoptions {
 	display: none;
 }
+
+.edu-DayPopup.cloned .scrollable-full-height {
+	overflow: auto;
+	max-height: 400px;
+}
+
+@media screen and (max-width: 720px) {
+	.edu-DayPopup.cloned {
+		position: fixed;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+	}
+
+	.edu-DayPopup.cloned .scrollable-full-height {
+		overflow: auto;
+		max-height: 90%;
+	}
+}

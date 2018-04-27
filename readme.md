@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -50,6 +50,7 @@ and redo your own customization.
 - add: Ability to view schedule of a programme
 - chg: Bugfix where confirmation emails weren't sent for multiple participant bookings
 - chg: Bugfix for 2 column detail template
+- add: Better error handling when booking a course (At least some handling..)
 
 ### 2.0.2 ###
 - fix: Adding check for nonces in interest-registration pages

@@ -9,9 +9,23 @@ if ( ! $api_key || empty( $api_key ) ) {
 } else {
 	include_once 'course-info.php';
 	if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookCourse' === sanitize_text_field( $_POST['act'] ) ) {
-		$ebi = $GLOBALS['edubookinginfo'];
-		do_action( 'eduadmin-processbooking', $ebi );
-		do_action( 'eduadmin-bookingcompleted' );
+		$error_list = apply_filters( 'edu-booking-error', array() );
+		if ( ! empty( $error_list ) ) {
+			echo '<div class="eduadmin">';
+			foreach ( $error_list as $error ) {
+				?>
+				<div class="edu-modal warning">
+					<?php echo esc_html( $error ); ?>
+				</div>
+				<?php
+			}
+			do_action( 'eduadmin-bookingerror', $error_list );
+			echo '</div>';
+		} else {
+			$ebi = $GLOBALS['edubookinginfo'];
+			do_action( 'eduadmin-processbooking', $ebi );
+			do_action( 'eduadmin-bookingcompleted' );
+		}
 	} elseif ( ! empty( $_GET['edu-valid-form'] ) && wp_verify_nonce( $_GET['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_GET['act'] ) && 'paymentCompleted' === sanitize_text_field( $_GET['act'] ) ) {
 		do_action( 'eduadmin-bookingcompleted' );
 	} else {

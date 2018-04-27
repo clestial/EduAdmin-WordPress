@@ -26,11 +26,47 @@ class EduAdmin_BookingHandler {
 			if ( ! empty( $booking_info['Errors'] ) ) {
 				add_filter( 'edu-booking-error', function( $errors ) use ( $booking_info ) {
 					foreach ( $booking_info['Errors'] as $error ) {
-						$errors[] = $error['ErrorText'] . '<br />' . wp_json_encode( $error['ErrorDetails'] );
+						switch ( $error['ErrorCode'] ) {
+							case -1: // Exception
+								$errors[] = __( 'An error has occured, please try again later!', 'eduadmin-booking' );
+								break;
+							case 40:
+								$errors[] = __( 'Not enough spots left.', 'eduadmin-booking' );
+								break;
+							case 45:
+								$errors[] = __( 'Person already booked on event.', 'eduadmin-booking' );
+								break;
+							case 100:
+								$errors[] = __( 'The voucher was not found.', 'eduadmin-booking' );
+								break;
+							case 101:
+								$errors[] = __( 'The voucher is not valid during the event period.', 'eduadmin-booking' );
+								break;
+							case 102:
+								$errors[] = __( 'The voucher is too small for the number of participants.', 'eduadmin-booking' );
+								break;
+							case 103:
+								$errors[] = __( 'The voucher belongs to a different customer.', 'eduadmin-booking' );
+								break;
+							case 104:
+								$errors[] = __( 'The voucher belongs to a different customer contact.', 'eduadmin-booking' );
+								break;
+							case 105:
+								$errors[] = __( 'The voucher is not valid for this event.', 'eduadmin-booking' );
+								break;
+							case 200:
+								$errors[] = __( 'Person added on session where dates are overlapping.', 'eduadmin-booking' );
+								break;
+							default:
+								$errors[] = $error['ErrorText'];
+								break;
+						}
 					}
 
 					return $errors;
 				}, 10, 1 );
+
+				return;
 			}
 
 			$event_booking = EDUAPI()->OData->Bookings->GetItem(
@@ -279,6 +315,19 @@ class EduAdmin_BookingHandler {
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
 
+		if ( 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
+			$error_list = array();
+
+			$std_error                 = array();
+			$std_error['ErrorCode']    = -1;
+			$std_error['ErrorDetails'] = 'An error has occurred, please try again!';
+			$std_error['ErrorText']    = 'General error';
+
+			$error_list['Errors'][] = $std_error;
+
+			return $error_list;
+		}
+
 		if ( ! empty( $booking['Errors'] ) ) {
 			$error_list           = array();
 			$error_list['Errors'] = $booking['Errors'];
@@ -407,7 +456,9 @@ class EduAdmin_BookingHandler {
 			$billing_info->SellerReference = sanitize_text_field( $_POST['invoiceReference'] );
 		}
 
-		$booking_data->Reference = $billing_info->SellerReference;
+		if ( ! empty( $billing_info->SellerReference ) ) {
+			$booking_data->Reference = $billing_info->SellerReference;
+		}
 
 		if ( ! empty( $customerInvoiceEmailAddress ) ) {
 			$billing_info->Email = $customerInvoiceEmailAddress;
@@ -434,6 +485,19 @@ class EduAdmin_BookingHandler {
 		$booking_data = $this->get_multiple_participant_booking();
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
+
+		if ( 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
+			$error_list = array();
+
+			$std_error                 = array();
+			$std_error['ErrorCode']    = -1;
+			$std_error['ErrorDetails'] = 'An error has occurred, please try again!';
+			$std_error['ErrorText']    = 'General error';
+
+			$error_list['Errors'][] = $std_error;
+
+			return $error_list;
+		}
 
 		if ( ! empty( $booking['Errors'] ) ) {
 			$error_list           = array();

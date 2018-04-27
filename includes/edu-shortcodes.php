@@ -693,6 +693,29 @@ function eduadmin_get_programme_booking( $attributes ) {
 		normalize_empty_atts( $attributes ),
 		'eduadmin-programmebooking'
 	);
+
+	global $wp_query;
+
+	if ( ! empty( $wp_query->query_vars['edu_programme'] ) ) {
+		$exploded_id  = explode( '_', $wp_query->query_vars['edu_programme'] )[1];
+		$programme_id = $exploded_id;
+	} elseif ( ! empty( $attributes['programmeid'] ) ) {
+		$programme_id = $attributes['programmeid'];
+	} else {
+		$programme_id = null;
+	}
+
+	$programmestart_id = $_GET['id'];
+
+	if ( ! empty( $programmestart_id ) ) {
+		$programme = EDUAPI()->OData->ProgrammeStarts->GetItem(
+			$programmestart_id,
+			null,
+			'Courses,Events,PaymentMethods'
+		);
+
+		include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/book.php';
+	}
 }
 
 if ( is_callable( 'add_shortcode' ) ) {

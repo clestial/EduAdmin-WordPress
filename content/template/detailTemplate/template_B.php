@@ -1,138 +1,130 @@
 <?php
 ob_start();
 global $wp_query;
-$apiKey = get_option( 'eduadmin-api-key' );
+$api_key = get_option( 'eduadmin-api-key' );
 
-if ( ! $apiKey || empty( $apiKey ) ) {
-	echo 'Please complete the configuration: <a href="' . admin_url() . 'admin.php?page=eduadmin-settings">EduAdmin - Api Authentication</a>';
+if ( ! $api_key || empty( $api_key ) ) {
+	echo 'Please complete the configuration: <a href="' . esc_url( admin_url() . 'admin.php?page=eduadmin-settings' ) . '">EduAdmin - Api Authentication</a>';
 } else {
-	include_once( 'course-info.php' );
-	if ( ! $selectedCourse ) {
+	include_once 'course-info.php';
+	if ( ! $selected_course ) {
 		?>
-		<script type="text/javascript">location.href = '<?php echo $baseUrl; ?>';</script>
+		<script type="text/javascript">location.href = '<?php echo esc_url( $base_url ); ?>';</script>
 		<?php
 		die();
 	}
 
 	?>
 	<div class="eduadmin">
-		<a href="../" class="backLink"><?php _e( "« Go back", 'eduadmin-booking' ); ?></a>
+		<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
 		<div class="title">
-			<?php if ( ! empty( $selectedCourse["ImageUrl"] ) ) : ?>
-				<img class="courseImage" src="<?php echo $selectedCourse["ImageUrl"]; ?>"/>
+			<?php if ( ! empty( $selected_course['ImageUrl'] ) ) : ?>
+				<img src="<?php echo esc_url( $selected_course['ImageUrl'] ); ?>" class="courseImage" />
 			<?php endif; ?>
-			<h1 class="courseTitle"><?php echo $name; ?>
-				<small class="courseLevel"><?php echo( $courseLevel != null ? $courseLevel["Name"] : "" ); ?></small>
+			<h1 class="courseTitle"><?php echo esc_html( $name ); ?>
+				<small class="courseLevel"><?php echo esc_html( null !== $course_level ? $course_level['Name'] : '' ); ?></small>
 			</h1>
 		</div>
-		<hr/>
+		<hr />
 		<div class="textblock leftBlock">
-			<?php if ( ! in_array( 'description', $hideSections ) && ! empty( $selectedCourse["CourseDescription"] ) ) { ?>
-				<?php if ( $showHeaders ) { ?>
-					<h3><?php _e( "Course description", 'eduadmin-booking' ); ?></h3>
-				<?php } ?>
+			<?php if ( ! in_array( 'description', $hide_sections, true ) && ! empty( $selected_course['CourseDescription'] ) ) { ?><?php if ( $show_headers ) { ?>
+				<h3><?php _e( 'Course description', 'eduadmin-booking' ); ?></h3>
+			<?php } ?>
 				<div>
 					<?php
-					echo $selectedCourse["CourseDescription"];
+					echo $selected_course['CourseDescription'];
 					?>
 				</div>
 			<?php } ?>
-			<?php if ( ! in_array( 'goal', $hideSections ) && ! empty( $selectedCourse["CourseGoal"] ) ) { ?>
-				<?php if ( $showHeaders ) { ?>
-					<h3><?php _e( "Course goal", 'eduadmin-booking' ); ?></h3>
-				<?php } ?>
+			<?php if ( ! in_array( 'goal', $hide_sections, true ) && ! empty( $selected_course['CourseGoal'] ) ) { ?><?php if ( $show_headers ) { ?>
+				<h3><?php _e( 'Course goal', 'eduadmin-booking' ); ?></h3>
+			<?php } ?>
 				<div>
 					<?php
-					echo $selectedCourse["CourseGoal"];
+					echo $selected_course['CourseGoal'];
 					?>
 				</div>
 			<?php } ?>
-			<?php if ( ! in_array( 'target', $hideSections ) && ! empty( $selectedCourse["TargetGroup"] ) ) { ?>
-				<?php if ( $showHeaders ) { ?>
-					<h3><?php _e( "Target group", 'eduadmin-booking' ); ?></h3>
-				<?php } ?>
+			<?php if ( ! in_array( 'target', $hide_sections, true ) && ! empty( $selected_course['TargetGroup'] ) ) { ?><?php if ( $show_headers ) { ?>
+				<h3><?php _e( 'Target group', 'eduadmin-booking' ); ?></h3>
+			<?php } ?>
 				<div>
 					<?php
-					echo $selectedCourse["TargetGroup"];
+					echo $selected_course['TargetGroup'];
 					?>
 				</div>
 			<?php } ?>
-			<?php if ( ! in_array( 'prerequisites', $hideSections ) && ! empty( $selectedCourse["Prerequisites"] ) ) { ?>
+			<?php if ( ! in_array( 'prerequisites', $hide_sections, true ) && ! empty( $selected_course['Prerequisites'] ) ) { ?>
 			<?php if ( $showHeaders ) { ?>
-				<h3><?php _e( "Prerequisites", 'eduadmin-booking' ); ?></h3>
+				<h3><?php _e( 'Prerequisites', 'eduadmin-booking' ); ?></h3>
 			<?php } ?>
 			<div>
 				<?php
-				echo $selectedCourse["Prerequisites"];
+				echo $selected_course['Prerequisites'];
 				?>
 			</div>
 		</div>
 		<div class="textblock rightBlock">
 			<?php } ?>
-			<?php if ( ! in_array( 'after', $hideSections ) && ! empty( $selectedCourse["CourseAfter"] ) ) { ?>
-				<?php if ( $showHeaders ) { ?>
-					<h3><?php _e( "After the course", 'eduadmin-booking' ); ?></h3>
-				<?php } ?>
+			<?php if ( ! in_array( 'after', $hide_sections, true ) && ! empty( $selected_course['CourseAfter'] ) ) { ?><?php if ( $showHeaders ) { ?>
+				<h3><?php _e( 'After the course', 'eduadmin-booking' ); ?></h3>
+			<?php } ?>
 				<div>
 					<?php
-					echo $selectedCourse["CourseAfter"];
+					echo $selected_course['CourseAfter'];
 					?>
 				</div>
 			<?php } ?>
-			<?php if ( ! in_array( 'quote', $hideSections ) && ! empty( $selectedCourse["Quote"] ) ) { ?>
-				<?php if ( $showHeaders ) { ?>
-					<h3><?php _e( "Quotes", 'eduadmin-booking' ); ?></h3>
-				<?php } ?>
+			<?php if ( ! in_array( 'quote', $hide_sections, true ) && ! empty( $selected_course['Quote'] ) ) { ?><?php if ( $showHeaders ) { ?>
+				<h3><?php _e( 'Quotes', 'eduadmin-booking' ); ?></h3>
+			<?php } ?>
 				<div>
 					<?php
-					echo $selectedCourse["Quote"];
+					echo $selected_course['Quote'];
 					?>
 				</div>
 			<?php } ?>
 		</div>
 		<div class="eventInformation">
-			<?php if ( ! in_array( 'time', $hideSections ) && ! empty( $selectedCourse["StartTime"] ) && ! empty( $selectedCourse["EndTime"] ) ) { ?>
-				<h3><?php _e( "Time", 'eduadmin-booking' ); ?></h3>
+			<?php if ( ! in_array( 'time', $hide_sections, true ) && ! empty( $selected_course['StartTime'] ) && ! empty( $selected_course['EndTime'] ) ) { ?>
+				<h3><?php _e( 'Time', 'eduadmin-booking' ); ?></h3>
 				<?php
-				echo ( $selectedCourse["Days"] > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selectedCourse["Days"], 'eduadmin-booking' ), $selectedCourse["Days"] ) . ', ' : '' ) .
-				     date( "H:i", strtotime( $selectedCourse["StartTime"] ) ) . ' - ' . date( "H:i", strtotime( $selectedCourse["EndTime"] ) );
-				?>
-			<?php } ?>
-			<?php
+				echo ( $selected_course['Days'] > 0 ? sprintf( _n( '%1$d day', '%1$d days', $selected_course['Days'], 'eduadmin-booking' ), $selected_course['Days'] ) . ', ' : '' ) .
+				     date( 'H:i', strtotime( $selected_course['StartTime'] ) ) . ' - ' . date( 'H:i', strtotime( $selected_course['EndTime'] ) );
+			}
 
-			if ( ! in_array( 'price', $hideSections ) && ! empty( $prices ) ) {
+			if ( ! in_array( 'price', $hide_sections, true ) && ! empty( $prices ) ) {
 				?>
-				<h3><?php _e( "Price", 'eduadmin-booking' ); ?></h3>
+				<h3><?php _e( 'Price', 'eduadmin-booking' ); ?></h3>
 				<?php
 				$currency = get_option( 'eduadmin-currency', 'SEK' );
-				if ( count( $prices ) == 1 ) {
-					?>
-					<?php echo sprintf( '%1$s %2$s', current( $prices )["PriceNameDescription"], convert_to_money( current( $prices )["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
-					<?php
+				if ( 1 === count( $prices ) ) {
+					echo sprintf( '%1$s %2$s', current( $prices )['PriceNameDescription'], convert_to_money( current( $prices )['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) );
 				} else {
 					foreach ( $prices as $up ) {
+						echo sprintf( '%1$s %2$s', $up['PriceNameDescription'], convert_to_money( $up['Price'], $currency ) ) . ' ' . ( $inc_vat ? __( 'inc vat', 'eduadmin-booking' ) : __( 'ex vat', 'eduadmin-booking' ) );
 						?>
-						<?php echo sprintf( '%1$s %2$s', $up["PriceNameDescription"], convert_to_money( $up["Price"], $currency ) ) . " " . ( $incVat ? __( "inc vat", 'eduadmin-booking' ) : __( "ex vat", 'eduadmin-booking' ) ); ?>
-						<br/>
+						<br />
 						<?php
 					}
 				}
-			} ?>
+			}
+			?>
 		</div>
 		<?php
 		include( 'blocks/event-list.php' );
 		if ( $allowInterestRegObject && $objectInterestPage != false ) {
 			?>
-			<br/>
+			<br />
 			<div class="inquiry">
-				<a class="inquiry-link"
-				   href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selectedCourse["CourseTemplateId"]; ?>/interest/<?php echo edu_get_query_string( "?" ); ?>"><?php _e( "Send inquiry about this course", 'eduadmin-booking' ); ?></a>
+				<a class="inquiry-link" href="<?php echo $baseUrl; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $selected_course['CourseTemplateId']; ?>/interest/<?php echo edu_get_query_string( '?' ); ?>"><?php _e( 'Send inquiry about this course', 'eduadmin-booking' ); ?></a>
 			</div>
 			<?php
 		}
 		?>
 	</div>
-<?php }
+	<?php
+}
 $out = ob_get_clean();
 
 return $out;

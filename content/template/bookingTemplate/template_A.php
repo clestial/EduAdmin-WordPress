@@ -222,6 +222,7 @@ if ( ! $api_key || empty( $api_key ) ) {
 				var title = document.title;
 				title = title.replace('<?php echo esc_js( $original_title ); ?>', '<?php echo esc_js( $new_title ); ?>');
 				document.title = title;
+				eduBookingView.ProgrammeBooking = false;
 				eduBookingView.MaxParticipants = <?php echo esc_js( intval( $event['ParticipantNumberLeft'] ) ); ?>;
 				<?php echo get_option( 'eduadmin-singlePersonBooking', false ) ? 'eduBookingView.SingleParticipant = true;' : ''; ?>
 				eduBookingView.AddParticipant();

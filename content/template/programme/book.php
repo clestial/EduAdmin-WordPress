@@ -17,6 +17,8 @@ if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 
 $no_invoice_free_events = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 
+$first_price = current( $programme['PriceNames'] );
+
 $show_invoice_email             = isset( $attributes['hideinvoiceemailfield'] ) ? false === $attributes['hideinvoiceemailfield'] : false === get_option( 'eduadmin-hideInvoiceEmailField', false );
 $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] ) ? false === $attributes['showinvoiceinformation'] : true === get_option( 'eduadmin-showInvoiceInformation', false );
 
@@ -297,7 +299,7 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					}
 					render_attribute( $custom_field, false, 'customer', $data );
 				}
-				if ( ! $no_invoice_free_events || $first_price->Price > 0 ) {
+				if ( ! $no_invoice_free_events || $first_price['Price'] > 0 ) {
 					?>
 					<label<?php echo $force_show_invoice_information ? ' style="display: none;"' : ''; ?>>
 						<div class="inputHolder alsoInvoiceCustomer">
@@ -390,7 +392,7 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 			</div>
 			<?php
 			$original_title = get_the_title();
-			$new_title      = $name . ' | ' . $original_title;
+			$new_title      = $programme['ProgrammeStartName'] . ' | ' . $original_title;
 
 			$discount_value = 0.0;
 			if ( 0 !== $participant_discount_percent ) {
@@ -413,10 +415,11 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					var title = document.title;
 					title = title.replace('<?php echo esc_js( $original_title ); ?>', '<?php echo esc_js( $new_title ); ?>');
 					document.title = title;
+					eduBookingView.ProgrammeBooking = true;
 					eduBookingView.MaxParticipants = <?php echo esc_js( intval( $event['ParticipantNumberLeft'] ) ); ?>;
 					eduBookingView.SingleParticipant = true;
-					//eduBookingView.AddParticipant();
-					//eduBookingView.CheckPrice(false);
+					eduBookingView.AddParticipant();
+					eduBookingView.CheckPrice(false);
 				})();
 			</script>
 		</form>

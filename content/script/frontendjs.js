@@ -1,6 +1,7 @@
 /** global: edu */
 
 var eduBookingView = {
+	ProgrammeBooking: false,
 	Customer: null,
 	ContactPerson: null,
 	Participants: [],
@@ -225,9 +226,9 @@ var eduBookingView = {
 			}
 
 			var replaceFields = participant.querySelectorAll('[data-replace]');
-			for(var index = 0; index < replaceFields.length; index++) {
+			for (var index = 0; index < replaceFields.length; index++) {
 				var replaceItems = replaceFields[index].attributes['data-replace'].value.split(',');
-				for(var x = 0; x < replaceItems.length; x++) {
+				for (var x = 0; x < replaceItems.length; x++) {
 					var replaceItem = replaceItems[x].split('|');
 					var replaceTemplate = replaceFields[index].attributes['data-' + replaceItem[0] + '-template'].value;
 					replaceFields[index][replaceItem[0]] = replaceTemplate.replace('{{' + replaceItem[1] + '}}', (i + 1));
@@ -240,37 +241,50 @@ var eduBookingView = {
 
 		return true;
 	},
-	CheckPrice: function(validate) {
-		if(undefined !== eduBookingView.PriceCheckThrottle) {
+	CheckPrice: function (validate) {
+		if (undefined !== eduBookingView.PriceCheckThrottle) {
 			clearTimeout(eduBookingView.PriceCheckThrottle);
 		}
-		eduBookingView.PriceCheckThrottle = setTimeout(function() {
+
+		if (eduBookingView.ProgrammeBooking) {
 			var validation = true;
-			if(validate) {
+			if (validate) {
 				validation = eduBookingView.CheckValidation();
 			}
+
 			if(validation) {
-				var form = jQuery('#edu-booking-form').serialize();
-				form = form.replace('act=bookCourse', 'act=checkPrice');
-				jQuery.ajax({
-					type: 'POST',
-					url: '',
-					data: form,
-					success: function (data) {
-						var d = JSON.parse(data);
-						console.log(d);
-						if (d.hasOwnProperty('TotalPriceExVat')) {
-							jQuery('#sumValue').text(
-								numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
-								' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
-							)
-						}
-						if(d.hasOwnProperty('Message')) {
-						}
-					}
-				});
+				jQuery('#sumValue').text(
+					numberWithSeparator(window.pricePerParticipant, ' ') + ' ' + window.currency + ' ' + window.vatText
+				);
 			}
-		}, 100);
+		} else {
+			eduBookingView.PriceCheckThrottle = setTimeout(function () {
+				var validation = true;
+				if (validate) {
+					validation = eduBookingView.CheckValidation();
+				}
+				if (validation) {
+					var form = jQuery('#edu-booking-form').serialize();
+					form = form.replace('act=bookCourse', 'act=checkPrice');
+					jQuery.ajax({
+						type: 'POST',
+						url: '',
+						data: form,
+						success: function (data) {
+							var d = JSON.parse(data);
+							if (d.hasOwnProperty('TotalPriceExVat')) {
+								jQuery('#sumValue').text(
+									numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
+									' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
+								)
+							}
+							if (d.hasOwnProperty('Message')) {
+							}
+						}
+					});
+				}
+			}, 100);
+		}
 	},
 	PriceCheckThrottle: null,
 	ValidateCivicRegNo: function () {

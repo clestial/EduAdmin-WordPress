@@ -31,10 +31,11 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 
 			<div class="title">
 				<h1 class="courseTitle">
-					<?php echo esc_html( $programme['ProgrammeStartName'] ); ?>
+					<?php echo esc_html( $programme['ProgrammeStartName'] ) . ' (' . wp_kses_post( get_display_date( $programme['StartDate'] ) ) . ' - ' . wp_kses_post( get_display_date( $programme['EndDate'] ) ) . ')'; ?>
 				</h1>
 			</div>
 			<?php
+
 			if ( ! empty( $customer->BillingInfo ) ) {
 				$billing_customer = $customer->BillingInfo[0];
 			} else {
@@ -47,16 +48,17 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 				echo '<input type="hidden" name="edu-customerId" value="' . esc_attr( $customer->CustomerId ) . '" />';
 			}
 			?>
+			<br />
 			<div class="contactView">
 				<h2><?php esc_html_e( 'Contact information', 'eduadmin-booking' ); ?></h2>
 				<label>
 					<div class="inputLabel">
-						<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
+						<?php esc_html_e( 'Contact name', 'eduadmin-booking' ); ?>
 					</div>
 					<div class="inputHolder"><input type="text"
 							<?php echo( $__block ? ' readonly' : '' ); ?>
-							required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactFirstName" name="contactFirstName" class="first-name" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->FirstName ); ?>" /><input type="text" <?php echo( $__block ? ' readonly' : '' ); ?>
-							required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" class="last-name" name="contactLastName" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->LastName ); ?>" />
+							required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactFirstName" name="contactFirstName" class="first-name" placeholder="<?php esc_attr_e( 'Contact first name', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->FirstName ); ?>" /><input type="text" <?php echo( $__block ? ' readonly' : '' ); ?>
+							required onchange="eduBookingView.ContactAsParticipant();" id="edu-contactLastName" class="last-name" name="contactLastName" placeholder="<?php esc_attr_e( 'Contact surname', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $contact->LastName ); ?>" />
 					</div>
 				</label>
 				<label>
@@ -312,38 +314,80 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					</label>
 				<?php } ?>
 			</div>
+			<div class="participantView">
+				<h2><?php esc_html_e( 'Participant information', 'eduadmin-booking' ); ?></h2>
+				<div class="participantHolder" id="edu-participantHolder">
+					<div class="participantItem template" style="display: none;">
+						<h3>
+							<?php esc_html_e( 'Participant', 'eduadmin-booking' ); ?>
+							<?php if ( ! get_option( 'eduadmin-singlePersonBooking', false ) ) { ?>
+								<div class="removeParticipant" onclick="eduBookingView.RemoveParticipant(this);"><?php esc_html_e( 'Remove', 'eduadmin-booking' ); ?></div>
+							<?php } ?>
+						</h3>
+						<label>
+							<div class="inputLabel">
+								<?php esc_html_e( 'Participant name', 'eduadmin-booking' ); ?>
+							</div>
+							<div class="inputHolder">
+								<input type="text" class="participantFirstName first-name" onchange="eduBookingView.CheckPrice(false);" name="participantFirstName[]" placeholder="<?php esc_attr_e( 'Participant first name', 'eduadmin-booking' ); ?>" /><input type="text" class="participantLastName last-name" onchange="eduBookingView.CheckPrice(false);" name="participantLastName[]" placeholder="<?php esc_attr_e( 'Participant surname', 'eduadmin-booking' ); ?>" />
+							</div>
+						</label>
+						<label>
+							<div class="inputLabel">
+								<?php esc_html_e( 'E-mail address', 'eduadmin-booking' ); ?>
+							</div>
+							<div class="inputHolder">
+								<input type="email" name="participantEmail[]" onchange="eduBookingView.CheckPrice(false);" placeholder="<?php esc_attr_e( 'E-mail address', 'eduadmin-booking' ); ?>" />
+							</div>
+						</label>
+						<label>
+							<div class="inputLabel">
+								<?php esc_html_e( 'Phone number', 'eduadmin-booking' ); ?>
+							</div>
+							<div class="inputHolder">
+								<input type="tel" name="participantPhone[]" placeholder="<?php esc_attr_e( 'Phone number', 'eduadmin-booking' ); ?>" />
+							</div>
+						</label>
+						<label>
+							<div class="inputLabel">
+								<?php esc_html_e( 'Mobile number', 'eduadmin-booking' ); ?>
+							</div>
+							<div class="inputHolder">
+								<input type="tel" name="participantMobile[]" placeholder="<?php esc_attr_e( 'Mobile number', 'eduadmin-booking' ); ?>" />
+							</div>
+						</label>
+						<?php if ( $selected_course['RequireCivicRegistrationNumber'] ) { ?>
+							<label>
+								<div class="inputLabel">
+									<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
+								</div>
+								<div class="inputHolder">
+									<input type="text" data-required="true" name="participantCivReg[]" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" class="eduadmin-civicRegNo" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" />
+								</div>
+							</label>
+						<?php } ?>
+						<?php
 
-			<div class="participantItem contactPerson">
-				<?php
-				if ( ! empty( $event['Sessions'] ) ) {
-					echo '<h4>' . esc_html__( 'Sub events', 'eduadmin-booking' ) . "</h4>\n";
-					foreach ( $event['Sessions'] as $sub_event ) {
-						if ( count( $sub_event['PriceNames'] ) > 0 ) {
-							$s = current( $sub_event['PriceNames'] )['Price'];
-						} else {
-							$s = 0;
+						foreach ( $contact_custom_fields as $attr ) {
+							render_attribute( $attr, true, 'participant' );
 						}
 
-						echo '<label>';
-						echo '<input class="subEventCheckBox" data-price="' . esc_attr( $s ) . '" onchange=eduBookingView.UpdatePrice();" ';
-						echo 'name="contactSubEvent_' . esc_attr( $sub_event['SessionId'] ) . '" ';
-						echo 'type="checkbox"';
-						echo( $sub_event['SelectedByDefault'] || $sub_event['MandatoryParticipation'] ? ' checked="checked"' : '' );
-						echo( $sub_event['MandatoryParticipation'] ? ' disabled="disabled"' : '' );
-						echo ' value="' . esc_attr( $sub_event['SessionId'] ) . '"> ';
-						echo esc_html( wp_strip_all_tags( $sub_event['SessionName'] ) );
-						echo esc_html( $hide_sub_event_date_info ? '' : ' (' . date( 'd/m H:i', strtotime( $sub_event['StartDate'] ) ) . ' - ' . date( 'd/m H:i', strtotime( $sub_event['EndDate'] ) ) . ') ' );
-						echo( intval( $s ) > 0 ? '&nbsp;<i class="priceLabel">' . esc_html( convert_to_money( $s ) ) . '</i>' : '' );
-						echo "</label>\n";
-					}
-					echo '<br />';
-				}
-
-				foreach ( $participant_questions as $question ) {
-					render_question( $question, false, 'contact' );
-				}
-				?>
+						foreach ( $participant_questions as $question ) {
+							render_question( $question, true, 'participant' );
+						}
+						?>
+					</div>
+				</div>
+				<?php if ( ! get_option( 'eduadmin-singlePersonBooking', false ) ) { ?>
+					<div>
+						<a href="javascript://" class="addParticipantLink neutral-btn" onclick="eduBookingView.AddParticipant(); return false;"><?php esc_html_e( '+ Add participant', 'eduadmin-booking' ); ?></a>
+					</div>
+				<?php } ?>
+				<div class="edu-modal warning" id="edu-warning-participants">
+					<?php esc_html_e( 'You cannot add any more participants.', 'eduadmin-booking' ); ?>
+				</div>
 			</div>
+
 			<div class="submitView">
 				<?php if ( get_option( 'eduadmin-useBookingTermsCheckbox', false ) && $link = get_option( 'eduadmin-bookingTermsLink', '' ) ): ?>
 					<div class="confirmTermsHolder">
@@ -416,8 +460,7 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					title = title.replace('<?php echo esc_js( $original_title ); ?>', '<?php echo esc_js( $new_title ); ?>');
 					document.title = title;
 					eduBookingView.ProgrammeBooking = true;
-					eduBookingView.MaxParticipants = <?php echo esc_js( intval( $event['ParticipantNumberLeft'] ) ); ?>;
-					eduBookingView.SingleParticipant = true;
+					eduBookingView.MaxParticipants = <?php echo esc_js( intval( $programme['ParticipantNumberLeft'] ) ); ?>;
 					eduBookingView.AddParticipant();
 					eduBookingView.CheckPrice(false);
 				})();

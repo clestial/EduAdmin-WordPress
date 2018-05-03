@@ -11,7 +11,7 @@ var eduBookingView = {
 	DiscountPercent: 0,
 	AddParticipant: function () {
 		if (!eduBookingView.SingleParticipant) {
-			if (eduBookingView.MaxParticipants == -1 || eduBookingView.CurrentParticipants < eduBookingView.MaxParticipants) {
+			if (eduBookingView.MaxParticipants === -1 || eduBookingView.CurrentParticipants < eduBookingView.MaxParticipants) {
 				var holder = document.getElementById('edu-participantHolder');
 				var tmpl = document.querySelector('.eduadmin .participantItem.template');
 				var cloned = tmpl.cloneNode(true);
@@ -57,6 +57,13 @@ var eduBookingView = {
 		return !(participants >= eduBookingView.MaxParticipants && eduBookingView.MaxParticipants >= 0);
 
 	},
+	CheckNumberOfParticipants: function () {
+		var participants = (eduBookingView.SingleParticipant
+			? 1
+			: document.querySelectorAll('.eduadmin .participantItem:not(.template):not(.contactPerson)').length);
+		return participants;
+
+	},
 	UpdatePrice: function () {
 		this.CheckPrice(true);
 	},
@@ -82,7 +89,7 @@ var eduBookingView = {
 		}
 		var contactParticipantItem = document.getElementById('contactPersonParticipant');
 		if (contactParticipantItem) {
-			contactParticipantItem.style.display = contact == 1 ? 'block' : 'none';
+			contactParticipantItem.style.display = contact === 1 ? 'block' : 'none';
 
 			var cFirstName = document.getElementById('edu-contactFirstName').value;
 			var cLastName = document.getElementById('edu-contactLastName').value;
@@ -180,7 +187,7 @@ var eduBookingView = {
 			contact = 1;
 		}
 
-		if ((participants.length + contact) == 0) {
+		if ((participants.length + contact) === 0) {
 			var noPartWarning = document.getElementById('edu-warning-no-participants');
 			if (noPartWarning) {
 				noPartWarning.style.display = 'block';
@@ -254,7 +261,7 @@ var eduBookingView = {
 
 			if(validation) {
 				jQuery('#sumValue').text(
-					numberWithSeparator(window.pricePerParticipant, ' ') + ' ' + window.currency + ' ' + window.vatText
+					numberWithSeparator(window.pricePerParticipant * eduBookingView.CheckNumberOfParticipants(), ' ') + ' ' + window.currency + ' ' + window.vatText
 				);
 			}
 		} else {
@@ -291,7 +298,7 @@ var eduBookingView = {
 
 		function __isValid(civRegField) {
 			var civReg = civRegField.value;
-			if (!civReg || civReg.length == 0) {
+			if (!civReg || civReg.length === 0) {
 				return false;
 			}
 
@@ -313,11 +320,11 @@ var eduBookingView = {
 				return false;
 			}
 
-			if (month.toString().length == 1) {
+			if (month.toString().length === 1) {
 				month = '0' + month;
 			}
 
-			if (day.toString().length == 1) {
+			if (day.toString().length === 1) {
 				day = '0' + day;
 			}
 
@@ -332,7 +339,7 @@ var eduBookingView = {
 				sum = 0;
 			for (var i = 0; i < cleanCivReg.length; i++) {
 				var d = parseInt(cleanCivReg.charAt(i), 10);
-				if (i % 2 == parity) {
+				if (i % 2 === parity) {
 					d *= 2;
 				}
 				if (d > 9) {

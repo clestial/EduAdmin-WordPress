@@ -254,16 +254,32 @@ var eduBookingView = {
 		}
 
 		if (eduBookingView.ProgrammeBooking) {
-			var validation = true;
-			if (validate) {
-				validation = eduBookingView.CheckValidation();
-			}
-
-			if(validation) {
-				jQuery('#sumValue').text(
-					numberWithSeparator(window.pricePerParticipant * eduBookingView.CheckNumberOfParticipants(), ' ') + ' ' + window.currency + ' ' + window.vatText
-				);
-			}
+			eduBookingView.PriceCheckThrottle = setTimeout(function () {
+				var validation = true;
+				if (validate) {
+					validation = eduBookingView.CheckValidation();
+				}
+				if (validation) {
+					var form = jQuery('#edu-booking-form').serialize();
+					form = form.replace('act=bookProgramme', 'act=checkProgrammePrice');
+					jQuery.ajax({
+						type: 'POST',
+						url: '',
+						data: form,
+						success: function (data) {
+							var d = JSON.parse(data);
+							if (d.hasOwnProperty('TotalPriceExVat')) {
+								jQuery('#sumValue').text(
+									numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
+									' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
+								)
+							}
+							if (d.hasOwnProperty('Message')) {
+							}
+						}
+					});
+				}
+			}, 100);
 		} else {
 			eduBookingView.PriceCheckThrottle = setTimeout(function () {
 				var validation = true;

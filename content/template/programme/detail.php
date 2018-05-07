@@ -1,3 +1,4 @@
+<div class="eduadmin">
 <h1><?php echo esc_html( $programme['ProgrammeName'] ); ?></h1>
 <?php if ( ! empty( $programme['Description'] ) ) : ?>
 	<h2><?php esc_html_e( 'Description', 'eduadmin-booking' ); ?></h2>
@@ -28,3 +29,5 @@ if ( ! empty( $programme['ProgrammeStarts'] ) ) {
 } else {
 	echo '<i>' . esc_html__( 'No programme starts available', 'eduadmin-booking' ) . '</i>';
 }
+?>
+</div>

@@ -2,15 +2,17 @@
 $user         = EDU()->session['eduadmin-loginUser'];
 $contact      = $user->Contact;
 $customer     = $user->Customer;
-$certificates = EDUAPI()->OData->Persons->GetItem( $contact->PersonId,
-                                                   'PersonId',
-                                                   'Certificates'
+$certificates = EDUAPI()->OData->Persons->GetItem(
+	$contact->PersonId,
+	'PersonId',
+	'Certificates'
 )['Certificates'];
 ?>
 <div class="eduadmin">
 	<?php
+
 	$tab = 'certificates';
-	include_once 'login-tab-header.php';
+	require_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'Certificates', 'eduadmin-booking' ); ?></h2>
 	<table class="myCertificationsTable">
@@ -25,8 +27,8 @@ $certificates = EDUAPI()->OData->Persons->GetItem( $contact->PersonId,
 				?>
 				<tr>
 					<td align="left"><?php echo esc_html( $certificate['CertificateName'] ); ?></td>
-					<td align="left"><?php echo date( 'Y-m-d', strtotime( $certificate['CertificateDate'] ) ); ?></td>
-					<td align="left"><?php echo get_old_start_end_display_date( $certificate['ValidFrom'], $certificate['ValidTo'] ); ?></td>
+					<td align="left"><?php echo esc_html( date( 'Y-m-d', strtotime( $certificate['CertificateDate'] ) ) ); ?></td>
+					<td align="left"><?php echo wp_kses_post( get_old_start_end_display_date( $certificate['ValidFrom'], $certificate['ValidTo'] ) ); ?></td>
 				</tr>
 				<?php
 			}

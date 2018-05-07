@@ -7,7 +7,9 @@ $currency = get_option( 'eduadmin-currency', 'SEK' );
 ?>
 <div class="eduadmin">
 	<?php
+
 	$tab = 'limitedDiscount';
+
 	require_once 'login-tab-header.php';
 	?>
 	<h2><?php esc_html_e( 'Discount Cards', 'eduadmin-booking' ); ?></h2>
@@ -36,7 +38,7 @@ $currency = get_option( 'eduadmin-currency', 'SEK' );
 				?>
 				<tr>
 					<td><?php echo esc_html( $card['Description'] ); ?></td>
-					<td><?php echo get_old_start_end_display_date( $card['ValidFrom'], $card['ValidTo'], true ); ?></td>
+					<td><?php echo wp_kses_post( get_old_start_end_display_date( $card['ValidFrom'], $card['ValidTo'], true ) ); ?></td>
 					<td align="right"><?php echo esc_html( $card['CreditsLeft'] . ' / ' . $card['CreditsStartValue'] ); ?></td>
 					<td align="right"><?php echo esc_html( $card['DiscountPercent'] ); ?> %</td>
 					<td align="right"><?php echo esc_html( convert_to_money( $card['Price'], $currency ) ); ?></td>

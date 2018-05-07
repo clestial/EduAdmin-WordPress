@@ -4,7 +4,9 @@
 class EduAdmin_BookingHandler {
 	public function __construct() {
 		add_action( 'wp_loaded', array( $this, 'process_booking' ) );
+		add_action( 'wp_loaded', array( $this, 'process_programme_booking' ) );
 		add_action( 'wp_loaded', array( $this, 'check_price' ) );
+		add_action( 'wp_loaded', array( $this, 'check_programme_price' ) );
 	}
 
 	public function check_price() {
@@ -12,6 +14,14 @@ class EduAdmin_BookingHandler {
 			$single_person_booking = get_option( 'eduadmin-singlePersonBooking', false );
 
 			$price_info = $single_person_booking ? $this->check_single_participant() : $this->check_multiple_participants();
+			echo wp_json_encode( $price_info );
+			exit( 0 );
+		}
+	}
+
+	public function check_programme_price() {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && ! empty( $_POST['act'] ) && 'checkProgrammePrice' === sanitize_text_field( $_POST['act'] ) ) {
+			$price_info = $this->check_programme();
 			echo wp_json_encode( $price_info );
 			exit( 0 );
 		}
@@ -101,6 +111,115 @@ class EduAdmin_BookingHandler {
 		}
 	}
 
+	public function process_programme_booking() {
+		if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && ! empty( $_POST['act'] ) && 'bookProgramme' === sanitize_text_field( $_POST['act'] ) ) {
+			$booking_info = $this->get_programme_booking();
+
+			if ( ! empty( $booking_info['Errors'] ) ) {
+				add_filter( 'edu-booking-error', function( $errors ) use ( $booking_info ) {
+					foreach ( $booking_info['Errors'] as $error ) {
+						switch ( $error['ErrorCode'] ) {
+							case -1: // Exception
+								$errors[] = __( 'An error has occured, please try again later!', 'eduadmin-booking' );
+								break;
+							case 40:
+								$errors[] = __( 'Not enough spots left.', 'eduadmin-booking' );
+								break;
+							case 45:
+								$errors[] = __( 'Person already booked on event.', 'eduadmin-booking' );
+								break;
+							case 100:
+								$errors[] = __( 'The voucher was not found.', 'eduadmin-booking' );
+								break;
+							case 101:
+								$errors[] = __( 'The voucher is not valid during the event period.', 'eduadmin-booking' );
+								break;
+							case 102:
+								$errors[] = __( 'The voucher is too small for the number of participants.', 'eduadmin-booking' );
+								break;
+							case 103:
+								$errors[] = __( 'The voucher belongs to a different customer.', 'eduadmin-booking' );
+								break;
+							case 104:
+								$errors[] = __( 'The voucher belongs to a different customer contact.', 'eduadmin-booking' );
+								break;
+							case 105:
+								$errors[] = __( 'The voucher is not valid for this event.', 'eduadmin-booking' );
+								break;
+							case 200:
+								$errors[] = __( 'Person added on session where dates are overlapping.', 'eduadmin-booking' );
+								break;
+							default:
+								$errors[] = $error['ErrorText'];
+								break;
+						}
+					}
+
+					return $errors;
+				}, 10, 1 );
+
+				return;
+			}
+
+			$event_booking = EDUAPI()->OData->ProgrammeBookings->GetItem(
+				$booking_info['ProgrammeBookingId'],
+				null,
+				'OrderRows',
+				false
+			);
+			$_customer     = EDUAPI()->OData->Customers->GetItem(
+				$booking_info['CustomerId'],
+				null,
+				null,
+				false
+			);
+			$_contact      = EDUAPI()->OData->Persons->GetItem(
+				$booking_info['ContactPersonId'],
+				null,
+				null,
+				false
+			);
+
+			$ebi = new EduAdmin_BookingInfo( $event_booking, $_customer, $_contact );
+
+			$GLOBALS['edubookinginfo'] = $ebi;
+
+			do_action( 'eduadmin-checkpaymentplugins', $ebi );
+
+			if ( ! $ebi->NoRedirect ) {
+				wp_redirect( get_page_link( get_option( 'eduadmin-thankYouPage', '/' ) ) . '?edu-thankyou=' . $booking_info['ProgrammeBookingId'] );
+				exit( 0 );
+			}
+		}
+	}
+
+	private function get_programme_booking_data() {
+		$programme_booking_data                   = new stdClass();
+		$programme_booking_data->ProgrammeStartId = intval( $_POST['edu-programme-start'] );
+		$programme_booking_data->Customer         = $this->get_customer();
+		$programme_booking_data->ContactPerson    = $this->get_contact_person();
+		$programme_booking_data->Participants     = $this->get_participant_data();
+
+		$selected_match = get_option( 'eduadmin-customerMatching', 'name-zip-match' );
+
+		if ( 'no-match' === $selected_match ) {
+			$booking_options                               = new EduAdmin_Data_Options();
+			$booking_options->SkipDuplicateMatchOnCustomer = true;
+			$booking_options->SkipDuplicateMatchOnPersons  = true;
+			$programme_booking_data->Options               = $booking_options;
+		}
+
+		return $programme_booking_data;
+	}
+
+	private function get_programme_booking() {
+		$programme_booking_data = $this->get_programme_booking_data();
+
+		$programme_booking = EDUAPI()->REST->ProgrammeBooking->Book( $programme_booking_data );
+
+		return $programme_booking;
+	}
+
 	private function get_basic_booking_data( &$booking_data, $event_id ) {
 		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
@@ -152,7 +271,7 @@ class EduAdmin_BookingHandler {
 		$this->get_basic_booking_data( $booking_data, $event_id );
 
 		$customer = new stdClass();
-		$contact  = new stdClass();
+		$contact  = $this->get_contact_person();
 
 		$contact->AddAsParticipant = true;
 
@@ -249,15 +368,17 @@ class EduAdmin_BookingHandler {
 		$customer->CustomFields = $this->get_customer_custom_fields();
 
 		$booking_data->Customer      = $customer;
-		$booking_data->ContactPerson = $this->get_contact_person( $contact );
+		$booking_data->ContactPerson = $contact;
 
 		return $booking_data;
 	}
 
-	private function get_contact_person( &$contact ) {
+	private function get_contact_person() {
 		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
 			return null;
 		}
+
+		$contact = new stdClass();
 
 		if ( ! empty( $_POST['edu-contactId'] ) ) {
 			$contact->PersonId = intval( $_POST['edu-contactId'] );
@@ -371,8 +492,16 @@ class EduAdmin_BookingHandler {
 
 		$this->get_basic_booking_data( $booking_data, $event_id );
 
-		$customer = new stdClass();
-		$contact  = new stdClass();
+		$customer = $this->get_customer();
+		$contact  = $this->get_contact_person();
+
+		if ( ! empty( $_POST['purchaseOrderNumber'] ) ) {
+			$booking_data->PurchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
+		}
+
+		if ( ! empty( $customer->BillingInfo->SellerReference ) ) {
+			$booking_data->Reference = $customer->BillingInfo->SellerReference;
+		}
 
 		if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
 			$user                 = EDU()->session['eduadmin-loginUser'];
@@ -383,6 +512,23 @@ class EduAdmin_BookingHandler {
 		if ( ! empty( $_POST['edu-customerId'] ) ) {
 			$customer->CustomerId = intval( $_POST['edu-customerId'] );
 		}
+
+		$booking_data->Customer      = $customer;
+		$booking_data->ContactPerson = $contact;
+
+		$participants = $this->get_participant_data();
+
+		$booking_data->Participants = $participants;
+
+		return $booking_data;
+	}
+
+	private function get_customer() {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$customer = new stdClass();
 
 		if ( ! empty( $_POST['customerName'] ) ) {
 			$customer->CustomerName = sanitize_text_field( $_POST['customerName'] );
@@ -405,10 +551,6 @@ class EduAdmin_BookingHandler {
 		}
 		if ( ! empty( $_POST['customerEmail'] ) ) {
 			$customer->Email = sanitize_email( $_POST['customerEmail'] );
-		}
-
-		if ( ! empty( $_POST['purchaseOrderNumber'] ) ) {
-			$booking_data->PurchaseOrderNumber = sanitize_text_field( $_POST['purchaseOrderNumber'] );
 		}
 
 		$customerInvoiceEmailAddress = null;
@@ -456,10 +598,6 @@ class EduAdmin_BookingHandler {
 			$billing_info->SellerReference = sanitize_text_field( $_POST['invoiceReference'] );
 		}
 
-		if ( ! empty( $billing_info->SellerReference ) ) {
-			$booking_data->Reference = $billing_info->SellerReference;
-		}
-
 		if ( ! empty( $customerInvoiceEmailAddress ) ) {
 			$billing_info->Email = $customerInvoiceEmailAddress;
 		}
@@ -467,14 +605,7 @@ class EduAdmin_BookingHandler {
 		$customer->BillingInfo  = $billing_info;
 		$customer->CustomFields = $this->get_customer_custom_fields();
 
-		$booking_data->Customer      = $customer;
-		$booking_data->ContactPerson = $this->get_contact_person( $contact );
-
-		$participants = $this->get_participant_data();
-
-		$booking_data->Participants = $participants;
-
-		return $booking_data;
+		return $customer;
 	}
 
 	public function book_multiple_participants() {
@@ -530,6 +661,30 @@ class EduAdmin_BookingHandler {
 		$booking_data = $this->get_multiple_participant_booking();
 
 		return EDUAPI()->REST->Booking->CheckPrice( $booking_data );
+	}
+
+	public function check_programme() {
+		if ( empty( $_POST['edu-valid-form'] ) || ! wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) ) {
+			return null;
+		}
+
+		$booking_data = $this->get_programme_booking_data();
+
+		if ( empty( $booking_data->Customer->CustomerName ) ) {
+			$booking_data->Customer->CustomerName = 'Empty';
+		}
+
+		if ( empty( $booking_data->ContactPerson->FirstName ) ) {
+			$booking_data->ContactPerson->FirstName = 'Empty';
+		}
+
+		if ( 0 === count( $booking_data->Participants ) ) {
+			$empty_participant            = new stdClass();
+			$empty_participant->FirstName = 'Empty';
+			$booking_data->Participants[] = $empty_participant;
+		}
+
+		return EDUAPI()->REST->ProgrammeBooking->CheckPrice( $booking_data );
 	}
 
 	private function get_customer_custom_fields() {

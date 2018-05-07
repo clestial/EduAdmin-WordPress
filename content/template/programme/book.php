@@ -1,31 +1,60 @@
 <?php
 // phpcs:disable WordPress.NamingConventions,Squiz
-$contact  = new EduAdmin_Data_ContactPerson();
-$customer = new EduAdmin_Data_Customer();
 
-$discount_percent             = 0.0;
-$participant_discount_percent = 0.0;
-$customer_invoice_email       = '';
+if ( ! empty( $_POST['edu-valid-form'] ) && wp_verify_nonce( $_POST['edu-valid-form'], 'edu-booking-confirm' ) && isset( $_POST['act'] ) && 'bookProgramme' === sanitize_text_field( $_POST['act'] ) ) {
+	$error_list = apply_filters( 'edu-booking-error', array() );
+	if ( ! empty( $error_list ) ) {
+		echo '<div class="eduadmin">';
+		foreach ( $error_list as $error ) {
+			?>
+			<div class="edu-modal warning">
+				<?php echo esc_html( $error ); ?>
+			</div>
+			<?php
+		}
+		do_action( 'eduadmin-bookingerror', $error_list );
+		echo '</div>';
+	} else {
+		$ebi = $GLOBALS['edubookinginfo'];
+		do_action( 'eduadmin-processbooking', $ebi );
+		do_action( 'eduadmin-bookingcompleted' );
+	}
+} else {
+	$contact  = new EduAdmin_Data_ContactPerson();
+	$customer = new EduAdmin_Data_Customer();
 
-$inc_vat = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
+	$discount_percent             = 0.0;
+	$participant_discount_percent = 0.0;
+	$customer_invoice_email       = '';
 
-if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
-	$user     = EDU()->session['eduadmin-loginUser'];
-	$contact  = $user->Contact;
-	$customer = $user->Customer;
-}
+	$inc_vat = EDUAPI()->REST->Organisation->GetOrganisation()['PriceIncVat'];
 
-$no_invoice_free_events = get_option( 'eduadmin-noInvoiceFreeEvents', false );
+	if ( isset( EDU()->session['eduadmin-loginUser'] ) ) {
+		$user     = EDU()->session['eduadmin-loginUser'];
+		$contact  = $user->Contact;
+		$customer = $user->Customer;
+	}
 
-$first_price = current( $programme['PriceNames'] );
+	$no_invoice_free_events = get_option( 'eduadmin-noInvoiceFreeEvents', false );
 
-$show_invoice_email             = isset( $attributes['hideinvoiceemailfield'] ) ? false === $attributes['hideinvoiceemailfield'] : false === get_option( 'eduadmin-hideInvoiceEmailField', false );
-$force_show_invoice_information = isset( $attributes['showinvoiceinformation'] ) ? false === $attributes['showinvoiceinformation'] : true === get_option( 'eduadmin-showInvoiceInformation', false );
+	$first_price = current( $programme['PriceNames'] );
 
-?>
+	$show_invoice_email             = isset( $attributes['hideinvoiceemailfield'] ) ? false === $attributes['hideinvoiceemailfield'] : false === get_option( 'eduadmin-hideInvoiceEmailField', false );
+	$force_show_invoice_information = isset( $attributes['showinvoiceinformation'] ) ? false === $attributes['showinvoiceinformation'] : true === get_option( 'eduadmin-showInvoiceInformation', false );
+
+	$block_edit_if_logged_in = get_option( 'eduadmin-blockEditIfLoggedIn', true );
+	$__block                 = ( $block_edit_if_logged_in && isset( $contact->PersonId ) && 0 !== $contact->PersonId );
+
+	$questions = EDUAPI()->REST->ProgrammeStart->BookingQuestions( $programme['ProgrammeStartId'], true );
+
+	$booking_questions     = $questions['BookingQuestions'];
+	$participant_questions = $questions['ParticipantQuestions'];
+
+	?>
 	<div class="eduadmin booking-page">
 		<form action="" method="post" id="edu-booking-form">
 			<input type="hidden" name="act" value="bookProgramme" />
+			<input type="hidden" name="edu-programme-start" value="<?php echo intval( $_REQUEST['id'] ); ?>" />
 			<input type="hidden" name="edu-valid-form" value="<?php echo esc_attr( wp_create_nonce( 'edu-booking-confirm' ) ); ?>" />
 			<a href="../" class="backLink"><?php esc_html_e( '« Go back', 'eduadmin-booking' ); ?></a>
 
@@ -87,7 +116,7 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					</div>
 				</label>
 				<?php $selected_login_field = get_option( 'eduadmin-loginField', 'Email' ); ?>
-				<?php if ( $selected_course['RequireCivicRegistrationNumber'] || 'CivicRegistrationNumber' === $selected_login_field ) { ?>
+				<?php if ( 'CivicRegistrationNumber' === $selected_login_field ) { ?>
 					<label>
 						<div class="inputLabel">
 							<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
@@ -314,6 +343,15 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					</label>
 				<?php } ?>
 			</div>
+			<div class="questionPanel">
+				<?php
+				if ( ! empty( $_REQUEST['eid'] ) ) {
+					foreach ( $booking_questions as $question ) {
+						render_question( $question, false, 'booking' );
+					}
+				}
+				?>
+			</div>
 			<div class="participantView">
 				<h2><?php esc_html_e( 'Participant information', 'eduadmin-booking' ); ?></h2>
 				<div class="participantHolder" id="edu-participantHolder">
@@ -356,24 +394,17 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 								<input type="tel" name="participantMobile[]" placeholder="<?php esc_attr_e( 'Mobile number', 'eduadmin-booking' ); ?>" />
 							</div>
 						</label>
-						<?php if ( $selected_course['RequireCivicRegistrationNumber'] ) { ?>
-							<label>
-								<div class="inputLabel">
-									<?php esc_html_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>
-								</div>
-								<div class="inputHolder">
-									<input type="text" data-required="true" name="participantCivReg[]" pattern="(\d{2,4})-?(\d{2,2})-?(\d{2,2})-?(\d{4,4})" class="eduadmin-civicRegNo" placeholder="<?php esc_attr_e( 'Civic Registration Number', 'eduadmin-booking' ); ?>" />
-								</div>
-							</label>
-						<?php } ?>
 						<?php
-
-						foreach ( $contact_custom_fields as $attr ) {
-							render_attribute( $attr, true, 'participant' );
+						if ( ! empty( $contact_custom_fields ) ) {
+							foreach ( $contact_custom_fields as $attr ) {
+								render_attribute( $attr, true, 'participant' );
+							}
 						}
 
-						foreach ( $participant_questions as $question ) {
-							render_question( $question, true, 'participant' );
+						if ( ! empty( $participant_questions ) ) {
+							foreach ( $participant_questions as $question ) {
+								render_question( $question, true, 'participant' );
+							}
 						}
 						?>
 					</div>
@@ -404,7 +435,7 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 					<?php esc_html_e( 'Total sum:', 'eduadmin-booking' ); ?>
 					<span id="sumValue" class="sumValue"></span>
 				</div>
-				<?php if ( 0 !== $event['ParticipantNumberLeft'] ) : ?>
+				<?php if ( 0 !== $programme['ParticipantNumberLeft'] ) : ?>
 					<input type="submit" class="bookButton cta-btn" id="edu-book-btn" onclick="eduBookingView.UpdatePrice(); var validated = eduBookingView.CheckValidation(); return validated;" value="<?php esc_attr_e( 'Book now', 'eduadmin-booking' ); ?>" />
 				<?php else : ?>
 					<div class="bookButton neutral-btn cta-disabled">
@@ -467,5 +498,5 @@ $force_show_invoice_information = isset( $attributes['showinvoiceinformation'] )
 			</script>
 		</form>
 	</div>
-<?php
-EDU()->write_debug( $programme );
+	<?php
+}

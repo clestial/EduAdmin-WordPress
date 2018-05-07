@@ -19,4 +19,3 @@ if ( get_option( 'eduadmin-allowDiscountCode', false ) ) :
 	</div>
 <?php
 endif;
-?>

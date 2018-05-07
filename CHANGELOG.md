@@ -1,3 +1,33 @@
+### 2.0 ###
+- add: Adding page for certificates
+- chg: Bumping major version, since we're using a brand new API
+- chg: Removing default styles, it will now be emptied when you reset it. (To make sure that you don't have double CSS)
+- chg: Making "Forgot password" into a "neutral-btn"
+- chg: Making event separators a little bit bigger and bolder
+- chg: `showmore` upgrade, available in `[eduadmin-detailinfo]` as attribute
+- chg: Two column-template fixed to load templated event list.
+- add: Adding nonces to actions/forms
+- add: Customer, person and participant CustomFields on booking page
+- add: Fixed event inquiries to use the new API
+- add: Adding attribute `eventprice` to `[eduadmin-detailinfo]`
+- add: Adding cache-break to the new API (OData endpoints)
+- add: Adding listview-shortcode for Programmes `[eduadmin-programme-list]`
+- add: Creating a new Router-class to handle rewrites and custom post types.
+- chg: Changing how we check price (less validation until we actually try to post)
+- chg: Added onchange-events to participant-fields (name/email) to update price
+- chg: Simplified usage to `wp_kses_post` instead of `wp_kses` with params.
+- add: Safeguard against missing courseid from either `query_var` or attributes.
+- add: Added support for number, email and phone fields in integrations.
+- chg: Fetch option for number of months in ajax-calls instead of hard coded 6 months
+- add: Added options for Programme-pages
+- chg: Added removal of `&#8221;` and `&#8243;` from courseid-attribute.
+
+### 1.0.28
+- If no events are available, load public pricenames from course template
+
+### 1.0.27
+- Adding more fields to output when a booking is completed
+
 ### 1.0.26
 - Some more styles to some buttons
 - Making it easier to edit some templates

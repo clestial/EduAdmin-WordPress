@@ -3,7 +3,7 @@ Contributors: mnchga
 Tags: booking, participants, courses, events, eduadmin, lega online
 Requires at least: 4.7
 Tested up to: 4.9
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 Requires PHP: 5.2
 License: GPL3
 License-URI: https://www.gnu.org/licenses/gpl-3.0.en.html
@@ -50,6 +50,8 @@ If you notice that your API key doesn't work any more, you have to contact us.
 - add: Support for REST endpoint ProgrammeStart (Get questions)
 - add: Support for price check on ProgrammeBooking
 - chg: Codestyling to match other pages.
+- fix: Checking for existence of the property data before we try to fetch data from it.
+- fix: Better check if the person is logged in or not.
 
 ### 2.0.3 ###
 - add: Ability to view schedule of a programme

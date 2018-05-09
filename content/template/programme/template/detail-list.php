@@ -53,7 +53,7 @@ foreach ( $grouped_programmes as $group => $grouped_programme ) {
 
 		echo '</td>';
 		echo '<td>' . esc_html( $programme_start['ParticipantNumberLeft'] > 0 ? __( 'Yes', 'eduadmin-booking' ) : __( 'No', 'eduadmin-booking' ) ) . '</td>';
-		echo '<td><a href="' . esc_url( get_home_url() . '/programmes/' . make_slugs( $programme['ProgrammeName'] ) . '_' . $programme['ProgrammeId'] . '/book/?id=' . $programme_start['ProgrammeStartId'] ) . '" class="submit-programme">' . esc_html__( 'Book', 'eduadmin-booking' ) . '</a></td>';
+		echo '<td><a href="' . esc_url( get_home_url() . '/programmes/' . make_slugs( $programme['ProgrammeName'] ) . '_' . $programme['ProgrammeId'] . '/book/?id=' . $programme_start['ProgrammeStartId'] ) . '" class="cta-btn submit-programme">' . esc_html__( 'Book', 'eduadmin-booking' ) . '</a></td>';
 		echo '</tr>';
 	}
 	echo '</table>';

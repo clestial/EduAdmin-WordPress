@@ -12,9 +12,9 @@ class EduAdminRESTClient {
 	/**
 	 * @var string API Password
 	 */
-	static $api_pass = null;
-	static $root_url = 'https://api.eduadmin.se';
-	protected $api_url = '';
+	static    $api_pass = null;
+	static    $root_url = 'https://api.eduadmin.se';
+	protected $api_url  = '';
 
 	/**
 	 * @param resource $curl
@@ -38,10 +38,14 @@ class EduAdminRESTClient {
 			return $obj;
 		}
 		curl_close( $curl );
-		if ( null !== json_decode( $r, true ) ) {
+		if ( ( substr( $r, 0, 1 ) === '{' || substr( $r, 0, 1 ) === '[' ) && null !== json_decode( $r, true ) ) {
 			$obj = json_decode( $r, true );
 		} else {
-			$obj['data'] = $r;
+			if ( substr( $r, 0, 1 ) === '"' ) {
+				$obj['data'] = json_decode( $r, true );
+			} else {
+				$obj['data'] = $r;
+			}
 		}
 		$obj['@curl'] = $i;
 
@@ -49,10 +53,10 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param      $endpoint   string Where are we going with this request?
-	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
+	 * @param      $endpoint    string Where are we going with this request?
+	 * @param      $params      string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $method_name string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json     Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -61,10 +65,10 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param      $endpoint   string Where are we going with this request?
-	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
+	 * @param      $endpoint    string Where are we going with this request?
+	 * @param      $params      string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $method_name string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json     Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -73,10 +77,10 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param      $endpoint   string Where are we going with this request?
-	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
+	 * @param      $endpoint    string Where are we going with this request?
+	 * @param      $params      string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $method_name string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json     Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -85,10 +89,10 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param      $endpoint   string Where are we going with this request?
-	 * @param      $params     string|object|array Contains all parameters that we want to pass to the API
+	 * @param      $endpoint    string Where are we going with this request?
+	 * @param      $params      string|object|array Contains all parameters that we want to pass to the API
 	 * @param      $method_name string Which method called us?
-	 * @param bool $is_json Decides if this is a post with JSON
+	 * @param bool $is_json     Decides if this is a post with JSON
 	 *
 	 * @return mixed
 	 */
@@ -97,11 +101,11 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param string $type
-	 * @param string $endpoint
+	 * @param string              $type
+	 * @param string              $endpoint
 	 * @param string|array|object $params
-	 * @param string $method_name
-	 * @param bool $is_json
+	 * @param string              $method_name
+	 * @param bool                $is_json
 	 *
 	 * @return mixed
 	 */
@@ -131,9 +135,9 @@ class EduAdminRESTClient {
 	}
 
 	/**
-	 * @param string $endpoint
+	 * @param string       $endpoint
 	 * @param object|array $params
-	 * @param string $method_name
+	 * @param string       $method_name
 	 *
 	 * @return mixed
 	 */
@@ -164,7 +168,7 @@ class EduAdminRESTClient {
 
 	/**
 	 * @param resource $curl_object
-	 * @param array $array
+	 * @param array    $array
 	 */
 	private function set_headers( $curl_object, array $array = array() ) {
 		if ( isset( EDUAPI()->api_token ) ) {

@@ -1,6 +1,7 @@
 /** global: edu */
 
 var eduBookingView = {
+	ProgrammeBooking: false,
 	Customer: null,
 	ContactPerson: null,
 	Participants: [],
@@ -10,7 +11,7 @@ var eduBookingView = {
 	DiscountPercent: 0,
 	AddParticipant: function () {
 		if (!eduBookingView.SingleParticipant) {
-			if (eduBookingView.MaxParticipants == -1 || eduBookingView.CurrentParticipants < eduBookingView.MaxParticipants) {
+			if (eduBookingView.MaxParticipants === -1 || eduBookingView.CurrentParticipants < eduBookingView.MaxParticipants) {
 				var holder = document.getElementById('edu-participantHolder');
 				var tmpl = document.querySelector('.eduadmin .participantItem.template');
 				var cloned = tmpl.cloneNode(true);
@@ -56,6 +57,13 @@ var eduBookingView = {
 		return !(participants >= eduBookingView.MaxParticipants && eduBookingView.MaxParticipants >= 0);
 
 	},
+	CheckNumberOfParticipants: function () {
+		var participants = (eduBookingView.SingleParticipant
+			? 1
+			: document.querySelectorAll('.eduadmin .participantItem:not(.template):not(.contactPerson)').length);
+		return participants;
+
+	},
 	UpdatePrice: function () {
 		this.CheckPrice(true);
 	},
@@ -81,7 +89,7 @@ var eduBookingView = {
 		}
 		var contactParticipantItem = document.getElementById('contactPersonParticipant');
 		if (contactParticipantItem) {
-			contactParticipantItem.style.display = contact == 1 ? 'block' : 'none';
+			contactParticipantItem.style.display = contact === 1 ? 'block' : 'none';
 
 			var cFirstName = document.getElementById('edu-contactFirstName').value;
 			var cLastName = document.getElementById('edu-contactLastName').value;
@@ -179,7 +187,7 @@ var eduBookingView = {
 			contact = 1;
 		}
 
-		if ((participants.length + contact) == 0) {
+		if ((participants.length + contact) === 0) {
 			var noPartWarning = document.getElementById('edu-warning-no-participants');
 			if (noPartWarning) {
 				noPartWarning.style.display = 'block';
@@ -225,9 +233,9 @@ var eduBookingView = {
 			}
 
 			var replaceFields = participant.querySelectorAll('[data-replace]');
-			for(var index = 0; index < replaceFields.length; index++) {
+			for (var index = 0; index < replaceFields.length; index++) {
 				var replaceItems = replaceFields[index].attributes['data-replace'].value.split(',');
-				for(var x = 0; x < replaceItems.length; x++) {
+				for (var x = 0; x < replaceItems.length; x++) {
 					var replaceItem = replaceItems[x].split('|');
 					var replaceTemplate = replaceFields[index].attributes['data-' + replaceItem[0] + '-template'].value;
 					replaceFields[index][replaceItem[0]] = replaceTemplate.replace('{{' + replaceItem[1] + '}}', (i + 1));
@@ -240,44 +248,73 @@ var eduBookingView = {
 
 		return true;
 	},
-	CheckPrice: function(validate) {
-		if(undefined !== eduBookingView.PriceCheckThrottle) {
+	CheckPrice: function (validate) {
+		if (undefined !== eduBookingView.PriceCheckThrottle) {
 			clearTimeout(eduBookingView.PriceCheckThrottle);
 		}
-		eduBookingView.PriceCheckThrottle = setTimeout(function() {
-			var validation = true;
-			if(validate) {
-				validation = eduBookingView.CheckValidation();
-			}
-			if(validation) {
-				var form = jQuery('#edu-booking-form').serialize();
-				form = form.replace('act=bookCourse', 'act=checkPrice');
-				jQuery.ajax({
-					type: 'POST',
-					url: '',
-					data: form,
-					success: function (data) {
-						var d = JSON.parse(data);
-						console.log(d);
-						if (d.hasOwnProperty('TotalPriceExVat')) {
-							jQuery('#sumValue').text(
-								numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
-								' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
-							)
+
+		if (eduBookingView.ProgrammeBooking) {
+			eduBookingView.PriceCheckThrottle = setTimeout(function () {
+				var validation = true;
+				if (validate) {
+					validation = eduBookingView.CheckValidation();
+				}
+				if (validation) {
+					var form = jQuery('#edu-booking-form').serialize();
+					form = form.replace('act=bookProgramme', 'act=checkProgrammePrice');
+					jQuery.ajax({
+						type: 'POST',
+						url: '',
+						data: form,
+						success: function (data) {
+							var d = JSON.parse(data);
+							if (d.hasOwnProperty('TotalPriceExVat')) {
+								jQuery('#sumValue').text(
+									numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
+									' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
+								)
+							}
+							if (d.hasOwnProperty('Message')) {
+							}
 						}
-						if(d.hasOwnProperty('Message')) {
+					});
+				}
+			}, 100);
+		} else {
+			eduBookingView.PriceCheckThrottle = setTimeout(function () {
+				var validation = true;
+				if (validate) {
+					validation = eduBookingView.CheckValidation();
+				}
+				if (validation) {
+					var form = jQuery('#edu-booking-form').serialize();
+					form = form.replace('act=bookCourse', 'act=checkPrice');
+					jQuery.ajax({
+						type: 'POST',
+						url: '',
+						data: form,
+						success: function (data) {
+							var d = JSON.parse(data);
+							if (d.hasOwnProperty('TotalPriceExVat')) {
+								jQuery('#sumValue').text(
+									numberWithSeparator(d['TotalPriceExVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.ex +
+									' (' + numberWithSeparator(d['TotalPriceIncVat'], ' ') + ' ' + window.currency + ' ' + window.edu_vat.inc + ')'
+								)
+							}
+							if (d.hasOwnProperty('Message')) {
+							}
 						}
-					}
-				});
-			}
-		}, 100);
+					});
+				}
+			}, 100);
+		}
 	},
 	PriceCheckThrottle: null,
 	ValidateCivicRegNo: function () {
 
 		function __isValid(civRegField) {
 			var civReg = civRegField.value;
-			if (!civReg || civReg.length == 0) {
+			if (!civReg || civReg.length === 0) {
 				return false;
 			}
 
@@ -299,11 +336,11 @@ var eduBookingView = {
 				return false;
 			}
 
-			if (month.toString().length == 1) {
+			if (month.toString().length === 1) {
 				month = '0' + month;
 			}
 
-			if (day.toString().length == 1) {
+			if (day.toString().length === 1) {
 				day = '0' + day;
 			}
 
@@ -318,7 +355,7 @@ var eduBookingView = {
 				sum = 0;
 			for (var i = 0; i < cleanCivReg.length; i++) {
 				var d = parseInt(cleanCivReg.charAt(i), 10);
-				if (i % 2 == parity) {
+				if (i % 2 === parity) {
 					d *= 2;
 				}
 				if (d > 9) {

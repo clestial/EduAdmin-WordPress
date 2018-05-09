@@ -60,4 +60,17 @@ class EduAdmin_REST_ProgrammeBooking extends EduAdminRESTClient {
 			get_called_class() . '|' . __FUNCTION__
 		);
 	}
+
+	/**
+	 * @param EduAdmin_Data_ProgrammeBooking|stdClass|object $booking_data
+	 *
+	 * @return mixed
+	 */
+	public function CheckPrice( $booking_data ) {
+		return parent::POST(
+			'/CheckPrice',
+			$booking_data,
+			get_called_class() . '|' . __FUNCTION__
+		);
+	}
 }

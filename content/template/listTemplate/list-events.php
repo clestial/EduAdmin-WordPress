@@ -106,7 +106,6 @@ $edo = EDUAPI()->OData->CourseTemplates->Search(
 	join( ',', $sorting )
 );
 
-#EDU()->write_debug($edo);
 $courses = $edo['value'];
 
 if ( ! empty( $_REQUEST['searchCourses'] ) ) {

@@ -75,7 +75,7 @@ if ( ! empty( $courses ) ) {
 			$cats[] = $object['CategoryName'];
 		}
 ?>
-	<tr class="GFObjectItem" data-objectid="<?php echo $object['CourseTemplateId']; ?>">
+	<tr class="GFObjectItem" data-objectid="<?php echo esc_attr($object['CourseTemplateId']); ?>">
 		<td class="GFObjectName">
 			<a href="<?php echo $base_url; ?>/<?php echo make_slugs( $name ); ?>__<?php echo $object['CourseTemplateId']; ?>/<?php echo edu_get_query_string(); ?>"><?php
 				echo esc_html( get_utf8( $name ) );

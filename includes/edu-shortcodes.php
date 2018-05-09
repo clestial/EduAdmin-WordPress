@@ -711,7 +711,7 @@ function eduadmin_get_programme_booking( $attributes ) {
 		$programme = EDUAPI()->OData->ProgrammeStarts->GetItem(
 			$programmestart_id,
 			null,
-			'Courses,Events,PaymentMethods'
+			'Courses,Events,PaymentMethods,PriceNames'
 		);
 
 		include_once EDUADMIN_PLUGIN_PATH . '/content/template/programme/book.php';

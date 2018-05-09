@@ -109,6 +109,7 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 			include_once 'subclasses/rest/eduadmin-person.php';
 			include_once 'subclasses/rest/eduadmin-personnel.php';
 			include_once 'subclasses/rest/eduadmin-programmebooking.php';
+			include_once 'subclasses/rest/eduadmin-programmestart.php';
 			include_once 'subclasses/rest/eduadmin-report.php';
 			/* /REST Classes */
 
@@ -150,6 +151,7 @@ if ( ! class_exists( 'EduAdmin_OData_Client' ) ) {
 			$this->REST->Person               = new EduAdmin_REST_Person();
 			$this->REST->Personnel            = new EduAdmin_REST_Personnel();
 			$this->REST->ProgrammeBooking     = new EduAdmin_REST_ProgrammeBooking();
+			$this->REST->ProgrammeStart       = new EduAdmin_REST_ProgrammeStart();
 			$this->REST->Report               = new EduAdmin_REST_Report();
 
 			// If we're inside a WordPress-plugin

@@ -196,25 +196,27 @@ if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price['Pri
 		'CustomFieldAlternatives'
 	)['value'];
 
-	foreach ( $contact_custom_fields as $custom_field ) {
-		$data = null;
-		foreach ( $contact->CustomFields as $cf ) {
-			if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
-				switch ( $cf->CustomFieldType ) {
-					case 'Checkbox':
-						$data = $cf->CustomFieldChecked;
-						break;
-					case 'Dropdown':
-						$data = $cf->CustomFieldAlternativeId;
-						break;
-					default:
-						$data = $cf->CustomFieldValue;
-						break;
+	if ( ! empty( $contact_custom_fields ) ) {
+		foreach ( $contact_custom_fields as $custom_field ) {
+			$data = null;
+			foreach ( $contact->CustomFields as $cf ) {
+				if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
+					switch ( $cf->CustomFieldType ) {
+						case 'Checkbox':
+							$data = $cf->CustomFieldChecked;
+							break;
+						case 'Dropdown':
+							$data = $cf->CustomFieldAlternativeId;
+							break;
+						default:
+							$data = $cf->CustomFieldValue;
+							break;
+					}
+					break;
 				}
-				break;
 			}
+			render_attribute( $custom_field, false, 'contact', $data );
 		}
-		render_attribute( $custom_field, false, 'contact', $data );
 	}
 
 	$customer_custom_fields = EDUAPI()->OData->CustomFields->Search(
@@ -223,25 +225,27 @@ if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price['Pri
 		'CustomFieldAlternatives'
 	)['value'];
 
-	foreach ( $customer_custom_fields as $custom_field ) {
-		$data = null;
-		foreach ( $customer->CustomFields as $cf ) {
-			if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
-				switch ( $cf->CustomFieldType ) {
-					case 'Checkbox':
-						$data = $cf->CustomFieldChecked;
-						break;
-					case 'Dropdown':
-						$data = $cf->CustomFieldAlternativeId;
-						break;
-					default:
-						$data = $cf->CustomFieldValue;
-						break;
+	if ( ! empty( $customer_custom_fields ) ) {
+		foreach ( $customer_custom_fields as $custom_field ) {
+			$data = null;
+			foreach ( $customer->CustomFields as $cf ) {
+				if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
+					switch ( $cf->CustomFieldType ) {
+						case 'Checkbox':
+							$data = $cf->CustomFieldChecked;
+							break;
+						case 'Dropdown':
+							$data = $cf->CustomFieldAlternativeId;
+							break;
+						default:
+							$data = $cf->CustomFieldValue;
+							break;
+					}
+					break;
 				}
-				break;
 			}
+			render_attribute( $custom_field, false, 'customer', $data );
 		}
-		render_attribute( $custom_field, false, 'customer', $data );
 	}
 
 	?>
@@ -293,8 +297,10 @@ if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price['Pri
 			echo '<br />';
 		}
 
-		foreach ( $participant_questions as $question ) {
-			render_question( $question, false, 'contact' );
+		if ( ! empty( $participant_questions ) ) {
+			foreach ( $participant_questions as $question ) {
+				render_question( $question, false, 'contact' );
+			}
 		}
 		?>
 	</div>

@@ -436,7 +436,7 @@ class EduAdmin_BookingHandler {
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
 
-		if ( 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
+		if ( isset( $booking['data'] ) && 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
 			$error_list = array();
 
 			$std_error                 = array();
@@ -617,7 +617,7 @@ class EduAdmin_BookingHandler {
 
 		$booking = EDUAPI()->REST->Booking->Create( $booking_data );
 
-		if ( 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
+		if ( isset( $booking['data'] ) && 'Oops! Something went wrong. Please contact eduadmin@multinet.freshdesk.com so we can try to fix it.' === $booking['data'] ) {
 			$error_list = array();
 
 			$std_error                 = array();

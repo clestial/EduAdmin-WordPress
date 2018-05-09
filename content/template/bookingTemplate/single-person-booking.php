@@ -1,7 +1,7 @@
 <?php
 // phpcs:disable WordPress.NamingConventions,Squiz
 $block_edit_if_logged_in = get_option( 'eduadmin-blockEditIfLoggedIn', true );
-$__block                 = ( $block_edit_if_logged_in && 0 !== $contact->PersonId );
+$__block                 = ( $block_edit_if_logged_in && ! empty( $contact->PersonId ) );
 
 if ( ! empty( $customer->BillingInfo ) ) {
 	$billing_customer = $customer->BillingInfo[0];
@@ -131,7 +131,7 @@ if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price['Pri
 				<?php esc_html_e( 'Invoice reference', 'eduadmin-booking' ); ?>
 			</div>
 			<div class="inputHolder">
-				<input type="text" name="invoiceReference" placeholder="<?php esc_attr_e( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo esc_attr( $billing_customer->SellerReference ); ?>" />
+				<input type="text" name="invoiceReference" placeholder="<?php esc_attr_e( 'Invoice reference', 'eduadmin-booking' ); ?>" value="<?php echo ! empty( $billing_customer->SellerReference ) ? esc_attr( $billing_customer->SellerReference ) : ''; ?>" />
 			</div>
 		</label>
 		<label style="<?php echo $force_show_invoice_information ? 'display: none;' : '' ?>">

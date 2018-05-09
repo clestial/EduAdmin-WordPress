@@ -1,6 +1,6 @@
 <?php
 $block_edit_if_logged_in = get_option( 'eduadmin-blockEditIfLoggedIn', true );
-$__block                 = ( $block_edit_if_logged_in && isset( $contact->PersonId ) && 0 !== $contact->PersonId );
+$__block                 = ( $block_edit_if_logged_in && ! empty( $contact->PersonId ) );
 if ( isset( $contact->PersonId ) && 0 !== $contact->PersonId ) {
 	echo '<input type="hidden" name="edu-contactId" value="' . esc_attr( $contact->PersonId ) . '" />';
 }

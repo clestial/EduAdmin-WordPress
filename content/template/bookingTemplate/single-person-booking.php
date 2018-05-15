@@ -228,6 +228,7 @@ if ( ! $no_invoice_free_events || ( $no_invoice_free_events && $first_price['Pri
 	if ( ! empty( $customer_custom_fields ) ) {
 		foreach ( $customer_custom_fields as $custom_field ) {
 			$data = null;
+
 			foreach ( $customer->CustomFields as $cf ) {
 				if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
 					switch ( $cf->CustomFieldType ) {

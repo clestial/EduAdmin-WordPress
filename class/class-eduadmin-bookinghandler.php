@@ -449,6 +449,20 @@ class EduAdmin_BookingHandler {
 			return $error_list;
 		}
 
+		if ( ! empty( $booking['ErrorMessages'] ) ) {
+			$error_list = array();
+			foreach ( $booking['ErrorMessages'] as $error ) {
+				$std_error                 = array();
+				$std_error['ErrorCode']    = -1;
+				$std_error['ErrorDetails'] = $error;
+				$std_error['ErrorText']    = $error;
+
+				$error_list['Errors'][] = $std_error;
+			}
+
+			return $error_list;
+		}
+
 		if ( ! empty( $booking['Errors'] ) ) {
 			$error_list           = array();
 			$error_list['Errors'] = $booking['Errors'];
@@ -630,6 +644,20 @@ class EduAdmin_BookingHandler {
 			return $error_list;
 		}
 
+		if ( ! empty( $booking['ErrorMessages'] ) ) {
+			$error_list = array();
+			foreach ( $booking['ErrorMessages'] as $error ) {
+				$std_error                 = array();
+				$std_error['ErrorCode']    = -1;
+				$std_error['ErrorDetails'] = $error;
+				$std_error['ErrorText']    = $error;
+
+				$error_list['Errors'][] = $std_error;
+			}
+
+			return $error_list;
+		}
+
 		if ( ! empty( $booking['Errors'] ) ) {
 			$error_list           = array();
 			$error_list['Errors'] = $booking['Errors'];
@@ -756,7 +784,7 @@ class EduAdmin_BookingHandler {
 					if ( 'check' === $custom_field_type || 'radio' === $custom_field_type ) {
 						$answer->CustomFieldValue = true;
 					} else {
-						$answer->CustomFieldValue = intval( $custom_field_id );
+						$answer->CustomFieldValue = intval( $_POST[ $key ] );
 					}
 					break;
 				default:

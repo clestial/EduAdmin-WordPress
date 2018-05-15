@@ -46,9 +46,10 @@
 		</label>
 	<?php } ?>
 	<?php
-
-	foreach ( $contact_custom_fields as $attr ) {
-		render_attribute( $attr, true, 'participant' );
+	if ( ! empty( $contact_custom_fields ) ) {
+		foreach ( $contact_custom_fields as $attr ) {
+			render_attribute( $attr, true, 'participant' );
+		}
 	}
 
 	?>
@@ -99,9 +100,10 @@
 		}
 		echo '<br />';
 	}
-
-	foreach ( $participant_questions as $question ) {
-		render_question( $question, true, 'participant' );
+	if ( ! empty( $participant_questions ) ) {
+		foreach ( $participant_questions as $question ) {
+			render_question( $question, true, 'participant' );
+		}
 	}
 	?>
 </div>

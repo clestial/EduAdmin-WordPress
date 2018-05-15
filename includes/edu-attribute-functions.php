@@ -120,7 +120,7 @@ function render_select_field( $attribute, $multiple, $suffix, $data ) {
 		echo ' data-replace="name|index"';
 		echo ' data-name-template="edu-attr_' . esc_attr( $attribute['CustomFieldId'] . '_dropdown' . ( '' !== $suffix ? '-' . $suffix : '' ) . '_{{index}}' ) . '"';
 	}
-	echo "\">\n";
+	echo ">\n";
 	foreach ( $attribute['CustomFieldAlternatives'] as $val ) {
 		echo "\t<option" . ( ! empty( $data ) && $data === $val['CustomFieldAlternativeId'] ? ' selected="selected"' : '' ) . ' value="' . esc_attr( $val['CustomFieldAlternativeId'] ) . '">' . esc_html( $val['CustomFieldAlternativeValue'] ) . "</option>\n";
 	}

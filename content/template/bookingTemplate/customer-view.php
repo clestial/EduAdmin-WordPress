@@ -148,26 +148,27 @@ if ( isset( $customer->CustomerId ) && 0 !== $customer->CustomerId ) {
 		'ShowOnWeb and CustomFieldOwner eq \'Customer\'',
 		'CustomFieldAlternatives'
 	)['value'];
-
-	foreach ( $customer_custom_fields as $custom_field ) {
-		$data = null;
-		foreach ( $customer->CustomFields as $cf ) {
-			if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
-				switch ( $cf->CustomFieldType ) {
-					case 'Checkbox':
-						$data = $cf->CustomFieldChecked;
-						break;
-					case 'Dropdown':
-						$data = $cf->CustomFieldAlternativeId;
-						break;
-					default:
-						$data = $cf->CustomFieldValue;
-						break;
+	if ( ! empty( $customer_custom_fields ) ) {
+		foreach ( $customer_custom_fields as $custom_field ) {
+			$data = null;
+			foreach ( $customer->CustomFields as $cf ) {
+				if ( $cf->CustomFieldId === $custom_field['CustomFieldId'] ) {
+					switch ( $cf->CustomFieldType ) {
+						case 'Checkbox':
+							$data = $cf->CustomFieldChecked;
+							break;
+						case 'Dropdown':
+							$data = $cf->CustomFieldAlternativeId;
+							break;
+						default:
+							$data = $cf->CustomFieldValue;
+							break;
+					}
+					break;
 				}
-				break;
 			}
+			render_attribute( $custom_field, false, 'customer', $data );
 		}
-		render_attribute( $custom_field, false, 'customer', $data );
 	}
 	if ( ! $no_invoice_free_events || $first_price->Price > 0 ) {
 		?>

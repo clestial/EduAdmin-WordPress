@@ -353,7 +353,7 @@ if ( ! class_exists( 'EduAdmin' ) ) :
 		}
 
 		public function new_theme() {
-			update_option( 'eduadmin-options_have_changed', true );
+			update_option( 'eduadmin-options_have_changed', 1 );
 		}
 
 		public function activate() {

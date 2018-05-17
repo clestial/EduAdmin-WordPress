@@ -54,7 +54,7 @@ if ( $edo ) {
 	$selected_course = $edo;
 }
 
-if ( ! $selected_course || 0 === count( $selected_course['Events'] ) ) {
+if ( ! $selected_course || ( is_array( $selected_course['Events'] ) && 0 === count( $selected_course['Events'] ) ) ) {
 	?>
 	<script>history.go(-1);</script>
 	<?php

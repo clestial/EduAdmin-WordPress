@@ -10,8 +10,10 @@ if ( empty( $programmes['Errors'] ) ) {
 			<div></div>
 		</div>
 		<?php
-		foreach ( $programmes['value'] as $programme ) {
-			include 'template/list-item.php';
+		if ( is_array( $programmes['value'] ) ) {
+			foreach ( $programmes['value'] as $programme ) {
+				include 'template/list-item.php';
+			}
 		}
 		?>
 	</div>

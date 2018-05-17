@@ -1,4 +1,4 @@
-<?php if ( count( $events ) > 1 ) : ?>
+<?php if ( is_array( $events ) && count( $events ) > 1 ) : ?>
 	<div class="dateSelectLabel">
 		<?php esc_html_e( 'Select the event you want to book', 'eduadmin-booking' ); ?>
 	</div>
